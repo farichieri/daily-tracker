@@ -38,15 +38,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           margin: auto;
           min-height: 100vh;
           text-align: center;
-          color: var(--textColor);
-          background: var(--bgColor);
+          color: var(--text-color);
+          background: var(--bg-color);
         }
       `}</style>
       <style jsx global>
         {`
           main {
-            background: var(--bgColor);
-            color: var(--textColor);
+            background: var(--bg-color);
+            color: var(--text-color);
             width: 100%;
             display: flex;
             align-items: center;

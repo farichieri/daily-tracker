@@ -21,7 +21,7 @@ export default function MainLayout({
             height: 100%;
             margin: auto;
             max-width: var(--max-width);
-            min-height: calc(100vh - var(--navHeight));
+            min-height: calc(100vh - var(--nav-height));
             padding: ${padding}rem;
             width: 100%;
           }

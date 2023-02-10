@@ -3,8 +3,8 @@ import css from 'styled-jsx/css';
 const general = css.global`
   :root {
     --footerHeight: 170px;
-    --navHeight: 70px;
-    --max-width: 42rem;
+    --nav-height: 50px;
+    --max-width: 900px;
   }
   h1 {
     font-size: 2rem;
@@ -15,7 +15,7 @@ const general = css.global`
     transition: 0.3s;
   }
   a[href]:hover {
-    color: var(--textColor);
+    color: var(--text-color);
   }
 `;
 
