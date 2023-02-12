@@ -1,6 +1,8 @@
 import Selector from './Selector';
 import Day from './Day';
 import { useState } from 'react';
+import Objetives from '../Objetives/Objetives';
+import Button from '../Layout/Button/Button';
 
 const index = () => {
   const [daySelected, setDaySelected] = useState<any>({
@@ -10,6 +12,8 @@ const index = () => {
     done: false,
     user: '',
   });
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [isEditing, setIsEditing] = useState();
 
@@ -132,11 +136,19 @@ const index = () => {
         daySelected={daySelected}
       />
       <Day day={daySelected} />
+      <Objetives />
+      <Button
+        content='Save'
+        isLoading={isSaving}
+        isDisabled={isDisabled}
+        loadMessage={'Saving...'}
+      />
       <style jsx>{`
         section {
           margin: 1rem 0;
           display: flex;
           flex-direction: column;
+          align-items: center;
         }
         div {
           height: 2rem;

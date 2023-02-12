@@ -16,16 +16,15 @@ const Tracker = ({
           onClick={handleSelectDay}
           id={day.id}
         >
-          <>
-            <span>{day.weekday}</span>
-            <span className='number'>{day.number}</span>
-          </>
+          <span>{day.weekday}</span>
+          <span className='number'>{day.number}</span>
         </button>
       ))}
       <style jsx>{`
         div {
           display: flex;
           gap: 0.5rem;
+          margin: auto;
         }
         button {
           border: 1px solid gray;
@@ -43,7 +42,7 @@ const Tracker = ({
           background: gray;
         }
         span {
-          display: content;
+          pointer-events: none;
         }
         span.number {
           font-size: 65%;

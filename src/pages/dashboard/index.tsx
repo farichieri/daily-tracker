@@ -6,6 +6,7 @@ import MainLayout from '@/components/Layout/MainLayout';
 import { auth } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker';
+import Objetives from '@/components/Objetives/Objetives';
 
 const index = () => {
   const [user, setUser] = useState<any | string>('');
