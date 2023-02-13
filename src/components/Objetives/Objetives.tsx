@@ -6,7 +6,7 @@ const Objetives = () => {
 
   const handleChange = (e: any) => {
     e.preventDefault();
-    if (objetives[e.target.id]) {
+    if (objetives.indexOf(objetives[e.target.id]) > -1) {
       const newObjetives = [...objetives];
       newObjetives[e.target.id] = e.target.value;
       setObjetives(newObjetives);
@@ -23,12 +23,24 @@ const Objetives = () => {
     }
   };
 
+  const handleRemove = (e: any) => {
+    e.preventDefault();
+    const newObjetives = objetives.slice();
+    newObjetives.splice(e.target.value, 1);
+    setObjetives(newObjetives);
+  };
+
   return (
     <section>
       Objetives
       <div className='objetives-container'>
         {objetives.map((obj, i) => (
-          <Objetive value={obj} handleChange={handleChange} id={i} key={i} />
+          <div className='objetive-container' key={i}>
+            <Objetive value={obj} handleChange={handleChange} id={i} />
+            <button onClick={handleRemove} value={i}>
+              x
+            </button>
+          </div>
         ))}
         <form onSubmit={handleAdd}>
           <Objetive handleChange={handleChange} value={objetive} id={null} />
@@ -48,8 +60,10 @@ const Objetives = () => {
           flex-direction: column;
         }
         .objetive-container {
-          width: 100%;
           display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
         }
         form {
           display: flex;
