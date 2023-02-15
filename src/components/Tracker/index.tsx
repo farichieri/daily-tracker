@@ -3,8 +3,11 @@ import Day from './Day';
 import { useState } from 'react';
 import Objetives from '../Objetives/Objetives';
 import Button from '../Layout/Button/Button';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/utils/firebase.config';
+import { v4 as uuidv4 } from 'uuid';
 
-const index = () => {
+const index = ({ userID }: { userID: string }) => {
   const [daySelected, setDaySelected] = useState<any>({
     weekday: '',
     number: '',
@@ -127,6 +130,44 @@ const index = () => {
     }
   };
 
+  // Objetives
+  const [objetives, setObjetives] = useState<string[]>([]);
+  const [objetive, setObjetive] = useState<string>('');
+
+  const handleChange = (e: any) => {
+    e.preventDefault();
+    if (objetives.indexOf(objetives[e.target.id]) > -1) {
+      const newObjetives = [...objetives];
+      newObjetives[e.target.id] = e.target.value;
+      setObjetives(newObjetives);
+    } else {
+      setObjetive(e.target.value);
+    }
+  };
+
+  const handleAdd = (e: any) => {
+    e.preventDefault();
+    if (objetive) {
+      setObjetives([...objetives, objetive]);
+      setObjetive('');
+    }
+  };
+
+  const handleRemove = (e: any) => {
+    e.preventDefault();
+    const newObjetives = objetives.slice();
+    newObjetives.splice(e.target.value, 1);
+    setObjetives(newObjetives);
+  };
+
+  const handleSave = async (e: any) => {
+    e.preventDefault();
+    const date = new Date().toLocaleDateString().replaceAll('/', '-');
+    await setDoc(doc(db, userID, date), {
+      objetives: objetives,
+    });
+  };
+
   return (
     <section>
       <div>{daySelected.number}</div>
@@ -136,12 +177,19 @@ const index = () => {
         daySelected={daySelected}
       />
       <Day day={daySelected} />
-      <Objetives />
+      <Objetives
+        handleChange={handleChange}
+        handleAdd={handleAdd}
+        handleRemove={handleRemove}
+        objetives={objetives}
+        objetive={objetive}
+      />
       <Button
         content='Save'
         isLoading={isSaving}
         isDisabled={isDisabled}
         loadMessage={'Saving...'}
+        onClick={handleSave}
       />
       <style jsx>{`
         section {

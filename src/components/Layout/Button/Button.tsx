@@ -1,16 +1,20 @@
+import { MouseEventHandler } from 'react';
+
 const Button = ({
   content,
   isLoading,
   isDisabled,
   loadMessage,
+  onClick,
 }: {
+  onClick: MouseEventHandler;
   content: string;
   isLoading: boolean;
   isDisabled: boolean;
   loadMessage: string;
 }) => {
   return (
-    <button disabled={isDisabled}>
+    <button onClick={onClick} disabled={isDisabled}>
       <span className='button-background'></span>
       {isLoading ? <span>{loadMessage}</span> : <span>{content}</span>}
       <style jsx>{`

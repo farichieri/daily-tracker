@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import Logout from '@/components/Auth/Logout';
 import Loader from '@/components/Layout/Loader/Loader';
 import MainLayout from '@/components/Layout/MainLayout';
-import { auth } from '@/utils/firebase.config';
+import { auth, db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker';
-import Objetives from '@/components/Objetives/Objetives';
+import { collection, getDocs, setDoc } from 'firebase/firestore';
 
 const index = () => {
   const [user, setUser] = useState<any | string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [objetives, setObjetives] = useState<string[]>([]);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -20,6 +21,23 @@ const index = () => {
     }
     setIsLoading(false);
   });
+
+  useEffect(() => {
+    const getUserData = async () => {
+      let data: any[] = [];
+      const date = new Date().toLocaleDateString().replaceAll('/', '-');
+      const querySnapshot = await getDocs(collection(db, user.uid));
+      querySnapshot.forEach((doc) => {
+        data.push({ date: doc.id, data: doc.data() });
+      });
+      console.log(data);
+      // const {objetives} = data;
+      // setObjetives(objetives)
+    };
+    if (user) {
+      getUserData();
+    }
+  }, [user]);
 
   if (isLoading) {
     return (
@@ -51,7 +69,7 @@ const index = () => {
               <div className='admin-nav'>
                 <Logout />
               </div>
-              <Tracker />
+              <Tracker userID={user.uid} />
             </>
           )}
         </div>

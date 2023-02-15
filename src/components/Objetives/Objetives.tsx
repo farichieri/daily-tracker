@@ -1,35 +1,16 @@
-import { useState } from 'react';
-
-const Objetives = () => {
-  const [objetives, setObjetives] = useState<string[]>([]);
-  const [objetive, setObjetive] = useState<string>('');
-
-  const handleChange = (e: any) => {
-    e.preventDefault();
-    if (objetives.indexOf(objetives[e.target.id]) > -1) {
-      const newObjetives = [...objetives];
-      newObjetives[e.target.id] = e.target.value;
-      setObjetives(newObjetives);
-    } else {
-      setObjetive(e.target.value);
-    }
-  };
-
-  const handleAdd = (e: any) => {
-    e.preventDefault();
-    if (objetive) {
-      setObjetives([...objetives, objetive]);
-      setObjetive('');
-    }
-  };
-
-  const handleRemove = (e: any) => {
-    e.preventDefault();
-    const newObjetives = objetives.slice();
-    newObjetives.splice(e.target.value, 1);
-    setObjetives(newObjetives);
-  };
-
+const Objetives = ({
+  handleChange,
+  handleAdd,
+  handleRemove,
+  objetive,
+  objetives,
+}: {
+  handleChange: any;
+  handleAdd: any;
+  handleRemove: any;
+  objetive: string;
+  objetives: string[];
+}) => {
   return (
     <section>
       Objetives

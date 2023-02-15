@@ -17,7 +17,9 @@ const Login = () => {
     setIsLoading(true);
     setIsDisabled(true);
     await signInWithEmailAndPassword(auth, input.email, input.password)
-      .then((userCredential) => userCredential.user)
+      .then((userCredential) => {
+        userCredential.user;
+      })
       .catch((error) => {
         setErrorMessage(error.message);
       });
@@ -55,6 +57,7 @@ const Login = () => {
         />
       </div>
       <Button
+        onClick={handleSubmit}
         loadMessage={'Ingresando...'}
         content='Ingresar'
         isLoading={isLoading}

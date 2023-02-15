@@ -1,5 +1,4 @@
 const Tracker = ({ day }: { day: any }) => {
-  console.log(new Date().toLocaleDateString());
   return (
     <table>
       <thead>
