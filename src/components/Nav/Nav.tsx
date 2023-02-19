@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DarkMode from '../DarkMode/DarkMode';
+import Logo from '../Logo/Logo';
 
 const Nav = ({
   theme,
@@ -12,12 +13,16 @@ const Nav = ({
   const pages = [
     { name: 'home', path: '/' },
     { name: 'dashboard', path: '/dashboard' },
+    { name: 'about', path: '/about' },
   ];
 
   const router = useRouter();
 
   return (
     <nav>
+      <Link href={'/'}>
+        <Logo width={100} height={50} name={false} priority={false} />
+      </Link>
       {pages.map((page) => (
         <Link key={`nav-${page.name}`} href={page.path}>
           <span className={router.asPath === page.path ? 'selected' : ''}>

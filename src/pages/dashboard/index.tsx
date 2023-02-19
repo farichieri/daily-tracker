@@ -11,7 +11,7 @@ import { collection, getDocs, setDoc } from 'firebase/firestore';
 const index = () => {
   const [user, setUser] = useState<any | string>('');
   const [isLoading, setIsLoading] = useState(true);
-  const [objetives, setObjetives] = useState<string[]>([]);
+  const [data, setData] = useState<string[]>([]);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -31,8 +31,7 @@ const index = () => {
         data.push({ date: doc.id, data: doc.data() });
       });
       console.log(data);
-      // const {objetives} = data;
-      // setObjetives(objetives)
+      setData(data);
     };
     if (user) {
       getUserData();
@@ -79,6 +78,7 @@ const index = () => {
             flex-direction: column;
             justify-content: center;
             width: 100%;
+            margin: auto;
           }
           .tours-container {
             margin: auto;

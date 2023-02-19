@@ -5,6 +5,7 @@ import Nav from '../Nav/Nav';
 import React, { useEffect, useState } from 'react';
 import general from '@/styles/general';
 import typography, { fonts } from '@/styles/typography';
+import Footer from '../Footer/Footer';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<string>('');
@@ -27,6 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className={`${fonts.raleWay.className} ${theme}`}>
           <Nav theme={theme} setTheme={setTheme} />
           <main>{children}</main>
+          <Footer />
         </div>
       )}
       <style jsx>{`
