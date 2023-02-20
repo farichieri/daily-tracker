@@ -1,4 +1,18 @@
-const Tracker = ({ day }: { day: any }) => {
+import { types } from '@/utils/types';
+
+const Tracker = ({
+  handleChange,
+  handleAdd,
+  handleRemove,
+  task,
+  tasks,
+}: {
+  handleChange: any;
+  handleAdd: any;
+  handleRemove: any;
+  task: string;
+  tasks: string[];
+}) => {
   // {
   //   id: 1,
   //   weekday: 'monday',
@@ -16,7 +30,6 @@ const Tracker = ({ day }: { day: any }) => {
   return (
     <section>
       <p>Daily Tasks</p>
-
       <table>
         <thead>
           <tr>
@@ -27,13 +40,10 @@ const Tracker = ({ day }: { day: any }) => {
           </tr>
         </thead>
         <tbody>
-          {day ? (
-            day.data.map((task: any, index: number) => (
-              <tr key={index} className='task-container'>
-                <td>{task.hour}</td>
-                <td>{task.task}</td>
-                <td>{task.done ? 'done' : 'incompleted'}</td>
-                <td>{task.done ? ':)' : ':('}</td>
+          {tasks ? (
+            tasks.map((task: any, i: number) => (
+              <tr key={i} className='task-container'>
+                <Task value={task} handleChange={handleChange} id={i} />
               </tr>
             ))
           ) : (
@@ -41,6 +51,16 @@ const Tracker = ({ day }: { day: any }) => {
               <td>Empty</td>
             </tr>
           )}
+          <form onSubmit={(e) => handleAdd(e, types.tasks)}>
+            <tr>
+              <Task
+                handleChange={(e: string) => handleChange(e, types.tasks)}
+                value={task}
+                id={null}
+              />
+            </tr>
+            <button>+</button>
+          </form>
         </tbody>
       </table>
       <style jsx>{`
@@ -85,3 +105,66 @@ const Tracker = ({ day }: { day: any }) => {
 };
 
 export default Tracker;
+
+const Task = ({
+  handleChange,
+  value,
+  id,
+}: {
+  handleChange: any;
+  value: any;
+  id: any;
+}) => {
+  return (
+    <>
+      <td>
+        <input
+          placeholder='hour'
+          onChange={handleChange}
+          value={value.hour}
+          name='hour'
+          id={id}
+        />
+      </td>
+      <td>
+        <input
+          placeholder='task'
+          onChange={handleChange}
+          value={value.task}
+          name='task'
+          id={id}
+        />
+      </td>
+      <td>
+        <input
+          placeholder='done'
+          disabled
+          value={value.done ? 'done' : 'incompleted'}
+          name='done'
+          id={id}
+        />
+      </td>
+      <td>
+        <input
+          placeholder='hour'
+          onChange={handleChange}
+          value={value.done ? ':)' : ':('}
+          name='hour'
+          id={id}
+        />
+      </td>
+      <style jsx>{`
+        input {
+          width: 100%;
+          background: none;
+          color: var(--text-color);
+          border: none;
+          border-bottom: 1px solid var(--box-shadow);
+          outline: none;
+          padding: 0.5rem 0.3rem 0.3rem 0.5rem;
+          display: flex;
+        }
+      `}</style>
+    </>
+  );
+};

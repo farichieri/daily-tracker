@@ -5,6 +5,7 @@ import Objetives from '../Objetives/Objetives';
 import Button from '../Layout/Button/Button';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
+import { types } from '@/utils/types';
 
 const index = ({ userID, userData }: { userID: string; userData: any }) => {
   const today = new Date().toLocaleDateString();
@@ -20,10 +21,14 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isEditing, setIsEditing] = useState();
   const [thisWeek, setThisWeek] = useState<object[]>([]);
+
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
 
-  console.log({ dailyData });
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [task, setTask] = useState<string>('');
+
+  console.log({ tasks });
 
   useEffect(() => {
     const selectWeek = (date: Date) => {
@@ -39,158 +44,59 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
     };
     const date = new Date();
     setThisWeek(selectWeek(date));
-    setDailyData(getDailyData(today));
   }, [userData]);
 
   useEffect(() => {
-    const getObjetives = () => {
+    const setUserDataByDate = () => {
       const userDataByDate = userData.find(
         (data: any) => data.date === daySelected.replaceAll('/', '-')
       );
       const objetives = userDataByDate?.data.objetives || [];
+      const tasks = userDataByDate?.data.tasks || [];
+      setTasks(tasks);
       setObjetives(objetives);
     };
-    getObjetives();
+    setUserDataByDate();
   }, [userData, daySelected]);
-
-  const week = [
-    {
-      id: 1,
-      weekday: 'monday',
-      date: '2/19/2023',
-      data: [
-        { task: 'task1', hour: '05:00', done: false },
-        { task: 'task2', hour: '05:00', done: false },
-        { task: 'task3', hour: '05:00', done: false },
-        { task: 'task4', hour: '05:00', done: false },
-        { task: 'task5', hour: '05:00', done: false },
-      ],
-      done: false,
-      user: 'frichieri.dev@gmail.com',
-    },
-    {
-      id: 2,
-      weekday: 'tuesday',
-      date: '14/03',
-      data: [
-        { task: 'task1', hour: '05:00', done: false },
-        { task: 'task2', hour: '05:00', done: false },
-        { task: 'task3', hour: '05:00', done: false },
-        { task: 'task4', hour: '05:00', done: false },
-        { task: 'task5', hour: '05:00', done: false },
-      ],
-      done: false,
-      user: 'frichieri.dev@gmail.com',
-    },
-    {
-      id: 3,
-      weekday: 'wednesday',
-      date: '15/03',
-      data: [
-        { task: 'task1', hour: '05:00', done: false },
-        { task: 'task2', hour: '05:00', done: false },
-        { task: 'task3', hour: '05:00', done: false },
-        { task: 'task4', hour: '05:00', done: false },
-        { task: 'task5', hour: '05:00', done: false },
-      ],
-      done: false,
-      user: 'frichieri.dev@gmail.com',
-    },
-    {
-      id: 4,
-      weekday: 'thursday',
-      date: '16/03',
-      data: [
-        { task: 'task1', hour: '05:00', done: false },
-        { task: 'task2', hour: '05:00', done: false },
-        { task: 'task3', hour: '05:00', done: false },
-        { task: 'task4', hour: '05:00', done: false },
-        { task: 'task5', hour: '05:00', done: false },
-      ],
-      done: false,
-      user: 'frichieri.dev@gmail.com',
-    },
-    {
-      id: 5,
-      weekday: 'friday',
-      date: '17/03',
-      data: [
-        { task: 'task1', hour: '05:00', done: false },
-        { task: 'task2', hour: '05:00', done: false },
-        { task: 'task3', hour: '05:00', done: false },
-        { task: 'task4', hour: '05:00', done: false },
-        { task: 'task5', hour: '05:00', done: false },
-      ],
-      done: false,
-      user: 'frichieri.dev@gmail.com',
-    },
-    {
-      id: 6,
-      weekday: 'saturday',
-      date: '18/03',
-      data: [
-        { task: 'task1', hour: '05:00', done: false },
-        { task: 'task2', hour: '05:00', done: false },
-        { task: 'task3', hour: '05:00', done: false },
-        { task: 'task4', hour: '05:00', done: false },
-        { task: 'task5', hour: '05:00', done: false },
-      ],
-      done: false,
-      user: 'frichieri.dev@gmail.com',
-    },
-    {
-      id: 7,
-      weekday: 'sunday',
-      date: '19/03',
-      data: [
-        { task: 'task1', hour: '05:00', done: false },
-        { task: 'task2', hour: '05:00', done: false },
-        { task: 'task3', hour: '05:00', done: false },
-        { task: 'task4', hour: '05:00', done: false },
-        { task: 'task5', hour: '05:00', done: false },
-      ],
-      done: false,
-      user: 'frichieri.dev@gmail.com',
-    },
-  ];
-
-  const getDailyData = (id: string) => {
-    return week.find((day) => String(day.date) === String(id));
-  };
 
   const handleSelectDay = (event: Event) => {
     event.preventDefault();
     const id = (event.target as HTMLButtonElement).id;
-    const dailyData = getDailyData(id);
     setDaySelected(id);
     setDailyData(dailyData);
   };
 
   // Objetives
-  const handleChange = (e: any) => {
+  const handleChange = (e: any, type: string) => {
     e.preventDefault();
-    if (objetives.indexOf(objetives[e.target.id]) > -1) {
-      const newObjetives = [...objetives];
-      newObjetives[e.target.id] = e.target.value;
+    if (type === types.objetives) {
+      if (objetives.indexOf(objetives[e.target.id]) > -1) {
+        const newObjetives = [...objetives];
+        newObjetives[e.target.id] = e.target.value;
+        setObjetives(newObjetives);
+      } else {
+        setObjetive(e.target.value);
+      }
+    }
+  };
+
+  const handleAdd = (e: any, type: string) => {
+    if (type === types.objetives) {
+      e.preventDefault();
+      if (objetive) {
+        setObjetives([...objetives, objetive]);
+        setObjetive('');
+      }
+    }
+  };
+
+  const handleRemove = (e: any, type: string) => {
+    if (type === types.objetives) {
+      e.preventDefault();
+      const newObjetives = objetives.slice();
+      newObjetives.splice(e.target.value, 1);
       setObjetives(newObjetives);
-    } else {
-      setObjetive(e.target.value);
     }
-  };
-
-  const handleAdd = (e: any) => {
-    e.preventDefault();
-    if (objetive) {
-      setObjetives([...objetives, objetive]);
-      setObjetive('');
-    }
-  };
-
-  const handleRemove = (e: any) => {
-    e.preventDefault();
-    const newObjetives = objetives.slice();
-    newObjetives.splice(e.target.value, 1);
-    setObjetives(newObjetives);
   };
 
   const handleSave = async (e: any) => {
@@ -199,6 +105,7 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
     const date = new Date().toLocaleDateString().replaceAll('/', '-');
     await setDoc(doc(db, userID, date), {
       objetives: objetives,
+      tasks: 'see',
     });
     setIsSaving(false);
   };
@@ -211,7 +118,13 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
         handleSelectDay={handleSelectDay}
         daySelected={daySelected}
       />
-      <Day day={dailyData} />
+      <Day
+        handleChange={handleChange}
+        handleAdd={handleAdd}
+        handleRemove={handleRemove}
+        tasks={tasks}
+        task={task}
+      />
       <Objetives
         handleChange={handleChange}
         handleAdd={handleAdd}

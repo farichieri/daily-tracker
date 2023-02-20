@@ -1,3 +1,5 @@
+import { types } from '@/utils/types';
+
 const Objetives = ({
   handleChange,
   handleAdd,
@@ -17,14 +19,22 @@ const Objetives = ({
       <div className='objetives-container'>
         {objetives?.map((obj, i) => (
           <div className='objetive-container' key={i}>
-            <Objetive value={obj} handleChange={handleChange} id={i} />
-            <button onClick={handleRemove} value={i}>
+            <Objetive
+              value={obj}
+              handleChange={(e: string) => handleChange(e, types.objetives)}
+              id={i}
+            />
+            <button onClick={(e) => handleRemove(e, types.objetives)} value={i}>
               x
             </button>
           </div>
         ))}
-        <form onSubmit={handleAdd}>
-          <Objetive handleChange={handleChange} value={objetive} id={null} />
+        <form onSubmit={(e) => handleAdd(e, types.objetives)}>
+          <Objetive
+            handleChange={(e: string) => handleChange(e, types.objetives)}
+            value={objetive}
+            id={null}
+          />
           <button>+</button>
         </form>
       </div>
