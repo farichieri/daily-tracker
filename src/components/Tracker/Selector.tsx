@@ -11,13 +11,13 @@ const Tracker = ({
     <div>
       {week.map((day: any) => (
         <button
-          className={day.id === daySelected.id ? 'selected' : ''}
-          key={day.number}
+          className={day.date === daySelected ? 'selected' : ''}
+          key={day.date}
           onClick={handleSelectDay}
-          id={day.id}
+          id={day.date}
         >
-          <span>{day.weekday}</span>
-          <span className='number'>{day.number}</span>
+          <span>{day.weekDay}</span>
+          <span className='date'>{day.date}</span>
         </button>
       ))}
       <style jsx>{`
@@ -44,7 +44,7 @@ const Tracker = ({
         span {
           pointer-events: none;
         }
-        span.number {
+        span.date {
           font-size: 65%;
         }
         button:hover {

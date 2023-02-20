@@ -1,14 +1,15 @@
 import Selector from './Selector';
 import Day from './Day';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Objetives from '../Objetives/Objetives';
 import Button from '../Layout/Button/Button';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
-import { v4 as uuidv4 } from 'uuid';
 
-const index = ({ userID }: { userID: string }) => {
-  const [daySelected, setDaySelected] = useState<any>({
+const index = ({ userID, userData }: { userID: string; userData: any }) => {
+  const today = new Date().toLocaleDateString();
+  const [daySelected, setDaySelected] = useState<any>(today);
+  const [dailyData, setDailyData] = useState<any>({
     weekday: '',
     number: '',
     data: [],
@@ -17,14 +18,31 @@ const index = ({ userID }: { userID: string }) => {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-
   const [isEditing, setIsEditing] = useState();
+  const [thisWeek, setThisWeek] = useState<object[]>([]);
+
+  useEffect(() => {
+    const selectWeek = (date: Date) => {
+      return Array(7)
+        .fill(new Date(date))
+        .map((el, idx) => {
+          const day = new Date(el.setDate(el.getDate() - el.getDay() + idx));
+          return {
+            date: day.toLocaleDateString(),
+            weekDay: day.toLocaleDateString('en-US', { weekday: 'long' }),
+          };
+        });
+    };
+    const date = new Date();
+    setThisWeek(selectWeek(date));
+    setDailyData(getDailyData(today));
+  }, []);
 
   const week = [
     {
       id: 1,
       weekday: 'monday',
-      number: '13/03',
+      date: '2/19/2023',
       data: [
         { task: 'task1', hour: '05:00', done: false },
         { task: 'task2', hour: '05:00', done: false },
@@ -38,7 +56,7 @@ const index = ({ userID }: { userID: string }) => {
     {
       id: 2,
       weekday: 'tuesday',
-      number: '14/03',
+      date: '14/03',
       data: [
         { task: 'task1', hour: '05:00', done: false },
         { task: 'task2', hour: '05:00', done: false },
@@ -52,7 +70,7 @@ const index = ({ userID }: { userID: string }) => {
     {
       id: 3,
       weekday: 'wednesday',
-      number: '15/03',
+      date: '15/03',
       data: [
         { task: 'task1', hour: '05:00', done: false },
         { task: 'task2', hour: '05:00', done: false },
@@ -66,7 +84,7 @@ const index = ({ userID }: { userID: string }) => {
     {
       id: 4,
       weekday: 'thursday',
-      number: '16/03',
+      date: '16/03',
       data: [
         { task: 'task1', hour: '05:00', done: false },
         { task: 'task2', hour: '05:00', done: false },
@@ -80,7 +98,7 @@ const index = ({ userID }: { userID: string }) => {
     {
       id: 5,
       weekday: 'friday',
-      number: '17/03',
+      date: '17/03',
       data: [
         { task: 'task1', hour: '05:00', done: false },
         { task: 'task2', hour: '05:00', done: false },
@@ -94,7 +112,7 @@ const index = ({ userID }: { userID: string }) => {
     {
       id: 6,
       weekday: 'saturday',
-      number: '18/03',
+      date: '18/03',
       data: [
         { task: 'task1', hour: '05:00', done: false },
         { task: 'task2', hour: '05:00', done: false },
@@ -108,7 +126,7 @@ const index = ({ userID }: { userID: string }) => {
     {
       id: 7,
       weekday: 'sunday',
-      number: '19/03',
+      date: '19/03',
       data: [
         { task: 'task1', hour: '05:00', done: false },
         { task: 'task2', hour: '05:00', done: false },
@@ -121,13 +139,16 @@ const index = ({ userID }: { userID: string }) => {
     },
   ];
 
+  const getDailyData = (id: string) => {
+    return week.find((day) => String(day.date) === String(id));
+  };
+
   const handleSelectDay = (event: Event) => {
     event.preventDefault();
     const id = (event.target as HTMLButtonElement).id;
-    const daySelected = week.find((day) => String(day.id) === String(id));
-    if (daySelected) {
-      setDaySelected(daySelected);
-    }
+    const dailyData = getDailyData(id);
+    setDaySelected(id);
+    setDailyData(dailyData);
   };
 
   // Objetives
@@ -170,13 +191,13 @@ const index = ({ userID }: { userID: string }) => {
 
   return (
     <section>
-      <div>{daySelected.number}</div>
+      <div>{daySelected}</div>
       <Selector
-        week={week}
+        week={thisWeek}
         handleSelectDay={handleSelectDay}
         daySelected={daySelected}
       />
-      <Day day={daySelected} />
+      <Day day={dailyData} />
       <Objetives
         handleChange={handleChange}
         handleAdd={handleAdd}

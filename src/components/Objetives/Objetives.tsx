@@ -13,7 +13,7 @@ const Objetives = ({
 }) => {
   return (
     <section>
-      Objetives
+      <p>Objetives</p>
       <div className='objetives-container'>
         {objetives.map((obj, i) => (
           <div className='objetive-container' key={i}>
@@ -30,20 +30,25 @@ const Objetives = ({
       </div>
       <style jsx>{`
         section {
-          border: 1px solid gray;
-          border-radius: 5px;
+          border-radius: 20px 20px 0 0;
           margin-bottom: 1rem;
           width: 100%;
+          box-shadow: 0 0 10px 1px var(--box-shadow-light);
+          overflow: auto;
+        }
+        p {
+          padding: 0.5rem;
         }
         .objetives-container {
           border-top: 1px solid gray;
           display: flex;
           flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
         .objetive-container {
           display: flex;
           width: 100%;
-          align-items: center;
           justify-content: space-between;
         }
         form {
@@ -51,6 +56,7 @@ const Objetives = ({
           width: 100%;
         }
         button {
+          width: 35px;
         }
       `}</style>
     </section>
@@ -85,7 +91,8 @@ const Objetive = ({
           border: none;
           border-bottom: 1px solid var(--box-shadow);
           outline: none;
-          padding: 0.1rem 0.3rem;
+          padding: 0.5rem 0.3rem 0.3rem 0.5rem;
+          display: flex;
         }
       `}</style>
     </>

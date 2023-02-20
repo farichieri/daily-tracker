@@ -43,7 +43,7 @@ const Footer = () => {
           display: flex;
           width: 100%;
           margin-top: auto;
-          padding: 2rem;
+          padding: 4rem 2rem;
           flex-direction: column;
           gap: 2rem;
           background-color: var(--bg-color-secondary);

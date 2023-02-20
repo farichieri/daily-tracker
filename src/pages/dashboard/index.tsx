@@ -68,7 +68,7 @@ const index = () => {
               <div className='admin-nav'>
                 <Logout />
               </div>
-              <Tracker userID={user.uid} />
+              <Tracker userID={user.uid} userData={data} />
             </>
           )}
         </div>
@@ -96,3 +96,22 @@ const index = () => {
 };
 
 export default index;
+
+// export const getServerSideProps = async () => {
+//   let tours: any[] = [];
+//   const querySnapshot = await getDocs(collection(db, 'tours'));
+//   querySnapshot.forEach((doc) => {
+//     tours.push(doc.data());
+//   });
+//   tours.sort((a, b) => b.date.localeCompare(a.date));
+
+//   let views: any[] = [];
+//   const viewsSnapshot = await getDocs(collection(db, 'analytics'));
+//   viewsSnapshot.forEach((doc) => {
+//     views.push(doc.data());
+//   });
+
+//   return {
+//     props: { tours, views },
+//   };
+// };

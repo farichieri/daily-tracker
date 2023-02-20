@@ -10,24 +10,22 @@ const Tracker = ({ day }: { day: any }) => {
         </tr>
       </thead>
       <tbody>
-        {day.data.map((task: any, index: number) => (
-          <tr key={index} className='task-container'>
-            <td>{task.hour}</td>
-            <td>{task.task}</td>
-            <td>{task.done ? 'done' : 'incompleted'}</td>
-            <td>{task.done ? ':)' : ':('}</td>
+        {day ? (
+          day.data.map((task: any, index: number) => (
+            <tr key={index} className='task-container'>
+              <td>{task.hour}</td>
+              <td>{task.task}</td>
+              <td>{task.done ? 'done' : 'incompleted'}</td>
+              <td>{task.done ? ':)' : ':('}</td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td>Empty</td>
           </tr>
-        ))}
+        )}
       </tbody>
       <style jsx>{`
-        table tr:last-child td:first-child {
-          border-bottom-left-radius: 20px;
-        }
-
-        table tr:last-child td:last-child {
-          border-bottom-right-radius: 20px;
-        }
-
         table {
           gap: 0.5rem;
           margin: 1rem 0;
@@ -37,6 +35,18 @@ const Tracker = ({ day }: { day: any }) => {
           border: 1px solid gray;
           width: 100%;
           flex-direction: column;
+          overflow: hidden;
+          border-collapse: collapse;
+          box-shadow: 0 0 10px 1px var(--box-shadow-light);
+        }
+        table tr:last-child td:first-child {
+          border-bottom-left-radius: 20px;
+        }
+        table tr:last-child td:last-child {
+          border-bottom-right-radius: 20px;
+        }
+        thead {
+          background: #363636;
         }
         td,
         th {
