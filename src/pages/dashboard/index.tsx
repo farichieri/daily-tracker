@@ -30,7 +30,6 @@ const index = () => {
       querySnapshot.forEach((doc) => {
         data.push({ date: doc.id, data: doc.data() });
       });
-      console.log(data);
       setData(data);
     };
     if (user) {
@@ -78,7 +77,6 @@ const index = () => {
             flex-direction: column;
             justify-content: center;
             width: 100%;
-            margin: auto;
           }
           .tours-container {
             margin: auto;

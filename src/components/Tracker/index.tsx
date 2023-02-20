@@ -20,6 +20,10 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isEditing, setIsEditing] = useState();
   const [thisWeek, setThisWeek] = useState<object[]>([]);
+  const [objetives, setObjetives] = useState<string[]>([]);
+  const [objetive, setObjetive] = useState<string>('');
+
+  console.log({ dailyData });
 
   useEffect(() => {
     const selectWeek = (date: Date) => {
@@ -36,7 +40,18 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
     const date = new Date();
     setThisWeek(selectWeek(date));
     setDailyData(getDailyData(today));
-  }, []);
+  }, [userData]);
+
+  useEffect(() => {
+    const getObjetives = () => {
+      const userDataByDate = userData.find(
+        (data: any) => data.date === daySelected.replaceAll('/', '-')
+      );
+      const objetives = userDataByDate?.data.objetives || [];
+      setObjetives(objetives);
+    };
+    getObjetives();
+  }, [userData, daySelected]);
 
   const week = [
     {
@@ -152,9 +167,6 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
   };
 
   // Objetives
-  const [objetives, setObjetives] = useState<string[]>([]);
-  const [objetive, setObjetive] = useState<string>('');
-
   const handleChange = (e: any) => {
     e.preventDefault();
     if (objetives.indexOf(objetives[e.target.id]) > -1) {
@@ -182,11 +194,13 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
   };
 
   const handleSave = async (e: any) => {
+    setIsSaving(true);
     e.preventDefault();
     const date = new Date().toLocaleDateString().replaceAll('/', '-');
     await setDoc(doc(db, userID, date), {
       objetives: objetives,
     });
+    setIsSaving(false);
   };
 
   return (

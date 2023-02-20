@@ -13,9 +13,9 @@ const Objetives = ({
 }) => {
   return (
     <section>
-      <p>Objetives</p>
+      <p>Goals</p>
       <div className='objetives-container'>
-        {objetives.map((obj, i) => (
+        {objetives?.map((obj, i) => (
           <div className='objetive-container' key={i}>
             <Objetive value={obj} handleChange={handleChange} id={i} />
             <button onClick={handleRemove} value={i}>

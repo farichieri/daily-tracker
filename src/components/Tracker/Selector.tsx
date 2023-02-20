@@ -23,6 +23,7 @@ const Tracker = ({
       <style jsx>{`
         div {
           display: flex;
+          flex-wrap: wrap;
           gap: 0.5rem;
           margin: auto;
         }

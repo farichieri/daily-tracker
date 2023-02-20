@@ -14,7 +14,7 @@ const colors = css.global`
   div.light {
     --text-color: black;
     --bg-color: #ffffff;
-    --bg-color-secondary: #295319;
+    --bg-color-secondary: #061650;
     --box-shadow: #00000080;
     --box-shadow-light: #00000030;
     --nav-bg-color: transparent;
