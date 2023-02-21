@@ -1,31 +1,44 @@
 import React from 'react';
+import MainLayout from '../MainLayout';
 
-type Props = {};
-
-const Loader = (props: Props) => {
+const Loader = ({ text }: { text: string }) => {
   return (
-    <div className='loader'>
-      <div className='loader__content'>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
-        <div className='loader__bar'></div>
+    <MainLayout withPadding={true}>
+      <div className='loader-container'>
+        <p>{text}</p>
+        <div className='loader'>
+          <div className='loader__content'>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+            <div className='loader__bar'></div>
+          </div>
+        </div>
       </div>
       <style jsx>{`
+        .loader-container {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          justify-content: center;
+          margin: auto;
+          min-height: 100vh;
+        }
+
         .loader {
           top: 0;
           left: 0;
           z-index: 2;
           transition: all 0.3s ease-in-out;
           position: relative;
-          background: red;
           height: 50px;
         }
         .loader__content {
@@ -126,7 +139,7 @@ const Loader = (props: Props) => {
           }
         }
       `}</style>
-    </div>
+    </MainLayout>
   );
 };
 

@@ -6,20 +6,24 @@ import MainLayout from '@/components/Layout/MainLayout';
 import { auth, db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker';
-import { collection, getDocs, setDoc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 const index = () => {
   const [user, setUser] = useState<any | string>('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const [isLoadingData, setIsLoadingData] = useState(true);
   const [data, setData] = useState<string[]>([]);
+  console.log({ isLoadingData });
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setUser(user);
+      setIsLoadingUser(false);
     } else {
       setUser('');
+      setIsLoadingData(false);
+      setIsLoadingUser(false);
     }
-    setIsLoading(false);
   });
 
   useEffect(() => {
@@ -31,32 +35,18 @@ const index = () => {
         data.push({ date: doc.id, data: doc.data() });
       });
       setData(data);
+      setIsLoadingData(false);
     };
     if (user) {
+      setIsLoadingData(true);
       getUserData();
     }
   }, [user]);
 
-  if (isLoading) {
-    return (
-      <MainLayout withPadding={true}>
-        <div className='dashboard-container'>
-          Verificando usuario...
-          <Loader />
-        </div>
-        <style jsx>{`
-          div {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            justify-content: center;
-            margin: auto;
-            min-height: 100vh;
-          }
-        `}</style>
-      </MainLayout>
-    );
+  if (isLoadingUser) {
+    return <Loader text={'Verifying user...'} />;
+  } else if (isLoadingData) {
+    return <Loader text={'Loading data...'} />;
   } else
     return (
       <MainLayout withPadding={true}>
@@ -94,22 +84,3 @@ const index = () => {
 };
 
 export default index;
-
-// export const getServerSideProps = async () => {
-//   let tours: any[] = [];
-//   const querySnapshot = await getDocs(collection(db, 'tours'));
-//   querySnapshot.forEach((doc) => {
-//     tours.push(doc.data());
-//   });
-//   tours.sort((a, b) => b.date.localeCompare(a.date));
-
-//   let views: any[] = [];
-//   const viewsSnapshot = await getDocs(collection(db, 'analytics'));
-//   viewsSnapshot.forEach((doc) => {
-//     views.push(doc.data());
-//   });
-
-//   return {
-//     props: { tours, views },
-//   };
-// };

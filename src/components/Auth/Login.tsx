@@ -59,7 +59,7 @@ const Login = () => {
       <Button
         onClick={handleSubmit}
         loadMessage={'Ingresando...'}
-        content='Ingresar'
+        content='Log in'
         isLoading={isLoading}
         isDisabled={isDisabled}
       />

@@ -15,20 +15,6 @@ const Tracker = ({
   task: object;
   tasks: object[];
 }) => {
-  // {
-  //   id: 1,
-  //   weekday: 'monday',
-  //   date: '2/19/2023',
-  //   data: [
-  //     { task: 'task1', hour: '05:00', done: false },
-  //     { task: 'task2', hour: '05:00', done: false },
-  //     { task: 'task3', hour: '05:00', done: false },
-  //     { task: 'task4', hour: '05:00', done: false },
-  //     { task: 'task5', hour: '05:00', done: false },
-  //   ],
-  //   done: false,
-  //   user: 'frichieri.dev@gmail.com',
-  // },
   return (
     <section>
       <p>Daily Tasks</p>
@@ -37,7 +23,7 @@ const Tracker = ({
           <tr>
             <th>hour</th>
             <th>task</th>
-            <th>state</th>
+            <th>comments</th>
             <th>done</th>
             <th></th>
           </tr>
@@ -45,7 +31,10 @@ const Tracker = ({
         <tbody>
           {tasks ? (
             tasks.map((task: any, i: number) => (
-              <tr key={i} className='task-container'>
+              <tr
+                key={i}
+                className={`task-container ${task.done ? 'done' : ''}`}
+              >
                 <Task
                   value={task}
                   handleChange={(e: string) => handleChange(e, types.tasks)}
@@ -67,7 +56,6 @@ const Tracker = ({
               <td>Empty</td>
             </tr>
           )}
-          {/* <form onSubmit={(e) => handleAdd(e, types.tasks)}> */}
           <tr>
             <Task
               handleChange={(e: string) => handleChange(e, types.tasks)}
@@ -80,7 +68,6 @@ const Tracker = ({
               <button onClick={(e) => handleAdd(e, types.tasks)}>+</button>
             </td>
           </tr>
-          {/* </form> */}
         </tbody>
       </table>
       <style jsx>{`
@@ -115,6 +102,12 @@ const Tracker = ({
         td,
         th {
           padding: 0.5rem 0;
+        }
+        .task-container {
+          border-bottom: 1px solid var(--box-shadow);
+        }
+        .task-container.done {
+          background: green;
         }
         .task-container:hover {
           background: gray;
@@ -164,10 +157,10 @@ const Task = ({
           '-'
         ) : (
           <input
-            placeholder='done'
-            disabled
-            value={value.done ? 'done' : 'incompleted'}
-            name='done'
+            placeholder='comments'
+            onChange={handleChange}
+            value={value.comments}
+            name='comments'
             id={id}
           />
         )}
@@ -187,10 +180,12 @@ const Task = ({
           background: none;
           color: var(--text-color);
           border: none;
-          border-bottom: 1px solid var(--box-shadow);
           outline: none;
           padding: 0.5rem 0.3rem 0 0.5rem;
           display: flex;
+        }
+        input.done {
+          background: green;
         }
       `}</style>
     </>

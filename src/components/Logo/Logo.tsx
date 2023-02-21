@@ -11,19 +11,22 @@ type Props = {
 const Logo = (props: Props) => {
   return (
     <span>
-      <Image
+      {/* <Image
         src={`/images/${'logo'}.png`}
         alt='Logo'
         height={props.height}
         width={props.width}
         priority={props.priority}
-      />
+      /> */}
+      <p>DailyTracker</p>
       <style jsx>{`
         span {
           display: flex;
           position: relative;
           width: ${props.width}px;
           height: ${props.height}px;
+          align-items: center;
+          justify-content: center;
         }
       `}</style>
     </span>

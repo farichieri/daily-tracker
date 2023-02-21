@@ -21,12 +21,13 @@ const Logout = () => {
   };
 
   return (
-    <div onClick={handleLogout}>
+    <div>
       <Button
+        onClick={handleLogout}
         content='Logout'
         isLoading={isLoading}
         isDisabled={isDisabled}
-        loadMessage={'Deslogeando...'}
+        loadMessage={'Loading...'}
       />
       <style jsx>{`
         div {

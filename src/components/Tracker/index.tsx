@@ -29,6 +29,7 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
   const [task, setTask] = useState<any>({
     hour: '',
     task: '',
+    comments: '',
     done: false,
   });
 
@@ -107,6 +108,7 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
         setTask({
           hour: '',
           task: '',
+          comments: '',
           done: false,
         });
       }
