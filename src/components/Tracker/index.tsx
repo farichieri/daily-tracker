@@ -25,10 +25,12 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
 
-  const [tasks, setTasks] = useState<string[]>([]);
-  const [task, setTask] = useState<string>('');
-
-  console.log({ tasks });
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [task, setTask] = useState<any>({
+    hour: '',
+    task: '',
+    done: false,
+  });
 
   useEffect(() => {
     const selectWeek = (date: Date) => {
@@ -78,34 +80,69 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
         setObjetive(e.target.value);
       }
     }
+    if (type === types.tasks) {
+      console.log(e.target);
+      const name = e.target.name;
+      if (tasks.indexOf(tasks[e.target.id]) > -1) {
+        const newTasks = [...tasks];
+        newTasks[e.target.id][name] = e.target.value;
+        setTasks(newTasks);
+      } else {
+        setTask({ ...task, [e.target.name]: e.target.value });
+      }
+    }
   };
 
   const handleAdd = (e: any, type: string) => {
+    e.preventDefault();
     if (type === types.objetives) {
-      e.preventDefault();
       if (objetive) {
         setObjetives([...objetives, objetive]);
         setObjetive('');
       }
     }
+    if (type === types.tasks) {
+      if (task.hour && task.task) {
+        setTasks([...tasks, task]);
+        setTask({
+          hour: '',
+          task: '',
+          done: false,
+        });
+      }
+    }
   };
 
   const handleRemove = (e: any, type: string) => {
+    e.preventDefault();
     if (type === types.objetives) {
-      e.preventDefault();
       const newObjetives = objetives.slice();
       newObjetives.splice(e.target.value, 1);
       setObjetives(newObjetives);
+    }
+    if (type === types.tasks) {
+      const newTasks = tasks.slice();
+      newTasks.splice(e.target.value, 1);
+      setTasks(newTasks);
+    }
+  };
+
+  const handleToggleDone = (e: any, type: string) => {
+    e.preventDefault();
+    if (type === types.tasks) {
+      const newTasks = [...tasks];
+      newTasks[e.target.id].done = !newTasks[e.target.id].done;
+      setTasks(newTasks);
     }
   };
 
   const handleSave = async (e: any) => {
     setIsSaving(true);
     e.preventDefault();
-    const date = new Date().toLocaleDateString().replaceAll('/', '-');
+    const date = daySelected.replaceAll('/', '-');
     await setDoc(doc(db, userID, date), {
       objetives: objetives,
-      tasks: 'see',
+      tasks: tasks,
     });
     setIsSaving(false);
   };
@@ -122,6 +159,7 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
         handleChange={handleChange}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
+        handleToggleDone={handleToggleDone}
         tasks={tasks}
         task={task}
       />

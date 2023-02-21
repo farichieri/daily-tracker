@@ -4,14 +4,16 @@ const Tracker = ({
   handleChange,
   handleAdd,
   handleRemove,
+  handleToggleDone,
   task,
   tasks,
 }: {
   handleChange: any;
   handleAdd: any;
   handleRemove: any;
-  task: string;
-  tasks: string[];
+  handleToggleDone: any;
+  task: object;
+  tasks: object[];
 }) => {
   // {
   //   id: 1,
@@ -37,13 +39,27 @@ const Tracker = ({
             <th>task</th>
             <th>state</th>
             <th>done</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {tasks ? (
             tasks.map((task: any, i: number) => (
               <tr key={i} className='task-container'>
-                <Task value={task} handleChange={handleChange} id={i} />
+                <Task
+                  value={task}
+                  handleChange={(e: string) => handleChange(e, types.tasks)}
+                  handleToggleDone={(e: string) =>
+                    handleToggleDone(e, types.tasks)
+                  }
+                  id={i}
+                  addTask={false}
+                />
+                <td>
+                  <button onClick={(e) => handleRemove(e, types.tasks)}>
+                    x
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
@@ -51,16 +67,20 @@ const Tracker = ({
               <td>Empty</td>
             </tr>
           )}
-          <form onSubmit={(e) => handleAdd(e, types.tasks)}>
-            <tr>
-              <Task
-                handleChange={(e: string) => handleChange(e, types.tasks)}
-                value={task}
-                id={null}
-              />
-            </tr>
-            <button>+</button>
-          </form>
+          {/* <form onSubmit={(e) => handleAdd(e, types.tasks)}> */}
+          <tr>
+            <Task
+              handleChange={(e: string) => handleChange(e, types.tasks)}
+              handleToggleDone={(e: string) => handleToggleDone(e, types.tasks)}
+              value={task}
+              id={null}
+              addTask={true}
+            />
+            <td>
+              <button onClick={(e) => handleAdd(e, types.tasks)}>+</button>
+            </td>
+          </tr>
+          {/* </form> */}
         </tbody>
       </table>
       <style jsx>{`
@@ -94,7 +114,7 @@ const Tracker = ({
         }
         td,
         th {
-          padding: 1rem;
+          padding: 0.5rem 0;
         }
         .task-container:hover {
           background: gray;
@@ -108,12 +128,16 @@ export default Tracker;
 
 const Task = ({
   handleChange,
+  handleToggleDone,
   value,
   id,
+  addTask,
 }: {
   handleChange: any;
+  handleToggleDone: any;
   value: any;
   id: any;
+  addTask: boolean;
 }) => {
   return (
     <>
@@ -136,22 +160,26 @@ const Task = ({
         />
       </td>
       <td>
-        <input
-          placeholder='done'
-          disabled
-          value={value.done ? 'done' : 'incompleted'}
-          name='done'
-          id={id}
-        />
+        {addTask ? (
+          '-'
+        ) : (
+          <input
+            placeholder='done'
+            disabled
+            value={value.done ? 'done' : 'incompleted'}
+            name='done'
+            id={id}
+          />
+        )}
       </td>
       <td>
-        <input
-          placeholder='hour'
-          onChange={handleChange}
-          value={value.done ? ':)' : ':('}
-          name='hour'
-          id={id}
-        />
+        {addTask ? (
+          '-'
+        ) : (
+          <button onClick={handleToggleDone} id={id}>
+            {value.done ? 'Not Done' : 'Done'}
+          </button>
+        )}
       </td>
       <style jsx>{`
         input {
@@ -161,7 +189,7 @@ const Task = ({
           border: none;
           border-bottom: 1px solid var(--box-shadow);
           outline: none;
-          padding: 0.5rem 0.3rem 0.3rem 0.5rem;
+          padding: 0.5rem 0.3rem 0 0.5rem;
           display: flex;
         }
       `}</style>
