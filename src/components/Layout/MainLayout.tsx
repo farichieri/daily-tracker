@@ -22,7 +22,7 @@ export default function MainLayout({
             margin: auto;
             min-height: 100vh;
             padding: ${padding}rem;
-            padding-top: var(--nav-height);
+            padding-top: calc(var(--nav-height));
             width: 100%;
           }
           @media and only screen (max-width: 500px) {

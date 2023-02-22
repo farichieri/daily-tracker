@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-const EmailInput = () => {
+const EmailInput = ({ textButton }: { textButton: string }) => {
   const [email, setEmail] = useState('');
+  const [sending, setSending] = useState(false);
+
   const handleSubmit = (e: any) => {
+    setSending(true);
     e.preventDefault();
-    console.log({ email });
     fetch('/api/mailer', {
       method: 'post',
       body: JSON.stringify({ email }),
@@ -13,8 +15,8 @@ const EmailInput = () => {
       if (response.ok) {
         console.log({ response });
       }
+      setSending(false);
     });
-
     setEmail('');
   };
   return (
@@ -31,7 +33,9 @@ const EmailInput = () => {
         onChange={(e) => setEmail(e.target.value)}
         placeholder='Your email'
       />
-      <button>Try</button>
+      <button>
+        {sending ? <span>{'Sending...'}</span> : <span>{textButton}</span>}
+      </button>
       <style jsx>{`
         form {
           display: flex;
@@ -43,12 +47,14 @@ const EmailInput = () => {
           background: var(--box-shadow-light);
           border-radius: 5px;
           width: 100%;
+          max-width: 600px;
         }
         input,
         button {
           outline: none;
           height: 3rem;
           border-radius: 5px;
+          font-weight: bold;
         }
         input {
           width: 75%;

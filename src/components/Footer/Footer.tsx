@@ -54,10 +54,10 @@ const Footer = () => {
             ))}
           </ul>
         </div>
-        <div className='second'>
+        {/* <div className='second'>
           <p>Tracker</p>
           <p>Demo</p>
-        </div>
+        </div> */}
       </div>
       <style jsx>{`
         footer {
@@ -85,26 +85,19 @@ const Footer = () => {
           display: flex;
           margin: auto;
           gap: 1rem;
-          text-align: left;
         }
         ul {
           display: flex;
           flex-wrap: wrap;
-          text-align: left;
-          max-width: 400px;
           gap: 1rem;
           align-items: center;
+          margin: auto;
         }
         span {
           transition: 0.3s;
         }
         span:hover {
           color: var(--textColor);
-        }
-        .copyright {
-          margin-right: auto;
-          font-size: 80%;
-          padding: 0 1rem;
         }
       `}</style>
     </footer>

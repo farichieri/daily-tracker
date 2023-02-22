@@ -7,7 +7,7 @@ const index = () => {
       <section>
         <div className='newsletter-container'>
           <h1>Receive the best tips to improve your productivity</h1>
-          <EmailInput />
+          <EmailInput textButton={'Try now!'} />
         </div>
       </section>
       <style jsx>{`

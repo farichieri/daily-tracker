@@ -11,12 +11,14 @@ const Nav = ({
   setTheme: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const pages = [
+    { name: 'Tracker', path: '/tracker' },
     { name: 'Newsletter', path: '/newsletter' },
     { name: 'Blog', path: '/blog' },
     { name: 'subscribe', path: '/subscribe' },
   ];
 
   const router = useRouter();
+  console.log({ router });
 
   return (
     <nav>
@@ -24,8 +26,9 @@ const Nav = ({
         <Logo width={100} height={50} name={false} priority={false} />
       </Link>
       <span className='pages'>
-        {router.asPath !== '/checkout' &&
-          router.asPath !== '/subscribe' &&
+        {router.route !== '/checkout' &&
+          router.route !== '/subscribe' &&
+          router.route !== '/checkout/[plan]' &&
           pages.map((page) => (
             <Link key={`nav-${page.name}`} href={page.path}>
               <span className={router.asPath === page.path ? 'selected' : ''}>

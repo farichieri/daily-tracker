@@ -1,3 +1,4 @@
+import EmailInput from '@/components/EmailInput/EmailInput';
 import Button from '@/components/Layout/Button/Button';
 import MainLayout from '@/components/Layout/MainLayout';
 import { useRouter } from 'next/router';
@@ -16,14 +17,9 @@ export default function Home() {
             Increase your productivity tracking your daily and life goals.
           </h1>
           <p>Use our daily tracker and receive the best tips.</p>
-          <Button
-            content='Get Started'
-            loadMessage={''}
-            onClick={handleStart}
-            isLoading={false}
-            isDisabled={false}
-          />
+          <EmailInput textButton={'Join Free'} />
         </div>
+        Home content
       </div>
       <style jsx>
         {`
