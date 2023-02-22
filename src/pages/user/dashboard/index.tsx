@@ -7,13 +7,13 @@ import { auth, db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker';
 import { collection, getDocs } from 'firebase/firestore';
+import PremiumNav from '@/components/Nav/PremiumNav';
 
 const index = () => {
   const [user, setUser] = useState<any | string>('');
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [data, setData] = useState<string[]>([]);
-  console.log({ isLoadingData });
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -29,7 +29,7 @@ const index = () => {
   useEffect(() => {
     const getUserData = async () => {
       let data: any[] = [];
-      const date = new Date().toLocaleDateString().replaceAll('/', '-');
+      // const date = new Date().toLocaleDateString().replaceAll('/', '-');
       const querySnapshot = await getDocs(collection(db, user.uid));
       querySnapshot.forEach((doc) => {
         data.push({ date: doc.id, data: doc.data() });
@@ -49,17 +49,11 @@ const index = () => {
     return <Loader text={'Loading data...'} />;
   } else
     return (
-      <MainLayout withPadding={true}>
+      <MainLayout withPadding={false}>
+        <PremiumNav />
         <div className='dashboard-container'>
           {!user && <Login />}
-          {user && (
-            <>
-              <div className='admin-nav'>
-                <Logout />
-              </div>
-              <Tracker userID={user.uid} userData={data} />
-            </>
-          )}
+          {user && <Tracker userID={user.uid} userData={data} />}
         </div>
         <style jsx>{`
           .dashboard-container {
@@ -67,16 +61,11 @@ const index = () => {
             flex-direction: column;
             justify-content: center;
             width: 100%;
+            padding-top: 4rem;
           }
           .tours-container {
             margin: auto;
             width: 100%;
-          }
-          .admin-nav {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-around;
           }
         `}</style>
       </MainLayout>

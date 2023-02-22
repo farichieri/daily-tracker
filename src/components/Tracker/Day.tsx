@@ -170,7 +170,7 @@ const Task = ({
           '-'
         ) : (
           <button onClick={handleToggleDone} id={id}>
-            {value.done ? 'Not Done' : 'Done'}
+            {value.done ? 'Done' : 'Not Done'}
           </button>
         )}
       </td>

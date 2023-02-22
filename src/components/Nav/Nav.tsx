@@ -11,9 +11,8 @@ const Nav = ({
   setTheme: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const pages = [
-    { name: 'home', path: '/' },
-    { name: 'dashboard', path: '/dashboard' },
-    { name: 'about', path: '/about' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'subscribe', path: '/subscribe' },
   ];
 
   const router = useRouter();
@@ -23,24 +22,38 @@ const Nav = ({
       <Link href={'/'}>
         <Logo width={100} height={50} name={false} priority={false} />
       </Link>
-      {pages.map((page) => (
-        <Link key={`nav-${page.name}`} href={page.path}>
-          <span className={router.asPath === page.path ? 'selected' : ''}>
-            {page.name}
-          </span>
-        </Link>
-      ))}
+      <span className='pages'>
+        {pages.map((page) => (
+          <Link key={`nav-${page.name}`} href={page.path}>
+            <span className={router.asPath === page.path ? 'selected' : ''}>
+              {page.name}
+            </span>
+          </Link>
+        ))}
+      </span>
       <DarkMode theme={theme} setTheme={setTheme} />
+      <Link href={'/user'}>
+        <span className={router.asPath === '/user' ? 'selected' : ''}>
+          Account
+        </span>
+      </Link>
       <style jsx>{`
         nav {
           display: flex;
           width: 100%;
           align-items: center;
-          border-bottom: 1px solid gray;
-          padding: 0 1rem;
+          padding: 0 2rem;
           gap: 1rem;
           text-transform: capitalize;
           height: var(--nav-height);
+          box-shadow: 0 0 10px 1px var(--box-shadow-light);
+          z-index: 999;
+          font-weight: bold;
+          position: fixed;
+          background: var(--bg-color);
+        }
+        .pages {
+          margin: auto;
         }
         span {
           border-radius: 999px;

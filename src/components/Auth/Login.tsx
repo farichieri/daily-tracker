@@ -70,7 +70,6 @@ const Login = () => {
           flex-direction: column;
           max-width: 300px;
           width: 100%;
-          margin: auto;
           position: relative;
         }
         .inputs-container {

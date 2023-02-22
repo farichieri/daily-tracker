@@ -30,7 +30,6 @@ export default function DarkMode({
             display: flex;
             justify-content: center;
             position: relative;
-            margin: 0 0 0 auto;
             cursor: pointer;
             box-shadow: 0 0 3px 1px var(--box-shadow-light);
             transition: 0.3s;
