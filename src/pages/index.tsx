@@ -10,23 +10,30 @@ export default function Home() {
   };
   return (
     <MainLayout withPadding={false}>
-      <div className='header'>
-        <h1>Increase your productivity tracking your daily and life goals.</h1>
-        <p>Use our daily tracker and receive the best tips.</p>
-        <Button
-          content='Get Started'
-          loadMessage={''}
-          onClick={handleStart}
-          isLoading={false}
-          isDisabled={false}
-        />
+      <div className='home'>
+        <div className='header'>
+          <h1>
+            Increase your productivity tracking your daily and life goals.
+          </h1>
+          <p>Use our daily tracker and receive the best tips.</p>
+          <Button
+            content='Get Started'
+            loadMessage={''}
+            onClick={handleStart}
+            isLoading={false}
+            isDisabled={false}
+          />
+        </div>
       </div>
       <style jsx>
         {`
+          .home {
+            width: 100%;
+          }
           .header {
             width: 100%;
             padding: 4rem 0;
-            border-bottom: 1px solid gray;
+            border-bottom: 1px solid var(--box-shadow-light);
             display: flex;
             flex-direction: column;
             gap: 1rem;

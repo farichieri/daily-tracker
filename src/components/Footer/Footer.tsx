@@ -47,6 +47,7 @@ const Footer = () => {
           flex-direction: column;
           gap: 2rem;
           background-color: var(--bg-color-secondary);
+          border-top: 1px solid var(--box-shadow-light);
         }
         div {
           height: 100%;

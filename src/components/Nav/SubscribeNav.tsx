@@ -3,19 +3,13 @@ import { useRouter } from 'next/router';
 import DarkMode from '../DarkMode/DarkMode';
 import Logo from '../Logo/Logo';
 
-const Nav = ({
+const SubscribeNav = ({
   theme,
   setTheme,
 }: {
   theme: string;
   setTheme: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const pages = [
-    { name: 'Newsletter', path: '/newsletter' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'subscribe', path: '/subscribe' },
-  ];
-
   const router = useRouter();
 
   return (
@@ -23,17 +17,6 @@ const Nav = ({
       <Link href={'/'}>
         <Logo width={100} height={50} name={false} priority={false} />
       </Link>
-      <span className='pages'>
-        {router.asPath !== '/checkout' &&
-          router.asPath !== '/subscribe' &&
-          pages.map((page) => (
-            <Link key={`nav-${page.name}`} href={page.path}>
-              <span className={router.asPath === page.path ? 'selected' : ''}>
-                {page.name}
-              </span>
-            </Link>
-          ))}
-      </span>
       <DarkMode theme={theme} setTheme={setTheme} />
       <Link href={'/user'}>
         <span className={router.asPath === '/user' ? 'selected' : ''}>
@@ -73,4 +56,4 @@ const Nav = ({
   );
 };
 
-export default Nav;
+export default SubscribeNav;

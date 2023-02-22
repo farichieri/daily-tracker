@@ -20,8 +20,7 @@ export default function MainLayout({
             flex-direction: column;
             height: 100%;
             margin: auto;
-            max-width: var(--max-width);
-            min-height: calc(100vh - var(--nav-height));
+            min-height: 100vh;
             padding: ${padding}rem;
             padding-top: var(--nav-height);
             width: 100%;

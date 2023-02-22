@@ -31,19 +31,38 @@ const index = () => {
         {user ? (
           <>
             <PremiumNav />
+            <div className='account'>
+              <p>Welcome {user.email}</p>
+            </div>
           </>
         ) : (
           <>
-            <div>
+            <div className='header'>
               <p>Premium Login </p>
               <p>Sign in to your premium account</p>
             </div>
             <Login />
+            <div className='description'>
+              <p>This is only available to premium members</p>
+              <p>
+                If you want to become a member,{' '}
+                <Link href={'/subscribe'}>do it now</Link>
+              </p>
+              <p>
+                If you can not log in, please{' '}
+                <Link href='mailto:frichieri.dev@gmail.com'>
+                  send us an email
+                </Link>
+              </p>
+            </div>
           </>
         )}
         <style jsx>
           {`
-            div {
+            .account {
+              padding-top: 4rem;
+            }
+            .header {
               width: 100%;
               font-size: 3rem;
               line-height: 1.2;
@@ -52,9 +71,15 @@ const index = () => {
               margin-bottom: 2rem;
               border-bottom: 1px solid gray;
             }
-            div p {
+            .header p {
               max-width: 600px;
               margin: auto;
+            }
+            .description {
+              padding: 4rem 0;
+              display: flex;
+              flex-direction: column;
+              gap: 1rem;
             }
           `}
         </style>

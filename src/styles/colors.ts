@@ -4,7 +4,7 @@ const colors = css.global`
   div.dark {
     --text-color: white;
     --bg-color: black;
-    --bg-color-secondary: #252525;
+    --bg-color-secondary: black;
     --box-shadow: #f5f5f552;
     --box-shadow-light: #f5f5f522;
     --nav-bg-color: #00000080;

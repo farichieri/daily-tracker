@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import Logout from '@/components/Auth/Logout';
 import Loader from '@/components/Layout/Loader/Loader';
 import MainLayout from '@/components/Layout/MainLayout';
 import { auth, db } from '@/utils/firebase.config';
@@ -57,6 +56,7 @@ const index = () => {
         </div>
         <style jsx>{`
           .dashboard-container {
+            max-width: var(--max-width);
             display: flex;
             flex-direction: column;
             justify-content: center;
