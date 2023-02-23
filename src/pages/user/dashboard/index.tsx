@@ -9,7 +9,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import PremiumNav from '@/components/Nav/PremiumNav';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 
-const index = () => {
+const Dashboard = () => {
   const [user, setUser] = useState<any | string>('');
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [isLoadingData, setIsLoadingData] = useState(true);
@@ -71,4 +71,4 @@ const index = () => {
     );
 };
 
-export default index;
+export default Dashboard;

@@ -28,7 +28,6 @@ export default function Home() {
           }
           .header {
             width: 100%;
-            padding: 4rem 0;
             border-bottom: 1px solid var(--box-shadow-light);
             display: flex;
             flex-direction: column;

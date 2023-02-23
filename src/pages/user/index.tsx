@@ -10,7 +10,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Link from 'next/link';
 import { useState } from 'react';
 
-const index = () => {
+const User = () => {
   const [user, setUser] = useState<any | string>('');
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
@@ -89,4 +89,4 @@ const index = () => {
   }
 };
 
-export default index;
+export default User;

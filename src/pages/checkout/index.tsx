@@ -6,15 +6,15 @@ import Link from 'next/link';
 const Plans = () => {
   return (
     <div className='plans-container'>
-      {plans.map((plan) => (
-        <Link href={`/checkout/${plan.plan}`}>
+      {plans.map((plan, index) => (
+        <Link key={index} href={`/checkout/${plan.plan}`}>
           <div className='plan'>
             <h1>{plan.name}</h1>
             <p>{plan.description}</p>
             <p>{plan.price}</p>
             <div className='checks'>
               {plan.checks.map((check) => (
-                <div className='check'>
+                <div className='check' key={check}>
                   <Image
                     src={'/icons/check.png'}
                     alt='check'

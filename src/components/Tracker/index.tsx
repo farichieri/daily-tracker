@@ -7,7 +7,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
 
-const index = ({ userID, userData }: { userID: string; userData: any }) => {
+const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
   const today = new Date().toLocaleDateString();
   const [daySelected, setDaySelected] = useState<any>(today);
   const [dailyData, setDailyData] = useState<any>({
@@ -194,4 +194,4 @@ const index = ({ userID, userData }: { userID: string; userData: any }) => {
   );
 };
 
-export default index;
+export default Tracker;

@@ -3,7 +3,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const mailer = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = JSON.parse(req.body);
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -36,3 +36,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   return res.status(200).json({ error: '' });
 };
+
+export default mailer;

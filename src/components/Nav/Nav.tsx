@@ -56,7 +56,7 @@ const Nav = ({
           z-index: 999;
           font-weight: bold;
           position: fixed;
-          background: var(--bg-color);
+          backdrop-filter: blur(10px);
         }
         .pages {
           margin: auto;
