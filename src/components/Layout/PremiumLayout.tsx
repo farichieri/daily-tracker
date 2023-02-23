@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function MainLayout({
+export default function PremiumLayout({
   children,
   withPadding,
 }: {
@@ -22,7 +22,7 @@ export default function MainLayout({
             margin: auto;
             min-height: 100vh;
             padding: ${padding}rem;
-            padding-top: calc(var(--nav-height) + 1rem);
+            padding-top: calc(var(--nav-height));
             width: 100%;
           }
           @media and only screen (max-width: 500px) {

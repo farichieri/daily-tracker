@@ -2,6 +2,7 @@ import Login from '@/components/Auth/Login';
 import Logout from '@/components/Auth/Logout';
 import Loader from '@/components/Layout/Loader/Loader';
 import MainLayout from '@/components/Layout/MainLayout';
+import PremiumLayout from '@/components/Layout/PremiumLayout';
 import Nav from '@/components/Nav/Nav';
 import PremiumNav from '@/components/Nav/PremiumNav';
 import { auth } from '@/utils/firebase.config';
@@ -27,7 +28,7 @@ const index = () => {
     return <Loader text={'Verifying user...'} />;
   } else {
     return (
-      <MainLayout withPadding={false}>
+      <PremiumLayout withPadding={false}>
         {user ? (
           <>
             <PremiumNav />
@@ -83,7 +84,7 @@ const index = () => {
             }
           `}
         </style>
-      </MainLayout>
+      </PremiumLayout>
     );
   }
 };

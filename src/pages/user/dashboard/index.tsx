@@ -7,6 +7,7 @@ import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker';
 import { collection, getDocs } from 'firebase/firestore';
 import PremiumNav from '@/components/Nav/PremiumNav';
+import PremiumLayout from '@/components/Layout/PremiumLayout';
 
 const index = () => {
   const [user, setUser] = useState<any | string>('');
@@ -48,7 +49,7 @@ const index = () => {
     return <Loader text={'Loading data...'} />;
   } else
     return (
-      <MainLayout withPadding={false}>
+      <PremiumLayout withPadding={false}>
         <PremiumNav />
         <div className='dashboard-container'>
           {!user && <Login />}
@@ -62,13 +63,11 @@ const index = () => {
             justify-content: center;
             width: 100%;
             padding-top: 4rem;
-          }
-          .tours-container {
-            margin: auto;
-            width: 100%;
+            align-items: center;
+            min-height: calc(100vh - 4rem);
           }
         `}</style>
-      </MainLayout>
+      </PremiumLayout>
     );
 };
 
