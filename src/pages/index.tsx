@@ -14,9 +14,11 @@ export default function Home() {
       <div className='home'>
         <div className='header'>
           <h1>
-            Increase your productivity tracking your daily and life goals.
+            Increase your productivity with the best achievement tips in the
+            world.
           </h1>
-          <p>Use our daily tracker and receive the best tips.</p>
+          {/* <p>Use our daily tracker and receive the best tips.</p> */}
+          <p>Receive a weekly content of how to maximize your performance.</p>
           <EmailInput textButton={'Join Free'} />
         </div>
         Home content
@@ -33,6 +35,7 @@ export default function Home() {
             flex-direction: column;
             gap: 1rem;
             align-items: center;
+            padding: 2rem 0;
           }
           .header h1 {
             font-size: 2.5rem;

@@ -22,27 +22,29 @@ const Nav = ({
 
   return (
     <nav>
-      <Link href={'/'}>
-        <Logo width={100} height={50} name={false} priority={false} />
-      </Link>
-      <span className='pages'>
-        {router.route !== '/checkout' &&
-          router.route !== '/subscribe' &&
-          router.route !== '/checkout/[plan]' &&
-          pages.map((page) => (
-            <Link key={`nav-${page.name}`} href={page.path}>
-              <span className={router.asPath === page.path ? 'selected' : ''}>
-                {page.name}
-              </span>
-            </Link>
-          ))}
-      </span>
-      <DarkMode theme={theme} setTheme={setTheme} />
-      <Link href={'/user'}>
-        <span className={router.asPath === '/user' ? 'selected' : ''}>
-          Account
+      <div>
+        <Link href={'/'}>
+          <Logo width={100} height={50} name={false} priority={false} />
+        </Link>
+        <span className='pages'>
+          {router.route !== '/checkout' &&
+            router.route !== '/subscribe' &&
+            router.route !== '/checkout/[plan]' &&
+            pages.map((page) => (
+              <Link key={`nav-${page.name}`} href={page.path}>
+                <span className={router.asPath === page.path ? 'selected' : ''}>
+                  {page.name}
+                </span>
+              </Link>
+            ))}
         </span>
-      </Link>
+        <DarkMode theme={theme} setTheme={setTheme} />
+        <Link href={'/user'}>
+          <span className={router.asPath === '/user' ? 'selected' : ''}>
+            Account
+          </span>
+        </Link>
+      </div>
       <style jsx>{`
         nav {
           display: flex;
@@ -57,6 +59,15 @@ const Nav = ({
           font-weight: bold;
           position: fixed;
           backdrop-filter: blur(10px);
+        }
+        div {
+          max-width: var(--max-width);
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+          margin: auto;
+          gap: 1rem;
         }
         .pages {
           margin: auto;

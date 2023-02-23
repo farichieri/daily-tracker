@@ -4,7 +4,7 @@ const general = css.global`
   :root {
     --footerHeight: 250px;
     --nav-height: 70px;
-    --max-width: 900px;
+    --max-width: 1200px;
   }
   h1 {
     font-size: 2rem;
