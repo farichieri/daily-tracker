@@ -1,19 +1,22 @@
 import { nav_pages } from '@/utils/pages';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DarkMode from '../DarkMode/DarkMode';
 import Logo from '../Logo/Logo';
 
 const Nav = ({
   theme,
   setTheme,
+  user,
 }: {
   theme: string;
   setTheme: React.Dispatch<React.SetStateAction<string>>;
+  user: any;
 }) => {
   const router = useRouter();
   const [hamburgerActive, setHamburgerActive] = useState(false);
+  const [userName, setUserName] = useState('Account');
 
   const handleMenu = () => {
     setHamburgerActive(!hamburgerActive);
@@ -23,6 +26,14 @@ const Nav = ({
     router.route !== '/checkout' &&
     router.route !== '/subscribe' &&
     router.route !== '/checkout/[plan]';
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.email.slice(0, user.email.indexOf('@')));
+    } else {
+      setUserName('Account');
+    }
+  }, [user]);
 
   return (
     <nav>
@@ -57,7 +68,7 @@ const Nav = ({
         <div>
           <Link href={'/user'} onClick={handleMenu}>
             <span className={router.asPath === '/user' ? 'selected' : ''}>
-              Account
+              {userName}
             </span>
           </Link>
           <DarkMode theme={theme} setTheme={setTheme} />

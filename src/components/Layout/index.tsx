@@ -7,7 +7,13 @@ import general from '@/styles/general';
 import typography, { fonts } from '@/styles/typography';
 import Footer from '../Footer/Footer';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+  user,
+}: {
+  children: React.ReactNode;
+  user: any;
+}) {
   const [theme, setTheme] = useState<string>('');
 
   useEffect(() => {
@@ -26,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </Head>
       {theme && (
         <div className={`${fonts.raleWay.className} ${theme}`}>
-          <Nav theme={theme} setTheme={setTheme} />
+          <Nav theme={theme} setTheme={setTheme} user={user} />
           <main>{children}</main>
           <Footer />
         </div>
