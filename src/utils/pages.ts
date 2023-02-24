@@ -27,3 +27,10 @@ export const learn_pages = [
   { name: 'Newsletter', path: '/newsletter', target: '_self' },
   { name: 'Blog', path: '/blog', target: '_self' },
 ];
+
+export const nav_pages = [
+  { name: 'Tracker', path: '/tracker' },
+  { name: 'Newsletter', path: '/newsletter' },
+  { name: 'Blog', path: '/blog' },
+  { name: 'subscribe', path: '/subscribe' },
+];

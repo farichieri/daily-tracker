@@ -35,6 +35,7 @@ const Post = ({ postData }: { postData: any }) => {
           text-align: left;
           width: 100%;
           min-height: 100vh;
+          max-width: 900px;
         }
         .post-header {
           margin-bottom: 1rem;

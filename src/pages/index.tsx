@@ -17,8 +17,7 @@ export default function Home() {
             Increase your productivity with the best achievement tips in the
             world.
           </h1>
-          {/* <p>Use our daily tracker and receive the best tips.</p> */}
-          <p>Receive a weekly content of how to maximize your performance.</p>
+          <p>Receive the best information to achieve your goals weekly</p>
           <EmailInput textButton={'Join Free'} />
         </div>
         Home content

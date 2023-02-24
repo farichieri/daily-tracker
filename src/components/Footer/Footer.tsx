@@ -27,7 +27,9 @@ const ExternalLink = ({
 
 const Footer = () => {
   const router = useRouter();
-  console.log(router);
+  const showPages =
+    router.route !== '/checkout' && router.route !== '/checkout/[plan]';
+
   return (
     <footer>
       <div className='container'>
@@ -35,10 +37,12 @@ const Footer = () => {
           <span className='logo'>
             <Link href='/'>DailyTracker</Link>
           </span>
-          <p>
-            Increase your productivity learning from the best and using proven
-            tools
-          </p>
+          {showPages && (
+            <p>
+              Increase your productivity learning from the best and using proven
+              tools
+            </p>
+          )}
           <ul>
             {pages.map((page) => (
               <li key={page.name}>
@@ -55,40 +59,42 @@ const Footer = () => {
             ))}
           </ul>
         </div>
-        <div className='links'>
-          <div className='block'>
-            <ul>
-              <p>Learn</p>
-              {learn_pages.map((page) => (
-                <li key={page.name}>
-                  <Link href={page.path} target={page.target} passHref>
-                    <span
-                      className={router.route === page.path ? 'selected' : ''}
-                    >
-                      {page.name}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+        {showPages && (
+          <div className='links'>
+            <div className='block'>
+              <ul>
+                <p>Learn</p>
+                {learn_pages.map((page) => (
+                  <li key={page.name}>
+                    <Link href={page.path} target={page.target} passHref>
+                      <span
+                        className={router.route === page.path ? 'selected' : ''}
+                      >
+                        {page.name}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className='block'>
+              <ul>
+                <p>More</p>
+                {more_pages.map((page) => (
+                  <li key={page.name}>
+                    <Link href={page.path} target={page.target} passHref>
+                      <span
+                        className={router.route === page.path ? 'selected' : ''}
+                      >
+                        {page.name}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div className='block'>
-            <ul>
-              <p>More</p>
-              {more_pages.map((page) => (
-                <li key={page.name}>
-                  <Link href={page.path} target={page.target} passHref>
-                    <span
-                      className={router.route === page.path ? 'selected' : ''}
-                    >
-                      {page.name}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        )}
       </div>
       <style jsx>{`
         footer {
@@ -110,9 +116,12 @@ const Footer = () => {
           gap: 2rem;
         }
         .first {
-          flex-direction: column;
+          flex-direction: ${showPages ? 'column' : 'row'};
           text-align: left;
-          max-width: 400px;
+          max-width: ${showPages ? '400px' : '100%'};
+          align-items: ${showPages ? 'start' : 'center'};
+          justify-content: space-between;
+          width: 100%;
         }
         .links {
           width: 100%;
