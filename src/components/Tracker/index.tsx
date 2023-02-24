@@ -149,6 +149,12 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
     setIsSaving(false);
   };
 
+  const [showObjetives, setShowObjetives] = useState(false);
+  const handleObjetives = (e: any) => {
+    e.preventDefault();
+    setShowObjetives(!showObjetives);
+  };
+
   return (
     <section>
       <div>{daySelected}</div>
@@ -165,13 +171,24 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
         tasks={tasks}
         task={task}
       />
-      <Objetives
-        handleChange={handleChange}
-        handleAdd={handleAdd}
-        handleRemove={handleRemove}
-        objetives={objetives}
-        objetive={objetive}
-      />
+      <div style={{ margin: '1rem', width: '100%' }}>
+        <Button
+          content={showObjetives ? 'Hide Objetives' : 'Show Objetives'}
+          isLoading={false}
+          isDisabled={false}
+          loadMessage={''}
+          onClick={handleObjetives}
+        />
+      </div>
+      {showObjetives && (
+        <Objetives
+          handleChange={handleChange}
+          handleAdd={handleAdd}
+          handleRemove={handleRemove}
+          objetives={objetives}
+          objetive={objetive}
+        />
+      )}
       <Button
         content='Save'
         isLoading={isSaving}

@@ -29,7 +29,6 @@ const Dashboard = () => {
   useEffect(() => {
     const getUserData = async () => {
       let data: any[] = [];
-      // const date = new Date().toLocaleDateString().replaceAll('/', '-');
       const querySnapshot = await getDocs(collection(db, user.uid));
       querySnapshot.forEach((doc) => {
         data.push({ date: doc.id, data: doc.data() });

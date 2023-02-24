@@ -50,18 +50,20 @@ const EmailInput = ({ textButton }: { textButton: string }) => {
           margin: auto;
           justify-content: center;
           display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
         }
         form {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 1rem;
           gap: 0.5rem;
           padding: 0.5rem;
-          background: var(--box-shadow-light);
           border-radius: 5px;
           width: 100%;
           max-width: 600px;
+          box-shadow: 0 0 10px 1px var(--box-shadow);
         }
         input,
         button {
@@ -75,13 +77,14 @@ const EmailInput = ({ textButton }: { textButton: string }) => {
           width: 75%;
           padding: 0.5rem;
         }
+        input:focus {
+          background: whitesmoke;
+        }
         button {
           cursor: pointer;
           width: 25%;
-          transition: 0.3s;
         }
         button:hover {
-          background: green;
         }
         .added {
           background: #3cda3c;
@@ -89,6 +92,8 @@ const EmailInput = ({ textButton }: { textButton: string }) => {
           margin: 0 1rem;
           padding: 0.5rem;
           border-radius: 5px;
+          border: 2px solid green;
+          font-weight: bold;
         }
       `}</style>
     </div>

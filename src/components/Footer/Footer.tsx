@@ -106,6 +106,7 @@ const Footer = () => {
           padding: 2.5rem 1.5rem;
           justify-content: center;
           font-weight: 500;
+          min-height: var(--footer-height);
         }
         .container {
           max-width: var(--max-width);

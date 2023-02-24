@@ -1,23 +1,25 @@
 import EmailInput from '@/components/EmailInput/EmailInput';
 import MainLayout from '@/components/Layout/MainLayout';
+import Image from 'next/image';
 
 const index = () => {
   return (
     <MainLayout withPadding={false}>
       <section>
         <div className='newsletter-container'>
-          <h1>Receive the best tips to improve your productivity</h1>
-          <p>Join our newsletter for free</p>
+          <h1>Increase your productivity</h1>
+          <p>Receive the best tips to achieve your goals every week</p>
           <EmailInput textButton={'Try now!'} />
         </div>
       </section>
       <style jsx>{`
         section {
-          border-bottom: 1px solid var(--box-shadow-light);
           width: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
+          padding: 2rem 0;
+          margin: auto;
         }
         .newsletter-container {
           padding: 2rem;
@@ -26,14 +28,12 @@ const index = () => {
           align-items: center;
           gap: 1rem;
           width: 100%;
-          max-width: 700px;
+          max-width: 900px;
         }
-        .newsletter h1 {
+        .newsletter-container h1 {
           font-size: 3rem;
-          max-width: 700px;
           line-height: 1.2;
           text-align: left;
-          font-weight: bold;
         }
       `}</style>
     </MainLayout>

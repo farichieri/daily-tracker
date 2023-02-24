@@ -9,14 +9,24 @@ const Blog = ({
 }) => {
   return (
     <MainLayout withPadding={true}>
-      <h1 style={{ width: '100%', textAlign: 'left' }}>Blog</h1>
-      {posts.map((post) => (
-        <div>
-          <Link href={`/blog/${post.id}`}>
-            <h1>{post.title}</h1>
-          </Link>
-        </div>
-      ))}
+      <section>
+        <h1 style={{ width: '100%', textAlign: 'left' }}>Blog</h1>
+        {posts.map((post) => (
+          <div>
+            <Link href={`/blog/${post.id}`}>
+              <h1>{post.title}</h1>
+            </Link>
+          </div>
+        ))}
+      </section>
+      <style jsx>
+        {`
+          section {
+            max-width: var(--max-width);
+            width: 100%;
+          }
+        `}
+      </style>
     </MainLayout>
   );
 };
