@@ -1,11 +1,10 @@
 import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
+import AuthorName from '@/components/Layout/AuthorName/AuthorName';
 import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Date from '../../components/Layout/Date';
 import MainLayout from '../../components/Layout/MainLayout';
-import { getAllPostsIds, getPostData } from '../../utils/posts';
+import { getPostData } from '../../utils/posts';
 
 const Post = ({ postData, user }: { postData: any; user: any }) => {
   const [show, setShow] = useState(false);
@@ -42,13 +41,7 @@ const Post = ({ postData, user }: { postData: any; user: any }) => {
           </div>
           <div className='author'>
             <AuthorLogo author={postData.author} width={30} height={30} />
-            <Link
-              href={`/author/${postData.author
-                .replaceAll(' ', '-')
-                .toLowerCase()}`}
-            >
-              <p>{postData.author}</p>
-            </Link>
+            <AuthorName author={postData.author} style={null} />
           </div>
           <Date dateString={postData.date} />
         </div>
@@ -61,7 +54,7 @@ const Post = ({ postData, user }: { postData: any; user: any }) => {
           text-align: left;
           width: 100%;
           min-height: 100vh;
-          max-width: 900px;
+          max-width: var(--max-width-content);
         }
         .post-header {
           display: flex;

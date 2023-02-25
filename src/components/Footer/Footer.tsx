@@ -98,35 +98,35 @@ const Footer = () => {
       </div>
       <style jsx>{`
         footer {
-          display: flex;
-          width: 100%;
-          margin-top: auto;
           background-color: var(--bg-color-secondary);
           border-top: 1px solid var(--box-shadow-light);
-          padding: 2.5rem 1.5rem;
-          justify-content: center;
+          display: flex;
           font-weight: 500;
+          justify-content: center;
+          align-items: center;
+          margin-top: auto;
           min-height: var(--footer-height);
+          padding: 2.5rem 1.5rem;
+          width: 100%;
         }
         .container {
           max-width: var(--max-width);
           width: 100%;
           display: flex;
           flex-wrap: wrap;
-          justify-content: center;
-          gap: 2rem;
+          justify-content: space-around;
+          align-items: center;
         }
         .first {
           flex-direction: ${showPages ? 'column' : 'row'};
           text-align: left;
-          max-width: ${showPages ? '400px' : '100%'};
+          max-width: ${showPages ? '500px' : '100%'};
           align-items: ${showPages ? 'start' : 'center'};
           justify-content: space-between;
           width: 100%;
         }
         .links {
-          width: 100%;
-          max-width: 400px;
+          width: 500px;
           justify-content: space-between;
         }
         .block {
@@ -137,7 +137,6 @@ const Footer = () => {
         }
         div {
           display: flex;
-          gap: 1rem;
           text-align: left;
         }
         .first ul {

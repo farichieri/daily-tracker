@@ -10,7 +10,7 @@ const AuthorLogo = ({
   height: number;
 }) => {
   return (
-    <span style={{ width: width, height: height }}>
+    <span style={{ minWidth: width, minHeight: height }}>
       <Image
         alt={author}
         src={`/authors/${author.toLowerCase().replaceAll(' ', '-')}.png`}
@@ -22,6 +22,8 @@ const AuthorLogo = ({
           border-radius: 50%;
           overflow: auto;
           display: flex;
+          align-items: center;
+          justify-content: center;
         }
       `}</style>
     </span>

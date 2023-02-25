@@ -10,9 +10,6 @@ const style = css.global`
   *::before,
   *::after {
     box-sizing: border-box;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -38,15 +35,7 @@ const style = css.global`
   h2,
   h3,
   h4,
-  p,
-  ul[class],
-  ol[class],
-  li,
-  figure,
-  figcaption,
-  blockquote,
-  dl,
-  dd {
+  p {
     margin: 0;
   }
 

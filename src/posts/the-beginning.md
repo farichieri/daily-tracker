@@ -1,7 +1,7 @@
 ---
 title: 'The beginning'
 date: '2022-02-24'
-author: 'Fabricio Richieri'
+author: 'fabricio-richieri'
 ---
 
 Next.js has two forms of pre-rendering: **Static Generation** and **Server-side Rendering**. The difference is in **when** it generates the HTML for a page.

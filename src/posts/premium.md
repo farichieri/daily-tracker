@@ -2,7 +2,7 @@
 title: 'Premium'
 date: '2023-02-03'
 premium: true
-author: 'Fabricio Richieri'
+author: 'fabricio-richieri'
 ---
 
 **_This website_** is under construction :D.

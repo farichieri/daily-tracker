@@ -16,7 +16,7 @@ export default function Home({
     router.push('/subscribe');
   };
   return (
-    <MainLayout withPadding={true}>
+    <MainLayout withPadding={false}>
       <div className='home'>
         <div className='header'>
           <h1>
@@ -39,6 +39,7 @@ export default function Home({
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 1rem 0;
           }
           .header {
             width: 100%;

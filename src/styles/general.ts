@@ -5,9 +5,9 @@ const general = css.global`
     --footer-height: 250px;
     --nav-height: 70px;
     --max-width: 1200px;
+    --max-width-content: 900px;
   }
   h1 {
-    font-size: 2rem;
   }
   a[href] {
     text-decoration: none;

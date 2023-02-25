@@ -86,6 +86,7 @@ const Nav = ({
           backdrop-filter: blur(12px);
           padding: 0 2rem;
           font-weight: 600;
+          z-index: 9999;
         }
         div {
           z-index: 999;
