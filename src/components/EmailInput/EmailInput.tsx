@@ -27,7 +27,7 @@ const EmailInput = ({ textButton }: { textButton: string }) => {
       <form onSubmit={handleSubmit}>
         <Image
           alt='envelope-icon'
-          src={'/icons/envelope.png'}
+          src={'/icons/email.png'}
           height={20}
           width={20}
         />

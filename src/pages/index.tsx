@@ -1,5 +1,4 @@
 import EmailInput from '@/components/EmailInput/EmailInput';
-import Button from '@/components/Layout/Button/Button';
 import MainLayout from '@/components/Layout/MainLayout';
 import Posts from '@/components/Posts/Posts';
 import { getSortedPostData } from '@/utils/posts';
@@ -48,7 +47,7 @@ export default function Home({
             flex-direction: column;
             gap: 1rem;
             align-items: center;
-            padding: 1rem 0 2rem 0;
+            padding: 1rem 1rem 2rem 1rem;
           }
           .header h1 {
             font-size: 2.5rem;
@@ -57,7 +56,7 @@ export default function Home({
             max-width: 600px;
           }
           .content {
-            margin: 2rem 0;
+            padding: 2rem 1rem;
             text-align: left;
             max-width: var(--max-width);
             display: flex;

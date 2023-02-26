@@ -13,7 +13,7 @@ const AuthorLogo = ({
     <span style={{ minWidth: width, minHeight: height }}>
       <Image
         alt={author}
-        src={`/authors/${author.toLowerCase().replaceAll(' ', '-')}.png`}
+        src={`/authors/${author}.png`}
         width={width}
         height={height}
       />

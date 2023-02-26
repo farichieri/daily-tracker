@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AuthorLogo from '../Layout/AuthorLogo/AuthorLogo';
 
-const Post = ({ post }: { post: any }) => {
+const Post = ({ post, author }: { post: any; author: any }) => {
   return (
     <Link href={`/blog/${post.id}`}>
       <div className='post'>
@@ -12,8 +12,8 @@ const Post = ({ post }: { post: any }) => {
         <div className='content'>
           <h1 className='title'>{post.title}</h1>
           <div className='author'>
-            <AuthorLogo author={post.author} width={22} height={22} />
-            <p>{post.authorName}</p>
+            <AuthorLogo author={author.slug} width={22} height={22} />
+            <p>{author.name}</p>
           </div>
         </div>
       </div>
@@ -61,11 +61,11 @@ const Post = ({ post }: { post: any }) => {
   );
 };
 
-const Posts = ({ posts }: { posts: any[] }) => {
+const PostsAuthor = ({ posts, author }: { posts: any[]; author: any }) => {
   return (
     <div className='posts-container'>
       {posts.map((post) => (
-        <Post post={post} key={post.id} />
+        <Post post={post} key={post.id} author={author} />
       ))}
       <style jsx>{`
         .posts-container {
@@ -79,4 +79,4 @@ const Posts = ({ posts }: { posts: any[] }) => {
   );
 };
 
-export default Posts;
+export default PostsAuthor;

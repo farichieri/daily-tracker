@@ -41,9 +41,9 @@ const Post = ({ postData, user }: { postData: any; user: any }) => {
           </div>
           <div className='author'>
             <AuthorLogo author={postData.author} width={30} height={30} />
-            <AuthorName author={postData.author} style={null} />
+            <AuthorName author={postData.author} style={null} /> - Published:
+            <Date dateString={postData.date} />
           </div>
-          <Date dateString={postData.date} />
         </div>
         <div
           dangerouslySetInnerHTML={{ __html: getContent(postData.contentHtml) }}
@@ -58,18 +58,18 @@ const Post = ({ postData, user }: { postData: any; user: any }) => {
         }
         .post-header {
           display: flex;
-          gap: 1rem;
           flex-direction: column;
         }
         .title {
           display: flex;
           align-items: center;
-          margin-bottom: 2rem;
+          font-size: 2rem;
         }
         .author {
           display: flex;
           gap: 0.5rem;
           align-items: center;
+          margin: 1rem 0;
         }
         .post-back {
           text-align: left;
