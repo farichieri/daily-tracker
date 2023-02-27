@@ -1,31 +1,55 @@
 import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
 import AuthorName from '@/components/Layout/AuthorName/AuthorName';
+import NewsLetterInvitation from '@/components/NewsLetterInvitation/NewsLetterInvitation';
+import Posts from '@/components/Posts/Posts';
+import SubscribeInvitation from '@/components/SubscribeInvitation/SubscribeInvitation';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import Date from '../../components/Layout/Date';
 import MainLayout from '../../components/Layout/MainLayout';
-import { getPostData } from '../../utils/posts';
+import { getPostData, getSortedPostData } from '../../utils/posts';
 
-const Post = ({ postData, user }: { postData: any; user: any }) => {
-  const [show, setShow] = useState(false);
+const Post = ({
+  postData,
+  user,
+  postsRecommended,
+}: {
+  postData: any;
+  user: any;
+  postsRecommended: any;
+}) => {
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     if (postData.premium) {
       if (user) {
-        setShow(true);
+        setShowContent(true);
       } else {
-        setShow(false);
+        setShowContent(false);
       }
     } else {
-      setShow(true);
+      setShowContent(true);
     }
   }, [postData, user]);
 
   const getContent = (content: any) => {
-    if (show) {
+    if (showContent) {
       return content;
     } else {
-      return content.slice(0, 10);
+      return content.slice(0, 500);
+    }
+  };
+
+  console.log(!user);
+  console.log(!postData.premium);
+
+  const showRecommendedContent = () => {
+    if (postsRecommended.length > 0 && !postData.premium) {
+      return true;
+    } else if (postsRecommended.length > 0 && user) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -49,11 +73,19 @@ const Post = ({ postData, user }: { postData: any; user: any }) => {
           dangerouslySetInnerHTML={{ __html: getContent(postData.contentHtml) }}
         />
       </article>
+      {!user && postData.premium && <SubscribeInvitation />}
+      {!user && !postData.premium && <NewsLetterInvitation />}
+      {showRecommendedContent() && (
+        <div className='similar-content'>
+          <h3>You might also like</h3>
+          <Posts posts={postsRecommended} />
+        </div>
+      )}
       <style jsx>{`
         article {
           text-align: left;
           width: 100%;
-          min-height: 100vh;
+          padding: 1rem 0;
           max-width: var(--max-width-content);
         }
         .post-header {
@@ -63,7 +95,7 @@ const Post = ({ postData, user }: { postData: any; user: any }) => {
         .title {
           display: flex;
           align-items: center;
-          font-size: 2rem;
+          font-size: 3rem;
         }
         .author {
           display: flex;
@@ -74,6 +106,11 @@ const Post = ({ postData, user }: { postData: any; user: any }) => {
         .post-back {
           text-align: left;
           width: 100%;
+        }
+        .similar-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
         }
       `}</style>
     </MainLayout>
@@ -101,9 +138,17 @@ export default Post;
 
 export const getServerSideProps = async ({ params }: { params: any }) => {
   const postData = await getPostData(params.id);
+  const allPostData = getSortedPostData();
+  const sameTopicPosts = allPostData.filter(
+    (post: any) => post.topic === postData.topic && post.id !== postData.id
+  );
+  const postsRecommended = [...sameTopicPosts]
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 2);
   return {
     props: {
       postData,
+      postsRecommended,
     },
   };
 };

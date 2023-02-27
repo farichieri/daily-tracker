@@ -53,6 +53,7 @@ const Author = ({
           align-items: center;
           gap: 2rem;
           flex-direction: column;
+          padding: 1rem 0;
         }
         .header-container {
           width: 100%;

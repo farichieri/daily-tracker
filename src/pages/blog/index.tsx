@@ -1,7 +1,6 @@
 import MainLayout from '@/components/Layout/MainLayout';
 import Posts from '@/components/Posts/Posts';
 import { getSortedPostData } from '@/utils/posts';
-import Link from 'next/link';
 
 const Blog = ({
   posts,
@@ -11,19 +10,31 @@ const Blog = ({
   user: any;
 }) => {
   return (
-    <MainLayout withPadding={true}>
+    <MainLayout withPadding={false}>
       <section>
-        <h1 style={{ width: '100%', textAlign: 'left' }}>Blog</h1>
+        <div className='header'>
+          <h1>All our content</h1>
+        </div>
         <Posts posts={posts} />
       </section>
       <style jsx>
         {`
           section {
-            max-width: var(--max-width);
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 2rem;
+          }
+          .header {
+            background: var(--bg-color-secondary);
+            width: 100%;
+            height: 10rem;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+          }
+          h1 {
+            font-size: 2rem;
           }
         `}
       </style>

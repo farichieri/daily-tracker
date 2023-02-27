@@ -27,6 +27,11 @@ const Post = ({ post, author }: { post: any; author: any }) => {
           flex-direction: column;
           align-items: center;
           overflow: auto;
+          color: var(--text-color);
+          transition: 0.3s;
+        }
+        .post:hover {
+          transform: scale(1.05);
         }
         .content {
           z-index: 2;
@@ -50,7 +55,6 @@ const Post = ({ post, author }: { post: any; author: any }) => {
         .author {
           display: flex;
           gap: 0.5rem;
-          justify-content: center;
           align-items: center;
         }
         h1 {

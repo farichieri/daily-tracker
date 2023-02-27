@@ -1,10 +1,10 @@
 ---
-title: 'The beginning - Premium'
-date: '2022-02-24'
+title: 'This is a free blog to test the performance of the app jeje - !premium'
+date: '2022-02-01'
 author: 'fabricio-richieri'
 authorName: 'Fabricio Richieri'
-topic: 'test'
-premium: true
+topic: 'secondtopic'
+premium: false
 ---
 
 Next.js has two forms of pre-rendering: **Static Generation** and **Server-side Rendering**. The difference is in **when** it generates the HTML for a page.

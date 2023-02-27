@@ -51,10 +51,12 @@ const getPostData = async (id: any) => {
     .use(html)
     .process(matterResult.content);
   const contentHtml = processedContent.toString();
+  const topic = matterResult.data.topic;
 
   return {
     id,
     contentHtml,
+    topic,
     ...matterResult.data,
   };
 };

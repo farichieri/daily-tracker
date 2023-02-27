@@ -27,6 +27,8 @@ const Post = ({ post }: { post: any }) => {
           flex-direction: column;
           align-items: center;
           overflow: auto;
+          color: var(--text-color);
+          transition: 0.3s;
         }
         .content {
           z-index: 2;
@@ -37,6 +39,7 @@ const Post = ({ post }: { post: any }) => {
           height: 70%;
           text-align: left;
           width: 100%;
+          text-decoration: none;
         }
         .image {
           position: relative;
@@ -50,11 +53,13 @@ const Post = ({ post }: { post: any }) => {
         .author {
           display: flex;
           gap: 0.5rem;
-          justify-content: center;
           align-items: center;
         }
         h1 {
           font-size: 1rem;
+        }
+        .post:hover {
+          transform: scale(1.05);
         }
       `}</style>
     </Link>

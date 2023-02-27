@@ -2,8 +2,8 @@ import css from 'styled-jsx/css';
 
 const general = css.global`
   :root {
-    --footer-height: 250px;
-    --nav-height: 70px;
+    --footer-height: 200px;
+    --nav-height: 60px;
     --max-width: 1200px;
     --max-width-content: 900px;
   }
