@@ -23,7 +23,8 @@ const Blog = ({
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            max-width: var(--max-width);
+            padding-bottom: 2rem;
           }
           .header {
             background: var(--bg-color-secondary);

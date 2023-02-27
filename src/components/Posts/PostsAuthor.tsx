@@ -21,7 +21,6 @@ const Post = ({ post, author }: { post: any; author: any }) => {
         .post {
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
           height: 15rem;
-          width: 15rem;
           border-radius: 1rem;
           display: flex;
           flex-direction: column;
@@ -73,10 +72,10 @@ const PostsAuthor = ({ posts, author }: { posts: any[]; author: any }) => {
       ))}
       <style jsx>{`
         .posts-container {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 2rem;
+          display: grid;
+          gap: 1rem;
           justify-content: center;
+          grid-template-columns: repeat(auto-fill, minmax(15rem, 15rem));
         }
       `}</style>
     </div>

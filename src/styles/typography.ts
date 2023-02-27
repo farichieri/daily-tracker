@@ -35,17 +35,17 @@ const style = css.global`
     font-family: 'Inter', sans-serif;
   }
 
-  @media screen and only (max-width: 500px) {
+  @media screen and (max-width: 500px) {
     body {
       font-size: 85%;
     }
   }
-  @media screen and only (max-width: 400px) {
+  @media screen and (max-width: 400px) {
     body {
       font-size: 70%;
     }
   }
-  @media screen and only (max-width: 300px) {
+  @media screen and (max-width: 300px) {
     body {
       font-size: 60%;
     }

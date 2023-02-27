@@ -78,6 +78,7 @@ const Author = ({
           flex-direction: column;
           gap: 1rem;
           text-align: center;
+          width: 100%;
         }
       `}</style>
     </MainLayout>

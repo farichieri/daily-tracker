@@ -1,3 +1,4 @@
+import AD from '@/components/AD/AD';
 import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
 import AuthorName from '@/components/Layout/AuthorName/AuthorName';
 import NewsLetterInvitation from '@/components/NewsLetterInvitation/NewsLetterInvitation';
@@ -40,9 +41,6 @@ const Post = ({
     }
   };
 
-  console.log(!user);
-  console.log(!postData.premium);
-
   const showRecommendedContent = () => {
     if (postsRecommended.length > 0 && !postData.premium) {
       return true;
@@ -58,35 +56,74 @@ const Post = ({
       <Head>
         <title>{postData.title}</title>
       </Head>
-      <article>
-        <div className='post-header'>
-          <div className='title'>
-            <h1>{postData.title}</h1>
-          </div>
-          <div className='author'>
-            <AuthorLogo author={postData.author} width={30} height={30} />
-            <AuthorName author={postData.author} style={null} /> - Published:
-            <Date dateString={postData.date} />
-          </div>
+      <div className='post-container'>
+        <div className='post-main'>
+          <article>
+            <div className='post-header'>
+              <div className='title'>
+                <h1>{postData.title}</h1>
+              </div>
+              <div className='author'>
+                <AuthorLogo author={postData.author} width={30} height={30} />
+                <AuthorName author={postData.author} style={null} /> -
+                Published:
+                <Date dateString={postData.date} />
+              </div>
+            </div>
+            <div className='mobile_ad'>
+              <AD />
+            </div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getContent(postData.contentHtml),
+              }}
+            />
+            <div className='sidebar'>
+              <div className='fixed'>
+                <AD />
+              </div>
+            </div>
+          </article>
+          {!user && postData.premium && <SubscribeInvitation />}
+          {!user && !postData.premium && <NewsLetterInvitation />}
+          {showRecommendedContent() && (
+            <div className='similar-content'>
+              <h3>You might also like</h3>
+              <Posts posts={postsRecommended} />
+            </div>
+          )}
         </div>
-        <div
-          dangerouslySetInnerHTML={{ __html: getContent(postData.contentHtml) }}
-        />
-      </article>
-      {!user && postData.premium && <SubscribeInvitation />}
-      {!user && !postData.premium && <NewsLetterInvitation />}
-      {showRecommendedContent() && (
-        <div className='similar-content'>
-          <h3>You might also like</h3>
-          <Posts posts={postsRecommended} />
-        </div>
-      )}
+      </div>
       <style jsx>{`
+        .post-container {
+          display: flex;
+          position: relative;
+          margin-right: 300px;
+          max-width: 1200px;
+        }
+        .post-main {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .sidebar {
+          position: absolute;
+          right: 0;
+          top: 0;
+          padding: 1rem 0;
+        }
+        .fixed {
+          padding: 0 1rem;
+          position: fixed;
+          max-width: 300px;
+          height: 100%;
+        }
         article {
           text-align: left;
           width: 100%;
           padding: 1rem 0;
           max-width: var(--max-width-content);
+          position: relative;
         }
         .post-header {
           display: flex;
@@ -95,7 +132,8 @@ const Post = ({
         .title {
           display: flex;
           align-items: center;
-          font-size: 3rem;
+          font-size: 2rem;
+          line-height: 1.2;
         }
         .author {
           display: flex;
@@ -111,6 +149,20 @@ const Post = ({
           display: flex;
           flex-direction: column;
           gap: 1rem;
+        }
+        .mobile_ad {
+          display: none;
+        }
+        @media screen and (max-width: 1000px) {
+          .sidebar {
+            display: none;
+          }
+          .post-container {
+            margin-right: 0;
+          }
+          .mobile_ad {
+            display: flex;
+          }
         }
       `}</style>
     </MainLayout>
@@ -144,7 +196,7 @@ export const getServerSideProps = async ({ params }: { params: any }) => {
   );
   const postsRecommended = [...sameTopicPosts]
     .sort(() => 0.5 - Math.random())
-    .slice(0, 2);
+    .slice(0, 3);
   return {
     props: {
       postData,

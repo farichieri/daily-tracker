@@ -62,6 +62,7 @@ export default function Home({
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            width: 100%;
           }
         `}
       </style>

@@ -6,6 +6,7 @@ const general = css.global`
     --nav-height: 60px;
     --max-width: 1200px;
     --max-width-content: 900px;
+    --break-point: 900px;
   }
   h1 {
   }

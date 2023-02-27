@@ -34,8 +34,7 @@ const style = css.global`
   h1,
   h2,
   h3,
-  h4,
-  p {
+  h4 {
     margin: 0;
   }
 
