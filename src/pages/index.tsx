@@ -34,7 +34,6 @@ export default function Home({
           <EmailInput textButton={'Join Free'} />
         </div>
         <div className='content'>
-          <h1>Featured posts</h1>
           <Posts posts={currentPaginationData} />
           <Pagination
             currentPage={currentPage}

@@ -30,7 +30,7 @@ const Post = ({ post, author }: { post: any; author: any }) => {
           transition: 0.3s;
         }
         .post:hover {
-          transform: scale(1.05);
+          transform: scale(1.01);
         }
         .content {
           z-index: 2;

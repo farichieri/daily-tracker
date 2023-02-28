@@ -3,7 +3,7 @@ title: 'Two Forms of Pre-rendering - !premium'
 date: '2022-02-01'
 author: 'fabricio-richieri'
 authorName: 'Fabricio Richieri'
-topic: 'test'
+topic: 'testtopic'
 premium: false
 ---
 

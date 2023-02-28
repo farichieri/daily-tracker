@@ -3,7 +3,7 @@ title: 'Two Forms of Pre-rendering = Premium'
 date: '2022-02-01'
 author: 'ricardo-fort'
 authorName: 'Ricardo Fort'
-topic: 'test'
+topic: 'testtopic'
 premium: true
 ---
 

@@ -93,6 +93,8 @@ const Pagination = ({
         }
         .paginationItem {
           display: flex;
+          font-size: 16px;
+          line-height: 0;
         }
 
         button {
@@ -100,7 +102,7 @@ const Pagination = ({
           background: transparent;
           height: 34px;
           width: 34px;
-          border-radius: 50%;
+          border-radius: 5px;
           overflow: hidden;
           color: var(--textColor);
         }
@@ -118,7 +120,6 @@ const Pagination = ({
         [aria-current='page'] button {
           background-color: rgba(159, 159, 159, 0.295);
           font-weight: 700;
-          text-decoration: underline;
         }
 
         .arrowButton {

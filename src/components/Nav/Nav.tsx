@@ -38,7 +38,7 @@ const Nav = ({
   return (
     <nav>
       <div className='nav-content'>
-        <div>
+        <div style={{ gap: '.5rem' }}>
           {showPages && (
             <div
               onClick={handleMenu}
@@ -135,7 +135,6 @@ const Nav = ({
 
         .hamburger {
           height: 60px;
-          width: 60px;
           display: inline-block;
           border-radius: 50%;
           position: relative;

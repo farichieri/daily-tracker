@@ -20,7 +20,7 @@ export default function PremiumLayout({
             flex-direction: column;
             height: 100%;
             margin: auto;
-            min-height: 100vh;
+            min-height: calc(100vh - var(--footer-height));
             padding: ${padding}rem;
             padding-top: calc(var(--nav-height));
             width: 100%;

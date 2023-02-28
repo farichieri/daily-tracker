@@ -3,7 +3,7 @@ title: 'The beginning - Premium'
 date: '2022-02-24'
 author: 'fabricio-richieri'
 authorName: 'Fabricio Richieri'
-topic: 'test'
+topic: 'testtopic'
 premium: true
 ---
 

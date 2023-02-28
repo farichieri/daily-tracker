@@ -31,10 +31,6 @@ const style = css.global`
   * {
     font-family: 'Inter', sans-serif;
   }
-  a {
-    font-family: 'Inter', sans-serif;
-  }
-
   p,
   li {
     line-height: 1.6;
@@ -45,6 +41,16 @@ const style = css.global`
     font-size: 1.5rem;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
+  }
+
+  a[href] {
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    color: var(--link-color);
+    transition: 0.3s;
+  }
+  a[href]:hover {
+    color: var(--text-color);
   }
 
   @media screen and (max-width: 500px) {

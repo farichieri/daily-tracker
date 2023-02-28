@@ -57,8 +57,12 @@ const Post = ({ post }: { post: any }) => {
         h1 {
           font-size: 1rem;
         }
+        p {
+          font-size: 14px;
+          margin: 0;
+        }
         .post:hover {
-          transform: scale(1.05);
+          transform: scale(1.01);
         }
       `}</style>
     </Link>

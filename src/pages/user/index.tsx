@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const User = ({ user }: { user: any }) => {
   return (
-    <PremiumLayout withPadding={false}>
+    <PremiumLayout withPadding={true}>
       {user ? (
         <>
           <PremiumNav />
@@ -16,8 +16,8 @@ const User = ({ user }: { user: any }) => {
       ) : (
         <>
           <div className='header'>
-            <p>Premium Login </p>
-            <p>Sign in to your premium account</p>
+            <h1>Premium Login </h1>
+            <h1>Sign in to your premium account</h1>
           </div>
           <Login />
           <div className='description'>
@@ -42,11 +42,11 @@ const User = ({ user }: { user: any }) => {
           }
           .header {
             width: 100%;
-            font-size: 3rem;
+            font-size: 2rem;
             line-height: 1.2;
             font-weight: bold;
             padding: 4rem 0 4rem 0;
-            margin-bottom: 2rem;
+            max-width: 600px;
           }
           .header p {
             max-width: 600px;

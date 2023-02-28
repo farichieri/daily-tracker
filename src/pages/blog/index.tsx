@@ -1,3 +1,4 @@
+import Filter from '@/components/Filter/Filter';
 import MainLayout from '@/components/Layout/MainLayout';
 import Pagination from '@/components/Pagination/Pagination';
 import Posts from '@/components/Posts/Posts';
@@ -8,7 +9,7 @@ const Blog = ({
   posts,
   user,
 }: {
-  posts: { title: string; id: string; date: string }[];
+  posts: { title: string; id: string; date: string; topic: string }[];
   user: any;
 }) => {
   const [postsState, setPostsState] = useState(posts);
@@ -22,7 +23,21 @@ const Blog = ({
   const updatePage = (event: number) => {
     setCurrentPage(Number(event));
   };
-
+  const [optionSelected, setOptionSelected] = useState('All');
+  const handleFilter = (event: Event) => {
+    event.preventDefault();
+    const topic = (event.target as HTMLButtonElement).value;
+    const filterPosts = (topic: string) => {
+      if (topic !== 'All') {
+        return posts.filter((post) => post.topic === topic);
+      } else {
+        return posts;
+      }
+    };
+    setOptionSelected(topic);
+    setPostsState(filterPosts(topic));
+    setCurrentPage(1);
+  };
   return (
     <MainLayout withPadding={false}>
       <section>
@@ -30,6 +45,7 @@ const Blog = ({
           <h1>All our content</h1>
         </div>
         <div className='content'>
+          <Filter handleFilter={handleFilter} optionSelected={optionSelected} />
           <Posts posts={currentPaginationData} />
           <Pagination
             currentPage={currentPage}
