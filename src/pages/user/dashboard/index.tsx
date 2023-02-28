@@ -63,7 +63,6 @@ const Dashboard = () => {
             width: 100%;
             padding-top: 4rem;
             align-items: center;
-            min-height: calc(100vh - 4rem);
           }
         `}</style>
       </PremiumLayout>

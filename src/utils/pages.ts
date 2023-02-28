@@ -17,8 +17,6 @@ export const pages = [
 ];
 
 export const more_pages = [
-  { name: 'Contribute', path: '/contribute', target: '_self' },
-  { name: 'Sponsor us', path: '/sponsors', target: '_self' },
   { name: 'Advertisement', path: '/advertisement', target: '_self' },
 ];
 

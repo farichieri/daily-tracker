@@ -79,7 +79,8 @@ const Tracker = ({
           overflow: auto;
         }
         p {
-          padding: 0.5rem;
+          margin: 0
+          padding: .5rem;
         }
         table {
           gap: 0.5rem;
@@ -111,6 +112,10 @@ const Tracker = ({
         }
         .task-container:hover {
           background: gray;
+        }
+        tr th {
+          width: 25%;
+
         }
       `}</style>
     </section>
@@ -186,6 +191,8 @@ const Task = ({
         }
         input.done {
           background: green;
+        }
+        td {
         }
       `}</style>
     </>

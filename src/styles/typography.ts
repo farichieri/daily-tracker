@@ -42,6 +42,11 @@ const style = css.global`
     margin-top: 2.5rem;
     margin-bottom: 1rem;
   }
+  h3 {
+    font-size: 1.3rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
 
   a[href] {
     font-family: 'Inter', sans-serif;

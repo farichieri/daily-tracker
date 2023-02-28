@@ -53,7 +53,10 @@ const Author = ({
             </div>
           </div>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: author.about }} />
+        <div
+          className='content'
+          dangerouslySetInnerHTML={{ __html: author.about }}
+        />
         <div className='content-more'>
           <h4>More from {author.name.slice(0, author.name.indexOf(' '))}</h4>
           <PostsAuthor posts={currentPaginationData} author={author} />
@@ -75,6 +78,7 @@ const Author = ({
           gap: 2rem;
           flex-direction: column;
           padding: 1rem 0;
+          width: 100%;
         }
         .header-container {
           width: 100%;
@@ -85,13 +89,21 @@ const Author = ({
         .header-container-text {
           display: flex;
           flex-direction: column;
+          gap: 0.25rem;
         }
         .header-container-text h1 {
           font-size: 1.5rem;
         }
+        .header-container-text p {
+          margin: 0;
+        }
         .header-container-social {
           display: flex;
           gap: 0.25rem;
+        }
+        .content {
+          text-align: left;
+          width: 100%;
         }
         .content-more {
           display: flex;

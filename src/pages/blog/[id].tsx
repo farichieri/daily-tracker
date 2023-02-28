@@ -37,7 +37,7 @@ const Post = ({
     if (showContent) {
       return content;
     } else {
-      return content.slice(0, 500);
+      return content.slice(0, 500).concat('<span>...</span>');
     }
   };
 
@@ -81,9 +81,9 @@ const Post = ({
                 __html: getContent(postData.contentHtml),
               }}
             />
-            <div className='sidebar'>
+            {/* <div className='sidebar'>
               <div className='fixed'>{!user && <AD />}</div>
-            </div>
+            </div> */}
           </article>
           {!user && postData.premium && <SubscribeInvitation />}
           {!user && !postData.premium && <NewsLetterInvitation />}
@@ -99,8 +99,10 @@ const Post = ({
         .post-container {
           display: flex;
           position: relative;
-          margin-right: ${!user && '300px'};
           max-width: 1200px;
+        }
+         {
+          /* margin-right: ${!user && '300px'}; */
         }
         .post-main {
           display: flex;
@@ -155,6 +157,10 @@ const Post = ({
         }
         .mobile_ad {
           display: none;
+        }
+        .post-content {
+          border-bottom: 1px solid var(--box-shadow-light);
+          border-top: 1px solid var(--box-shadow-light);
         }
         @media screen and (max-width: 1000px) {
           .sidebar {

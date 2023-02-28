@@ -100,8 +100,8 @@ const Pagination = ({
         button {
           border: 1px solid var(--box-shadow-light);
           background: transparent;
-          height: 34px;
-          width: 34px;
+          height: 28px;
+          width: 28px;
           border-radius: 5px;
           overflow: hidden;
           color: var(--textColor);

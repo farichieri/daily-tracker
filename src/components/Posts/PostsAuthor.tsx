@@ -56,6 +56,10 @@ const Post = ({ post, author }: { post: any; author: any }) => {
           gap: 0.5rem;
           align-items: center;
         }
+        p {
+          font-size: 14px;
+          margin: 0;
+        }
         h1 {
           font-size: 1rem;
         }

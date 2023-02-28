@@ -26,6 +26,7 @@ const Tracker = ({
           flex-wrap: wrap;
           gap: 0.5rem;
           margin: auto;
+          justify-content: center;
         }
         button {
           border: 1px solid gray;

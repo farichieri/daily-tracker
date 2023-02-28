@@ -5,6 +5,7 @@ const colors = css.global`
     --text-color: white;
     --bg-color: #131313;
     --bg-color-secondary: #131313;
+    --bg-color-tertiary: #576375;
     --box-shadow: #f5f5f552;
     --box-shadow-light: #f5f5f522;
     --nav-bg-color: #00000080;
@@ -13,8 +14,9 @@ const colors = css.global`
   }
   div.light {
     --text-color: black;
-    --bg-color: #ffffff;
-    --bg-color-secondary: #fafafa;
+    --bg-color: white;
+    --bg-color-secondary: white;
+    --bg-color-tertiary: #e7f1ff;
     --box-shadow: #00000080;
     --box-shadow-light: #00000030;
     --nav-bg-color: transparent;

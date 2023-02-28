@@ -7,7 +7,7 @@ type Props = {};
 const SubscribeInvitation = (props: Props) => {
   return (
     <div className='subscribe-invitation'>
-      <h4>You have reached your limit of free tips</h4>
+      <h3 className='title'>You have reached your limit of free tips</h3>
       <p>
         Want unlimited access? Join us today and see the best tips in the world
         to maximize your productivity and achieve your goals
@@ -18,15 +18,14 @@ const SubscribeInvitation = (props: Props) => {
       </p>
       <style jsx>{`
         .subscribe-invitation {
-          background: var(--box-shadow-light);
+          background-color: var(--bg-color-tertiary);
           display: flex;
           flex-direction: column;
-          gap: 1rem;
-          padding: 2rem;
-          border-radius: 0.5rem;
+          padding: 0 2rem;
+          border-radius: 0.25rem;
           width: 100%;
-          margin: 2rem;
-          max-width: 600px;
+          text-align: left;
+          max-width: var(--max-width-content);
         }
       `}</style>
     </div>

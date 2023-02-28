@@ -18,7 +18,8 @@ const index = () => {
         </p>
         <p>
           Every day, you&lsquo;ll find new, interesting tips on how to achieve
-          your goals.
+          your goals in different topics: health, work, business, studies and
+          more.
         </p>
         <p>Get Started</p>
         <Link href={'/checkout'}>

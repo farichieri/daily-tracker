@@ -157,7 +157,6 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
 
   return (
     <section>
-      <div>{daySelected}</div>
       <Selector
         week={thisWeek}
         handleSelectDay={handleSelectDay}
@@ -198,10 +197,11 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
       />
       <style jsx>{`
         section {
-          margin: 1rem 0;
+          padding: 1rem;
           display: flex;
           flex-direction: column;
           align-items: center;
+          width: 100%;
         }
         div {
           height: 2rem;
