@@ -47,7 +47,6 @@ const User = ({ user }: { user: any }) => {
             font-weight: bold;
             padding: 4rem 0 4rem 0;
             margin-bottom: 2rem;
-            border-bottom: 1px solid gray;
           }
           .header p {
             max-width: 600px;
@@ -58,6 +57,9 @@ const User = ({ user }: { user: any }) => {
             display: flex;
             flex-direction: column;
             gap: 1rem;
+          }
+          .description p {
+            margin: 0;
           }
         `}
       </style>

@@ -63,7 +63,7 @@ const Footer = () => {
           <div className='links'>
             <div className='block'>
               <ul>
-                <p>Learn</p>
+                <h3>Learn</h3>
                 {learn_pages.map((page) => (
                   <li key={page.name}>
                     <Link href={page.path} target={page.target} passHref>
@@ -79,7 +79,7 @@ const Footer = () => {
             </div>
             <div className='block'>
               <ul>
-                <p>More</p>
+                <h3>More</h3>
                 {more_pages.map((page) => (
                   <li key={page.name}>
                     <Link href={page.path} target={page.target} passHref>
@@ -99,15 +99,15 @@ const Footer = () => {
       <style jsx>{`
         footer {
           background-color: var(--bg-color-secondary);
-          border-top: 1px solid var(--box-shadow-light);
           display: flex;
           font-weight: 500;
           justify-content: center;
           align-items: center;
           margin-top: auto;
           min-height: var(--footer-height);
-          padding: 2.5rem 1.5rem;
+          padding: 1rem 1.5rem;
           width: 100%;
+          font-size: 90%;
         }
         .container {
           max-width: var(--max-width);
@@ -120,13 +120,13 @@ const Footer = () => {
         .first {
           flex-direction: ${showPages ? 'column' : 'row'};
           text-align: left;
-          max-width: ${showPages ? '500px' : '100%'};
+          max-width: ${showPages ? '400px' : '100%'};
           align-items: ${showPages ? 'start' : 'center'};
           justify-content: space-between;
           width: 100%;
         }
         .links {
-          width: 500px;
+          width: 400px;
           justify-content: space-between;
         }
         .block {
@@ -142,15 +142,23 @@ const Footer = () => {
         .first ul {
           display: flex;
           gap: 1rem;
-          font-size: 0.9rem;
+          font-size: 80%;
+          margin: 0.25rem 0;
         }
         span {
           transition: 0.3s;
+          font-size: 12px;
+        }
+        li {
+          line-height: 1;
         }
         .block ul {
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
+        }
+        p {
+          margin: 0.2rem 0;
+          font-size: 90%;
         }
         .logo {
           font-size: 1.2em;
@@ -158,6 +166,10 @@ const Footer = () => {
         }
         span.selected {
           color: var(--text-color);
+        }
+        ul,
+        ol {
+          list-style: none;
         }
       `}</style>
     </footer>

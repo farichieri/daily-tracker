@@ -35,6 +35,18 @@ const style = css.global`
     font-family: 'Inter', sans-serif;
   }
 
+  p,
+  li {
+    line-height: 1.6;
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
   @media screen and (max-width: 500px) {
     body {
       font-size: 85%;

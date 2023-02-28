@@ -27,6 +27,7 @@ const Logo = (props: Props) => {
           height: ${props.height}px;
           align-items: center;
           justify-content: center;
+          margin-left: 0.5rem;
         }
       `}</style>
     </span>

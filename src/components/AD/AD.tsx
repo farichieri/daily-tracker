@@ -9,18 +9,21 @@ const AD = () => {
         <p>AD</p>
       </div>
       <p>
-        Don't be the average security professional that spends 4,300 hours
+        Don&apos;t be the average security professional that spends 4,300 hours
         annually to maintain compliance. Simplify your audits and reduce your
-        workload with G2's 5-star rated compliance automation platform.
+        workload with G2&apos;s 5-star rated compliance automation platform.
       </p>
-      <Link href={'link'}>Request a Demo</Link>
+      <Link href={'https://www.google.com'} target='_blank'>
+        Request a Demo
+      </Link>
       <style jsx>
         {`
           .ad {
             padding: 1rem;
+            border-left: 1px solid gray;
             border: 1px solid gray;
+            border-radius: 5px;
             width: 100%;
-            border-radius: 1rem;
             margin: 1rem;
             text-align: left;
             display: flex;
@@ -28,7 +31,9 @@ const AD = () => {
             height: fit-content;
             margin: 0 auto 1rem auto;
           }
-
+          p {
+            font-size: 90%;
+          }
           .header {
             display: flex;
             justify-content: space-between;

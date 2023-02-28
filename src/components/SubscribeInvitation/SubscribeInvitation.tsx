@@ -22,9 +22,11 @@ const SubscribeInvitation = (props: Props) => {
           display: flex;
           flex-direction: column;
           gap: 1rem;
-          max-width: 600px;
           padding: 2rem;
-          border-radius: 1rem;
+          border-radius: 0.5rem;
+          width: 100%;
+          margin: 2rem;
+          max-width: 600px;
         }
       `}</style>
     </div>

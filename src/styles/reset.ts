@@ -34,8 +34,11 @@ const style = css.global`
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     margin: 0;
+    font-weight: 500;
   }
 
   /* Set core body defaults */
@@ -49,12 +52,6 @@ const style = css.global`
 
   html {
     background: black;
-  }
-
-  /* Remove list styles on ul, ol elements */
-  ul,
-  ol {
-    list-style: none;
   }
 
   /* A elements that don't have a class get default styles */

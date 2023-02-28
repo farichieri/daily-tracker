@@ -1,19 +1,27 @@
 import EmailInput from '@/components/EmailInput/EmailInput';
 import MainLayout from '@/components/Layout/MainLayout';
+import Pagination from '@/components/Pagination/Pagination';
 import Posts from '@/components/Posts/Posts';
 import { getSortedPostData } from '@/utils/posts';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export default function Home({
   posts,
 }: {
   posts: { title: string; id: string; date: string }[];
 }) {
-  const router = useRouter();
-  const handleStart = (e: any) => {
-    e.preventDefault();
-    router.push('/subscribe');
+  const [postsState, setPostsState] = useState(posts);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalCount = postsState.length;
+  const blogsFrom = (currentPage - 1) * rowsPerPage;
+  const blogsTo = currentPage * rowsPerPage;
+  const currentPaginationData = postsState.slice(blogsFrom, blogsTo);
+  const totalPages = Math.ceil(totalCount / rowsPerPage);
+  const updatePage = (event: number) => {
+    setCurrentPage(Number(event));
   };
+
   return (
     <MainLayout withPadding={false}>
       <div className='home'>
@@ -27,7 +35,14 @@ export default function Home({
         </div>
         <div className='content'>
           <h1>Featured posts</h1>
-          <Posts posts={posts} />
+          <Posts posts={currentPaginationData} />
+          <Pagination
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={rowsPerPage}
+            onPageChange={updatePage}
+            totalPages={totalPages}
+          />
         </div>
       </div>
       <style jsx>
@@ -42,7 +57,6 @@ export default function Home({
           }
           .header {
             width: 100%;
-            border-bottom: 1px solid var(--box-shadow-light);
             display: flex;
             flex-direction: column;
             gap: 1rem;

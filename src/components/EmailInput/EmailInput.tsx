@@ -60,10 +60,10 @@ const EmailInput = ({ textButton }: { textButton: string }) => {
           justify-content: center;
           gap: 0.5rem;
           padding: 0.5rem;
-          border-radius: 5px;
+          border-radius: ;
           width: 100%;
           max-width: 600px;
-          box-shadow: 0 0 10px 1px var(--box-shadow);
+          border-radius: 5px;
         }
         input,
         button {

@@ -70,18 +70,19 @@ const Post = ({
                 <Date dateString={postData.date} />
               </div>
             </div>
-            <div className='mobile_ad'>
-              <AD />
-            </div>
+            {!user && (
+              <div className='mobile_ad'>
+                <AD />
+              </div>
+            )}
             <div
+              className='post-content'
               dangerouslySetInnerHTML={{
                 __html: getContent(postData.contentHtml),
               }}
             />
             <div className='sidebar'>
-              <div className='fixed'>
-                <AD />
-              </div>
+              <div className='fixed'>{!user && <AD />}</div>
             </div>
           </article>
           {!user && postData.premium && <SubscribeInvitation />}
@@ -98,7 +99,7 @@ const Post = ({
         .post-container {
           display: flex;
           position: relative;
-          margin-right: 300px;
+          margin-right: ${!user && '300px'};
           max-width: 1200px;
         }
         .post-main {
@@ -132,8 +133,9 @@ const Post = ({
         .title {
           display: flex;
           align-items: center;
-          font-size: 2rem;
           line-height: 1.2;
+          font-size: 3.5rem;
+          font-weight: 800;
         }
         .author {
           display: flex;
@@ -149,6 +151,7 @@ const Post = ({
           display: flex;
           flex-direction: column;
           gap: 1rem;
+          width: 100%;
         }
         .mobile_ad {
           display: none;

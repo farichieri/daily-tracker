@@ -74,9 +74,14 @@ const Posts = ({ posts }: { posts: any[] }) => {
       <style jsx>{`
         .posts-container {
           display: grid;
-          gap: 1rem;
+          gap: 1.5rem;
           justify-content: center;
           grid-template-columns: repeat(auto-fill, minmax(15rem, 15rem));
+        }
+        @media screen and (max-width: 540px) {
+          .posts-container {
+            grid-template-columns: repeat(auto-fill, minmax(15rem, 90%));
+          }
         }
       `}</style>
     </div>

@@ -1,9 +1,11 @@
 import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
+import Pagination from '@/components/Pagination/Pagination';
 import PostsAuthor from '@/components/Posts/PostsAuthor';
 import { authors } from '@/utils/authors';
 import { getSortedPostData } from '@/utils/posts';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import MainLayout from '../../components/Layout/MainLayout';
 
 const Author = ({
@@ -14,6 +16,18 @@ const Author = ({
   posts: { title: string; id: string; date: string; author: string }[];
 }) => {
   const socialMedia = ['twitter', 'email', 'linkedin'];
+  const [postsState, setPostsState] = useState(posts);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalCount = postsState.length;
+  const blogsFrom = (currentPage - 1) * rowsPerPage;
+  const blogsTo = currentPage * rowsPerPage;
+  const currentPaginationData = postsState.slice(blogsFrom, blogsTo);
+  const totalPages = Math.ceil(totalCount / rowsPerPage);
+  const updatePage = (event: number) => {
+    setCurrentPage(Number(event));
+  };
+
   return (
     <MainLayout withPadding={true}>
       <section className='author'>
@@ -42,7 +56,14 @@ const Author = ({
         <div dangerouslySetInnerHTML={{ __html: author.about }} />
         <div className='content-more'>
           <h4>More from {author.name.slice(0, author.name.indexOf(' '))}</h4>
-          <PostsAuthor posts={posts} author={author} />
+          <PostsAuthor posts={currentPaginationData} author={author} />
+          <Pagination
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={rowsPerPage}
+            onPageChange={updatePage}
+            totalPages={totalPages}
+          />
         </div>
       </section>
       <style jsx>{`
@@ -64,7 +85,6 @@ const Author = ({
         .header-container-text {
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
         }
         .header-container-text h1 {
           font-size: 1.5rem;

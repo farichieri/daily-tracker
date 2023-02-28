@@ -29,6 +29,7 @@ export const learn_pages = [
 ];
 
 export const nav_pages = [
+  { name: 'Home', path: '/' },
   { name: 'Tracker', path: '/tracker' },
   { name: 'Newsletter', path: '/newsletter' },
   { name: 'Blog', path: '/blog' },

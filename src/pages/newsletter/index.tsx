@@ -7,8 +7,8 @@ const index = () => {
     <MainLayout withPadding={false}>
       <section>
         <div className='newsletter-container'>
-          <h1>Increase your productivity</h1>
-          <p>Receive the best tips to achieve your goals every week</p>
+          <h1>Increase your productivity now!</h1>
+          <p>Join us and get the best tips every week to achieve your goals</p>
           <EmailInput textButton={'Try now!'} />
         </div>
       </section>

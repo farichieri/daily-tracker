@@ -6,7 +6,15 @@ export const authors = [
     email: 'mailto:frichieri.dev@gmail.com',
     linkedin: 'https://www.linkedin.com/in/farichieri/',
     description: 'Founder',
-    about:
-      'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis </br></br> praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique </br></br>  sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.',
+    about: `I am Fabricio Richieri, the founder of this website. I love everything related to productivity, self-improvement and achieving goals. I spend time every day learning how to get better, and I wanted to share what I learn with the world in a way that is understandable and straight to the point.`,
+  },
+  {
+    slug: 'ricardo-fort',
+    name: 'Ricardo Fort',
+    twitter: 'https://twitter.com/farichieri',
+    email: 'mailto:frichieri.dev@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/farichieri/',
+    description: 'CO Founder',
+    about: `I'm Ricardo Fort and I recommend you to go to MIAMI`,
   },
 ];

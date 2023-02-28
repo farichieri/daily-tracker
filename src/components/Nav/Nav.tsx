@@ -42,12 +42,12 @@ const Nav = ({
           {showPages && (
             <div
               onClick={handleMenu}
-              className={`hamburger ${hamburgerActive && 'active'}`}
+              className={`hamburger ${hamburgerActive ? 'active' : ''}`}
             >
               <div className='bar'></div>
             </div>
           )}
-          <Link href={'/'} onClick={handleMenu}>
+          <Link href={'/'}>
             <Logo width={100} height={50} name={false} priority={false} />
           </Link>
         </div>
@@ -59,7 +59,11 @@ const Nav = ({
                 href={page.path}
                 onClick={handleMenu}
               >
-                <span className={router.asPath === page.path ? 'selected' : ''}>
+                <span
+                  className={`${page.name} ${
+                    router.asPath === page.path ? 'selected' : ''
+                  }`}
+                >
                   {page.name}
                 </span>
               </Link>
@@ -82,9 +86,7 @@ const Nav = ({
           height: var(--nav-height);
           justify-content: space-between;
           width: 100%;
-          box-shadow: 0 0 6px 1px var(--box-shadow-light);
           backdrop-filter: blur(12px);
-          padding: 0 2rem;
           font-weight: 600;
           z-index: 9999;
         }
@@ -92,7 +94,6 @@ const Nav = ({
           z-index: 999;
           display: flex;
           align-items: center;
-          gap: 1rem;
         }
         .nav-content {
           width: 100%;
@@ -101,6 +102,7 @@ const Nav = ({
           justify-content: space-between;
           max-width: var(--max-width);
           margin: auto;
+          padding: 0 1rem;
         }
 
         .logo,
@@ -197,13 +199,18 @@ const Nav = ({
           min-width: fit-content;
           font-weight: 400;
         }
+
+        .Home {
+          display: none;
+        }
         @media only screen and (max-width: 768px) {
+          .Home {
+            display: flex;
+          }
           .hamburger {
             display: flex;
           }
-          nav {
-            padding: 0 1rem;
-          }
+
           h1 {
             font-size: 2vh;
           }
