@@ -60,8 +60,8 @@ const index = () => {
               <Image
                 alt={social.name}
                 src={`/icons/${social.name}.png`}
-                width={20}
-                height={20}
+                width={22}
+                height={22}
               />
               <Link href={social.url}>{social.name}</Link>
             </li>
@@ -87,6 +87,7 @@ const index = () => {
           gap: 0.25rem;
           display: flex;
           text-transform: capitalize;
+          align-items: center;
         }
       `}</style>
     </MainLayout>

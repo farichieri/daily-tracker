@@ -2,16 +2,20 @@ const Tracker = ({
   week,
   handleSelectDay,
   daySelected,
+  today,
 }: {
   week: any;
   handleSelectDay: any;
   daySelected: any;
+  today: string;
 }) => {
   return (
     <div>
       {week.map((day: any) => (
         <button
-          className={day.date === daySelected ? 'selected' : ''}
+          className={`${day.date === daySelected ? 'selected' : ''} ${
+            day.date === today ? 'today' : ''
+          }`}
           key={day.date}
           onClick={handleSelectDay}
           id={day.date}
@@ -51,6 +55,9 @@ const Tracker = ({
         }
         button:hover {
           background: gray;
+        }
+        .today {
+          box-shadow: 0 0 10px 1px var(--box-shadow);
         }
       `}</style>
     </div>

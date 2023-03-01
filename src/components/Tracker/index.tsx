@@ -7,7 +7,15 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
 
-const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
+const Tracker = ({
+  userID,
+  userData,
+  getUserData,
+}: {
+  userID: string;
+  userData: any;
+  getUserData: Function;
+}) => {
   const today = new Date().toLocaleDateString();
   const [daySelected, setDaySelected] = useState<any>(today);
   const [dailyData, setDailyData] = useState<any>({
@@ -19,12 +27,9 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isEditing, setIsEditing] = useState();
   const [thisWeek, setThisWeek] = useState<object[]>([]);
-
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
-
   const [tasks, setTasks] = useState<any[]>([]);
   const [task, setTask] = useState<any>({
     hour: '',
@@ -67,9 +72,13 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
     const id = (event.target as HTMLButtonElement).id;
     setDaySelected(id);
     setDailyData(dailyData);
+    getUserData();
   };
 
-  // Objetives
+  useEffect(() => {
+    handleSave();
+  }, [objetives, tasks]);
+
   const handleChange = (e: any, type: string) => {
     e.preventDefault();
     if (type === types.objetives) {
@@ -82,7 +91,6 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
       }
     }
     if (type === types.tasks) {
-      console.log(e.target);
       const name = e.target.name;
       if (tasks.indexOf(tasks[e.target.id]) > -1) {
         const newTasks = [...tasks];
@@ -94,7 +102,7 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
     }
   };
 
-  const handleAdd = (e: any, type: string) => {
+  const handleAdd = async (e: any, type: string) => {
     e.preventDefault();
     if (type === types.objetives) {
       if (objetive) {
@@ -138,10 +146,10 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
     }
   };
 
-  const handleSave = async (e: any) => {
+  const handleSave = async () => {
     setIsSaving(true);
-    e.preventDefault();
     const date = daySelected.replaceAll('/', '-');
+    console.log('saving');
     await setDoc(doc(db, userID, date), {
       objetives: objetives,
       tasks: tasks,
@@ -161,6 +169,7 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
         week={thisWeek}
         handleSelectDay={handleSelectDay}
         daySelected={daySelected}
+        today={today}
       />
       <Day
         handleChange={handleChange}
@@ -188,13 +197,13 @@ const Tracker = ({ userID, userData }: { userID: string; userData: any }) => {
           objetive={objetive}
         />
       )}
-      <Button
+      {/* <Button
         content='Save'
         isLoading={isSaving}
         isDisabled={isDisabled}
         loadMessage={'Saving...'}
         onClick={handleSave}
-      />
+      /> */}
       <style jsx>{`
         section {
           padding: 1rem;

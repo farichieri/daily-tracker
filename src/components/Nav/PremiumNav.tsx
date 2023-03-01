@@ -26,12 +26,12 @@ const PremiumNav = () => {
         nav {
           display: flex;
           gap: 1rem;
-          padding: 0.25rem 2rem;
+          padding: 0 2rem;
           align-items: center;
           justify-content: center;
           width: 100%;
-          background: #252525;
-          position: fixed;
+          background: var(--bg-color-tertiary);
+          position: fixed;c
         }
         .pages {
           margin: auto;

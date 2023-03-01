@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import Loader from '@/components/Layout/Loader/Loader';
-import MainLayout from '@/components/Layout/MainLayout';
 import { auth, db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker';

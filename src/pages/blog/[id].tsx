@@ -60,9 +60,7 @@ const Post = ({
         <div className='post-main'>
           <article>
             <div className='post-header'>
-              <div className='title'>
-                <h1>{postData.title}</h1>
-              </div>
+              <h1 className='title'>{postData.title}</h1>
               <div className='author'>
                 <AuthorLogo author={postData.author} width={30} height={30} />
                 <AuthorName author={postData.author} style={null} /> -
@@ -89,7 +87,7 @@ const Post = ({
           {!user && !postData.premium && <NewsLetterInvitation />}
           {showRecommendedContent() && (
             <div className='similar-content'>
-              <h3>You might also like</h3>
+              <h3>Related content</h3>
               <Posts posts={postsRecommended} />
             </div>
           )}
@@ -133,8 +131,6 @@ const Post = ({
           flex-direction: column;
         }
         .title {
-          display: flex;
-          align-items: center;
           line-height: 1.2;
           font-size: 3.5rem;
           font-weight: 800;

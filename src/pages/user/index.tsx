@@ -1,4 +1,5 @@
 import Login from '@/components/Auth/Login';
+import Logout from '@/components/Auth/Logout';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import PremiumNav from '@/components/Nav/PremiumNav';
 import Link from 'next/link';
@@ -8,9 +9,9 @@ const User = ({ user }: { user: any }) => {
     <PremiumLayout withPadding={true}>
       {user ? (
         <>
-          <PremiumNav />
           <div className='account'>
-            <p>Welcome {user.email}</p>
+            <p>You are logged in with the user {user.email}</p>
+            <Logout />
           </div>
         </>
       ) : (
@@ -39,6 +40,9 @@ const User = ({ user }: { user: any }) => {
         {`
           .account {
             padding-top: 4rem;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
           }
           .header {
             width: 100%;

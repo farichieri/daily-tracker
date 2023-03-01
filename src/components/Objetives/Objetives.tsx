@@ -1,4 +1,5 @@
 import { types } from '@/utils/types';
+import IconButton from '../Layout/Icon/IconButton';
 
 const Objetives = ({
   handleChange,
@@ -24,9 +25,14 @@ const Objetives = ({
               handleChange={(e: string) => handleChange(e, types.objetives)}
               id={i}
             />
-            <button onClick={(e) => handleRemove(e, types.objetives)} value={i}>
-              x
-            </button>
+            <IconButton
+              onClick={(e) => handleRemove(e, types.objetives)}
+              props={{ value: i }}
+              src={'/icons/delete.png'}
+              alt='Delete-Icon'
+              width={24}
+              height={24}
+            />
           </div>
         ))}
         <form onSubmit={(e) => handleAdd(e, types.objetives)}>
@@ -35,19 +41,27 @@ const Objetives = ({
             value={objetive}
             id={null}
           />
-          <button>+</button>
+          <IconButton
+            props={null}
+            onClick={(e) => handleAdd(e, types.objetives)}
+            src={'/icons/add.png'}
+            alt='Add-Icon'
+            width={24}
+            height={24}
+          />
         </form>
       </div>
       <style jsx>{`
         section {
-          border-radius: 20px 20px 0 0;
+          border-radius: 10px;
           margin-bottom: 1rem;
           width: 100%;
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
           overflow: auto;
         }
         p {
-          padding: 0.5rem;
+          margin: 0;
+          padding: 1rem;
         }
         .objetives-container {
           border-top: 1px solid gray;
@@ -60,13 +74,19 @@ const Objetives = ({
           display: flex;
           width: 100%;
           justify-content: space-between;
+          border-bottom: 1px solid var(--box-shadow-light);
+          padding-right: 0.5rem;
         }
+        .objetive-container:hover {
+          box-shadow: inset 1px 0 0 rgb(255 255 255 / 20%),
+            inset -1px 0 0 rgb(255 255 255 / 20%),
+            0 0 4px 0 rgb(95 99 104 / 60%), 0 0 6px 2px rgb(95 99 104 / 60%);
+        }
+
         form {
           display: flex;
           width: 100%;
-        }
-        button {
-          width: 35px;
+          padding-right: 0.5rem;
         }
       `}</style>
     </section>
@@ -92,6 +112,7 @@ const Objetive = ({
         value={value}
         name='objetive'
         id={id}
+        spellCheck='false'
       />
       <style jsx>{`
         input {
@@ -99,7 +120,6 @@ const Objetive = ({
           background: none;
           color: var(--text-color);
           border: none;
-          border-bottom: 1px solid var(--box-shadow);
           outline: none;
           padding: 0.5rem 0.3rem 0.3rem 0.5rem;
           display: flex;

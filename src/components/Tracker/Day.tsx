@@ -1,4 +1,5 @@
 import { types } from '@/utils/types';
+import IconButton from '../Layout/Icon/IconButton';
 
 const Tracker = ({
   handleChange,
@@ -24,7 +25,7 @@ const Tracker = ({
             <th>hour</th>
             <th>task</th>
             <th>comments</th>
-            <th>done</th>
+            <th>Status</th>
             <th></th>
           </tr>
         </thead>
@@ -44,10 +45,15 @@ const Tracker = ({
                   id={i}
                   addTask={false}
                 />
-                <td>
-                  <button onClick={(e) => handleRemove(e, types.tasks)}>
-                    x
-                  </button>
+                <td style={{ paddingRight: '.5rem' }}>
+                  <IconButton
+                    props={{ value: i }}
+                    onClick={(e) => handleRemove(e, types.tasks)}
+                    src={'/icons/delete.png'}
+                    alt='Delete-Icon'
+                    width={24}
+                    height={24}
+                  />
                 </td>
               </tr>
             ))
@@ -64,23 +70,31 @@ const Tracker = ({
               id={null}
               addTask={true}
             />
-            <td>
-              <button onClick={(e) => handleAdd(e, types.tasks)}>+</button>
+            <td style={{ paddingRight: '.5rem' }}>
+              <IconButton
+                props={null}
+                onClick={(e) => handleAdd(e, types.tasks)}
+                src={'/icons/add.png'}
+                alt='Add-Icon'
+                width={24}
+                height={24}
+              />
             </td>
           </tr>
         </tbody>
       </table>
       <style jsx>{`
         section {
-          border-radius: 20px;
+          border-radius: 10px;
           margin: 1rem 0;
           width: 100%;
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
           overflow: auto;
+          spell-check: false;
         }
         p {
-          margin: 0
-          padding: .5rem;
+          margin: 0;
+          padding: 1rem;
         }
         table {
           gap: 0.5rem;
@@ -91,31 +105,26 @@ const Tracker = ({
           overflow: hidden;
           border-collapse: collapse;
         }
-        table tr:last-child td:first-child {
-          border-bottom-left-radius: 20px;
-        }
-        table tr:last-child td:last-child {
-          border-bottom-right-radius: 20px;
-        }
         thead {
-          background: #363636;
+          background: var(--bg-color-tertiary);
         }
         td,
         th {
           padding: 0.5rem 0;
         }
         .task-container {
-          border-bottom: 1px solid var(--box-shadow);
+          border-bottom: 1px solid var(--box-shadow-light);
         }
         .task-container.done {
-          background: green;
+          background: #02c3026b;
         }
         .task-container:hover {
-          background: gray;
+          box-shadow: inset 1px 0 0 rgb(255 255 255 / 20%),
+            inset -1px 0 0 rgb(255 255 255 / 20%),
+            0 0 4px 0 rgb(95 99 104 / 60%), 0 0 6px 2px rgb(95 99 104 / 60%);
         }
         tr th {
           width: 25%;
-
         }
       `}</style>
     </section>
@@ -146,6 +155,7 @@ const Task = ({
           value={value.hour}
           name='hour'
           id={id}
+          spellCheck='false'
         />
       </td>
       <td>
@@ -155,6 +165,7 @@ const Task = ({
           value={value.task}
           name='task'
           id={id}
+          spellCheck='false'
         />
       </td>
       <td>
@@ -167,6 +178,7 @@ const Task = ({
             value={value.comments}
             name='comments'
             id={id}
+            spellCheck='false'
           />
         )}
       </td>
@@ -174,9 +186,16 @@ const Task = ({
         {addTask ? (
           '-'
         ) : (
-          <button onClick={handleToggleDone} id={id}>
-            {value.done ? 'Done' : 'Not Done'}
-          </button>
+          <IconButton
+            onClick={handleToggleDone}
+            props={{ id: id }}
+            src={
+              value.done ? '/icons/checkbox-done.png' : '/icons/checkbox.png'
+            }
+            alt={value.done ? 'Done-Icon' : 'Checkbox-Icon'}
+            width={24}
+            height={24}
+          />
         )}
       </td>
       <style jsx>{`
