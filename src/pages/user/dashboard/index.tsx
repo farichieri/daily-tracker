@@ -25,16 +25,17 @@ const Dashboard = () => {
     }
   });
 
+  const getUserData = async () => {
+    let data: any[] = [];
+    const querySnapshot = await getDocs(collection(db, user.uid));
+    querySnapshot.forEach((doc) => {
+      data.push({ date: doc.id, data: doc.data() });
+    });
+    setData(data);
+    setIsLoadingData(false);
+  };
+
   useEffect(() => {
-    const getUserData = async () => {
-      let data: any[] = [];
-      const querySnapshot = await getDocs(collection(db, user.uid));
-      querySnapshot.forEach((doc) => {
-        data.push({ date: doc.id, data: doc.data() });
-      });
-      setData(data);
-      setIsLoadingData(false);
-    };
     if (user) {
       setIsLoadingData(true);
       getUserData();
@@ -51,7 +52,13 @@ const Dashboard = () => {
         <PremiumNav />
         <div className='dashboard-container'>
           {!user && <Login />}
-          {user && <Tracker userID={user.uid} userData={data} />}
+          {user && (
+            <Tracker
+              userID={user.uid}
+              userData={data}
+              getUserData={getUserData}
+            />
+          )}
         </div>
         <style jsx>{`
           .dashboard-container {
