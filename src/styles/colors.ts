@@ -16,7 +16,7 @@ const colors = css.global`
     --text-color: black;
     --bg-color: white;
     --bg-color-secondary: white;
-    --bg-color-tertiary: #e7f1ff;
+    --bg-color-tertiary: #b4cdf0;
     --box-shadow: #00000080;
     --box-shadow-light: #00000030;
     --nav-bg-color: transparent;

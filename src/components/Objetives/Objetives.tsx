@@ -113,6 +113,7 @@ const Objetive = ({
         name='objetive'
         id={id}
         spellCheck='false'
+        autoComplete='off'
       />
       <style jsx>{`
         input {

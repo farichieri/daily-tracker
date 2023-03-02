@@ -3,11 +3,11 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Loader from '@/components/Layout/Loader/Loader';
 import { auth, db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
-import Tracker from '@/components/Tracker';
+import Tracker from '@/components/Tracker/Tracker';
 import { collection, getDocs } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 
-const index = () => {
+const TrackerPage = () => {
   const [user, setUser] = useState<any | string>('');
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [isLoadingData, setIsLoadingData] = useState(true);
@@ -83,4 +83,4 @@ const index = () => {
     );
 };
 
-export default index;
+export default TrackerPage;

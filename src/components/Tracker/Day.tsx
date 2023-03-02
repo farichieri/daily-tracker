@@ -86,7 +86,6 @@ const Tracker = ({
       <style jsx>{`
         section {
           border-radius: 10px;
-          margin: 1rem 0;
           width: 100%;
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
           overflow: auto;
@@ -156,6 +155,7 @@ const Task = ({
           name='hour'
           id={id}
           spellCheck='false'
+          autoComplete='off'
         />
       </td>
       <td>
@@ -166,6 +166,7 @@ const Task = ({
           name='task'
           id={id}
           spellCheck='false'
+          autoComplete='off'
         />
       </td>
       <td>
@@ -179,6 +180,7 @@ const Task = ({
             name='comments'
             id={id}
             spellCheck='false'
+            autoComplete='off'
           />
         )}
       </td>

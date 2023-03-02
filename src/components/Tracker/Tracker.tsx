@@ -6,6 +6,8 @@ import Button from '../Layout/Button/Button';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
+import { dbFormatDate } from '@/utils/formatDate';
+import Clock from '../Clock/Clock';
 
 const Tracker = ({
   userID,
@@ -16,18 +18,11 @@ const Tracker = ({
   userData: any;
   getUserData: Function;
 }) => {
-  const today = new Date().toLocaleDateString();
+  const today = dbFormatDate(new Date().toLocaleDateString());
   const [daySelected, setDaySelected] = useState<any>(today);
-  const [dailyData, setDailyData] = useState<any>({
-    weekday: '',
-    number: '',
-    data: [],
-    done: false,
-    user: '',
-  });
   const [isSaving, setIsSaving] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [thisWeek, setThisWeek] = useState<object[]>([]);
+  const [weekSelected, setWeekSelected] = useState<any[]>([]);
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
   const [tasks, setTasks] = useState<any[]>([]);
@@ -37,47 +32,66 @@ const Tracker = ({
     comments: '',
     done: false,
   });
+  const [showObjetives, setShowObjetives] = useState(false);
+  const [isSaveable, setIsSaveable] = useState(false);
 
   useEffect(() => {
-    const selectWeek = (date: Date) => {
-      return Array(7)
-        .fill(new Date(date))
-        .map((el, idx) => {
-          const day = new Date(el.setDate(el.getDate() - el.getDay() + idx));
-          return {
-            date: day.toLocaleDateString(),
-            weekDay: day.toLocaleDateString('en-US', { weekday: 'long' }),
-          };
-        });
-    };
     const date = new Date();
-    setThisWeek(selectWeek(date));
-  }, [userData]);
+    setWeekSelected(selectWeek(date));
+  }, []);
 
   useEffect(() => {
-    const setUserDataByDate = () => {
+    const setData = () => {
       const userDataByDate = userData.find(
-        (data: any) => data.date === daySelected.replaceAll('/', '-')
+        (data: any) => data.date === dbFormatDate(daySelected)
       );
       const objetives = userDataByDate?.data.objetives || [];
       const tasks = userDataByDate?.data.tasks || [];
       setTasks(tasks);
       setObjetives(objetives);
     };
-    setUserDataByDate();
+    setData();
   }, [userData, daySelected]);
+
+  const selectWeek = (date: Date) => {
+    return Array(7)
+      .fill(new Date(date))
+      .map((el, idx) => {
+        const day = new Date(el.setDate(el.getDate() - el.getDay() + idx));
+        return {
+          date: dbFormatDate(day.toLocaleDateString()),
+          weekDay: day.toLocaleDateString('en-US', { weekday: 'long' }),
+        };
+      });
+  };
 
   const handleSelectDay = (event: Event) => {
     event.preventDefault();
-    const id = (event.target as HTMLButtonElement).id;
-    setDaySelected(id);
-    setDailyData(dailyData);
+    const date = (event.target as HTMLButtonElement).id;
+    setDaySelected(date);
     getUserData();
   };
 
-  useEffect(() => {
-    handleSave();
-  }, [objetives, tasks]);
+  const handleDatesSelected = (e: Event) => {
+    e.preventDefault();
+    const action = (e.target as HTMLButtonElement).id;
+    const modifyDateDays = (date: Date, action: string, days: number) => {
+      if (action === 'prev') {
+        date.setDate(date.getDate() - days);
+      } else if (action === 'next') {
+        date.setDate(date.getDate() + days);
+      }
+      return date;
+    };
+    const date = new Date(weekSelected[0].date);
+    const newDate = modifyDateDays(date, action, 7);
+    const newWeek = selectWeek(newDate);
+    setWeekSelected(newWeek);
+    const newSelectedDay = dbFormatDate(
+      modifyDateDays(new Date(daySelected), action, 7).toLocaleDateString()
+    );
+    setDaySelected(newSelectedDay);
+  };
 
   const handleChange = (e: any, type: string) => {
     e.preventDefault();
@@ -100,6 +114,7 @@ const Tracker = ({
         setTask({ ...task, [e.target.name]: e.target.value });
       }
     }
+    setIsSaveable(true);
   };
 
   const handleAdd = async (e: any, type: string) => {
@@ -121,6 +136,7 @@ const Tracker = ({
         });
       }
     }
+    setIsSaveable(true);
   };
 
   const handleRemove = (e: any, type: string) => {
@@ -135,6 +151,7 @@ const Tracker = ({
       newTasks.splice(e.target.value, 1);
       setTasks(newTasks);
     }
+    setIsSaveable(true);
   };
 
   const handleToggleDone = (e: any, type: string) => {
@@ -144,20 +161,21 @@ const Tracker = ({
       newTasks[e.target.id].done = !newTasks[e.target.id].done;
       setTasks(newTasks);
     }
+    setIsSaveable(true);
   };
 
   const handleSave = async () => {
     setIsSaving(true);
-    const date = daySelected.replaceAll('/', '-');
+    const date = dbFormatDate(daySelected);
     console.log('saving');
     await setDoc(doc(db, userID, date), {
       objetives: objetives,
       tasks: tasks,
     });
     setIsSaving(false);
+    setIsSaveable(!isSaveable);
   };
 
-  const [showObjetives, setShowObjetives] = useState(false);
   const handleObjetives = (e: any) => {
     e.preventDefault();
     setShowObjetives(!showObjetives);
@@ -165,11 +183,13 @@ const Tracker = ({
 
   return (
     <section>
+      <Clock />
       <Selector
-        week={thisWeek}
+        week={weekSelected}
         handleSelectDay={handleSelectDay}
         daySelected={daySelected}
         today={today}
+        handleDatesSelected={handleDatesSelected}
       />
       <Day
         handleChange={handleChange}
@@ -197,13 +217,15 @@ const Tracker = ({
           objetive={objetive}
         />
       )}
-      {/* <Button
-        content='Save'
-        isLoading={isSaving}
-        isDisabled={isDisabled}
-        loadMessage={'Saving...'}
-        onClick={handleSave}
-      /> */}
+      {isSaveable && (
+        <Button
+          content='Save'
+          isLoading={isSaving}
+          isDisabled={isDisabled}
+          loadMessage={'Saving...'}
+          onClick={handleSave}
+        />
+      )}
       <style jsx>{`
         section {
           padding: 1rem;
@@ -211,6 +233,7 @@ const Tracker = ({
           flex-direction: column;
           align-items: center;
           width: 100%;
+          gap: 1rem;
         }
         div {
           height: 2rem;

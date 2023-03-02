@@ -35,6 +35,10 @@ const Nav = ({
     }
   }, [user]);
 
+  const pages = user
+    ? nav_pages.filter((page) => page.name !== 'subscribe')
+    : nav_pages;
+
   return (
     <nav>
       <div className='nav-content'>
@@ -53,7 +57,7 @@ const Nav = ({
         </div>
         <div className={`pages ${hamburgerActive ? 'active' : ''}`}>
           {showPages &&
-            nav_pages.map((page) => (
+            pages.map((page) => (
               <Link
                 key={`nav-${page.name}`}
                 href={page.path}

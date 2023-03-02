@@ -63,7 +63,6 @@ const EmailInput = ({ textButton }: { textButton: string }) => {
           border-radius: ;
           width: 100%;
           max-width: 600px;
-          border-radius: 5px;
         }
         input,
         button {

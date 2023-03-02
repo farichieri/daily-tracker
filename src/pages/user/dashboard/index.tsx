@@ -3,7 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Loader from '@/components/Layout/Loader/Loader';
 import { auth, db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
-import Tracker from '@/components/Tracker';
+import Tracker from '@/components/Tracker/Tracker';
 import { collection, getDocs } from 'firebase/firestore';
 import PremiumNav from '@/components/Nav/PremiumNav';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
