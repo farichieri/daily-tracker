@@ -8,6 +8,7 @@ const Tracker = ({
   handleDatesSelected,
   options,
   handleSelectFilterOption,
+  optionSelected,
 }: {
   week: any;
   handleSelectDay: any;
@@ -16,12 +17,14 @@ const Tracker = ({
   handleDatesSelected: any;
   options: any;
   handleSelectFilterOption: Function;
+  optionSelected: string;
 }) => {
   return (
     <div className='selector-container'>
       <FilterSelect
         options={options}
         handleSelectFilterOption={handleSelectFilterOption}
+        optionSelected={optionSelected}
       />
       <div className='dates-and-changes'>
         <button
@@ -55,20 +58,23 @@ const Tracker = ({
           display: flex;
           gap: 1rem;
           flex-direction: column;
+          width: 100%;
         }
         .dates-and-changes {
           display: flex;
+          gap: 1rem;
+          width: 100%;
         }
         .dates-container {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-          margin: auto;
-          justify-content: center;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+          grid-gap: 10px;
+          width: 100%;
+          grid-column-gap: 1rem;
         }
         .date-button {
           border: 1px solid gray;
-          border-radius: 1rem;
+          border-radius: 9999px;
           padding: 0.1rem 1rem;
           cursor: pointer;
           background: transparent;
@@ -80,6 +86,7 @@ const Tracker = ({
           justify-content: center;
           width: 7rem;
           line-height: 1.3;
+          margin: auto;
         }
         .weekday {
           font-size: 1rem;
@@ -97,7 +104,7 @@ const Tracker = ({
           background: var(--bg-color-tertiary);
         }
         .today {
-          box-shadow: 0 0 10px 1px var(--bg-color-tertiary);
+          box-shadow: 0 0 10px 5px var(--bg-color-tertiary);
         }
         .change {
           border-radius: 50%;
@@ -112,6 +119,11 @@ const Tracker = ({
           align-items: center;
           justify-content: center;
           cursor: pointer;
+        }
+        @media screen and (min-width: 1000px) {
+          .dates-container {
+            grid-template-columns: repeat(7, 1fr);
+          }
         }
       `}</style>
     </div>

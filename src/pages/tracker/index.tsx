@@ -26,6 +26,7 @@ const TrackerPage = () => {
   });
 
   const getUserData = async (date: string) => {
+    console.log('getDoc');
     const querySnapshot = await getDoc(doc(db, user.uid, date));
     let data: any = querySnapshot.data();
     setData(data);

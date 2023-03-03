@@ -8,6 +8,11 @@ import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
 import { dbFormatDate } from '@/utils/formatDate';
 import Clock from '../Clock/Clock';
+import {
+  getArrayOfDates,
+  getDaysInAMonth,
+  getDaysInAWeek,
+} from '@/hooks/dates';
 
 const Tracker = ({
   userID,
@@ -33,10 +38,13 @@ const Tracker = ({
   });
   const [showObjetives, setShowObjetives] = useState(false);
   const [isSaveable, setIsSaveable] = useState(false);
+  const [filterSelectOptionsSelected, setFilterSelectOptionsSelected] =
+    useState('week');
+  const filterSelectOptions = ['week', 'month', 'reset'];
 
   useEffect(() => {
     const date = new Date();
-    setDatesSelected(selectSelectorDates(date, 7));
+    setDatesSelected(getDaysInAWeek(date));
   }, []);
 
   useEffect(() => {
@@ -49,48 +57,9 @@ const Tracker = ({
     setData();
   }, [userData, daySelected]);
 
-  const selectSelectorDates = (date: Date, daysAmount: number) => {
-    return Array(daysAmount)
-      .fill(new Date(date))
-      .map((el, idx) => {
-        const day: Date = new Date(
-          el.setDate(el.getDate() - el.getDay() + idx)
-        );
-        return {
-          date: dbFormatDate(day.toLocaleDateString()),
-          weekDay: day.toLocaleDateString('en-US', { weekday: 'long' }),
-        };
-      });
-  };
-
-  const handleSelectDay = (event: Event) => {
-    event.preventDefault();
-    const date = (event.target as HTMLButtonElement).id;
-    setDaySelected(date);
-    getUserData(date);
-  };
-
-  const handleDatesSelected = (e: Event) => {
-    e.preventDefault();
-    const action = (e.target as HTMLButtonElement).id;
-    const modifyDateDays = (date: Date, action: string, days: number) => {
-      if (action === 'prev') {
-        date.setDate(date.getDate() - days);
-      } else if (action === 'next') {
-        date.setDate(date.getDate() + days);
-      }
-      return date;
-    };
-    const date = new Date(datesSelected[0].date);
-    const newDate = modifyDateDays(date, action, 7);
-    const newWeek = selectSelectorDates(newDate, 7);
-    setDatesSelected(newWeek);
-    const newSelectedDay = dbFormatDate(
-      modifyDateDays(new Date(daySelected), action, 7).toLocaleDateString()
-    );
-    setDaySelected(newSelectedDay);
-    getUserData(newSelectedDay);
-  };
+  useEffect(() => {
+    getUserData(daySelected);
+  }, [daySelected]);
 
   const handleChange = (e: any, type: string) => {
     e.preventDefault();
@@ -180,14 +149,44 @@ const Tracker = ({
     setShowObjetives(!showObjetives);
   };
 
-  const filterSelectOptions = ['week', 'month'];
+  const handleSelectDay = (event: Event) => {
+    event.preventDefault();
+    const date = (event.target as HTMLButtonElement).id;
+    setDaySelected(date);
+  };
+
+  const handleDatesSelected = (e: Event) => {
+    e.preventDefault();
+    const action = (e.target as HTMLButtonElement).id;
+    const modifyDateDays = (date: Date, action: string, days: number) => {
+      if (action === 'prev') {
+        date.setDate(date.getDate() - days);
+      } else if (action === 'next') {
+        date.setDate(date.getDate() + days);
+      }
+      return date;
+    };
+    const date = new Date(datesSelected[0].date);
+    const newDate = modifyDateDays(date, action, 7);
+    const newWeek = getDaysInAWeek(newDate);
+    const newSelectedDay = dbFormatDate(
+      modifyDateDays(new Date(daySelected), action, 7).toLocaleDateString()
+    );
+    setDaySelected(newSelectedDay);
+    setDatesSelected(newWeek);
+  };
 
   const handleSelectFilterOption = (e: Event) => {
     e.preventDefault();
-    const action = (e.target as HTMLButtonElement).value;
-    const numberOfDays = action === 'week' ? 7 : action === 'month' ? 30 : 7;
+    const option = (e.target as HTMLButtonElement).value;
+    setFilterSelectOptionsSelected(option);
+    if (option === 'reset') {
+      setDaySelected(today);
+      setFilterSelectOptionsSelected('week');
+    }
     const date = new Date(datesSelected[0].date);
-    setDatesSelected(selectSelectorDates(date, numberOfDays));
+    const arrayOfDates = getArrayOfDates(option, date);
+    setDatesSelected(arrayOfDates);
   };
 
   return (
@@ -209,6 +208,7 @@ const Tracker = ({
         today={today}
         handleDatesSelected={handleDatesSelected}
         options={filterSelectOptions}
+        optionSelected={filterSelectOptionsSelected}
         handleSelectFilterOption={handleSelectFilterOption}
       />
       <Day
