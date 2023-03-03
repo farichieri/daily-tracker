@@ -21,8 +21,7 @@ const Tracker = ({
   const today = dbFormatDate(new Date().toLocaleDateString());
   const [daySelected, setDaySelected] = useState<any>(today);
   const [isSaving, setIsSaving] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [weekSelected, setWeekSelected] = useState<any[]>([]);
+  const [datesSelected, setDatesSelected] = useState<any[]>([]);
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
   const [tasks, setTasks] = useState<any[]>([]);
@@ -37,27 +36,26 @@ const Tracker = ({
 
   useEffect(() => {
     const date = new Date();
-    setWeekSelected(selectWeek(date));
+    setDatesSelected(selectSelectorDates(date, 7));
   }, []);
 
   useEffect(() => {
     const setData = () => {
-      const userDataByDate = userData.find(
-        (data: any) => data.date === dbFormatDate(daySelected)
-      );
-      const objetives = userDataByDate?.data.objetives || [];
-      const tasks = userDataByDate?.data.tasks || [];
+      const objetives = userData?.objetives || [];
+      const tasks = userData?.tasks || [];
       setTasks(tasks);
       setObjetives(objetives);
     };
     setData();
   }, [userData, daySelected]);
 
-  const selectWeek = (date: Date) => {
-    return Array(7)
+  const selectSelectorDates = (date: Date, daysAmount: number) => {
+    return Array(daysAmount)
       .fill(new Date(date))
       .map((el, idx) => {
-        const day = new Date(el.setDate(el.getDate() - el.getDay() + idx));
+        const day: Date = new Date(
+          el.setDate(el.getDate() - el.getDay() + idx)
+        );
         return {
           date: dbFormatDate(day.toLocaleDateString()),
           weekDay: day.toLocaleDateString('en-US', { weekday: 'long' }),
@@ -69,7 +67,7 @@ const Tracker = ({
     event.preventDefault();
     const date = (event.target as HTMLButtonElement).id;
     setDaySelected(date);
-    getUserData();
+    getUserData(date);
   };
 
   const handleDatesSelected = (e: Event) => {
@@ -83,14 +81,15 @@ const Tracker = ({
       }
       return date;
     };
-    const date = new Date(weekSelected[0].date);
+    const date = new Date(datesSelected[0].date);
     const newDate = modifyDateDays(date, action, 7);
-    const newWeek = selectWeek(newDate);
-    setWeekSelected(newWeek);
+    const newWeek = selectSelectorDates(newDate, 7);
+    setDatesSelected(newWeek);
     const newSelectedDay = dbFormatDate(
       modifyDateDays(new Date(daySelected), action, 7).toLocaleDateString()
     );
     setDaySelected(newSelectedDay);
+    getUserData(newSelectedDay);
   };
 
   const handleChange = (e: any, type: string) => {
@@ -181,15 +180,36 @@ const Tracker = ({
     setShowObjetives(!showObjetives);
   };
 
+  const filterSelectOptions = ['week', 'month'];
+
+  const handleSelectFilterOption = (e: Event) => {
+    e.preventDefault();
+    const action = (e.target as HTMLButtonElement).value;
+    const numberOfDays = action === 'week' ? 7 : action === 'month' ? 30 : 7;
+    const date = new Date(datesSelected[0].date);
+    setDatesSelected(selectSelectorDates(date, numberOfDays));
+  };
+
   return (
     <section>
-      <Clock />
+      <div className='header'>
+        <Button
+          content='Save'
+          isLoading={isSaving}
+          isDisabled={!isSaveable}
+          loadMessage={'Saving...'}
+          onClick={handleSave}
+        />
+        <Clock />
+      </div>
       <Selector
-        week={weekSelected}
+        week={datesSelected}
         handleSelectDay={handleSelectDay}
         daySelected={daySelected}
         today={today}
         handleDatesSelected={handleDatesSelected}
+        options={filterSelectOptions}
+        handleSelectFilterOption={handleSelectFilterOption}
       />
       <Day
         handleChange={handleChange}
@@ -201,7 +221,7 @@ const Tracker = ({
       />
       <div style={{ margin: '1rem', width: '100%' }}>
         <Button
-          content={showObjetives ? 'Hide Objetives' : 'Show Objetives'}
+          content={showObjetives ? 'Hide Goals' : 'Show Goals'}
           isLoading={false}
           isDisabled={false}
           loadMessage={''}
@@ -217,15 +237,6 @@ const Tracker = ({
           objetive={objetive}
         />
       )}
-      {isSaveable && (
-        <Button
-          content='Save'
-          isLoading={isSaving}
-          isDisabled={isDisabled}
-          loadMessage={'Saving...'}
-          onClick={handleSave}
-        />
-      )}
       <style jsx>{`
         section {
           padding: 1rem;
@@ -234,6 +245,11 @@ const Tracker = ({
           align-items: center;
           width: 100%;
           gap: 1rem;
+        }
+        .header {
+          display: flex;
+          width: 100%;
+          align-items: center;
         }
         div {
           height: 2rem;

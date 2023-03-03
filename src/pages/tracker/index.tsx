@@ -4,8 +4,9 @@ import Loader from '@/components/Layout/Loader/Loader';
 import { auth, db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker/Tracker';
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
+import { dbFormatDate } from '@/utils/formatDate';
 
 const TrackerPage = () => {
   const [user, setUser] = useState<any | string>('');
@@ -24,19 +25,15 @@ const TrackerPage = () => {
     }
   });
 
-  const getUserData = async () => {
-    let data: any[] = [];
-    const querySnapshot = await getDocs(collection(db, user.uid));
-    querySnapshot.forEach((doc) => {
-      data.push({ date: doc.id, data: doc.data() });
-    });
+  const getUserData = async (date: string) => {
+    const querySnapshot = await getDoc(doc(db, user.uid, date));
+    let data: any = querySnapshot.data();
     setData(data);
-    console.log({ data });
   };
 
   useEffect(() => {
     const getData = async () => {
-      await getUserData();
+      await getUserData(dbFormatDate(new Date().toLocaleDateString()));
       setIsLoadingData(false);
     };
     if (user) {
