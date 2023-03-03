@@ -65,7 +65,6 @@ const Blog = ({
             padding-bottom: 2rem;
           }
           .header {
-            background: var(--bg-color-secondary);
             height: 10rem;
             align-items: center;
             display: flex;

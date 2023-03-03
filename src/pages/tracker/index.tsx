@@ -7,6 +7,7 @@ import Tracker from '@/components/Tracker/Tracker';
 import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
+import PremiumNav from '@/components/Nav/PremiumNav';
 
 const TrackerPage = () => {
   const [user, setUser] = useState<any | string>('');
@@ -74,7 +75,12 @@ const TrackerPage = () => {
             align-items: center;
           }
           .login-container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
             margin: auto;
+            width: 100%;
+            justify-content: center;
           }
         `}</style>
       </PremiumLayout>

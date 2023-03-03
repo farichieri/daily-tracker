@@ -21,24 +21,25 @@ const PremiumNav = () => {
           </Link>
         ))}
       </span>{' '}
-      <Logout />
       <style jsx>{`
         nav {
           display: flex;
+          flex-direction: column;
           gap: 1rem;
-          padding: 0 2rem;
+          padding: 0;
           align-items: center;
-          justify-content: center;
-          width: 100%;
-          background: var(--bg-color-tertiary);
-          position: fixed;c
+          width: 100px;
+          height: 100%;
+          min-height: 100vh;
+          border-right: 1px solid var(--box-shadow-light);
         }
         .pages {
-          margin: auto;
+          display: flex;
+          flex-direction: column;
         }
         span {
           border-radius: 999px;
-          padding: 0.3rem 0.5rem;
+          padding: 0.3rem 0;
           border: 1px solid transparent;
           display: flex;
         }

@@ -71,6 +71,7 @@ const Login = () => {
           max-width: 300px;
           width: 100%;
           position: relative;
+          align-items: center;
         }
         .inputs-container {
           width: 100%;

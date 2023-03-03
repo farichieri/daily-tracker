@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const FilterSelect = ({
   options,
   handleSelectFilterOption,
@@ -9,16 +11,27 @@ const FilterSelect = ({
 }) => {
   return (
     <div>
-      {options.map((opt: string, i: number) => (
-        <button
-          key={i}
-          className={`${optionSelected === opt ? 'selected' : ''}`}
-          onClick={handleSelectFilterOption}
-          value={opt}
-        >
-          {opt}
-        </button>
-      ))}
+      {options.map((opt: string, i: number) => {
+        return opt === 'reset' ? (
+          <button>
+            <Image
+              src={'/icons/reset.png'}
+              alt={'Reset Icon'}
+              width={36}
+              height={36}
+            />
+          </button>
+        ) : (
+          <button
+            key={i}
+            className={`${optionSelected === opt ? 'selected' : ''}`}
+            onClick={handleSelectFilterOption}
+            value={opt}
+          >
+            {opt}
+          </button>
+        );
+      })}
       <style jsx>{`
         div {
           display: flex;
@@ -27,11 +40,18 @@ const FilterSelect = ({
         button {
           border-radius: 999px;
           background: transparent;
-          border: 1px solid var(--text-color);
-          color: var(--text-color);
           padding: 0.25rem 0.5rem;
           cursor: pointer;
-          width: 7rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border: none;
+          background: var(--box-shadow-light);
+        }
+        button:active {
+          box-shadow: 0 0 10px 1px var(--box-shadow);
         }
         .selected {
           color: red;

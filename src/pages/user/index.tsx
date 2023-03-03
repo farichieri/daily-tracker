@@ -1,12 +1,11 @@
 import Login from '@/components/Auth/Login';
 import Logout from '@/components/Auth/Logout';
-import PremiumLayout from '@/components/Layout/PremiumLayout';
-import PremiumNav from '@/components/Nav/PremiumNav';
+import MainLayout from '@/components/Layout/MainLayout';
 import Link from 'next/link';
 
 const User = ({ user }: { user: any }) => {
   return (
-    <PremiumLayout withPadding={true}>
+    <MainLayout withPadding={true}>
       {user ? (
         <>
           <div className='account'>
@@ -67,7 +66,7 @@ const User = ({ user }: { user: any }) => {
           }
         `}
       </style>
-    </PremiumLayout>
+    </MainLayout>
   );
 };
 

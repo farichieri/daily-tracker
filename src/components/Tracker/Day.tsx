@@ -85,15 +85,16 @@ const Tracker = ({
       </table>
       <style jsx>{`
         section {
-          border-radius: 10px;
+          border-radius: 6px;
           width: 100%;
-          box-shadow: 0 0 10px 1px var(--box-shadow-light);
+          -webkit-box-shadow: 0 8px 16px 0 var(--box-shadow-light);
+          box-shadow: 0 8px 16px 0 var(--box-shadow-light);
           overflow: auto;
-          spell-check: false;
         }
         p {
           margin: 0;
           padding: 1rem;
+          background: var(--bg-color-secondary);
         }
         table {
           gap: 0.5rem;
@@ -103,6 +104,7 @@ const Tracker = ({
           flex-direction: column;
           overflow: hidden;
           border-collapse: collapse;
+          background: var(--bg-color-secondary);
         }
         thead {
           background: var(--bg-color-tertiary);

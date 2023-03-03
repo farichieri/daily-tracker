@@ -49,7 +49,6 @@ const Dashboard = () => {
   } else
     return (
       <PremiumLayout withPadding={false}>
-        <PremiumNav />
         <div className='dashboard-container'>
           {!user && <Login />}
           {user && (

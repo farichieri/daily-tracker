@@ -98,7 +98,6 @@ const Footer = () => {
       </div>
       <style jsx>{`
         footer {
-          background-color: var(--bg-color-secondary);
           display: flex;
           font-weight: 500;
           justify-content: center;

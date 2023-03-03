@@ -40,7 +40,7 @@ const Tracker = ({
   const [isSaveable, setIsSaveable] = useState(false);
   const [filterSelectOptionsSelected, setFilterSelectOptionsSelected] =
     useState('week');
-  const filterSelectOptions = ['week', 'month', 'reset'];
+  const filterSelectOptions = ['reset'];
 
   useEffect(() => {
     const date = new Date();
