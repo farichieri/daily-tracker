@@ -13,12 +13,13 @@ const FilterSelect = ({
     <div>
       {options.map((opt: string, i: number) => {
         return opt === 'reset' ? (
-          <button>
+          <button onClick={handleSelectFilterOption} key={i} value={opt}>
             <Image
               src={'/icons/reset.png'}
               alt={'Reset Icon'}
               width={36}
               height={36}
+              style={{ pointerEvents: 'none' }}
             />
           </button>
         ) : (
@@ -37,9 +38,11 @@ const FilterSelect = ({
           display: flex;
           gap: 0.5rem;
         }
+        .img {
+          pointer-events: none;
+        }
         button {
           border-radius: 999px;
-          background: transparent;
           padding: 0.25rem 0.5rem;
           cursor: pointer;
           display: flex;
