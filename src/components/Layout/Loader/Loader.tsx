@@ -1,25 +1,22 @@
 import React from 'react';
-import MainLayout from '../MainLayout';
 
 const Loader = ({ text }: { text: string }) => {
   return (
-    <MainLayout withPadding={true}>
-      <div className='loader-container'>
-        <p>{text}</p>
-        <div className='loader'>
-          <div className='loader__content'>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-            <div className='loader__bar'></div>
-          </div>
+    <div className='loader-container'>
+      <p>{text}</p>
+      <div className='loader'>
+        <div className='loader__content'>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
+          <div className='loader__bar'></div>
         </div>
       </div>
       <style jsx>{`
@@ -139,7 +136,7 @@ const Loader = ({ text }: { text: string }) => {
           }
         }
       `}</style>
-    </MainLayout>
+    </div>
   );
 };
 

@@ -40,7 +40,7 @@ const Tracker = ({
   const [isSaveable, setIsSaveable] = useState(false);
   const [filterSelectOptionsSelected, setFilterSelectOptionsSelected] =
     useState('week');
-  const filterSelectOptions = ['reset'];
+  const filterSelectOptions = ['today'];
 
   useEffect(() => {
     const date = new Date();
@@ -180,13 +180,11 @@ const Tracker = ({
     e.preventDefault();
     const option = (e.target as HTMLButtonElement).value;
     setFilterSelectOptionsSelected(option);
-    if (option === 'reset') {
+    if (option === 'today') {
+      console.log({ today });
       setDaySelected(today);
       setFilterSelectOptionsSelected('week');
     }
-    const date = new Date(datesSelected[0].date);
-    const arrayOfDates = getArrayOfDates(option, date);
-    setDatesSelected(arrayOfDates);
   };
 
   return (

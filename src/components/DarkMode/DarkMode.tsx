@@ -1,17 +1,17 @@
 'use client';
 import Image from 'next/image';
+import { selectTheme, setTheme } from 'store/slices/themeSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
-export default function DarkMode({
-  theme,
-  setTheme,
-}: {
-  theme: string;
-  setTheme: React.Dispatch<React.SetStateAction<string>>;
-}) {
+export default function DarkMode({}) {
+  const theme = useSelector(selectTheme);
+  console.log(theme);
+  const dispatch = useDispatch();
+
   const switchTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     window.localStorage.setItem('theme', newTheme);
-    setTheme(newTheme);
+    dispatch(setTheme(newTheme));
   };
 
   return (

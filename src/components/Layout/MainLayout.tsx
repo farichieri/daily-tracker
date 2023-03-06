@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Footer from '../Footer/Footer';
+import Nav from '../Nav/Nav';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectTheme, setTheme } from 'store/slices/themeSlice';
 
 export default function MainLayout({
   children,
@@ -8,10 +12,23 @@ export default function MainLayout({
   withPadding: boolean;
 }) {
   const padding = withPadding ? 1.5 : 0;
+  const dispatch = useDispatch();
+
+  const theme = useSelector(selectTheme);
+
+  useEffect(() => {
+    let localTheme = window.localStorage.getItem('theme');
+    if (!localTheme) {
+      window.localStorage.setItem('theme', 'dark');
+    }
+    dispatch(setTheme(String(localTheme)));
+  }, [theme]);
 
   return (
     <section>
+      <Nav />
       {children}
+      <Footer />
       <style jsx>
         {`
           section {

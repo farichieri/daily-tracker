@@ -1,23 +1,14 @@
 import Layout from '@/components/Layout';
-import { auth } from '@/utils/firebase.config';
-import { onAuthStateChanged } from 'firebase/auth';
 import type { AppProps } from 'next/app';
-import { useState } from 'react';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [user, setUser] = useState<any | string>(null);
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUser(user);
-    } else {
-      setUser('');
-    }
-  });
-
   return (
-    <Layout user={user}>
-      <Component {...pageProps} user={user} />
-    </Layout>
+    <Provider store={store}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </Provider>
   );
 }

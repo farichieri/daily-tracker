@@ -2,21 +2,16 @@ import { nav_pages } from '@/utils/pages';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { selectUser } from 'store/slices/authSlice';
 import DarkMode from '../DarkMode/DarkMode';
 import Logo from '../Logo/Logo';
+import { useSelector } from 'react-redux';
 
-const Nav = ({
-  theme,
-  setTheme,
-  user,
-}: {
-  theme: string;
-  setTheme: React.Dispatch<React.SetStateAction<string>>;
-  user: any;
-}) => {
+const Nav = () => {
   const router = useRouter();
   const [hamburgerActive, setHamburgerActive] = useState(false);
   const [userName, setUserName] = useState('Log in');
+  const user = useSelector(selectUser);
 
   const handleMenu = () => {
     setHamburgerActive(!hamburgerActive);
@@ -28,7 +23,7 @@ const Nav = ({
     router.route !== '/checkout/[plan]';
 
   useEffect(() => {
-    if (user) {
+    if (user && user.email) {
       setUserName(user.email.slice(0, user.email.indexOf('@')));
     } else {
       setUserName('Log in');
@@ -75,11 +70,13 @@ const Nav = ({
         </div>
         <div>
           <Link href={'/user'} onClick={handleMenu}>
-            <span className={router.asPath === '/user' ? 'selected' : ''}>
+            <span
+              className={`user ${router.asPath === '/user' ? 'selected' : ''}`}
+            >
               {userName}
             </span>
           </Link>
-          <DarkMode theme={theme} setTheme={setTheme} />
+          <DarkMode />
         </div>
       </div>
       <style jsx>{`
@@ -93,11 +90,15 @@ const Nav = ({
           backdrop-filter: blur(12px);
           font-weight: 600;
           z-index: 9999;
+          top: 0;
         }
+
         div {
           z-index: 999;
           display: flex;
           align-items: center;
+        }
+        .pages {
         }
         .nav-content {
           width: 100%;

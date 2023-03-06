@@ -11,28 +11,16 @@ const FilterSelect = ({
 }) => {
   return (
     <div>
-      {options.map((opt: string, i: number) => {
-        return opt === 'reset' ? (
-          <button onClick={handleSelectFilterOption} key={i} value={opt}>
-            <Image
-              src={'/icons/reset.png'}
-              alt={'Reset Icon'}
-              width={36}
-              height={36}
-              style={{ pointerEvents: 'none' }}
-            />
-          </button>
-        ) : (
-          <button
-            key={i}
-            className={`${optionSelected === opt ? 'selected' : ''}`}
-            onClick={handleSelectFilterOption}
-            value={opt}
-          >
-            {opt}
-          </button>
-        );
-      })}
+      {options.map((opt: string, i: number) => (
+        <button
+          key={i}
+          className={`${optionSelected === opt ? 'selected' : ''}`}
+          onClick={handleSelectFilterOption}
+          value={opt}
+        >
+          {opt}
+        </button>
+      ))}
       <style jsx>{`
         div {
           display: flex;
@@ -49,10 +37,10 @@ const FilterSelect = ({
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 36px;
-          height: 36px;
           border: none;
           background: var(--box-shadow-light);
+          color: var(--text-color);
+          border: 1px solid var(--box-shadow-light);
         }
         button:active {
           box-shadow: 0 0 10px 1px var(--box-shadow);
