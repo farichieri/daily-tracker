@@ -18,8 +18,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [userVerified, setUserVerified] = useState<boolean>(false);
   const theme = useSelector(selectTheme);
 
-  console.log({ theme });
-
   useEffect(() => {
     if (userVerified === false) {
       onAuthStateChanged(auth, (user) => {
@@ -35,11 +33,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <title>Daily Tracker</title>
       </Head>
-      {true && (
-        <div className={`${fonts.raleWay.className} ${theme}`}>
-          <main>{children}</main>
-        </div>
-      )}
+      <div className={`${fonts.raleWay.className} ${theme}`}>
+        <main>{children}</main>
+      </div>
       <style jsx>{`
         div {
           align-content: center;

@@ -62,20 +62,17 @@ const Tracker = ({
         }
         .dates-and-changes {
           display: flex;
-          gap: 1rem;
+          gap: 0.5rem;
           width: 100%;
         }
         .dates-container {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
           grid-gap: 10px;
           width: 100%;
-          grid-column-gap: 1rem;
         }
         .date-button {
-          border: 1px solid gray;
-          border-radius: 9999px;
-          padding: 0.1rem 1rem;
+          padding: 0.1rem 0.25rem;
           cursor: pointer;
           background: transparent;
           color: var(--text-color);
@@ -84,15 +81,17 @@ const Tracker = ({
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          width: 7rem;
+          width: 5rem;
           line-height: 1.3;
           margin: auto;
+          border-radius: 5px;
+          border: 1px solid transparent;
         }
         .weekday {
           font-size: 1rem;
         }
         .selected {
-          background: var(--bg-color-tertiary);
+          background: var(--bg-color-tertiary-light);
         }
         span {
           pointer-events: none;
@@ -104,7 +103,7 @@ const Tracker = ({
           background: var(--bg-color-tertiary);
         }
         .today {
-          box-shadow: 0 0 10px 5px var(--bg-color-tertiary);
+          border: 1px solid var(--box-shadow);
         }
         .change {
           border-radius: 50%;

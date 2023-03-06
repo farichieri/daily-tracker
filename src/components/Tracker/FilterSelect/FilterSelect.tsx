@@ -31,16 +31,19 @@ const FilterSelect = ({
           pointer-events: none;
         }
         button {
-          border-radius: 999px;
           padding: 0.25rem 0.5rem;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           border: none;
-          background: var(--box-shadow-light);
           color: var(--text-color);
+          background: transparent;
           border: 1px solid var(--box-shadow-light);
+          border-radius: 5px;
+        }
+        button:hover {
+          background: var(--bg-color-tertiary-light);
         }
         button:active {
           box-shadow: 0 0 10px 1px var(--box-shadow);

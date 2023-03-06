@@ -44,47 +44,48 @@ const TrackerPage = () => {
     }
   }, [user]);
 
-  if (isLoadingUser) {
-    return <Loader text={'Verifying user...'} />;
-  } else if (isLoadingData) {
-    return <Loader text={'Loading data...'} />;
-  } else
-    return (
-      <PremiumLayout withPadding={false}>
-        {!user && (
+  return (
+    <PremiumLayout withPadding={false}>
+      {isLoadingUser ? (
+        <Loader text={'Verifying user...'} />
+      ) : isLoadingData ? (
+        <Loader text={'Loading data...'} />
+      ) : (
+        !user && (
           <div className='login-container'>
             <Login />
           </div>
+        )
+      )}
+      <div className='dashboard-container'>
+        {user && (
+          <Tracker
+            userID={user.uid}
+            userData={data}
+            getUserData={getUserData}
+          />
         )}
-        <div className='dashboard-container'>
-          {user && (
-            <Tracker
-              userID={user.uid}
-              userData={data}
-              getUserData={getUserData}
-            />
-          )}
-        </div>
-        <style jsx>{`
-          .dashboard-container {
-            max-width: var(--max-width);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
-            align-items: center;
-          }
-          .login-container {
-            display: flex;
-            min-height: 100vh;
-            align-items: center;
-            margin: auto;
-            width: 100%;
-            justify-content: center;
-          }
-        `}</style>
-      </PremiumLayout>
-    );
+      </div>
+      <style jsx>{`
+        .dashboard-container {
+          max-width: var(--max-width);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          align-items: center;
+        }
+        .login-container {
+          display: flex;
+          min-height: 100vh;
+          align-items: center;
+          margin: auto;
+          width: 100%;
+          justify-content: center;
+        }
+      `}</style>
+    </PremiumLayout>
+  );
 };
 
 export default TrackerPage;

@@ -64,7 +64,9 @@ const Objetives = ({
         }
         p {
           margin: 0;
-          padding: 1rem;
+          padding: 0.25rem;
+          font-size: 1rem;
+          font-weight: bold;
         }
         .objetives-container {
           border-top: 1px solid gray;

@@ -25,6 +25,7 @@ export default function PremiumLayout({
 
   return (
     <section>
+      <PremiumNav />
       {children}
       <style jsx>
         {`
@@ -36,7 +37,7 @@ export default function PremiumLayout({
             margin: auto;
             min-height: calc(100vh - var(--footer-height));
             padding: ${padding}rem;
-            padding-top: calc(var(--nav-height));
+            padding-top: calc(var(--premium-nav-height));
             width: 100%;
           }
 

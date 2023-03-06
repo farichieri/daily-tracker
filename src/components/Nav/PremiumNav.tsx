@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Logout from '../Auth/Logout';
+import DarkMode from '../DarkMode/DarkMode';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'store/slices/authSlice';
 
 const PremiumNav = () => {
-  const pages = [
-    { name: 'Account', path: '/user' },
-    { name: 'Dashboard', path: '/user/dashboard' },
-  ];
+  const user = useSelector(selectUser);
+  const userName = user?.email
+    ? user.email.slice(0, user.email.indexOf('@'))
+    : '';
+
+  const pages = [{ name: 'Tracker', path: '/tracker' }];
 
   const router = useRouter();
 
@@ -20,22 +24,35 @@ const PremiumNav = () => {
             </span>
           </Link>
         ))}
-      </span>{' '}
+      </span>
+      <div>
+        <Link href={'/user'}>
+          <span
+            className={`user ${router.asPath === '/user' ? 'selected' : ''}`}
+          >
+            {userName}
+          </span>
+        </Link>
+        <DarkMode />
+      </div>
       <style jsx>{`
         nav {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          padding: 0;
           align-items: center;
-          width: 100px;
-          height: 100%;
-          min-height: 100vh;
-          border-right: 1px solid var(--box-shadow-light);
+          display: flex;
+          gap: 1rem;
+          height: var(--premium-nav-height);
+          padding: 0;
+          position: fixed;
+          top: 0;
+          width: 100%;
+          backdrop-filter: blur(12px);
+          justify-content: space-between;
+          padding: 0 1rem;
+          z-index: 1000;
         }
         .pages {
           display: flex;
-          flex-direction: column;
+          gap: 1rem;
         }
         span {
           border-radius: 999px;
@@ -44,8 +61,11 @@ const PremiumNav = () => {
           display: flex;
         }
         span.selected {
-          border: 1px solid var(--text-color);
           color: var(--text-color);
+          font-weight: bold;
+        }
+        div {
+          display: flex;
         }
       `}</style>
     </nav>

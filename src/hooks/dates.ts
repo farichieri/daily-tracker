@@ -26,7 +26,7 @@ export const getDaysInAWeek = (date: Date) => {
       const day: Date = new Date(el.setDate(el.getDate() - el.getDay() + idx));
       return {
         date: dbFormatDate(day.toLocaleDateString()),
-        weekDay: day.toLocaleDateString('en-US', { weekday: 'long' }),
+        weekDay: day.toLocaleDateString('en-US', { weekday: 'short' }),
       };
     });
 };

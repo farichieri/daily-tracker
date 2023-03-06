@@ -93,8 +93,10 @@ const Tracker = ({
         }
         p {
           margin: 0;
-          padding: 1rem;
+          padding: 0.25rem;
           background: var(--bg-color-secondary);
+          font-size: 1rem;
+          font-weight: bold;
         }
         table {
           gap: 0.5rem;

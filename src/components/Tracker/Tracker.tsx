@@ -249,9 +249,6 @@ const Tracker = ({
           width: 100%;
           align-items: center;
         }
-        div {
-          height: 2rem;
-        }
       `}</style>
     </section>
   );
