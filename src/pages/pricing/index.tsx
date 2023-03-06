@@ -7,7 +7,7 @@ const Plans = () => {
   return (
     <div className='plans-container'>
       {plans.map((plan, index) => (
-        <Link key={index} href={`/checkout/${plan.plan}`}>
+        <Link key={index} href={`/pricing/${plan.plan}`}>
           <div className='plan'>
             <h1>{plan.name}</h1>
             <p>{plan.description}</p>

@@ -5,7 +5,7 @@ import type { AppProps } from 'next/app';
 import { useState } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [user, setUser] = useState<any | string>('');
+  const [user, setUser] = useState<any | string>(null);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {

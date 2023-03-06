@@ -16,7 +16,7 @@ const Nav = ({
 }) => {
   const router = useRouter();
   const [hamburgerActive, setHamburgerActive] = useState(false);
-  const [userName, setUserName] = useState('Account');
+  const [userName, setUserName] = useState('Log in');
 
   const handleMenu = () => {
     setHamburgerActive(!hamburgerActive);
@@ -31,7 +31,7 @@ const Nav = ({
     if (user) {
       setUserName(user.email.slice(0, user.email.indexOf('@')));
     } else {
-      setUserName('Account');
+      setUserName('Log in');
     }
   }, [user]);
 
