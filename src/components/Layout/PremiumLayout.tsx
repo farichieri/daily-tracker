@@ -1,4 +1,5 @@
 import React from 'react';
+import PremiumNav from '../Nav/PremiumNav';
 
 export default function PremiumLayout({
   children,
@@ -25,6 +26,7 @@ export default function PremiumLayout({
             padding-top: calc(var(--nav-height));
             width: 100%;
           }
+
           @media and only screen (max-width: 500px) {
             section {
               padding: ${Number(padding) / 1}rem;

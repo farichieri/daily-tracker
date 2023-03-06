@@ -1,7 +1,7 @@
 import Selector from './Selector';
 import Day from './Day';
 import { useEffect, useState } from 'react';
-import Objetives from '../Objetives/Objetives';
+import Objetives from '../Goals/Goals';
 import Button from '../Layout/Button/Button';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';

@@ -14,6 +14,8 @@ const Objetives = ({
   objetive: string;
   objetives: string[];
 }) => {
+  // -Repetition of affirmation of orders to your subconscious mind is the only known method of voluntary developtment of the emotions of faith.
+  // -Any impulse of thought which is repeatedly passed on to the subconscious mind is, finally accepted and acted upon by the subsconscious mind, which proceeds to translate that impulse into its physical equivalent, by the most practical procedure available.
   return (
     <section>
       <p>Goals</p>
