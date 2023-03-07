@@ -1,5 +1,5 @@
 import { DayPicker } from 'react-day-picker';
-import { format, getMonth } from 'date-fns';
+import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,6 @@ const DayPickerC = () => {
   const monthSelected = daySelected
     ? format(new Date(daySelected), 'LLLL')
     : '';
-  console.log({ monthSelected });
   const [selected, setSelected] = useState<Date>();
   const [open, setOpen] = useState(false);
 
@@ -58,6 +57,7 @@ const DayPickerC = () => {
           border-radius: 6px;
           top: 0;
           left: -100px;
+          z-index: 9999;
         }
       `}</style>
     </div>

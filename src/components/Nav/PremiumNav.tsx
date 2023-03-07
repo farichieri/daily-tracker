@@ -49,6 +49,7 @@ const PremiumNav = () => {
           justify-content: space-between;
           padding: 0 1rem;
           z-index: 1000;
+          border-bottom: 1px solid var(--box-shadow-light);
         }
         .pages {
           display: flex;

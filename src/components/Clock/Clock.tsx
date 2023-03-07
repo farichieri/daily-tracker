@@ -21,7 +21,6 @@ const Clock = () => {
           border: 1px solid var(--box-shadow);
           padding: 0.2rem 0.5rem;
           border-radius: 5px;
-          margin-left: auto;
           font-size: 0.8rem;
           display: flex;
           align-items: center;

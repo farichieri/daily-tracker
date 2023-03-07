@@ -6,7 +6,6 @@ import { useState } from 'react';
 const Plan = ({ plan }: { plan: any }) => {
   const [promo, setPromo] = useState('');
 
-  console.log(plan);
   return (
     <MainLayout withPadding={true}>
       <div className='payment-container'>

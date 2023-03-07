@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function DarkMode({}) {
   const theme = useSelector(selectTheme);
-  console.log(theme);
   const dispatch = useDispatch();
 
   const switchTheme = () => {

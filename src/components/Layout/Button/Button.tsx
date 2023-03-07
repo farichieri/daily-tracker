@@ -6,15 +6,17 @@ const Button = ({
   isDisabled,
   loadMessage,
   onClick,
+  style,
 }: {
   onClick: MouseEventHandler;
   content: string;
   isLoading: boolean;
   isDisabled: boolean;
   loadMessage: string;
+  style: any;
 }) => {
   return (
-    <button onClick={onClick} disabled={isDisabled}>
+    <button style={style} onClick={onClick} disabled={isDisabled}>
       {isLoading ? <span>{loadMessage}</span> : <span>{content}</span>}
       <style jsx>{`
         button {

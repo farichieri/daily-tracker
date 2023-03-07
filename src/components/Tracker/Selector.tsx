@@ -1,4 +1,3 @@
-import FilterSelect from './FilterSelect/FilterSelect';
 import { useSelector } from 'react-redux';
 import { selectDaySelected } from 'store/slices/trackerSlice';
 
@@ -7,26 +6,15 @@ const Tracker = ({
   handleSelectDay,
   today,
   handleDatesSelected,
-  options,
-  handleSelectFilterOption,
-  optionSelected,
 }: {
   week: any;
   handleSelectDay: any;
   today: string;
   handleDatesSelected: any;
-  options: any;
-  handleSelectFilterOption: Function;
-  optionSelected: string;
 }) => {
   const daySelected = useSelector(selectDaySelected);
   return (
     <div className='selector-container'>
-      <FilterSelect
-        options={options}
-        handleSelectFilterOption={handleSelectFilterOption}
-        optionSelected={optionSelected}
-      />
       <div className='dates-and-changes'>
         <button
           onClick={handleDatesSelected}
@@ -44,7 +32,7 @@ const Tracker = ({
               id={day.date}
             >
               <span className='weekday'>{day.weekDay}</span>
-              <span className='date'>{day.date}</span>
+              <span className='date'>{day.numberOfMonth}</span>
             </button>
           ))}
         </div>

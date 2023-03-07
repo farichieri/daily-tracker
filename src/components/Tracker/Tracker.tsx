@@ -8,9 +8,13 @@ import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
 import { dbFormatDate } from '@/utils/formatDate';
 import Clock from '../Clock/Clock';
-import { getDaysInAWeek } from '@/hooks/dates';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDaySelected, setDaySelected } from 'store/slices/trackerSlice';
+import {
+  selectDaySelected,
+  selectWeekSelected,
+  setDaySelected,
+} from 'store/slices/trackerSlice';
+import Header from './Header';
 
 const Tracker = ({
   userID,
@@ -23,9 +27,9 @@ const Tracker = ({
 }) => {
   const dispatch = useDispatch();
   const daySelected = useSelector(selectDaySelected);
+  const weekSelected = useSelector(selectWeekSelected);
   const today = dbFormatDate(new Date().toLocaleDateString());
   const [isSaving, setIsSaving] = useState(false);
-  const [datesSelected, setDatesSelected] = useState<any[]>([]);
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
   const [tasks, setTasks] = useState<any[]>([]);
@@ -42,8 +46,8 @@ const Tracker = ({
   const filterSelectOptions = ['today'];
 
   useEffect(() => {
-    const date = new Date();
-    setDatesSelected(getDaysInAWeek(date));
+    // const date = new Date();
+    // dispatch(setWeekSelected(getDaysInAWeek(date)));
     dispatch(setDaySelected(today));
   }, []);
 
@@ -166,14 +170,13 @@ const Tracker = ({
       }
       return date;
     };
-    const date = new Date(datesSelected[0].date);
-    const newDate = modifyDateDays(date, action, 7);
-    const newWeek = getDaysInAWeek(newDate);
+    // const date = new Date(weekSelected[0].date);
+    // const newDate = modifyDateDays(date, action, 7);
     const newSelectedDay = dbFormatDate(
       modifyDateDays(new Date(daySelected), action, 7).toLocaleDateString()
     );
     dispatch(setDaySelected(newSelectedDay));
-    setDatesSelected(newWeek);
+    // dispatch(setWeekSelected(getDaysInAWeek(newDate)));
   };
 
   const handleSelectFilterOption = (e: Event) => {
@@ -188,24 +191,19 @@ const Tracker = ({
 
   return (
     <section>
-      <div className='header'>
-        <Button
-          content='Save'
-          isLoading={isSaving}
-          isDisabled={!isSaveable}
-          loadMessage={'Saving...'}
-          onClick={handleSave}
-        />
-        <Clock />
-      </div>
-      <Selector
-        week={datesSelected}
-        handleSelectDay={handleSelectDay}
-        today={today}
-        handleDatesSelected={handleDatesSelected}
+      <Header
+        isSaving={isSaving}
+        isSaveable={isSaveable}
+        handleSave={handleSave}
         options={filterSelectOptions}
         optionSelected={filterSelectOptionsSelected}
         handleSelectFilterOption={handleSelectFilterOption}
+      />
+      <Selector
+        week={weekSelected}
+        handleSelectDay={handleSelectDay}
+        today={today}
+        handleDatesSelected={handleDatesSelected}
       />
       <Day
         handleChange={handleChange}
@@ -217,6 +215,7 @@ const Tracker = ({
       />
       <div style={{ margin: '1rem', width: '100%' }}>
         <Button
+          style={null}
           content={showObjetives ? 'Hide Goals' : 'Show Goals'}
           isLoading={false}
           isDisabled={false}
@@ -241,11 +240,6 @@ const Tracker = ({
           align-items: center;
           width: 100%;
           gap: 1rem;
-        }
-        .header {
-          display: flex;
-          width: 100%;
-          align-items: center;
         }
       `}</style>
     </section>

@@ -1,4 +1,5 @@
 import { dbFormatDate } from '@/utils/formatDate';
+import { format } from 'date-fns';
 
 export const getDaysInAMonth = (date: Date) => {
   const month = date.getMonth() + 1;
@@ -26,6 +27,7 @@ export const getDaysInAWeek = (date: Date) => {
       const day: Date = new Date(el.setDate(el.getDate() - el.getDay() + idx));
       return {
         date: dbFormatDate(day.toLocaleDateString()),
+        numberOfMonth: format(day, 'd'),
         weekDay: day.toLocaleDateString('en-US', { weekday: 'short' }),
       };
     });

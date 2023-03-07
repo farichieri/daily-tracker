@@ -57,6 +57,7 @@ const Login = () => {
         />
       </div>
       <Button
+        style={null}
         onClick={handleSubmit}
         loadMessage={'Ingresando...'}
         content='Log in'

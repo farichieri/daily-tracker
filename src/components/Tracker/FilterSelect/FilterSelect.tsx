@@ -26,7 +26,6 @@ const FilterSelect = ({
         div {
           display: flex;
           gap: 0.5rem;
-          margin: auto;
         }
         .img {
           pointer-events: none;
