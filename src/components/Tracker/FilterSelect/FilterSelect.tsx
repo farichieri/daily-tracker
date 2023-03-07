@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import DayPickerC from '@/components/DayPickerC/DayPickerC';
 
 const FilterSelect = ({
   options,
@@ -11,6 +11,7 @@ const FilterSelect = ({
 }) => {
   return (
     <div>
+      <DayPickerC />
       {options.map((opt: string, i: number) => (
         <button
           key={i}

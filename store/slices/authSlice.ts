@@ -5,13 +5,13 @@ import type { RootState } from '../store';
 // Define a type for the slice state
 interface AuthState {
   user: User | null;
-  // isLoaded: boolean;
+  isUserVerified: boolean;
 }
 
 // Define the initial state using that type
 const initialState: AuthState = {
   user: null,
-  // isLoaded: false,
+  isUserVerified: false,
 };
 
 export const authSlice = createSlice({
@@ -19,16 +19,19 @@ export const authSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    verifyUser: (state, action: PayloadAction<User | null>) => {
+    verifyUser: (state) => {
+      state.isUserVerified = true;
+    },
+    userVerified: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
-      // state.isLoaded = true;
+      state.isUserVerified = false;
     },
   },
 });
 
-export const { verifyUser } = authSlice.actions;
+export const { verifyUser, userVerified } = authSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectUser = (state: RootState) => state.auth.user;
+export const selectUser = (state: RootState) => state.auth;
 
 export default authSlice.reducer;

@@ -7,30 +7,20 @@ import Tracker from '@/components/Tracker/Tracker';
 import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
-import PremiumNav from '@/components/Nav/PremiumNav';
+import { selectUser } from 'store/slices/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 const TrackerPage = () => {
-  const [user, setUser] = useState<any | string>('');
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const { user, isUserVerified } = useSelector(selectUser);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [data, setData] = useState<string[]>([]);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUser(user);
-      setIsLoadingUser(false);
-    } else {
-      setUser('');
-      setIsLoadingData(false);
-      setIsLoadingUser(false);
-    }
-  });
-
   const getUserData = async (date: string) => {
-    console.log('getDoc');
-    const querySnapshot = await getDoc(doc(db, user.uid, date));
-    let data: any = querySnapshot.data();
-    setData(data);
+    if (user && date) {
+      const querySnapshot = await getDoc(doc(db, user.uid, date));
+      let data: any = querySnapshot.data();
+      setData(data);
+    }
   };
 
   useEffect(() => {
@@ -46,7 +36,7 @@ const TrackerPage = () => {
 
   return (
     <PremiumLayout withPadding={false}>
-      {isLoadingUser ? (
+      {isUserVerified ? (
         <Loader text={'Verifying user...'} />
       ) : isLoadingData ? (
         <Loader text={'Loading data...'} />

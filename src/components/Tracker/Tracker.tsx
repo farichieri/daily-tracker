@@ -8,11 +8,9 @@ import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
 import { dbFormatDate } from '@/utils/formatDate';
 import Clock from '../Clock/Clock';
-import {
-  getArrayOfDates,
-  getDaysInAMonth,
-  getDaysInAWeek,
-} from '@/hooks/dates';
+import { getDaysInAWeek } from '@/hooks/dates';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectDaySelected, setDaySelected } from 'store/slices/trackerSlice';
 
 const Tracker = ({
   userID,
@@ -23,8 +21,9 @@ const Tracker = ({
   userData: any;
   getUserData: Function;
 }) => {
+  const dispatch = useDispatch();
+  const daySelected = useSelector(selectDaySelected);
   const today = dbFormatDate(new Date().toLocaleDateString());
-  const [daySelected, setDaySelected] = useState<any>(today);
   const [isSaving, setIsSaving] = useState(false);
   const [datesSelected, setDatesSelected] = useState<any[]>([]);
   const [objetives, setObjetives] = useState<string[]>([]);
@@ -45,6 +44,7 @@ const Tracker = ({
   useEffect(() => {
     const date = new Date();
     setDatesSelected(getDaysInAWeek(date));
+    dispatch(setDaySelected(today));
   }, []);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ const Tracker = ({
   const handleSelectDay = (event: Event) => {
     event.preventDefault();
     const date = (event.target as HTMLButtonElement).id;
-    setDaySelected(date);
+    dispatch(setDaySelected(date));
   };
 
   const handleDatesSelected = (e: Event) => {
@@ -172,7 +172,7 @@ const Tracker = ({
     const newSelectedDay = dbFormatDate(
       modifyDateDays(new Date(daySelected), action, 7).toLocaleDateString()
     );
-    setDaySelected(newSelectedDay);
+    dispatch(setDaySelected(newSelectedDay));
     setDatesSelected(newWeek);
   };
 
@@ -181,8 +181,7 @@ const Tracker = ({
     const option = (e.target as HTMLButtonElement).value;
     setFilterSelectOptionsSelected(option);
     if (option === 'today') {
-      console.log({ today });
-      setDaySelected(today);
+      dispatch(setDaySelected(today));
       setFilterSelectOptionsSelected('week');
     }
   };
@@ -202,7 +201,6 @@ const Tracker = ({
       <Selector
         week={datesSelected}
         handleSelectDay={handleSelectDay}
-        daySelected={daySelected}
         today={today}
         handleDatesSelected={handleDatesSelected}
         options={filterSelectOptions}

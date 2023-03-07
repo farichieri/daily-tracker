@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './slices/authSlice';
 import themeSlice from './slices/themeSlice';
+import trackerSlice from './slices/trackerSlice';
 
 export const store = configureStore({
   reducer: {
-    auth: authSlice,
     theme: themeSlice,
+    auth: authSlice,
+    tracker: trackerSlice,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

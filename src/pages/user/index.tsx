@@ -2,8 +2,10 @@ import Login from '@/components/Auth/Login';
 import Logout from '@/components/Auth/Logout';
 import MainLayout from '@/components/Layout/MainLayout';
 import Link from 'next/link';
-
-const User = ({ user }: { user: any }) => {
+import { selectUser } from 'store/slices/authSlice';
+import { useSelector } from 'react-redux';
+const User = () => {
+  const { user } = useSelector(selectUser);
   return (
     <MainLayout withPadding={true}>
       {user ? (

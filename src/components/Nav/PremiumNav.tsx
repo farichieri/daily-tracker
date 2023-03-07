@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 
 const PremiumNav = () => {
-  const user = useSelector(selectUser);
+  const { user } = useSelector(selectUser);
   const userName = user?.email
     ? user.email.slice(0, user.email.indexOf('@'))
     : '';

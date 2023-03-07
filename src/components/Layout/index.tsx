@@ -1,28 +1,26 @@
 import Head from 'next/head';
 import reset from '@/styles/reset';
 import colors from '@/styles/colors';
-import Nav from '../Nav/Nav';
 import React, { useEffect, useState } from 'react';
 import general from '@/styles/general';
 import typography, { fonts } from '@/styles/typography';
-import Footer from '../Footer/Footer';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/utils/firebase.config';
 import { useDispatch } from 'react-redux';
-import { verifyUser } from 'store/slices/authSlice';
+import { verifyUser, userVerified, selectUser } from 'store/slices/authSlice';
 import { selectTheme } from 'store/slices/themeSlice';
 import { useSelector } from 'react-redux';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
-  const [userVerified, setUserVerified] = useState<boolean>(false);
   const theme = useSelector(selectTheme);
+  const { isUserVerified } = useSelector(selectUser);
 
   useEffect(() => {
-    if (userVerified === false) {
+    if (isUserVerified === false) {
+      dispatch(verifyUser());
       onAuthStateChanged(auth, (user) => {
-        setUserVerified(true);
-        dispatch(verifyUser(user));
+        dispatch(userVerified(user));
       });
     }
   }, []);

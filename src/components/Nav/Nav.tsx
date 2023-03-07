@@ -11,7 +11,7 @@ const Nav = () => {
   const router = useRouter();
   const [hamburgerActive, setHamburgerActive] = useState(false);
   const [userName, setUserName] = useState('Log in');
-  const user = useSelector(selectUser);
+  const { user } = useSelector(selectUser);
 
   const handleMenu = () => {
     setHamburgerActive(!hamburgerActive);

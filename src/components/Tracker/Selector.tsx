@@ -1,9 +1,10 @@
 import FilterSelect from './FilterSelect/FilterSelect';
+import { useSelector } from 'react-redux';
+import { selectDaySelected } from 'store/slices/trackerSlice';
 
 const Tracker = ({
   week,
   handleSelectDay,
-  daySelected,
   today,
   handleDatesSelected,
   options,
@@ -12,13 +13,13 @@ const Tracker = ({
 }: {
   week: any;
   handleSelectDay: any;
-  daySelected: any;
   today: string;
   handleDatesSelected: any;
   options: any;
   handleSelectFilterOption: Function;
   optionSelected: string;
 }) => {
+  const daySelected = useSelector(selectDaySelected);
   return (
     <div className='selector-container'>
       <FilterSelect
