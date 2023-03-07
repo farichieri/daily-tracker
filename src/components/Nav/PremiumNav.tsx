@@ -45,11 +45,11 @@ const PremiumNav = () => {
           position: fixed;
           top: 0;
           width: 100%;
-          backdrop-filter: blur(12px);
           justify-content: space-between;
           padding: 0 1rem;
           z-index: 1000;
           border-bottom: 1px solid var(--box-shadow-light);
+          background: var(--gray-color);
         }
         .pages {
           display: flex;

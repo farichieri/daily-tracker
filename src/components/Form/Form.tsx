@@ -97,6 +97,7 @@ const Form = () => {
       />
       <div className='button-container'>
         <Button
+          style={null}
           content={'Send'}
           isLoading={isLoading}
           isDisabled={isDisabled}

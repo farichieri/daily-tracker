@@ -27,6 +27,7 @@ const Logout = () => {
   return (
     <div>
       <Button
+        style={null}
         onClick={handleLogout}
         content='Logout'
         isLoading={isLoading}

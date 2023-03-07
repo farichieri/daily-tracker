@@ -12,6 +12,7 @@ const colors = css.global`
     --nav-bg-color: #00000080;
     --link-color: gray;
     --nav-background-color: black;
+    --gray-color: #232323;
   }
   div.light {
     --text-color: black;
@@ -24,6 +25,7 @@ const colors = css.global`
     --nav-bg-color: transparent;
     --link-color: gray;
     --nav-background-color: white;
+    --gray-color: #e7e7e7;
   }
 `;
 

@@ -78,6 +78,7 @@ const Tracker = ({
     }
     if (type === types.tasks) {
       const name = e.target.name;
+
       if (tasks.indexOf(tasks[e.target.id]) > -1) {
         const newTasks = [...tasks];
         newTasks[e.target.id][name] = e.target.value;
