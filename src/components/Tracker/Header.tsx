@@ -34,6 +34,7 @@ const Header = ({
         onClick={handleSave}
       />
       <Clock />
+
       <style jsx>{`
         .header {
           display: flex;

@@ -215,7 +215,6 @@ const Task = ({
           display: flex;
         }
         input.done {
-          background: green;
         }
         td {
         }

@@ -5,20 +5,17 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDaySelected, setDaySelected } from 'store/slices/trackerSlice';
 import { dbFormatDate } from '@/utils/formatDate';
+import Image from 'next/image';
 
 const DayPickerC = () => {
   const dispatch = useDispatch();
   const daySelected = useSelector(selectDaySelected);
   const monthSelected = daySelected
-    ? format(new Date(daySelected), 'LLLL')
+    ? format(new Date(daySelected), 'LLLL u')
     : '';
   const [selected, setSelected] = useState<Date>();
   const [open, setOpen] = useState(false);
 
-  let footer = <p>Please pick a day.</p>;
-  if (selected) {
-    footer = <p>You picked {format(selected, 'PP')}.</p>;
-  }
   const handleSelect = (day: Date | undefined) => {
     if (day) {
       setSelected(day);
@@ -27,19 +24,62 @@ const DayPickerC = () => {
     }
   };
 
+  const css = `
+  .rpd-day:hover {
+    background: var(--bg-color-tertiary);
+  }
+  .my-selected {
+    background: var(--bg-color-tertiary);
+    border-color: var(--bg-color-tertiary);
+  }
+  .my-selected:not([disabled]) { 
+    font-weight: bold; 
+  }
+  .my-selected:hover:not([disabled]) { 
+  }
+  .my-today { 
+    font-weight: bold;
+    font-size: 120%; 
+    color: red;
+  }
+`;
+
   return (
-    <div className='container'>
-      <span onClick={() => setOpen(!open)}>{monthSelected}</span>
+    <div className='container' onClick={() => setOpen(!open)}>
+      <span>{monthSelected}</span>
       <div className='calendar'>
         {open && (
           <DayPicker
             mode='single'
             selected={selected}
             onSelect={handleSelect}
-            footer={footer}
+            modifiersClassNames={{
+              selected: 'my-selected',
+              today: 'my-today',
+            }}
           />
         )}
       </div>
+      <div className='icon-container'>
+        {open ? (
+          <Image
+            src={'/icons/collapse.png'}
+            alt='collapse-icon'
+            width={12}
+            height={12}
+            style={{ pointerEvents: 'none' }}
+          />
+        ) : (
+          <Image
+            src={'/icons/expand.png'}
+            alt='expand-icon'
+            width={12}
+            height={12}
+            style={{ pointerEvents: 'none' }}
+          />
+        )}
+      </div>
+      <style>{css}</style>
       <style jsx>{`
         .container {
           display: flex;
@@ -49,15 +89,29 @@ const DayPickerC = () => {
           border-radius: 5px;
           cursor: pointer;
           position: relative;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          gap: 0.3rem;
+          justify-content: center;
+        }
+        .icon-container {
+          display: flex;
+          pointer-events: none;
+          margin-bottom: 4px;
         }
         .calendar {
           position: absolute;
           background: var(--bg-color);
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
           border-radius: 6px;
-          top: 0;
-          left: -100px;
+          top: 2.5rem;
           z-index: 9999;
+          font-size: 80%;
+          left: 2rem;
+        }
+        .rdp-row {
         }
       `}</style>
     </div>
