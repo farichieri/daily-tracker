@@ -1,17 +1,21 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DarkMode from '../DarkMode/DarkMode';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
+import { toggleSidebar } from 'store/slices/layoutSlice';
 
 const PremiumNav = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
   const userName = user?.email
     ? user.email.slice(0, user.email.indexOf('@'))
     : '';
+  const handleToggleSidebar = () => {
+    dispatch(toggleSidebar());
+  };
 
   const pages = [{ name: 'Tracker', path: '/tracker' }];
-
   const router = useRouter();
 
   return (
@@ -24,6 +28,9 @@ const PremiumNav = () => {
             </span>
           </Link>
         ))}
+      </span>
+      <span className='toggle-sidebar' onClick={handleToggleSidebar}>
+        Sidebar
       </span>
       <div>
         <Link href={'/user'}>
@@ -60,6 +67,7 @@ const PremiumNav = () => {
           padding: 0.3rem 0;
           border: 1px solid transparent;
           display: flex;
+          cursor: pointer;
         }
         span.selected {
           color: var(--text-color);

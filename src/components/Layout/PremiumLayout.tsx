@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import PremiumNav from '../Nav/PremiumNav';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';
+import PremiumSidebar from '../Nav/PremiumSidebar';
+import { selectSidebarState } from 'store/slices/layoutSlice';
 
 export default function PremiumLayout({
   children,
@@ -12,8 +14,8 @@ export default function PremiumLayout({
 }) {
   const padding = withPadding ? 1.5 : 0;
   const dispatch = useDispatch();
-
   const theme = useSelector(selectTheme);
+  const sidebarState = useSelector(selectSidebarState);
 
   useEffect(() => {
     let localTheme = window.localStorage.getItem('theme');
@@ -26,7 +28,10 @@ export default function PremiumLayout({
   return (
     <section>
       <PremiumNav />
-      {children}
+      <div className='container'>
+        {sidebarState && <PremiumSidebar />}
+        {children}
+      </div>
       <style jsx>
         {`
           section {
@@ -35,10 +40,15 @@ export default function PremiumLayout({
             flex-direction: column;
             height: 100%;
             margin: auto;
-            min-height: calc(100vh - var(--footer-height));
+            min-height: calc(100vh + var(--premium-nav-height));
             padding: ${padding}rem;
             padding-top: calc(var(--premium-nav-height));
             width: 100%;
+          }
+          .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
           }
 
           @media and only screen (max-width: 500px) {

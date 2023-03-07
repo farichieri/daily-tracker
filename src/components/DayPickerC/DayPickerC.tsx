@@ -45,8 +45,29 @@ const DayPickerC = () => {
 `;
 
   return (
-    <div className='container' onClick={() => setOpen(!open)}>
-      <span>{monthSelected}</span>
+    <div className='container'>
+      <div className='content' onClick={() => setOpen(!open)}>
+        <span>{monthSelected}</span>
+        <div className='icon-container'>
+          {open ? (
+            <Image
+              src={'/icons/collapse.png'}
+              alt='collapse-icon'
+              width={12}
+              height={12}
+              style={{ pointerEvents: 'none' }}
+            />
+          ) : (
+            <Image
+              src={'/icons/expand.png'}
+              alt='expand-icon'
+              width={12}
+              height={12}
+              style={{ pointerEvents: 'none' }}
+            />
+          )}
+        </div>
+      </div>
       <div className='calendar'>
         {open && (
           <DayPicker
@@ -60,41 +81,24 @@ const DayPickerC = () => {
           />
         )}
       </div>
-      <div className='icon-container'>
-        {open ? (
-          <Image
-            src={'/icons/collapse.png'}
-            alt='collapse-icon'
-            width={12}
-            height={12}
-            style={{ pointerEvents: 'none' }}
-          />
-        ) : (
-          <Image
-            src={'/icons/expand.png'}
-            alt='expand-icon'
-            width={12}
-            height={12}
-            style={{ pointerEvents: 'none' }}
-          />
-        )}
-      </div>
       <style>{css}</style>
       <style jsx>{`
         .container {
-          display: flex;
-          align-items: center;
           border: 1px solid var(--box-shadow-light);
           padding: 0.25rem 0.5rem;
           border-radius: 5px;
-          cursor: pointer;
           position: relative;
+        }
+        .content {
+          display: flex;
+          cursor: pointer;
           -webkit-user-select: none;
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
           gap: 0.3rem;
           justify-content: center;
+          align-items: center;
         }
         .icon-container {
           display: flex;

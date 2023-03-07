@@ -36,7 +36,7 @@ const Tracker = ({
       ) : (
         <div>Empty</div>
       )}
-      <div>
+      <div className='add-task'>
         <Task
           handleAdd={(e: any) => handleAdd(e, types.tasks)}
           handleRemove={(e: string) => handleRemove(e, types.tasks)}
@@ -49,10 +49,8 @@ const Tracker = ({
       </div>
       <style jsx>{`
         section {
-          border-radius: 6px;
           width: 100%;
-          -webkit-box-shadow: 0 8px 16px 0 var(--box-shadow-light);
-          box-shadow: 0 8px 16px 0 var(--box-shadow-light);
+          background: transparent;
         }
         .table {
           width: 100%;
@@ -60,7 +58,6 @@ const Tracker = ({
           width: 100%;
           display: flex;
           flex-direction: column;
-          overflow: hidden;
           border-collapse: collapse;
           gap: 0.25rem;
         }
@@ -68,15 +65,25 @@ const Tracker = ({
           border-bottom: 1px solid var(--box-shadow-light);
           display: flex;
           background: var(--box-shadow-light);
+          border-radius: 6px;
+          overflow: auto;
+        }
+        .add-task {
+          -webkit-box-shadow: 0 8px 16px 0 var(--box-shadow-light);
+          box-shadow: 0 8px 16px 0 var(--box-shadow-light);
+          border-bottom: 1px solid var(--box-shadow-light);
+          display: flex;
+          border-radius: 6px;
+          overflow: auto;
         }
         .task-container.done {
           background: #073b0761;
         }
 
         .task-container:hover {
-          box-shadow: inset 1px 0 0 rgb(255 255 255 / 20%),
-            inset -1px 0 0 rgb(255 255 255 / 20%),
-            0 0 4px 0 rgb(95 99 104 / 60%), 0 0 6px 2px rgb(95 99 104 / 60%);
+          box-shadow: inset 1px 0 0 rgb(255 255 255 / 1%),
+            inset -1px 0 0 rgb(255 255 255 / 1%), 0 0 4px 0 rgb(95 99 104 / 25%),
+            0 0 6px 2px rgb(95 99 104 / 25%);
         }
       `}</style>
     </section>
@@ -210,7 +217,7 @@ const Task = ({
           font-size: 80%;
           border-right: 3px solid var(--box-shadow);
           margin: 0.5rem 0;
-          max-width: 6.25rem;
+          max-width: 7rem;
         }
         .task-description {
         }

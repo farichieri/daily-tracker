@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './slices/authSlice';
 import themeSlice from './slices/themeSlice';
 import trackerSlice from './slices/trackerSlice';
+import layoutSlice from './slices/layoutSlice';
 
 export const store = configureStore({
   reducer: {
     theme: themeSlice,
     auth: authSlice,
     tracker: trackerSlice,
+    layout: layoutSlice,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });
