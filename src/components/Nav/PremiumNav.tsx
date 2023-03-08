@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import DarkMode from '../DarkMode/DarkMode';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { toggleSidebar } from 'store/slices/layoutSlice';
+import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
+import Image from 'next/image';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
@@ -14,12 +15,32 @@ const PremiumNav = () => {
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
+  const sidebarState = useSelector(selectSidebarState);
 
   const pages = [{ name: 'Tracker', path: '/tracker' }];
   const router = useRouter();
 
   return (
     <nav>
+      <span className='toggle-sidebar' onClick={handleToggleSidebar}>
+        {sidebarState ? (
+          <Image
+            src={'/icons/close.png'}
+            alt='close-icon'
+            width={20}
+            height={20}
+            style={{ pointerEvents: 'none' }}
+          />
+        ) : (
+          <Image
+            src={'/icons/open.png'}
+            alt='open-icon'
+            width={20}
+            height={20}
+            style={{ pointerEvents: 'none' }}
+          />
+        )}
+      </span>
       <span className='pages'>
         {pages.map((page) => (
           <Link key={`nav-${page.name}`} href={page.path}>
@@ -29,10 +50,8 @@ const PremiumNav = () => {
           </Link>
         ))}
       </span>
-      <span className='toggle-sidebar' onClick={handleToggleSidebar}>
-        Sidebar
-      </span>
-      <div>
+
+      <div className='user-dark'>
         <Link href={'/user'}>
           <span
             className={`user ${router.asPath === '/user' ? 'selected' : ''}`}
@@ -52,11 +71,14 @@ const PremiumNav = () => {
           position: fixed;
           top: 0;
           width: 100%;
-          justify-content: space-between;
           padding: 0 1rem;
           z-index: 1000;
           border-bottom: 1px solid var(--box-shadow-light);
           background: var(--gray-color);
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
         }
         .pages {
           display: flex;
@@ -75,6 +97,9 @@ const PremiumNav = () => {
         }
         div {
           display: flex;
+        }
+        .user-dark {
+          margin-left: auto;
         }
       `}</style>
     </nav>

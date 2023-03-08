@@ -3,7 +3,7 @@ title: 'The reason why you should track your days'
 date: '2022-02-24'
 author: 'fabricio-richieri'
 authorName: 'Fabricio Richieri'
-topic: 'testtopic'
+topic: 'productivity'
 premium: true
 ---
 

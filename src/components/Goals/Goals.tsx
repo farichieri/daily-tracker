@@ -59,7 +59,6 @@ const Objetives = ({
           margin-bottom: 1rem;
           width: 100%;
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
-          overflow: auto;
           background: var(--bg-color-secondary);
         }
         p {

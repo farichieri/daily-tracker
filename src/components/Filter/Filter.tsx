@@ -7,7 +7,7 @@ const Filter = ({
   handleFilter: any;
   optionSelected: string;
 }) => {
-  const OPTIONS = ['All', 'testtopic', 'secondtopic'];
+  const OPTIONS = ['All', 'productivity'];
   return (
     <div>
       {OPTIONS.map((opt) => (

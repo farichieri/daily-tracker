@@ -6,20 +6,21 @@ import Posts from '@/components/Posts/Posts';
 import SubscribeInvitation from '@/components/SubscribeInvitation/SubscribeInvitation';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'store/slices/authSlice';
 import Date from '../../components/Layout/Date';
 import MainLayout from '../../components/Layout/MainLayout';
 import { getPostData, getSortedPostData } from '../../utils/posts';
 
 const Post = ({
   postData,
-  user,
   postsRecommended,
 }: {
   postData: any;
-  user: any;
   postsRecommended: any;
 }) => {
   const [showContent, setShowContent] = useState(false);
+  const { user } = useSelector(selectUser);
 
   useEffect(() => {
     if (postData.premium) {

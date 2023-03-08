@@ -27,7 +27,7 @@ export default function MainLayout({
   return (
     <section>
       <Nav />
-      {children}
+      <div className='container'>{children}</div>
       <Footer />
       <style jsx>
         {`
@@ -41,6 +41,13 @@ export default function MainLayout({
             padding: ${padding}rem;
             padding-top: calc(var(--nav-height));
             width: 100%;
+          }
+          .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: start;
           }
           @media and only screen (max-width: 500px) {
             section {

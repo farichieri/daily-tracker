@@ -47,15 +47,15 @@ const TrackerPage = () => {
           </div>
         )
       )}
-      <div className='dashboard-container'>
-        {user && (
+      {user && !isLoadingData && (
+        <div className='dashboard-container'>
           <Tracker
             userID={user.uid}
             userData={data}
             getUserData={getUserData}
           />
-        )}
-      </div>
+        </div>
+      )}
       <style jsx>{`
         .dashboard-container {
           max-width: var(--max-width);
