@@ -3,21 +3,28 @@ import Loader from '@/components/Layout/Loader/Loader';
 import { db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker/Tracker';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
 import { selectUser } from 'store/slices/authSlice';
-import { selectProjectSelected } from 'store/slices/trackerSlice';
-import { useSelector } from 'react-redux';
+import {
+  selectProjects,
+  selectProjectSelected,
+  setProjects,
+} from 'store/slices/trackerSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const TrackerPage = () => {
+  const dispatch = useDispatch();
   const { user, isUserVerified } = useSelector(selectUser);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [data, setData] = useState<string[]>([]);
   const projectSelected = useSelector(selectProjectSelected);
+  const projects = useSelector(selectProjects);
 
   const getUserData = async (date: string) => {
     if (user && date) {
+      console.log('Fetching Data');
       const docRef = doc(
         db,
         'users',
@@ -42,6 +49,24 @@ const TrackerPage = () => {
       setIsLoadingData(true);
       getData();
     }
+  }, [user, projectSelected, projects]);
+
+  const getProjects = async () => {
+    if (user) {
+      console.log('Fetching Projects');
+      let data: any[] = [];
+      const docRef = collection(db, 'users', user.uid, 'projects');
+      const querySnapshot = await getDocs(docRef);
+      querySnapshot.forEach((doc) => data.push(doc.id));
+      dispatch(setProjects(data));
+    }
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      await getProjects();
+    };
+    getData();
   }, [user]);
 
   return (
@@ -60,6 +85,7 @@ const TrackerPage = () => {
       {user && !isLoadingData && (
         <div className='dashboard-container'>
           <Tracker
+            projectSelected={projectSelected}
             userID={user.uid}
             userData={data}
             getUserData={getUserData}

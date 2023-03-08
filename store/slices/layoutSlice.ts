@@ -3,12 +3,14 @@ import type { RootState } from '../store';
 
 // Define a type for the slice state
 interface LayoutSlice {
-  open: boolean;
+  isSidebarOpen: boolean;
+  isCreatingProject: boolean;
 }
 
 // Define the initial state using that type
 const initialState: LayoutSlice = {
-  open: false,
+  isSidebarOpen: false,
+  isCreatingProject: false,
 };
 
 export const layoutSlice = createSlice({
@@ -17,14 +19,24 @@ export const layoutSlice = createSlice({
   initialState,
   reducers: {
     toggleSidebar: (state) => {
-      state.open = !state.open;
+      state.isSidebarOpen = !state.isSidebarOpen;
+    },
+    toggleIsCreatingProject: (state) => {
+      state.isCreatingProject = !state.isCreatingProject;
+    },
+    closeModal: (state) => {
+      state.isCreatingProject = false;
     },
   },
 });
 
-export const { toggleSidebar } = layoutSlice.actions;
+export const { toggleSidebar, toggleIsCreatingProject, closeModal } =
+  layoutSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectSidebarState = (state: RootState) => state.layout.open;
+export const selectSidebarState = (state: RootState) =>
+  state.layout.isSidebarOpen;
+export const selectIsCreatingProject = (state: RootState) =>
+  state.layout.isCreatingProject;
 
 export default layoutSlice.reducer;

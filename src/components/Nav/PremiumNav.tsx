@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
 import Image from 'next/image';
+import { selectProjectSelected } from 'store/slices/trackerSlice';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const PremiumNav = () => {
     dispatch(toggleSidebar());
   };
   const sidebarState = useSelector(selectSidebarState);
+  const projectSelected = useSelector(selectProjectSelected);
 
   const pages = [{ name: 'Tracker', path: '/tracker' }];
   const router = useRouter();
@@ -50,7 +52,7 @@ const PremiumNav = () => {
           </Link>
         ))}
       </span>
-
+      <span className='project-selected'>{projectSelected}</span>
       <div className='user-dark'>
         <Link href={'/user'}>
           <span
@@ -72,7 +74,7 @@ const PremiumNav = () => {
           top: 0;
           width: 100%;
           padding: 0 1rem;
-          z-index: 1000;
+          z-index: 10;
           border-bottom: 1px solid var(--box-shadow-light);
           background: var(--gray-color);
           -webkit-user-select: none;
@@ -100,6 +102,10 @@ const PremiumNav = () => {
         }
         .user-dark {
           margin-left: auto;
+        }
+        .project-selected {
+          font-weight: bold;
+          text-shadow: 0 0 5px var(--box-shadow);
         }
       `}</style>
     </nav>

@@ -3,7 +3,7 @@ import Day from './Day';
 import { useEffect, useState } from 'react';
 import Objetives from '../Goals/Goals';
 import Button from '../Layout/Button/Button';
-import { doc, setDoc, collection, collectionGroup } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
 import { dbFormatDate } from '@/utils/formatDate';
@@ -19,10 +19,12 @@ const Tracker = ({
   userID,
   userData,
   getUserData,
+  projectSelected,
 }: {
   userID: string;
   userData: any;
   getUserData: Function;
+  projectSelected: string;
 }) => {
   const dispatch = useDispatch();
   const daySelected = useSelector(selectDaySelected);
@@ -137,17 +139,13 @@ const Tracker = ({
   const handleSave = async () => {
     setIsSaving(true);
     const date = daySelected;
-    const project = 'own-project';
+    const project = projectSelected;
     const docRef = doc(db, 'users', userID, 'projects', project, 'dates', date);
     await setDoc(docRef, {
       objetives: objetives,
       tasks: tasks,
     });
 
-    // await setDoc(doc(db, userID, date), {
-    //   objetives: objetives,
-    //   tasks: tasks,
-    // });
     setIsSaving(false);
     setIsSaveable(!isSaveable);
   };
