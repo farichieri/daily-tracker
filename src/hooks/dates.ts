@@ -7,14 +7,10 @@ export const getDaysInAMonth = (date: Date) => {
   return new Array(31)
     .fill('')
     .map((v, i) => {
-      const day = dbFormatDate(
-        new Date(year, month, i + 1).toLocaleDateString()
-      );
+      const day = new Date(year, month, i + 1);
       return {
         date: day,
-        weekDay: new Date(day).toLocaleDateString('en-US', {
-          weekday: 'long',
-        }),
+        weekDay: format(day, 'E'),
       };
     })
     .filter((v) => new Date(v.date).getMonth() === month);
@@ -26,9 +22,9 @@ export const getDaysInAWeek = (date: Date) => {
     .map((el, idx) => {
       const day: Date = new Date(el.setDate(el.getDate() - el.getDay() + idx));
       return {
-        date: dbFormatDate(day.toLocaleDateString()),
+        date: dbFormatDate(day),
         numberOfMonth: format(day, 'd'),
-        weekDay: day.toLocaleDateString('en-US', { weekday: 'short' }),
+        weekDay: format(day, 'E'),
       };
     });
 };

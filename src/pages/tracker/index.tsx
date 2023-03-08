@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
 import Loader from '@/components/Layout/Loader/Loader';
-import { auth, db } from '@/utils/firebase.config';
+import { db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker/Tracker';
 import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
 import { selectUser } from 'store/slices/authSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { selectProjectSelected } from 'store/slices/trackerSlice';
+import { useSelector } from 'react-redux';
 
 const TrackerPage = () => {
   const { user, isUserVerified } = useSelector(selectUser);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [data, setData] = useState<string[]>([]);
+  const projectSelected = useSelector(selectProjectSelected);
 
   const getUserData = async (date: string) => {
     if (user && date) {
-      const querySnapshot = await getDoc(doc(db, user.uid, date));
+      const docRef = doc(
+        db,
+        'users',
+        user.uid,
+        'projects',
+        projectSelected,
+        'dates',
+        date
+      );
+      const querySnapshot = await getDoc(docRef);
       let data: any = querySnapshot.data();
       setData(data);
     }
@@ -25,7 +35,7 @@ const TrackerPage = () => {
 
   useEffect(() => {
     const getData = async () => {
-      await getUserData(dbFormatDate(new Date().toLocaleDateString()));
+      await getUserData(dbFormatDate(new Date()));
       setIsLoadingData(false);
     };
     if (user) {

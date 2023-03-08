@@ -6,12 +6,14 @@ import type { RootState } from '../store';
 interface TrackerSlice {
   daySelected: string;
   weekSelected: any[];
+  projectSelected: string;
 }
 
 // Define the initial state using that type
 const initialState: TrackerSlice = {
   daySelected: '',
   weekSelected: [],
+  projectSelected: 'own-project',
 };
 
 export const trackerSlice = createSlice({
@@ -27,15 +29,21 @@ export const trackerSlice = createSlice({
       state.weekSelected = action.payload;
       // Can be removed.
     },
+    setProjectSelected: (state, action: PayloadAction<string>) => {
+      state.projectSelected = action.payload;
+    },
   },
 });
 
-export const { setDaySelected, setWeekSelected } = trackerSlice.actions;
+export const { setDaySelected, setWeekSelected, setProjectSelected } =
+  trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectDaySelected = (state: RootState) =>
   state.tracker.daySelected;
 export const selectWeekSelected = (state: RootState) =>
   state.tracker.weekSelected;
+export const selectProjectSelected = (state: RootState) =>
+  state.tracker.projectSelected;
 
 export default trackerSlice.reducer;

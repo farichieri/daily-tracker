@@ -145,7 +145,7 @@ const Task = ({
       </div>
       <div className='column action'>
         {addTask ? (
-          <td style={{ paddingRight: '.5rem' }}>
+          <div style={{ paddingRight: '.5rem' }}>
             <IconButton
               props={null}
               onClick={handleAdd}
@@ -154,7 +154,7 @@ const Task = ({
               width={24}
               height={24}
             />
-          </td>
+          </div>
         ) : (
           <IconButton
             onClick={handleToggleDone}

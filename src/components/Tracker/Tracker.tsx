@@ -3,11 +3,10 @@ import Day from './Day';
 import { useEffect, useState } from 'react';
 import Objetives from '../Goals/Goals';
 import Button from '../Layout/Button/Button';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, collectionGroup } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { types } from '@/utils/types';
 import { dbFormatDate } from '@/utils/formatDate';
-import Clock from '../Clock/Clock';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectDaySelected,
@@ -28,7 +27,7 @@ const Tracker = ({
   const dispatch = useDispatch();
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
-  const today = dbFormatDate(new Date().toLocaleDateString());
+  const today = dbFormatDate(new Date());
   const [isSaving, setIsSaving] = useState(false);
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
@@ -46,8 +45,6 @@ const Tracker = ({
   const filterSelectOptions = ['today'];
 
   useEffect(() => {
-    // const date = new Date();
-    // dispatch(setWeekSelected(getDaysInAWeek(date)));
     dispatch(setDaySelected(today));
   }, []);
 
@@ -139,12 +136,18 @@ const Tracker = ({
 
   const handleSave = async () => {
     setIsSaving(true);
-    const date = dbFormatDate(daySelected);
-    console.log('saving');
-    await setDoc(doc(db, userID, date), {
+    const date = daySelected;
+    const project = 'own-project';
+    const docRef = doc(db, 'users', userID, 'projects', project, 'dates', date);
+    await setDoc(docRef, {
       objetives: objetives,
       tasks: tasks,
     });
+
+    // await setDoc(doc(db, userID, date), {
+    //   objetives: objetives,
+    //   tasks: tasks,
+    // });
     setIsSaving(false);
     setIsSaveable(!isSaveable);
   };
@@ -174,7 +177,7 @@ const Tracker = ({
     // const date = new Date(weekSelected[0].date);
     // const newDate = modifyDateDays(date, action, 7);
     const newSelectedDay = dbFormatDate(
-      modifyDateDays(new Date(daySelected), action, 7).toLocaleDateString()
+      modifyDateDays(new Date(daySelected), action, 7)
     );
     dispatch(setDaySelected(newSelectedDay));
     // dispatch(setWeekSelected(getDaysInAWeek(newDate)));

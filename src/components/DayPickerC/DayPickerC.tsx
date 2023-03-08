@@ -20,7 +20,7 @@ const DayPickerC = () => {
     if (day) {
       setSelected(day);
       setOpen(!open);
-      dispatch(setDaySelected(dbFormatDate(day.toLocaleDateString())));
+      dispatch(setDaySelected(dbFormatDate(day)));
     }
   };
 

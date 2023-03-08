@@ -11,6 +11,10 @@ export const store = configureStore({
     tracker: trackerSlice,
     layout: layoutSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

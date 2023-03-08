@@ -1,4 +1,5 @@
 import { db } from '@/utils/firebase.config';
+import { dbFormatDate } from '@/utils/formatDate';
 import { doc, setDoc } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
@@ -16,7 +17,7 @@ const mailer = async (req: NextApiRequest, res: NextApiResponse) => {
   });
   try {
     await setDoc(doc(db, 'newsletter', email), {
-      date: new Date().toLocaleDateString(),
+      date: dbFormatDate(new Date()),
     });
     await transporter.sendMail({
       from: `${process.env.NEXT_PUBLIC_EMAIL_DEV}`,
