@@ -13,6 +13,7 @@ import {
   setProjects,
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { getProjects } from '@/hooks/firebase';
 
 const TrackerPage = () => {
   const dispatch = useDispatch();
@@ -51,20 +52,12 @@ const TrackerPage = () => {
     }
   }, [user, projectSelected, projects]);
 
-  const getProjects = async () => {
-    if (user) {
-      console.log('Fetching Projects');
-      let data: any[] = [];
-      const docRef = collection(db, 'users', user.uid, 'projects');
-      const querySnapshot = await getDocs(docRef);
-      querySnapshot.forEach((doc) => data.push(doc.id));
-      dispatch(setProjects(data));
-    }
-  };
-
   useEffect(() => {
     const getData = async () => {
-      await getProjects();
+      if (user) {
+        const projects = await getProjects(user);
+        dispatch(setProjects(projects));
+      }
     };
     getData();
   }, [user]);

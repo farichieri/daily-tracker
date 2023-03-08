@@ -1,9 +1,11 @@
+import { getProjects } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { closeModal } from 'store/slices/layoutSlice';
+import { setProjects } from 'store/slices/trackerSlice';
 import Modal from '../Modal/Modal';
 
 const ProjectCreate = () => {
@@ -23,6 +25,8 @@ const ProjectCreate = () => {
     if (user) {
       const docRef = doc(db, 'users', user.uid, 'projects', projectInput);
       await setDoc(docRef, {});
+      const projects = await getProjects(user);
+      dispatch(closeModal());
     }
   };
 

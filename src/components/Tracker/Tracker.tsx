@@ -14,6 +14,7 @@ import {
   setDaySelected,
 } from 'store/slices/trackerSlice';
 import Header from './Header';
+import { parse, parseISO } from 'date-fns';
 
 const Tracker = ({
   userID,
@@ -165,6 +166,7 @@ const Tracker = ({
     e.preventDefault();
     const action = (e.target as HTMLButtonElement).id;
     const modifyDateDays = (date: Date, action: string, days: number) => {
+      console.log({ date });
       if (action === 'prev') {
         date.setDate(date.getDate() - days);
       } else if (action === 'next') {
@@ -172,13 +174,10 @@ const Tracker = ({
       }
       return date;
     };
-    // const date = new Date(weekSelected[0].date);
-    // const newDate = modifyDateDays(date, action, 7);
     const newSelectedDay = dbFormatDate(
-      modifyDateDays(new Date(daySelected), action, 7)
+      modifyDateDays(parseISO(daySelected), action, 7)
     );
     dispatch(setDaySelected(newSelectedDay));
-    // dispatch(setWeekSelected(getDaysInAWeek(newDate)));
   };
 
   const handleSelectFilterOption = (e: Event) => {
