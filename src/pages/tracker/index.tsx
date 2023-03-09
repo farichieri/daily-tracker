@@ -3,7 +3,7 @@ import Loader from '@/components/Layout/Loader/Loader';
 import { db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker/Tracker';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
 import { selectUser } from 'store/slices/authSlice';

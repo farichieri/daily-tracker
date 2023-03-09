@@ -1,6 +1,7 @@
 import {
   selectSidebarState,
   toggleIsCreatingProject,
+  toggleSidebar,
 } from 'store/slices/layoutSlice';
 import {
   selectProjects,
@@ -12,7 +13,7 @@ import ButtonAction from '../Layout/ButtonAction/ButtonAction';
 
 const PremiumSidebar = () => {
   const dispatch = useDispatch();
-  const sidebarState = useSelector(selectSidebarState);
+  const sidebarOpen = useSelector(selectSidebarState);
   const projects = useSelector(selectProjects);
   const projectSelected = useSelector(selectProjectSelected);
 
@@ -27,8 +28,8 @@ const PremiumSidebar = () => {
   };
 
   return (
-    <div className={`sidebar ${sidebarState ? 'open' : ''}`}>
-      <div className='tracks'>
+    <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <div className='tracks' onClick={(e) => e.stopPropagation()}>
         <div className='title'>
           My Tracks:
           <ButtonAction text={'+'} onClick={handleIsCreatingProject} />
@@ -55,10 +56,9 @@ const PremiumSidebar = () => {
           border-right: 1px solid var(--box-shadow-light);
           display: flex;
           height: 100%;
-          justify-content: center;
           left: -200px;
           height: calc(100vh - var(--premium-nav-height));
-          padding: 1rem 0.5rem;
+          padding: 1rem 1rem;
           position: absolute;
           transition: all 0.3s;
           user-select: none;
@@ -89,7 +89,6 @@ const PremiumSidebar = () => {
           align-items: center;
         }
         .selected {
-          font-weight: bold;
           opacity: 1;
         }
       `}</style>

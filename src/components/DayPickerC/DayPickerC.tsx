@@ -24,26 +24,6 @@ const DayPickerC = () => {
     }
   };
 
-  const css = `
-  .rpd-day:hover {
-    background: var(--bg-color-tertiary);
-  }
-  .my-selected {
-    background: var(--bg-color-tertiary);
-    border-color: var(--bg-color-tertiary);
-  }
-  .my-selected:not([disabled]) { 
-    font-weight: bold; 
-  }
-  .my-selected:hover:not([disabled]) { 
-  }
-  .my-today { 
-    font-weight: bold;
-    font-size: 120%; 
-    color: red;
-  }
-`;
-
   return (
     <div className='container'>
       <div className='content' onClick={() => setOpen(!open)}>
@@ -68,19 +48,22 @@ const DayPickerC = () => {
           )}
         </div>
       </div>
-      <div className='calendar'>
-        {open && (
-          <DayPicker
-            mode='single'
-            selected={selected}
-            onSelect={handleSelect}
-            modifiersClassNames={{
-              selected: 'my-selected',
-              today: 'my-today',
-            }}
-          />
-        )}
-      </div>
+      {open && (
+        <>
+          <div className='calendar' onClick={(e) => e.stopPropagation()}>
+            <DayPicker
+              mode='single'
+              selected={selected}
+              onSelect={handleSelect}
+              modifiersClassNames={{
+                selected: 'my-selected',
+                today: 'my-today',
+              }}
+            />
+          </div>
+          <div className='modal' onClick={() => setOpen(!open)}></div>
+        </>
+      )}
       <style>{css}</style>
       <style jsx>{`
         .container {
@@ -105,6 +88,15 @@ const DayPickerC = () => {
           pointer-events: none;
           margin-bottom: 4px;
         }
+        .modal {
+          position: fixed;
+          background: transparent;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 10;
+        }
         .calendar {
           position: absolute;
           background: var(--bg-color);
@@ -113,7 +105,6 @@ const DayPickerC = () => {
           top: 2.5rem;
           z-index: 998;
           font-size: 80%;
-          left: 2rem;
         }
         .rdp-row {
         }
@@ -121,5 +112,25 @@ const DayPickerC = () => {
     </div>
   );
 };
+
+const css = `
+.rpd-day:hover {
+  background: var(--bg-color-tertiary);
+}
+.my-selected {
+  background: var(--bg-color-tertiary);
+  border-color: var(--bg-color-tertiary);
+}
+.my-selected:not([disabled]) { 
+  font-weight: bold; 
+}
+.my-selected:hover:not([disabled]) { 
+}
+.my-today { 
+  font-weight: bold;
+  font-size: 120%; 
+  color: red;
+}
+`;
 
 export default DayPickerC;

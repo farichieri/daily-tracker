@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { closeModal } from 'store/slices/layoutSlice';
-import { setProjects } from 'store/slices/trackerSlice';
+import { setProjects, setProjectSelected } from 'store/slices/trackerSlice';
 import Modal from '../Modal/Modal';
 
 const ProjectCreate = () => {
@@ -23,10 +23,12 @@ const ProjectCreate = () => {
 
   const handleAddTracker = async () => {
     if (user) {
+      dispatch(closeModal());
       const docRef = doc(db, 'users', user.uid, 'projects', projectInput);
       await setDoc(docRef, {});
       const projects = await getProjects(user);
-      dispatch(closeModal());
+      dispatch(setProjects(projects));
+      dispatch(setProjectSelected(projectInput));
     }
   };
 
