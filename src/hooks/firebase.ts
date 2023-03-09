@@ -7,7 +7,15 @@ export const getProjects = async (user: User) => {
     let data: any[] = [];
     const docRef = collection(db, 'users', user.uid, 'projects');
     const querySnapshot = await getDocs(docRef);
-    querySnapshot.forEach((doc) => data.push(doc.id));
+    querySnapshot.forEach((doc) => {
+      const docData = doc.data();
+      data.push({
+        id: doc.id,
+        projectName: docData.projectName,
+        isDefault: docData.isDefault,
+        isFavorite: docData.isFavorite,
+      });
+    });
     return data;
   } else {
     return [];

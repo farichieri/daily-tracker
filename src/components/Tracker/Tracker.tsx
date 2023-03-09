@@ -10,6 +10,7 @@ import { dbFormatDate } from '@/utils/formatDate';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectDaySelected,
+  selectProjectSelected,
   selectWeekSelected,
   setDaySelected,
 } from 'store/slices/trackerSlice';
@@ -20,16 +21,15 @@ const Tracker = ({
   userID,
   userData,
   getUserData,
-  projectSelected,
 }: {
   userID: string;
   userData: any;
   getUserData: Function;
-  projectSelected: string;
 }) => {
   const dispatch = useDispatch();
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
+  const projectSelected = useSelector(selectProjectSelected);
   const today = dbFormatDate(new Date());
   const [isSaving, setIsSaving] = useState(false);
   const [objetives, setObjetives] = useState<string[]>([]);
@@ -140,13 +140,13 @@ const Tracker = ({
   const handleSave = async () => {
     setIsSaving(true);
     const date = daySelected;
-    const project = projectSelected;
+    const project = projectSelected.id;
     const docRef = doc(db, 'users', userID, 'projects', project, 'dates', date);
     await setDoc(docRef, {
+      date: date,
       objetives: objetives,
       tasks: tasks,
     });
-
     setIsSaving(false);
     setIsSaveable(!isSaveable);
   };

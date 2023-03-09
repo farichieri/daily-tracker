@@ -1,6 +1,6 @@
 import { getProjects } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
-import { doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
@@ -24,11 +24,23 @@ const ProjectCreate = () => {
   const handleAddTracker = async () => {
     if (user) {
       dispatch(closeModal());
-      const docRef = doc(db, 'users', user.uid, 'projects', projectInput);
-      await setDoc(docRef, {});
+      const docRef = collection(db, 'users', user.uid, 'projects');
+      await addDoc(docRef, {
+        projectName: projectInput,
+        isDefault: false,
+        isFavorite: false,
+      });
       const projects = await getProjects(user);
       dispatch(setProjects(projects));
-      dispatch(setProjectSelected(projectInput));
+      const newProjectSelected = projects.find(
+        (p) => p.projectName === projectInput
+      ) || {
+        id: '',
+        projectName: '',
+        isDefault: false,
+        isFavorite: false,
+      };
+      dispatch(setProjectSelected(newProjectSelected));
     }
   };
 

@@ -14,29 +14,32 @@ import {
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjects } from '@/hooks/firebase';
+import ProjectCreate from '@/components/ProjectCreate/ProjectCreate';
 
 const TrackerPage = () => {
   const dispatch = useDispatch();
   const { user, isUserVerified } = useSelector(selectUser);
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const [isLoadingProjects, setIsloadingProjects] = useState(true);
   const [data, setData] = useState<string[]>([]);
   const projectSelected = useSelector(selectProjectSelected);
   const projects = useSelector(selectProjects);
 
   const getUserData = async (date: string) => {
-    if (user && date) {
+    if (user && date && projectSelected.id) {
       console.log('Fetching Data');
       const docRef = doc(
         db,
         'users',
         user.uid,
         'projects',
-        projectSelected,
+        projectSelected.id,
         'dates',
         date
       );
       const querySnapshot = await getDoc(docRef);
       let data: any = querySnapshot.data();
+      console.log({ data });
       setData(data);
     }
   };
@@ -46,7 +49,7 @@ const TrackerPage = () => {
       await getUserData(dbFormatDate(new Date()));
       setIsLoadingData(false);
     };
-    if (user) {
+    if (user && projectSelected.id) {
       setIsLoadingData(true);
       getData();
     }
@@ -57,6 +60,7 @@ const TrackerPage = () => {
       if (user) {
         const projects = await getProjects(user);
         dispatch(setProjects(projects));
+        setIsloadingProjects(false);
       }
     };
     getData();
@@ -75,10 +79,10 @@ const TrackerPage = () => {
           </div>
         )
       )}
+      {user && !isLoadingProjects && projects.length < 1 && <ProjectCreate />}
       {user && !isLoadingData && (
         <div className='dashboard-container'>
           <Tracker
-            projectSelected={projectSelected}
             userID={user.uid}
             userData={data}
             getUserData={getUserData}

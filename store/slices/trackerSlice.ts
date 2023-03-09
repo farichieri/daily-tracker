@@ -2,20 +2,39 @@ import { getDaysInAWeek } from '@/hooks/dates';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
+interface Project {
+  id: string;
+  projectName: string;
+  isDefault: boolean;
+  isFavorite: boolean;
+}
+
 // Define a type for the slice state
 interface TrackerSlice {
   daySelected: string;
   weekSelected: any[];
-  projects: string[];
-  projectSelected: string;
+  projects: Project[];
+  projectSelected: Project;
+  projectEdit: Project;
 }
 
 // Define the initial state using that type
 const initialState: TrackerSlice = {
   daySelected: '',
   weekSelected: [],
-  projects: ['own-project'],
-  projectSelected: 'own-project',
+  projects: [],
+  projectSelected: {
+    id: '',
+    projectName: '',
+    isDefault: false,
+    isFavorite: false,
+  },
+  projectEdit: {
+    id: '',
+    projectName: '',
+    isDefault: false,
+    isFavorite: false,
+  },
 };
 
 export const trackerSlice = createSlice({
@@ -31,11 +50,19 @@ export const trackerSlice = createSlice({
       state.weekSelected = action.payload;
       // Can be removed.
     },
-    setProjects: (state, action: PayloadAction<string[]>) => {
+    setProjects: (state, action: PayloadAction<Project[]>) => {
       state.projects = action.payload;
+      state.projectSelected =
+        action.payload.find((project) => project.isDefault === true) ||
+        action.payload[0];
     },
-    setProjectSelected: (state, action: PayloadAction<string>) => {
+    setProjectSelected: (state, action: PayloadAction<Project>) => {
       state.projectSelected = action.payload;
+    },
+    setProjectEdit: (state, action: PayloadAction<string>) => {
+      state.projectEdit =
+        state.projects.find((project) => project.id === action.payload) ||
+        state.projectEdit;
     },
   },
 });
@@ -45,6 +72,7 @@ export const {
   setWeekSelected,
   setProjectSelected,
   setProjects,
+  setProjectEdit,
 } = trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -55,5 +83,7 @@ export const selectWeekSelected = (state: RootState) =>
 export const selectProjects = (state: RootState) => state.tracker.projects;
 export const selectProjectSelected = (state: RootState) =>
   state.tracker.projectSelected;
+export const selectProjectEdit = (state: RootState) =>
+  state.tracker.projectEdit;
 
 export default trackerSlice.reducer;

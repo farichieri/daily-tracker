@@ -3,14 +3,14 @@ import PremiumNav from '../Nav/PremiumNav';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';
 import PremiumSidebar from '../Nav/PremiumSidebar';
-import { selectUser } from 'store/slices/authSlice';
-import Modal from '../Modal/Modal';
 import {
   selectIsCreatingProject,
+  selectIsEditingProject,
   selectSidebarState,
   toggleSidebar,
 } from 'store/slices/layoutSlice';
 import ProjectCreate from '../ProjectCreate/ProjectCreate';
+import ProjectEdit from '../ProjectEdit/ProjectEdit';
 
 export default function PremiumLayout({
   children,
@@ -22,8 +22,8 @@ export default function PremiumLayout({
   const padding = withPadding ? 1.5 : 0;
   const dispatch = useDispatch();
   const theme = useSelector(selectTheme);
-  const { user } = useSelector(selectUser);
   const isCreatingProject = useSelector(selectIsCreatingProject);
+  const isEditingProject = useSelector(selectIsEditingProject);
   const sidebarOpen = useSelector(selectSidebarState);
 
   useEffect(() => {
@@ -40,6 +40,7 @@ export default function PremiumLayout({
   return (
     <section>
       {isCreatingProject && <ProjectCreate />}
+      {isEditingProject && <ProjectEdit />}
       <PremiumNav />
       <PremiumSidebar />
       {sidebarOpen && (

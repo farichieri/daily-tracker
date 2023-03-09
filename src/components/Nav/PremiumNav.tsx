@@ -52,7 +52,7 @@ const PremiumNav = () => {
           </Link>
         ))}
       </span>
-      <span className='project-selected'>{projectSelected}</span>
+      <span className='project-selected'>{projectSelected.projectName}</span>
       <div className='user-dark'>
         <Link href={'/user'}>
           <span
