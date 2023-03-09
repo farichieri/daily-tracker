@@ -14,15 +14,14 @@ import { useSelector } from 'react-redux';
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   const theme = useSelector(selectTheme);
-  const { isUserVerified } = useSelector(selectUser);
+  const { isVerifyingUser } = useSelector(selectUser);
 
   useEffect(() => {
-    if (isUserVerified === false) {
-      dispatch(verifyUser());
-      onAuthStateChanged(auth, (user) => {
-        dispatch(userVerified(user));
-      });
-    }
+    dispatch(verifyUser());
+    console.log('Verifying User');
+    onAuthStateChanged(auth, (user) => {
+      dispatch(userVerified(user));
+    });
   }, []);
 
   return (

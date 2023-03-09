@@ -4,6 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 export const getProjects = async (user: User) => {
   if (user) {
+    console.log('Fetching Projects');
     let data: any[] = [];
     const docRef = collection(db, 'users', user.uid, 'projects');
     const querySnapshot = await getDocs(docRef);
@@ -16,7 +17,7 @@ export const getProjects = async (user: User) => {
         isFavorite: docData.isFavorite,
       });
     });
-    return data;
+    return data.sort((a, b) => b.isDefault - a.isDefault);
   } else {
     return [];
   }

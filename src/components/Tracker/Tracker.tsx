@@ -9,24 +9,25 @@ import { types } from '@/utils/types';
 import { dbFormatDate } from '@/utils/formatDate';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectDayData,
   selectDaySelected,
   selectProjectSelected,
   selectWeekSelected,
   setDaySelected,
 } from 'store/slices/trackerSlice';
 import Header from './Header';
-import { parse, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 
 const Tracker = ({
   userID,
-  userData,
   getUserData,
 }: {
   userID: string;
-  userData: any;
   getUserData: Function;
 }) => {
   const dispatch = useDispatch();
+  const dayData = useSelector(selectDayData);
+  console.log({ dayData });
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
   const projectSelected = useSelector(selectProjectSelected);
@@ -53,13 +54,13 @@ const Tracker = ({
 
   useEffect(() => {
     const setData = () => {
-      const objetives = userData?.objetives || [];
-      const tasks = userData?.tasks || [];
+      const objetives = dayData?.objetives || [];
+      const tasks = dayData?.tasks || [];
       setTasks(tasks);
       setObjetives(objetives);
     };
     setData();
-  }, [userData, daySelected]);
+  }, [dayData, daySelected]);
 
   useEffect(() => {
     getUserData(daySelected);

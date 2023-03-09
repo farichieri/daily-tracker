@@ -4,8 +4,18 @@ import MainLayout from '@/components/Layout/MainLayout';
 import Link from 'next/link';
 import { selectUser } from 'store/slices/authSlice';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useRouter } from 'next/dist/client/router';
 const User = () => {
-  const { user } = useSelector(selectUser);
+  const router = useRouter();
+  const { user, isVerifyingUser } = useSelector(selectUser);
+
+  useEffect(() => {
+    if (!isVerifyingUser && user) {
+      router.push('/tracker');
+    }
+  }, [isVerifyingUser, user]);
+
   return (
     <MainLayout withPadding={true}>
       {user ? (
@@ -16,7 +26,7 @@ const User = () => {
           </div>
         </>
       ) : (
-        <>
+        <div className='user-container'>
           <div className='header'>
             <h1>Premium Login </h1>
             <h1>Sign in to your premium account</h1>
@@ -35,7 +45,7 @@ const User = () => {
               </Link>
             </p>
           </div>
-        </>
+        </div>
       )}
       <style jsx>
         {`
@@ -65,6 +75,11 @@ const User = () => {
           }
           .description p {
             margin: 0;
+          }
+          .user-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
           }
         `}
       </style>

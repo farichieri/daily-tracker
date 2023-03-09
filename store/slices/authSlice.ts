@@ -5,13 +5,13 @@ import type { RootState } from '../store';
 // Define a type for the slice state
 interface AuthState {
   user: User | null;
-  isUserVerified: boolean;
+  isVerifyingUser: boolean;
 }
 
 // Define the initial state using that type
 const initialState: AuthState = {
   user: null,
-  isUserVerified: false,
+  isVerifyingUser: true,
 };
 
 export const authSlice = createSlice({
@@ -20,11 +20,11 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     verifyUser: (state) => {
-      state.isUserVerified = true;
+      state.isVerifyingUser = true;
     },
     userVerified: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
-      state.isUserVerified = false;
+      state.isVerifyingUser = false;
     },
   },
 });

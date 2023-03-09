@@ -42,7 +42,7 @@ const ProjectEdit = () => {
   const handleEditProject = async () => {
     if (user) {
       dispatch(closeModal());
-      if (projectInput.isDefault === true) {
+      if (projectEdit.isDefault === false && projectInput.isDefault === true) {
         const docRef = collection(db, 'users', user.uid, 'projects');
         const querySnapshot = await getDocs(docRef);
         const removeDefaults = async () => {

@@ -70,6 +70,7 @@ const PremiumSidebar = () => {
                 src={'/icons/edit.png'}
                 width={14}
                 height={14}
+                style={{ pointerEvents: 'none' }}
               />
             </span>
           </div>
@@ -92,6 +93,8 @@ const PremiumSidebar = () => {
           user-select: none;
           width: 200px;
           z-index: 8;
+          background: var(--cool);
+          backdrop-filter: blur(12px);
         }
         .project-container {
           display: flex;

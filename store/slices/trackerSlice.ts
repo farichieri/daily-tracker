@@ -9,8 +9,20 @@ interface Project {
   isFavorite: boolean;
 }
 
+interface DayData {
+  date: string;
+  objetives: string[];
+  tasks: {
+    comments: string;
+    done: boolean;
+    hour: string;
+    task: string;
+  }[];
+}
+
 // Define a type for the slice state
 interface TrackerSlice {
+  dayData: DayData;
   daySelected: string;
   weekSelected: any[];
   projects: Project[];
@@ -20,6 +32,11 @@ interface TrackerSlice {
 
 // Define the initial state using that type
 const initialState: TrackerSlice = {
+  dayData: {
+    date: '',
+    objetives: [],
+    tasks: [],
+  },
   daySelected: '',
   weekSelected: [],
   projects: [],
@@ -42,6 +59,9 @@ export const trackerSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    setDayData: (state, action: PayloadAction<DayData>) => {
+      state.dayData = action.payload;
+    },
     setDaySelected: (state, action: PayloadAction<string>) => {
       state.daySelected = action.payload;
       state.weekSelected = getDaysInAWeek(new Date(action.payload));
@@ -73,9 +93,11 @@ export const {
   setProjectSelected,
   setProjects,
   setProjectEdit,
+  setDayData,
 } = trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
+export const selectDayData = (state: RootState) => state.tracker.dayData;
 export const selectDaySelected = (state: RootState) =>
   state.tracker.daySelected;
 export const selectWeekSelected = (state: RootState) =>

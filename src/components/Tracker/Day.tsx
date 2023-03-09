@@ -226,7 +226,7 @@ const Task = ({
         }
         .description {
           font-size: 80%;
-          color: lightgray;
+          color: var(--text-secondary-color);
         }
         .container.done .hour {
           border-right: 3px solid #02c3026b;

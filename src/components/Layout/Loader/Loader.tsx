@@ -1,138 +1,51 @@
 import React from 'react';
 
-const Loader = ({ text }: { text: string }) => {
+const Loader = ({
+  text,
+  fullScreen,
+}: {
+  text: string;
+  fullScreen: boolean;
+}) => {
   return (
     <div className='loader-container'>
-      <p>{text}</p>
-      <div className='loader'>
-        <div className='loader__content'>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-          <div className='loader__bar'></div>
-        </div>
-      </div>
+      <div className='lds-dual-ring'></div>
       <style jsx>{`
         .loader-container {
-          align-items: center;
+          position: fixed;
+          width: 100vw;
+          height: calc(100vh);
           display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
+          align-items: center;
           justify-content: center;
-          margin: auto;
-          min-height: 100vh;
-        }
-
-        .loader {
+          z-index: ${fullScreen ? 10 : 5};
           top: 0;
           left: 0;
-          z-index: 2;
-          transition: all 0.3s ease-in-out;
-          position: relative;
-          height: 50px;
+          background: var(--bg-color);
         }
-        .loader__content {
-          height: 100%;
-          left: 50%;
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 126px;
-          transform: translateX(-50%);
+        .lds-dual-ring {
+          display: inline-block;
+          width: 80px;
+          height: 80px;
         }
-        .loader__bar {
-          background: white;
-          bottom: 5px;
-          height: 2px;
-          position: absolute;
-          width: 5px;
-          -webkit-animation: sound 0ms -800ms linear infinite alternate;
-          animation: sound 0ms -800ms linear infinite alternate;
+        .lds-dual-ring:after {
+          content: ' ';
+          display: block;
+          width: 64px;
+          height: 64px;
+          margin: 8px;
+          border-radius: 50%;
+          border: 6px solid var(--text-color);
+          border-color: var(--text-color) transparent var(--text-color)
+            transparent;
+          animation: lds-dual-ring 1.2s linear infinite;
         }
-        .loader__bar:nth-child(1) {
-          left: 1px;
-          -webkit-animation-duration: 474ms;
-          animation-duration: 474ms;
-        }
-        .loader__bar:nth-child(2) {
-          left: 13px;
-          -webkit-animation-duration: 433ms;
-          animation-duration: 433ms;
-        }
-        .loader__bar:nth-child(3) {
-          left: 25px;
-          -webkit-animation-duration: 407ms;
-          animation-duration: 407ms;
-        }
-        .loader__bar:nth-child(4) {
-          left: 37px;
-          -webkit-animation-duration: 458ms;
-          animation-duration: 458ms;
-        }
-        .loader__bar:nth-child(5) {
-          left: 49px;
-          -webkit-animation-duration: 400ms;
-          animation-duration: 400ms;
-        }
-        .loader__bar:nth-child(6) {
-          left: 61px;
-          -webkit-animation-duration: 427ms;
-          animation-duration: 427ms;
-        }
-        .loader__bar:nth-child(7) {
-          left: 73px;
-          -webkit-animation-duration: 441ms;
-          animation-duration: 441ms;
-        }
-        .loader__bar:nth-child(8) {
-          left: 85px;
-          -webkit-animation-duration: 419ms;
-          animation-duration: 419ms;
-        }
-        .loader__bar:nth-child(9) {
-          left: 97px;
-          -webkit-animation-duration: 487ms;
-          animation-duration: 487ms;
-        }
-        .loader__bar:nth-child(10) {
-          left: 109px;
-          -webkit-animation-duration: 442ms;
-          animation-duration: 442ms;
-        }
-        .loader__bar:nth-child(11) {
-          left: 121px;
-          -webkit-animation-duration: 412ms;
-          animation-duration: 412ms;
-        }
-         {
-        }
-
-        @-webkit-keyframes sound {
+        @keyframes lds-dual-ring {
           0% {
-            opacity: 0.35;
-            height: 3px;
+            transform: rotate(0deg);
           }
           100% {
-            opacity: 1;
-            height: calc(100% - 10px);
-          }
-        }
-
-        @keyframes sound {
-          0% {
-            opacity: 0.35;
-            height: 3px;
-          }
-          100% {
-            opacity: 1;
-            height: calc(100% - 10px);
+            transform: rotate(360deg);
           }
         }
       `}</style>

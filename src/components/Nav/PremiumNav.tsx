@@ -54,13 +54,9 @@ const PremiumNav = () => {
       </span>
       <span className='project-selected'>{projectSelected.projectName}</span>
       <div className='user-dark'>
-        <Link href={'/user'}>
-          <span
-            className={`user ${router.asPath === '/user' ? 'selected' : ''}`}
-          >
-            {userName}
-          </span>
-        </Link>
+        <span className={`user ${router.asPath === '/user' ? 'selected' : ''}`}>
+          {userName}
+        </span>
         <DarkMode />
       </div>
       <style jsx>{`
@@ -76,7 +72,8 @@ const PremiumNav = () => {
           padding: 0 1rem;
           z-index: 10;
           border-bottom: 1px solid var(--box-shadow-light);
-          background: var(--gray-color);
+          background: var(--cool);
+          backdrop-filter: blur(12px);
           -webkit-user-select: none;
           -moz-user-select: none;
           -ms-user-select: none;
@@ -105,7 +102,6 @@ const PremiumNav = () => {
         }
         .project-selected {
           font-weight: bold;
-          text-shadow: 0 0 5px var(--box-shadow);
         }
       `}</style>
     </nav>

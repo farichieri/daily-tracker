@@ -8,22 +8,25 @@ import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
 import { selectUser } from 'store/slices/authSlice';
 import {
+  selectDayData,
   selectProjects,
   selectProjectSelected,
+  setDayData,
   setProjects,
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjects } from '@/hooks/firebase';
 import ProjectCreate from '@/components/ProjectCreate/ProjectCreate';
+import { useRouter } from 'next/dist/client/router';
 
 const TrackerPage = () => {
   const dispatch = useDispatch();
-  const { user, isUserVerified } = useSelector(selectUser);
+  const { user, isVerifyingUser } = useSelector(selectUser);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [isLoadingProjects, setIsloadingProjects] = useState(true);
-  const [data, setData] = useState<string[]>([]);
   const projectSelected = useSelector(selectProjectSelected);
   const projects = useSelector(selectProjects);
+  const router = useRouter();
 
   const getUserData = async (date: string) => {
     if (user && date && projectSelected.id) {
@@ -39,8 +42,8 @@ const TrackerPage = () => {
       );
       const querySnapshot = await getDoc(docRef);
       let data: any = querySnapshot.data();
-      console.log({ data });
-      setData(data);
+      console.log(data);
+      dispatch(setDayData(data));
     }
   };
 
@@ -66,12 +69,18 @@ const TrackerPage = () => {
     getData();
   }, [user]);
 
+  useEffect(() => {
+    if (!isVerifyingUser && !user) {
+      router.push('/user');
+    }
+  }, [isVerifyingUser, user]);
+
   return (
     <PremiumLayout withPadding={false}>
-      {isUserVerified ? (
-        <Loader text={'Verifying user...'} />
+      {isVerifyingUser ? (
+        <Loader fullScreen={true} text={'Verifying user...'} />
       ) : isLoadingData ? (
-        <Loader text={'Loading data...'} />
+        <Loader fullScreen={false} text={'Loading data...'} />
       ) : (
         !user && (
           <div className='login-container'>
@@ -82,11 +91,7 @@ const TrackerPage = () => {
       {user && !isLoadingProjects && projects.length < 1 && <ProjectCreate />}
       {user && !isLoadingData && (
         <div className='dashboard-container'>
-          <Tracker
-            userID={user.uid}
-            userData={data}
-            getUserData={getUserData}
-          />
+          <Tracker userID={user.uid} getUserData={getUserData} />
         </div>
       )}
       <style jsx>{`

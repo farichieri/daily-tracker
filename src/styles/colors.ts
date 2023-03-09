@@ -3,6 +3,7 @@ import css from 'styled-jsx/css';
 const colors = css.global`
   div.dark {
     --text-color: white;
+    --text-secondary-color: #989898;
     --bg-color: #131313;
     --bg-color-secondary: #282828;
     --bg-color-tertiary: #576375;
@@ -14,9 +15,11 @@ const colors = css.global`
     --nav-background-color: black;
     --gray-color: #232323;
     --bg-modal: #00000080;
+    --cool: #00000080;
   }
   div.light {
     --text-color: black;
+    --text-secondary-color: #4d4d4d;
     --bg-color: white;
     --bg-color-secondary: lightgray;
     --bg-color-tertiary: #b4cdf0;
@@ -28,6 +31,7 @@ const colors = css.global`
     --nav-background-color: white;
     --gray-color: #e7e7e7;
     --bg-modal: #00000080;
+    --cool: #ffffff1a;
   }
 `;
 
