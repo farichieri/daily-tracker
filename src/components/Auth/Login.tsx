@@ -8,9 +8,10 @@ import {
 } from 'firebase/auth';
 import Button from '../Layout/Button/Button';
 import { useRouter } from 'next/router';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import { setIsLoading } from 'store/slices/layoutSlice';
+import GoogleLoginButton from '../Layout/GoogleLoginButton/GoogleLoginButton';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,10 @@ const Login = () => {
         // IdP data available using getAdditionalUserInfo(result)
         const additinalInfo = getAdditionalUserInfo(result);
         if (additinalInfo?.isNewUser) {
+          await setDoc(doc(db, 'users', user.uid), {
+            email: user.email,
+            displayName: user.displayName,
+          });
           const docRef = collection(db, 'users', user.uid, 'projects');
           await addDoc(docRef, {
             projectName: 'Personal',
@@ -43,7 +48,6 @@ const Login = () => {
           });
         }
         user && router.push('/tracker');
-        // ...
       })
       .catch((error) => {
         console.log({ error });
@@ -87,6 +91,9 @@ const Login = () => {
 
   return (
     <div className='login'>
+      <GoogleLoginButton onClick={handleLogInWithGoogle}>
+        Sign in with Google
+      </GoogleLoginButton>
       <form onSubmit={handleSubmit}>
         <div className='inputs-container'>
           <input
@@ -108,13 +115,13 @@ const Login = () => {
           style={null}
           onClick={handleSubmit}
           loadMessage={'Ingresando...'}
-          content='Log in'
+          content='Sign in'
           isLoading={isLoadingForm}
           isDisabled={isDisabled}
         />
         {errorMessage && <span>Email o contraseña inválidos</span>}
       </form>
-      <button onClick={handleLogInWithGoogle}>Google Log in</button>
+
       <style jsx>{`
         form {
           display: flex;
@@ -123,7 +130,7 @@ const Login = () => {
           width: 100%;
           position: relative;
           align-items: center;
-          margin-bottom: 3rem;
+          margin-top: 2rem;
         }
         .inputs-container {
           width: 100%;

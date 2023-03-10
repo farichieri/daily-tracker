@@ -13,7 +13,7 @@ const index = () => {
           <h2>How do I become a premium member?</h2>
           <p>To become a premium member, follow these steps:</p>
           <p>
-            (1) Choose your plan <Link href={'/checkout'}>here</Link>
+            (1) Choose your plan <Link href={'/pricing'}>here</Link>
           </p>
           <p>(2) Input your name, email and card number.</p>
           <p>

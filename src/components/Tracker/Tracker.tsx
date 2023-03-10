@@ -107,7 +107,7 @@ const Tracker = ({
       }
     }
     if (type === types.tasks) {
-      if (task.hour && task.task) {
+      if (task.task) {
         setTasks([...tasks, task]);
         setTask({
           hour: '',

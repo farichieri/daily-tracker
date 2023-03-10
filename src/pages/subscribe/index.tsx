@@ -22,7 +22,7 @@ const index = () => {
           more.
         </p>
         <p>Get Started</p>
-        <Link href={'/checkout'}>
+        <Link href={'/pricing'}>
           <button className='become'>Become a member now</button>
         </Link>
       </div>
