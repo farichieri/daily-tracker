@@ -47,7 +47,7 @@ const Login = () => {
             isFavorite: false,
           });
         }
-        user && router.push('/tracker');
+        user && router.push('/app');
       })
       .catch((error) => {
         console.log({ error });
@@ -69,7 +69,7 @@ const Login = () => {
     await signInWithEmailAndPassword(auth, input.email, input.password)
       .then((result) => {
         const user = result.user;
-        user && router.push('/tracker');
+        user && router.push('/app');
       })
       .catch((error) => {
         setErrorMessage(error.message);

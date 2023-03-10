@@ -14,7 +14,7 @@ const User = () => {
 
   // useEffect(() => {
   //   if (!isVerifyingUser && user) {
-  //     router.push('/tracker');
+  //     router.push('/app');
   //   }
   // }, [isVerifyingUser, user]);
 

@@ -169,6 +169,7 @@ const Tracker = ({
   const handleSelectDay = (event: Event) => {
     event.preventDefault();
     const date = (event.target as HTMLButtonElement).id;
+    console.log({ date });
     dispatch(setDaySelected(date));
   };
 

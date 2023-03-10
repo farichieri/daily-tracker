@@ -17,6 +17,7 @@ export const getDaysInAMonth = (date: Date) => {
 };
 
 export const getDaysInAWeek = (date: Date) => {
+  console.log({ date });
   return Array(7)
     .fill(new Date(date))
     .map((el, idx) => {

@@ -1,6 +1,7 @@
 import { DayData } from '@/global/types';
 import { getDaysInAWeek } from '@/hooks/dates';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { parseISO } from 'date-fns';
 import type { RootState } from '../store';
 
 interface Project {
@@ -54,7 +55,7 @@ export const trackerSlice = createSlice({
     },
     setDaySelected: (state, action: PayloadAction<string>) => {
       state.daySelected = action.payload;
-      state.weekSelected = getDaysInAWeek(new Date(action.payload));
+      state.weekSelected = getDaysInAWeek(parseISO(action.payload));
     },
     setWeekSelected: (state, action: PayloadAction<any[]>) => {
       state.weekSelected = action.payload;

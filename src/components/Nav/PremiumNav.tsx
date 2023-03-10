@@ -6,19 +6,17 @@ import { selectUser } from 'store/slices/authSlice';
 import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
 import Image from 'next/image';
 import { selectProjectSelected } from 'store/slices/trackerSlice';
+import DropDown from '../Layout/DropDown/DropDown';
+import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector(selectUser);
-  const userName = user?.email
-    ? user.email.slice(0, user.email.indexOf('@'))
-    : '';
+
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
   const sidebarState = useSelector(selectSidebarState);
   const projectSelected = useSelector(selectProjectSelected);
-
   const pages = [{ name: 'Tracker', path: '/tracker' }];
   const router = useRouter();
 
@@ -54,9 +52,7 @@ const PremiumNav = () => {
       </span>
       <span className='project-selected'>{projectSelected?.projectName}</span>
       <div className='user-dark'>
-        <span className={`user ${router.asPath === '/user' ? 'selected' : ''}`}>
-          {userName}
-        </span>
+        <ProfileDropDown />
         <DarkMode />
       </div>
       <style jsx>{`
