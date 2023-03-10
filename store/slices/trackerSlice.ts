@@ -1,3 +1,4 @@
+import { DayData } from '@/global/types';
 import { getDaysInAWeek } from '@/hooks/dates';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
@@ -7,17 +8,6 @@ interface Project {
   projectName: string;
   isDefault: boolean;
   isFavorite: boolean;
-}
-
-interface DayData {
-  date: string;
-  objetives: string[];
-  tasks: {
-    comments: string;
-    done: boolean;
-    hour: string;
-    task: string;
-  }[];
 }
 
 // Define a type for the slice state

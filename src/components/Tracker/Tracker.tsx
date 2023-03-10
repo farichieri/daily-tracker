@@ -17,6 +17,7 @@ import {
 } from 'store/slices/trackerSlice';
 import Header from './Header';
 import { parseISO } from 'date-fns';
+import { Task } from '@/global/types';
 
 const Tracker = ({
   userID,
@@ -27,7 +28,6 @@ const Tracker = ({
 }) => {
   const dispatch = useDispatch();
   const dayData = useSelector(selectDayData);
-  console.log({ dayData });
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
   const projectSelected = useSelector(selectProjectSelected);
@@ -35,8 +35,8 @@ const Tracker = ({
   const [isSaving, setIsSaving] = useState(false);
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [task, setTask] = useState<any>({
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [task, setTask] = useState<Task>({
     hour: '',
     task: '',
     comments: '',
@@ -66,26 +66,33 @@ const Tracker = ({
     getUserData(daySelected);
   }, [daySelected]);
 
-  const handleChange = (e: any, type: string) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: string
+  ) => {
     e.preventDefault();
+    const value = (e.target as HTMLButtonElement).value;
+    const name: string = String((e.target as HTMLButtonElement).name);
     if (type === types.objetives) {
-      if (objetives.indexOf(objetives[e.target.id]) > -1) {
+      const id: number = Number((e.target as HTMLButtonElement).id || -1);
+      if (objetives.indexOf(objetives[id]) > -1) {
         const newObjetives = [...objetives];
-        newObjetives[e.target.id] = e.target.value;
+        newObjetives[id] = value;
         setObjetives(newObjetives);
       } else {
-        setObjetive(e.target.value);
+        setObjetive(value);
       }
     }
     if (type === types.tasks) {
-      const name = e.target.name;
-
-      if (tasks.indexOf(tasks[e.target.id]) > -1) {
-        const newTasks = [...tasks];
-        newTasks[e.target.id][name] = e.target.value;
+      const id: number = Number((e.target as HTMLButtonElement).id || -1);
+      if (tasks.indexOf(tasks[id]) > -1) {
+        const newTasks: Task[] = [...tasks];
+        const newTask: any = { ...newTasks[id] };
+        newTask[name] = value;
+        newTasks[id] = newTask;
         setTasks(newTasks);
       } else {
-        setTask({ ...task, [e.target.name]: e.target.value });
+        setTask({ ...task, [name]: value });
       }
     }
     setIsSaveable(true);
@@ -132,7 +139,9 @@ const Tracker = ({
     e.preventDefault();
     if (type === types.tasks) {
       const newTasks = [...tasks];
-      newTasks[e.target.id].done = !newTasks[e.target.id].done;
+      const newTask = { ...newTasks[e.target.id] };
+      newTask.done = !newTasks[e.target.id].done;
+      newTasks[e.target.id] = newTask;
       setTasks(newTasks);
     }
     setIsSaveable(true);

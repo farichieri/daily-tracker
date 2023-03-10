@@ -42,7 +42,6 @@ const TrackerPage = () => {
       );
       const querySnapshot = await getDoc(docRef);
       let data: any = querySnapshot.data();
-      console.log(data);
       dispatch(setDayData(data));
     }
   };

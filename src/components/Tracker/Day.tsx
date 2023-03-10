@@ -1,5 +1,5 @@
+import { Task } from '@/global/types';
 import { types } from '@/utils/types';
-import { SyntheticEvent, useRef } from 'react';
 import IconButton from '../Layout/Icon/IconButton';
 
 const Tracker = ({
@@ -14,8 +14,8 @@ const Tracker = ({
   handleAdd: any;
   handleRemove: any;
   handleToggleDone: any;
-  task: object;
-  tasks: object[];
+  task: Task;
+  tasks: Task[];
 }) => {
   return (
     <section className='table'>

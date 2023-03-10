@@ -10,7 +10,7 @@ interface LayoutSlice {
 
 // Define the initial state using that type
 const initialState: LayoutSlice = {
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   isCreatingProject: false,
   isEditingProject: false,
 };
