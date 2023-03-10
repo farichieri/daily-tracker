@@ -46,6 +46,7 @@ const Login = () => {
         // ...
       })
       .catch((error) => {
+        console.log({ error });
         dispatch(setIsLoading(false));
         // Handle Errors here.
         const errorCode = error.code;
