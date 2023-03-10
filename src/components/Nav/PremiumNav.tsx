@@ -52,7 +52,7 @@ const PremiumNav = () => {
           </Link>
         ))}
       </span>
-      <span className='project-selected'>{projectSelected.projectName}</span>
+      <span className='project-selected'>{projectSelected?.projectName}</span>
       <div className='user-dark'>
         <span className={`user ${router.asPath === '/user' ? 'selected' : ''}`}>
           {userName}

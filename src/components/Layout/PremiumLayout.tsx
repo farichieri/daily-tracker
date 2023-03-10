@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import PremiumNav from '../Nav/PremiumNav';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';
@@ -7,10 +7,12 @@ import {
   selectIsCreatingProject,
   selectIsEditingProject,
   selectSidebarState,
+  setIsLoading,
   toggleSidebar,
 } from 'store/slices/layoutSlice';
 import ProjectCreate from '../ProjectCreate/ProjectCreate';
 import ProjectEdit from '../ProjectEdit/ProjectEdit';
+import { selectUser } from 'store/slices/authSlice';
 
 export default function PremiumLayout({
   children,
@@ -25,6 +27,7 @@ export default function PremiumLayout({
   const isCreatingProject = useSelector(selectIsCreatingProject);
   const isEditingProject = useSelector(selectIsEditingProject);
   const sidebarOpen = useSelector(selectSidebarState);
+  const { user } = useSelector(selectUser);
 
   useEffect(() => {
     let localTheme = window.localStorage.getItem('theme');
@@ -36,6 +39,10 @@ export default function PremiumLayout({
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
+
+  useEffect(() => {
+    user && dispatch(setIsLoading(false));
+  }, [user]);
 
   return (
     <section>

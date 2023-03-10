@@ -3,6 +3,8 @@ import Footer from '../Footer/Footer';
 import Nav from '../Nav/Nav';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';
+import { selectIsLoading } from 'store/slices/layoutSlice';
+import Loader from './Loader/Loader';
 
 export default function MainLayout({
   children,
@@ -13,6 +15,7 @@ export default function MainLayout({
 }) {
   const padding = withPadding ? 1.5 : 0;
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
 
   const theme = useSelector(selectTheme);
 
@@ -26,6 +29,7 @@ export default function MainLayout({
 
   return (
     <section>
+      {isLoading && <Loader fullScreen={true} text={''} />}
       <Nav />
       <div className='container'>{children}</div>
       <Footer />
@@ -37,7 +41,7 @@ export default function MainLayout({
             flex-direction: column;
             height: 100%;
             margin: auto;
-            min-height: calc(100vh - var(--footer-height));
+            min-height: calc(100vh);
             padding: ${padding}rem;
             padding-top: calc(var(--nav-height));
             width: 100%;

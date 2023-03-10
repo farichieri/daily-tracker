@@ -1,29 +1,75 @@
 import React, { useState } from 'react';
-import { auth } from '@/utils/firebase.config';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db, provider } from '@/utils/firebase.config';
+import {
+  getAdditionalUserInfo,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
 import Button from '../Layout/Button/Button';
+import { useRouter } from 'next/router';
+import { addDoc, collection } from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
+import { setIsLoading } from 'store/slices/layoutSlice';
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     email: '',
     password: '',
   });
   const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingForm, setIsLoadingForm] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const router = useRouter();
 
+  const handleLogInWithGoogle = async () => {
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        dispatch(setIsLoading(true));
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        const additinalInfo = getAdditionalUserInfo(result);
+        if (additinalInfo?.isNewUser) {
+          const docRef = collection(db, 'users', user.uid, 'projects');
+          await addDoc(docRef, {
+            projectName: 'Personal',
+            isDefault: false,
+            isFavorite: false,
+          });
+        }
+        user && router.push('/tracker');
+        // ...
+      })
+      .catch((error) => {
+        dispatch(setIsLoading(false));
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setIsLoading(true);
+    setIsLoadingForm(true);
     setIsDisabled(true);
     await signInWithEmailAndPassword(auth, input.email, input.password)
-      .then((userCredential) => {
-        userCredential.user;
+      .then((result) => {
+        const user = result.user;
+        user && router.push('/tracker');
       })
       .catch((error) => {
         setErrorMessage(error.message);
       });
-    setIsLoading(false);
+    setIsLoadingForm(false);
     setIsDisabled(false);
   };
 
@@ -39,32 +85,35 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className='inputs-container'>
-        <input
-          onChange={handleChange}
-          name='email'
-          value={input.email}
-          placeholder='Email'
-          type='text'
+    <div className='login'>
+      <form onSubmit={handleSubmit}>
+        <div className='inputs-container'>
+          <input
+            onChange={handleChange}
+            name='email'
+            value={input.email}
+            placeholder='Email'
+            type='text'
+          />
+          <input
+            onChange={handleChange}
+            name='password'
+            value={input.password}
+            placeholder='Password'
+            type='password'
+          />
+        </div>
+        <Button
+          style={null}
+          onClick={handleSubmit}
+          loadMessage={'Ingresando...'}
+          content='Log in'
+          isLoading={isLoadingForm}
+          isDisabled={isDisabled}
         />
-        <input
-          onChange={handleChange}
-          name='password'
-          value={input.password}
-          placeholder='Password'
-          type='password'
-        />
-      </div>
-      <Button
-        style={null}
-        onClick={handleSubmit}
-        loadMessage={'Ingresando...'}
-        content='Log in'
-        isLoading={isLoading}
-        isDisabled={isDisabled}
-      />
-      {errorMessage && <span>Email o contraseña inválidos</span>}
+        {errorMessage && <span>Email o contraseña inválidos</span>}
+      </form>
+      <button onClick={handleLogInWithGoogle}>Google Log in</button>
       <style jsx>{`
         form {
           display: flex;
@@ -73,6 +122,7 @@ const Login = () => {
           width: 100%;
           position: relative;
           align-items: center;
+          margin-bottom: 3rem;
         }
         .inputs-container {
           width: 100%;
@@ -107,7 +157,7 @@ const Login = () => {
           color: red;
         }
       `}</style>
-    </form>
+    </div>
   );
 };
 

@@ -8,7 +8,6 @@ import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
 import { selectUser } from 'store/slices/authSlice';
 import {
-  selectDayData,
   selectProjects,
   selectProjectSelected,
   setDayData,
@@ -16,20 +15,18 @@ import {
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjects } from '@/hooks/firebase';
-import ProjectCreate from '@/components/ProjectCreate/ProjectCreate';
 import { useRouter } from 'next/dist/client/router';
 
 const TrackerPage = () => {
   const dispatch = useDispatch();
   const { user, isVerifyingUser } = useSelector(selectUser);
   const [isLoadingData, setIsLoadingData] = useState(true);
-  const [isLoadingProjects, setIsloadingProjects] = useState(true);
   const projectSelected = useSelector(selectProjectSelected);
   const projects = useSelector(selectProjects);
   const router = useRouter();
 
   const getUserData = async (date: string) => {
-    if (user && date && projectSelected.id) {
+    if (user && date && projectSelected?.id) {
       console.log('Fetching Data');
       const docRef = doc(
         db,
@@ -51,7 +48,7 @@ const TrackerPage = () => {
       await getUserData(dbFormatDate(new Date()));
       setIsLoadingData(false);
     };
-    if (user && projectSelected.id) {
+    if (user && projectSelected?.id) {
       setIsLoadingData(true);
       getData();
     }
@@ -62,7 +59,6 @@ const TrackerPage = () => {
       if (user) {
         const projects = await getProjects(user);
         dispatch(setProjects(projects));
-        setIsloadingProjects(false);
       }
     };
     getData();
@@ -87,7 +83,7 @@ const TrackerPage = () => {
           </div>
         )
       )}
-      {user && !isLoadingProjects && projects.length < 1 && <ProjectCreate />}
+      {/* {user && !isLoadingProjects && projects.length < 1 && <ProjectCreate />} */}
       {user && !isLoadingData && (
         <div className='dashboard-container'>
           <Tracker userID={user.uid} getUserData={getUserData} />

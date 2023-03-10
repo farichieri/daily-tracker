@@ -219,8 +219,6 @@ const Task = ({
           margin: 0.5rem 0;
           max-width: 7rem;
         }
-        .task-description {
-        }
         .action {
           width: 2.5rem;
         }

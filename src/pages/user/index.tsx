@@ -6,19 +6,21 @@ import { selectUser } from 'store/slices/authSlice';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useRouter } from 'next/dist/client/router';
+import { selectIsLoading } from 'store/slices/layoutSlice';
 const User = () => {
   const router = useRouter();
   const { user, isVerifyingUser } = useSelector(selectUser);
+  const isLoading = useSelector(selectIsLoading);
 
-  useEffect(() => {
-    if (!isVerifyingUser && user) {
-      router.push('/tracker');
-    }
-  }, [isVerifyingUser, user]);
+  // useEffect(() => {
+  //   if (!isVerifyingUser && user) {
+  //     router.push('/tracker');
+  //   }
+  // }, [isVerifyingUser, user]);
 
   return (
     <MainLayout withPadding={true}>
-      {user ? (
+      {user && !isLoading ? (
         <>
           <div className='account'>
             <p>You are logged in with the user {user.email}</p>
