@@ -24,9 +24,10 @@ const TrackerPage = () => {
   const projectSelected = useSelector(selectProjectSelected);
   const projects = useSelector(selectProjects);
   const router = useRouter();
+  const projectSelectedID = router.query;
 
   const getUserData = async (date: string) => {
-    if (user && date && projectSelected?.id) {
+    if (user && date && projectSelectedID) {
       console.log('Fetching Data');
       const docRef = doc(
         db,
@@ -48,7 +49,7 @@ const TrackerPage = () => {
       await getUserData(dbFormatDate(new Date()));
       setIsLoadingData(false);
     };
-    if (user && projectSelected?.id) {
+    if (user && projectSelectedID) {
       setIsLoadingData(true);
       getData();
     }

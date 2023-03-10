@@ -1,10 +1,12 @@
 import { auth } from '@/utils/firebase.config';
 import { signOut } from 'firebase/auth';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
+import { toggleIsProfileOpen } from 'store/slices/layoutSlice';
 import DropDown from '../DropDown';
 
 const ProfileDropDown = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
   const userName = user?.email
     ? user.email.slice(0, user.email.indexOf('@'))
@@ -19,10 +21,14 @@ const ProfileDropDown = () => {
       });
   };
 
+  const handleOpenProfile = () => {
+    dispatch(toggleIsProfileOpen());
+  };
+
   return (
     <DropDown btnText={userName}>
       <span>Account</span>
-      <div className='section'>
+      <div className='section' onClick={handleOpenProfile}>
         <button>Profile</button>
       </div>
       <button onClick={handleLogout}>Logout </button>

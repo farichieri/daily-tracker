@@ -6,6 +6,7 @@ import PremiumSidebar from '../Nav/PremiumSidebar';
 import {
   selectIsCreatingProject,
   selectIsEditingProject,
+  selectIsProfileOpen,
   selectSidebarState,
   setIsLoading,
   toggleSidebar,
@@ -13,6 +14,7 @@ import {
 import ProjectCreate from '../ProjectCreate/ProjectCreate';
 import ProjectEdit from '../ProjectEdit/ProjectEdit';
 import { selectUser } from 'store/slices/authSlice';
+import Settings from '../Settings/Settings';
 
 export default function PremiumLayout({
   children,
@@ -27,6 +29,7 @@ export default function PremiumLayout({
   const isCreatingProject = useSelector(selectIsCreatingProject);
   const isEditingProject = useSelector(selectIsEditingProject);
   const sidebarOpen = useSelector(selectSidebarState);
+  const isProfileOpen = useSelector(selectIsProfileOpen);
   const { user } = useSelector(selectUser);
 
   useEffect(() => {
@@ -46,6 +49,7 @@ export default function PremiumLayout({
 
   return (
     <section>
+      {isProfileOpen && <Settings />}
       {isCreatingProject && <ProjectCreate />}
       {isEditingProject && <ProjectEdit />}
       <PremiumNav />
