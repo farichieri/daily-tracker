@@ -15,6 +15,11 @@ import ProjectCreate from '../ProjectCreate/ProjectCreate';
 import ProjectEdit from '../ProjectEdit/ProjectEdit';
 import { selectUser } from 'store/slices/authSlice';
 import Settings from '../Settings/Settings';
+import {
+  selectDayData,
+  selectIsLoadingData,
+  selectWeekSelected,
+} from 'store/slices/trackerSlice';
 
 export default function PremiumLayout({
   children,
@@ -30,7 +35,8 @@ export default function PremiumLayout({
   const isEditingProject = useSelector(selectIsEditingProject);
   const sidebarOpen = useSelector(selectSidebarState);
   const isProfileOpen = useSelector(selectIsProfileOpen);
-  const { user } = useSelector(selectUser);
+  const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
+  const isLoadingData = useSelector(selectIsLoadingData);
 
   useEffect(() => {
     let localTheme = window.localStorage.getItem('theme');
@@ -39,6 +45,7 @@ export default function PremiumLayout({
     }
     dispatch(setTheme(String(localTheme)));
   }, [theme]);
+
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
@@ -49,7 +56,7 @@ export default function PremiumLayout({
 
   return (
     <section>
-      {user && (
+      {user && userSettings.displayName && !isVerifyingUser && (
         <>
           {isProfileOpen && <Settings />}
           {isCreatingProject && <ProjectCreate />}

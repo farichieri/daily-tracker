@@ -1,15 +1,9 @@
-import { DayData } from '@/global/types';
+import { DayData, Project } from '@/global/types';
 import { getDaysInAWeek } from '@/hooks/dates';
+import { dbFormatDate } from '@/utils/formatDate';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { parseISO } from 'date-fns';
 import type { RootState } from '../store';
-
-interface Project {
-  id: string;
-  projectName: string;
-  isDefault: boolean;
-  isFavorite: boolean;
-}
 
 // Define a type for the slice state
 interface TrackerSlice {
@@ -19,6 +13,8 @@ interface TrackerSlice {
   projects: Project[];
   projectSelected: Project;
   projectEdit: Project;
+  today: string;
+  isLoadingData: boolean;
 }
 
 // Define the initial state using that type
@@ -43,6 +39,8 @@ const initialState: TrackerSlice = {
     isDefault: false,
     isFavorite: false,
   },
+  today: dbFormatDate(new Date()),
+  isLoadingData: false,
 };
 
 export const trackerSlice = createSlice({
@@ -52,6 +50,7 @@ export const trackerSlice = createSlice({
   reducers: {
     setDayData: (state, action: PayloadAction<DayData>) => {
       state.dayData = action.payload;
+      state.isLoadingData = false;
     },
     setDaySelected: (state, action: PayloadAction<string>) => {
       state.daySelected = action.payload;
@@ -75,6 +74,9 @@ export const trackerSlice = createSlice({
         state.projects.find((project) => project.id === action.payload) ||
         state.projectEdit;
     },
+    setIsLoadingData: (state, action: PayloadAction<boolean>) => {
+      state.isLoadingData = action.payload;
+    },
   },
 });
 
@@ -85,6 +87,7 @@ export const {
   setProjects,
   setProjectEdit,
   setDayData,
+  setIsLoadingData,
 } = trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -98,5 +101,8 @@ export const selectProjectSelected = (state: RootState) =>
   state.tracker.projectSelected;
 export const selectProjectEdit = (state: RootState) =>
   state.tracker.projectEdit;
+export const selectToday = (state: RootState) => state.tracker.today;
+export const selectIsLoadingData = (state: RootState) =>
+  state.tracker.isLoadingData;
 
 export default trackerSlice.reducer;

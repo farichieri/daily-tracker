@@ -8,22 +8,27 @@ import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { dbFormatDate } from '@/utils/formatDate';
 import { selectUser } from 'store/slices/authSlice';
 import {
+  selectIsLoadingData,
   selectProjects,
   selectProjectSelected,
+  selectToday,
+  selectWeekSelected,
   setDayData,
+  setDaySelected,
+  setIsLoadingData,
   setProjects,
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjects } from '@/hooks/firebase';
-import { useRouter } from 'next/dist/client/router';
 
 const TrackerPage = () => {
   const dispatch = useDispatch();
   const { user, isVerifyingUser } = useSelector(selectUser);
-  const [isLoadingData, setIsLoadingData] = useState(true);
   const projectSelected = useSelector(selectProjectSelected);
   const projects = useSelector(selectProjects);
-  const router = useRouter();
+  const weekSelected = useSelector(selectWeekSelected);
+  const today = useSelector(selectToday);
+  const isLoadingData = useSelector(selectIsLoadingData);
 
   const getUserData = async (date: string) => {
     if (user && date && projectSelected?.id) {
@@ -45,32 +50,26 @@ const TrackerPage = () => {
 
   useEffect(() => {
     const getData = async () => {
+      dispatch(setIsLoadingData(true));
       await getUserData(dbFormatDate(new Date()));
-      setIsLoadingData(false);
+    };
+    const getProjectsData = async () => {
+      if (!user) return;
+      dispatch(setIsLoadingData(true));
+      const projects = await getProjects(user);
+      dispatch(setProjects(projects));
     };
     if (user && projectSelected?.id) {
-      setIsLoadingData(true);
       getData();
-    } else if (!user) {
-      setIsLoadingData(false);
     }
-  }, [user, projectSelected, projects]);
+    if (projects.length < 1 && user) {
+      getProjectsData();
+    }
+  }, [projectSelected, projects, user]);
 
   useEffect(() => {
-    const getData = async () => {
-      if (user) {
-        const projects = await getProjects(user);
-        dispatch(setProjects(projects));
-      }
-    };
-    getData();
-  }, [user]);
-
-  // useEffect(() => {
-  //   if (!isVerifyingUser && !user) {
-  //     router.push('/user');
-  //   }
-  // }, [isVerifyingUser, user]);
+    dispatch(setDaySelected(today));
+  }, [today]);
 
   return (
     <PremiumLayout withPadding={false}>
@@ -85,7 +84,7 @@ const TrackerPage = () => {
           </div>
         )
       )}
-      {user && !isLoadingData && (
+      {user && !isLoadingData && weekSelected.length > 0 && (
         <div className='dashboard-container'>
           <Tracker userID={user.uid} getUserData={getUserData} />
         </div>

@@ -47,8 +47,10 @@ const Login = () => {
             isDefault: false,
             isFavorite: false,
           });
+          router.push('/app');
+        } else {
+          router.push('/app');
         }
-        user && router.push('/app');
       })
       .catch((error) => {
         console.log({ error });

@@ -12,6 +12,7 @@ import {
   selectDayData,
   selectDaySelected,
   selectProjectSelected,
+  selectToday,
   selectWeekSelected,
   setDaySelected,
 } from 'store/slices/trackerSlice';
@@ -31,7 +32,7 @@ const Tracker = ({
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
   const projectSelected = useSelector(selectProjectSelected);
-  const today = dbFormatDate(new Date());
+  const today = useSelector(selectToday);
   const [isSaving, setIsSaving] = useState(false);
   const [objetives, setObjetives] = useState<string[]>([]);
   const [objetive, setObjetive] = useState<string>('');
@@ -47,10 +48,6 @@ const Tracker = ({
   const [filterSelectOptionsSelected, setFilterSelectOptionsSelected] =
     useState('week');
   const filterSelectOptions = ['today'];
-
-  useEffect(() => {
-    dispatch(setDaySelected(today));
-  }, []);
 
   useEffect(() => {
     const setData = () => {
@@ -169,7 +166,6 @@ const Tracker = ({
   const handleSelectDay = (event: Event) => {
     event.preventDefault();
     const date = (event.target as HTMLButtonElement).id;
-    console.log({ date });
     dispatch(setDaySelected(date));
   };
 
@@ -177,7 +173,6 @@ const Tracker = ({
     e.preventDefault();
     const action = (e.target as HTMLButtonElement).id;
     const modifyDateDays = (date: Date, action: string, days: number) => {
-      console.log({ date });
       if (action === 'prev') {
         date.setDate(date.getDate() - days);
       } else if (action === 'next') {

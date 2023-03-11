@@ -19,6 +19,7 @@ export const getProjects = async (user: User) => {
         isFavorite: docData.isFavorite,
       });
     });
+    console.log({ data });
     return data.sort((a, b) => b.isDefault - a.isDefault);
   } else {
     return [];

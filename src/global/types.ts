@@ -16,3 +16,10 @@ export interface UserSettings {
   email: string;
   photo: string;
 }
+
+export interface Project {
+  id: string;
+  projectName: string;
+  isDefault: boolean;
+  isFavorite: boolean;
+}
