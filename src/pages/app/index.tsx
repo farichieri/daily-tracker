@@ -51,6 +51,8 @@ const TrackerPage = () => {
     if (user && projectSelected?.id) {
       setIsLoadingData(true);
       getData();
+    } else if (!user) {
+      setIsLoadingData(false);
     }
   }, [user, projectSelected, projects]);
 
@@ -64,11 +66,11 @@ const TrackerPage = () => {
     getData();
   }, [user]);
 
-  useEffect(() => {
-    if (!isVerifyingUser && !user) {
-      router.push('/user');
-    }
-  }, [isVerifyingUser, user]);
+  // useEffect(() => {
+  //   if (!isVerifyingUser && !user) {
+  //     router.push('/user');
+  //   }
+  // }, [isVerifyingUser, user]);
 
   return (
     <PremiumLayout withPadding={false}>
@@ -96,6 +98,7 @@ const TrackerPage = () => {
           justify-content: center;
           width: 100%;
           align-items: center;
+          padding-top: calc(var(--premium-nav-height));
         }
         .login-container {
           display: flex;

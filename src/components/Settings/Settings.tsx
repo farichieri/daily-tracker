@@ -56,7 +56,7 @@ const Settings = () => {
           display: flex;
         }
         .sidebar {
-          width: 20vw;
+          width: 25vw;
           border-right: 1px solid var(--box-shadow-light);
           padding: 1rem 0.5rem;
           display: flex;
@@ -65,7 +65,7 @@ const Settings = () => {
           transition: 0.3s;
         }
         .content {
-          width: 60vw;
+          width: 75vw;
           padding: 1rem 2rem;
         }
         button {
@@ -79,6 +79,7 @@ const Settings = () => {
           padding: 0.5rem;
           cursor: pointer;
           border-radius: 6px;
+          text-transform: capitalize;
         }
         button:hover {
           background: var(--box-shadow-light);

@@ -83,10 +83,11 @@ const Avatar = ({
             justify-content: center;
             overflow: hidden;
             position: relative;
+            box-shadow: 0 0 10px 1px var(--box-shadow-dark);
           }
           .no-photo {
             align-items: center;
-            background: gray;
+            background: var(--gray-color);
             border-radius: 50%;
             display: flex;
             font-size: ${size - 10}px;
@@ -97,6 +98,9 @@ const Avatar = ({
             width: ${size}px;
             cursor: pointer;
             z-index: 2;
+            box-shadow: 0 0 10px 1px var(--box-shadow-dark);
+            color: var(--bg-color-tertiary);
+            border: 2px solid var(--bg-color-tertiary);
           }
           input[type='file'] {
             cursor: pointer;
@@ -104,6 +108,15 @@ const Avatar = ({
             height: 100%;
             font-size: 0;
             position: absolute;
+            transition: 0.3s;
+            background: #00000080;
+            background-image: url('/icons/add-image.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            opacity: 0;
+          }
+          input:hover {
+            opacity: 1;
           }
         `}
       </style>

@@ -18,7 +18,6 @@ const Objetives = ({
   // -Any impulse of thought which is repeatedly passed on to the subconscious mind is, finally accepted and acted upon by the subsconscious mind, which proceeds to translate that impulse into its physical equivalent, by the most practical procedure available.
   return (
     <section>
-      <p>Goals</p>
       <div className='objetives-container'>
         {objetives?.map((obj, i) => (
           <div className='objetive-container' key={i}>
@@ -55,42 +54,36 @@ const Objetives = ({
       </div>
       <style jsx>{`
         section {
-          border-radius: 6px;
-          margin-bottom: 1rem;
           width: 100%;
-          box-shadow: 0 0 10px 1px var(--box-shadow-light);
-          background: var(--bg-color-secondary);
-        }
-        p {
-          margin: 0;
-          padding: 0.25rem;
-          font-size: 1rem;
-          font-weight: bold;
+          background: transparent;
         }
         .objetives-container {
-          border-top: 1px solid gray;
+          width: 100%;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          justify-content: center;
+          gap: 0.25rem;
         }
         .objetive-container {
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
           border-bottom: 1px solid var(--box-shadow-light);
-          padding-right: 0.5rem;
+          display: flex;
+          background: var(--box-shadow-light);
+          border-radius: 6px;
+          overflow: auto;
+          width: 100%;
         }
         .objetive-container:hover {
           box-shadow: inset 1px 0 0 rgb(255 255 255 / 20%),
             inset -1px 0 0 rgb(255 255 255 / 20%),
             0 0 4px 0 rgb(95 99 104 / 60%), 0 0 6px 2px rgb(95 99 104 / 60%);
         }
-
         form {
+          -webkit-box-shadow: 0 8px 16px 0 var(--box-shadow-light);
+          box-shadow: 0 8px 16px 0 var(--box-shadow-light);
+          border-bottom: 1px solid var(--box-shadow-light);
           display: flex;
+          border-radius: 6px;
+          overflow: auto;
           width: 100%;
-          padding-right: 0.5rem;
         }
       `}</style>
     </section>
@@ -111,7 +104,7 @@ const Objetive = ({
   return (
     <>
       <input
-        placeholder='objetive'
+        placeholder='Goal'
         onChange={handleChange}
         value={value}
         name='objetive'
@@ -121,13 +114,12 @@ const Objetive = ({
       />
       <style jsx>{`
         input {
-          width: 100%;
           background: none;
           color: var(--text-color);
           border: none;
           outline: none;
-          padding: 0.5rem 0.3rem 0.3rem 0.5rem;
-          display: flex;
+          padding: 0.25rem 0.3rem 0.25rem 0.5rem;
+          width: 100%;
         }
       `}</style>
     </>

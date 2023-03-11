@@ -12,6 +12,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import ButtonAction from '../Layout/ButtonAction/ButtonAction';
 import Image from 'next/image';
+import Avatar from '../Avatar/Avatar';
 
 const PremiumSidebar = () => {
   const dispatch = useDispatch();
@@ -76,6 +77,9 @@ const PremiumSidebar = () => {
           </div>
         ))}
       </div>
+      <div className='avatar'>
+        <Avatar size={65} changeable={false} />
+      </div>
       <style jsx>{`
         .sidebar {
           -moz-user-select: none;
@@ -84,9 +88,10 @@ const PremiumSidebar = () => {
           background: var(--gray-color);
           border-right: 1px solid var(--box-shadow-light);
           display: flex;
+          flex-direction: column;
+          align-items: center;
           height: 100%;
           left: -200px;
-          height: calc(100vh - var(--premium-nav-height));
           padding: 1rem 1rem;
           position: fixed;
           transition: all 0.3s;
@@ -135,6 +140,9 @@ const PremiumSidebar = () => {
         }
         .edit {
           cursor: pointer;
+        }
+        .avatar {
+          margin-top: auto;
         }
       `}</style>
     </div>

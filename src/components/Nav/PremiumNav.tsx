@@ -18,7 +18,6 @@ const PremiumNav = () => {
   };
   const sidebarState = useSelector(selectSidebarState);
   const projectSelected = useSelector(selectProjectSelected);
-  const router = useRouter();
 
   return (
     <nav>

@@ -225,7 +225,7 @@ const Tracker = ({
         tasks={tasks}
         task={task}
       />
-      <div style={{ margin: '1rem', width: '100%' }}>
+      <div style={{ margin: '1rem 0 0 0', width: '100%' }}>
         <Button
           style={null}
           content={showObjetives ? 'Hide Goals' : 'Show Goals'}
@@ -252,6 +252,7 @@ const Tracker = ({
           align-items: center;
           width: 100%;
           gap: 1rem;
+          padding-bottom: 10rem;
         }
       `}</style>
     </section>

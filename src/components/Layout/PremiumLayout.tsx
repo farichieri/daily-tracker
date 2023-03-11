@@ -49,13 +49,17 @@ export default function PremiumLayout({
 
   return (
     <section>
-      {isProfileOpen && <Settings />}
-      {isCreatingProject && <ProjectCreate />}
-      {isEditingProject && <ProjectEdit />}
-      <PremiumNav />
-      <PremiumSidebar />
-      {sidebarOpen && (
-        <span className='modal' onClick={handleToggleSidebar}></span>
+      {user && (
+        <>
+          {isProfileOpen && <Settings />}
+          {isCreatingProject && <ProjectCreate />}
+          {isEditingProject && <ProjectEdit />}
+          <PremiumNav />
+          <PremiumSidebar />
+          {sidebarOpen && (
+            <span className='modal' onClick={handleToggleSidebar}></span>
+          )}
+        </>
       )}
       <div className='container'>{children}</div>
       <style jsx>
@@ -67,7 +71,6 @@ export default function PremiumLayout({
             margin: auto;
             min-height: calc(100vh - var(--premium-nav-height));
             padding: ${padding}rem;
-            padding-top: calc(var(--premium-nav-height));
             width: 100%;
           }
           .container {

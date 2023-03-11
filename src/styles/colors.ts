@@ -10,6 +10,7 @@ const colors = css.global`
     --bg-color-tertiary-light: #57637557;
     --box-shadow: #f5f5f552;
     --box-shadow-light: #f5f5f510;
+    --box-shadow-dark: #00000080;
     --nav-bg-color: #00000080;
     --link-color: gray;
     --nav-background-color: black;
@@ -26,6 +27,7 @@ const colors = css.global`
     --bg-color-tertiary-light: #57637557;
     --box-shadow: #00000080;
     --box-shadow-light: #0000001a;
+    --box-shadow-dark: #00000040;
     --nav-bg-color: transparent;
     --link-color: gray;
     --nav-background-color: white;
