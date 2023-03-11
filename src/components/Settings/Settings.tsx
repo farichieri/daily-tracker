@@ -35,8 +35,9 @@ const Settings = () => {
       <div className='settings'>
         <div className='sidebar'>
           <p className='title'>Settings</p>
-          {settingOptions.map((option) => (
+          {settingOptions.map((option, index) => (
             <button
+              key={index}
               className={`${settingSelected === option.option && 'selected'}`}
               value={option.option}
               onClick={handleClick}
@@ -50,6 +51,7 @@ const Settings = () => {
       <style jsx>{`
         .settings {
           width: 80vw;
+          max-width: 900px;
           height: 80vh;
           display: flex;
         }

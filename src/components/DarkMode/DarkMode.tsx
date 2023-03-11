@@ -24,7 +24,6 @@ export default function DarkMode({}) {
         {`
           span {
             align-items: center;
-            padding-left: 0.5em;
             display: flex;
             justify-content: center;
             position: relative;

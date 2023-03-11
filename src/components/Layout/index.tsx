@@ -1,26 +1,34 @@
 import Head from 'next/head';
 import reset from '@/styles/reset';
 import colors from '@/styles/colors';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import general from '@/styles/general';
 import typography, { fonts } from '@/styles/typography';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/utils/firebase.config';
 import { useDispatch } from 'react-redux';
-import { verifyUser, userVerified, selectUser } from 'store/slices/authSlice';
+import {
+  verifyUser,
+  userVerified,
+  setUserSettings,
+} from 'store/slices/authSlice';
 import { selectTheme } from 'store/slices/themeSlice';
 import { useSelector } from 'react-redux';
+import { getUserSettings } from '@/hooks/firebase';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   const theme = useSelector(selectTheme);
-  const { isVerifyingUser } = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(verifyUser());
     console.log('Verifying User');
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       dispatch(userVerified(user));
+      if (user) {
+        const settings = await getUserSettings(user);
+        settings && dispatch(setUserSettings(settings));
+      }
     });
   }, []);
 

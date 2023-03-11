@@ -1,3 +1,4 @@
+import Avatar from '@/components/Avatar/Avatar';
 import { auth } from '@/utils/firebase.config';
 import { signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +27,7 @@ const ProfileDropDown = () => {
   };
 
   return (
-    <DropDown btnText={userName}>
+    <DropDown btnText={<Avatar size={24} changeable={false} />}>
       <span>Account</span>
       <div className='section' onClick={handleOpenProfile}>
         <button>Profile</button>

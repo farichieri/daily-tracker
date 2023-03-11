@@ -39,6 +39,7 @@ const Login = () => {
           await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
             displayName: user.displayName,
+            photo: '',
           });
           const docRef = collection(db, 'users', user.uid, 'projects');
           await addDoc(docRef, {

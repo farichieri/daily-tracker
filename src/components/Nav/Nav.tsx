@@ -68,7 +68,7 @@ const Nav = () => {
               </Link>
             ))}
         </div>
-        <div>
+        <div className='login-dark'>
           <Link href={'/user'} onClick={handleMenu}>
             <span
               className={`user ${router.asPath === '/user' ? 'selected' : ''}`}
@@ -108,6 +108,11 @@ const Nav = () => {
           max-width: var(--max-width);
           margin: auto;
           padding: 0 1rem;
+        }
+
+        .login-dark {
+          gap: 0.5rem;
+          align-items: center;
         }
 
         .logo,

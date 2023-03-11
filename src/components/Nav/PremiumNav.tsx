@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { selectProjectSelected } from 'store/slices/trackerSlice';
 import DropDown from '../Layout/DropDown/DropDown';
 import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
+import Avatar from '../Avatar/Avatar';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,6 @@ const PremiumNav = () => {
   };
   const sidebarState = useSelector(selectSidebarState);
   const projectSelected = useSelector(selectProjectSelected);
-  const pages = [{ name: 'Tracker', path: '/tracker' }];
   const router = useRouter();
 
   return (
@@ -41,16 +41,9 @@ const PremiumNav = () => {
           />
         )}
       </span>
-      <span className='pages'>
-        {pages.map((page) => (
-          <Link key={`nav-${page.name}`} href={page.path}>
-            <span className={router.asPath === page.path ? 'selected' : ''}>
-              {page.name}
-            </span>
-          </Link>
-        ))}
+      <span className='project-selected'>
+        Track: {projectSelected?.projectName}
       </span>
-      <span className='project-selected'>{projectSelected?.projectName}</span>
       <div className='user-dark'>
         <ProfileDropDown />
         <DarkMode />
@@ -95,6 +88,8 @@ const PremiumNav = () => {
         }
         .user-dark {
           margin-left: auto;
+          align-items: center;
+          gap: 0.5rem;
         }
         .project-selected {
           font-weight: bold;

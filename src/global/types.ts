@@ -10,3 +10,9 @@ export interface Task {
   hour: string;
   task: string;
 }
+
+export interface UserSettings {
+  displayName: string;
+  email: string;
+  photo: string;
+}

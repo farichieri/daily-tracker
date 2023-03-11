@@ -1,6 +1,8 @@
+import { UserSettings } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { User } from 'firebase/auth';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { setUserSettings } from 'store/slices/authSlice';
 
 export const getProjects = async (user: User) => {
   if (user) {
@@ -21,4 +23,11 @@ export const getProjects = async (user: User) => {
   } else {
     return [];
   }
+};
+
+export const getUserSettings = async (user: User) => {
+  const docRef = doc(db, 'users', user.uid);
+  const querySnapshot = await getDoc(docRef);
+  const userData = querySnapshot.data();
+  return userData;
 };
