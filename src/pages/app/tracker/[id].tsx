@@ -24,10 +24,12 @@ const TrackerPage = () => {
   const projectSelected = useSelector(selectProjectSelected);
   const projects = useSelector(selectProjects);
   const router = useRouter();
-  const projectSelectedID = router.query;
+  const { id } = router.query;
+
+  console.log(router.query);
 
   const getUserData = async (date: string) => {
-    if (user && date && projectSelectedID) {
+    if (user && date && id) {
       console.log('Fetching Data');
       const docRef = doc(
         db,
@@ -49,7 +51,7 @@ const TrackerPage = () => {
       await getUserData(dbFormatDate(new Date()));
       setIsLoadingData(false);
     };
-    if (user && projectSelectedID) {
+    if (user && id) {
       setIsLoadingData(true);
       getData();
     }
@@ -97,6 +99,7 @@ const TrackerPage = () => {
           justify-content: center;
           width: 100%;
           align-items: center;
+          padding-top: var(--premium-nav-height);
         }
         .login-container {
           display: flex;
