@@ -19,11 +19,18 @@ const TodoPage = () => {
   const { user } = useSelector(selectUser);
   const { todos } = useSelector(selectTodo);
 
-  const getTodoData = async (id: string) => {
+  const getTodoData = async () => {
     if (user && id) {
       console.log('Fetching Todo Data');
       let data: any[] = [];
-      const docRef = collection(db, 'users', user.uid, 'todos', id, 'todo');
+      const docRef = collection(
+        db,
+        'users',
+        user.uid,
+        'todos',
+        String(id),
+        'tasks'
+      );
       const querySnapshot = await getDocs(docRef);
       querySnapshot.forEach((todo) => {
         const todoData = todo.data();
@@ -37,16 +44,14 @@ const TodoPage = () => {
   };
 
   useEffect(() => {
-    getTodoData(String(id));
+    getTodoData();
     const todoSelected = todos.find((todo) => todo.id === id);
-    todoSelected && setTodoSelected(todoSelected);
+    todoSelected && dispatch(setTodoSelected(todoSelected));
   }, [id, user]);
 
   return (
     <PremiumLayout withPadding={false}>
-      <div className='todo'>
-        <Todo />
-      </div>
+      <div className='todo'>{user && <Todo id={String(id)} />}</div>
       <style jsx>{`
         .todo {
           max-width: var(--max-width-content);
@@ -56,6 +61,7 @@ const TodoPage = () => {
           width: 100%;
           align-items: center;
           padding-top: calc(var(--premium-nav-height) + 1rem);
+          margin: 0 1rem;
         }
       `}</style>
     </PremiumLayout>

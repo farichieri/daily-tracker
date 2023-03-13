@@ -41,7 +41,9 @@ const Tracker = ({
     hour: '',
     task: '',
     comments: '',
+    labels: [],
     done: false,
+    id: '',
   });
   const [showObjetives, setShowObjetives] = useState(false);
   const [isSaveable, setIsSaveable] = useState(false);
@@ -110,7 +112,9 @@ const Tracker = ({
           hour: '',
           task: '',
           comments: '',
+          labels: [],
           done: false,
+          id: '',
         });
       }
     }

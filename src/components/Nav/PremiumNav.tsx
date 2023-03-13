@@ -1,23 +1,25 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DarkMode from '../DarkMode/DarkMode';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
 import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
 import Image from 'next/image';
 import { selectProjectSelected } from 'store/slices/trackerSlice';
-import DropDown from '../Layout/DropDown/DropDown';
 import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
-import Avatar from '../Avatar/Avatar';
+import { selectTodoSelected } from 'store/slices/todosSlice';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const sidebarState = useSelector(selectSidebarState);
+  const projectSelected = useSelector(selectProjectSelected);
+  const todoSelected = useSelector(selectTodoSelected);
+  const selected = router.pathname.includes('todo')
+    ? `To-do: ${todoSelected.todoName}`
+    : `Tracker: ${projectSelected.projectName}`;
 
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
-  const sidebarState = useSelector(selectSidebarState);
-  const projectSelected = useSelector(selectProjectSelected);
 
   return (
     <nav>
@@ -40,9 +42,7 @@ const PremiumNav = () => {
           />
         )}
       </span>
-      <span className='project-selected'>
-        Track: {projectSelected?.projectName}
-      </span>
+      <span className='project-selected'>{selected}</span>
       <div className='user-dark'>
         <ProfileDropDown />
         <DarkMode />

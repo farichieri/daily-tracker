@@ -13,7 +13,7 @@ const Clock = () => {
   }, []);
   return (
     <span>
-      {date.toLocaleTimeString('en-US', {
+      {date?.toLocaleTimeString('en-US', {
         hour12: false,
       })}
       <style jsx>{`

@@ -9,6 +9,8 @@ export interface Task {
   done: boolean;
   hour: string;
   task: string;
+  labels: Array<string>;
+  id: string;
 }
 
 export interface UserSettings {

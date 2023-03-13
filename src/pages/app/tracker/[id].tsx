@@ -6,29 +6,36 @@ import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { selectUser } from 'store/slices/authSlice';
 import {
+  selectDaySelected,
   selectIsLoadingData,
-  selectProjectSelected,
+  selectProjects,
   selectWeekSelected,
   setDayData,
+  setProjectSelected,
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const TrackerPage = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { user, isVerifyingUser } = useSelector(selectUser);
-  const projectSelected = useSelector(selectProjectSelected);
   const weekSelected = useSelector(selectWeekSelected);
   const isLoadingData = useSelector(selectIsLoadingData);
+  const { id } = router.query;
+  const daySelected = useSelector(selectDaySelected);
+  const projects = useSelector(selectProjects);
 
   const getUserData = async (date: string) => {
-    if (user && date && projectSelected?.id) {
+    if (user && date && id) {
       console.log('Fetching Data');
       const docRef = doc(
         db,
         'users',
         user.uid,
         'projects',
-        projectSelected.id,
+        String(id),
         'dates',
         date
       );
@@ -37,6 +44,12 @@ const TrackerPage = () => {
       dispatch(setDayData(data));
     }
   };
+
+  useEffect(() => {
+    getUserData(daySelected);
+    const projectSelected = projects.find((p) => p.id === id);
+    projectSelected && dispatch(setProjectSelected(projectSelected));
+  }, [id, projects]);
 
   return (
     <PremiumLayout withPadding={false}>
