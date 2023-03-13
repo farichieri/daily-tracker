@@ -1,33 +1,23 @@
-import React, { useEffect, useState } from 'react';
 import Loader from '@/components/Layout/Loader/Loader';
 import { db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker/Tracker';
 import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
-import { dbFormatDate } from '@/utils/formatDate';
 import { selectUser } from 'store/slices/authSlice';
 import {
   selectIsLoadingData,
-  selectProjects,
   selectProjectSelected,
-  selectToday,
   selectWeekSelected,
   setDayData,
-  setDaySelected,
-  setIsLoadingData,
-  setProjects,
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProjects } from '@/hooks/firebase';
 
 const TrackerPage = () => {
   const dispatch = useDispatch();
   const { user, isVerifyingUser } = useSelector(selectUser);
   const projectSelected = useSelector(selectProjectSelected);
-  const projects = useSelector(selectProjects);
   const weekSelected = useSelector(selectWeekSelected);
-  const today = useSelector(selectToday);
   const isLoadingData = useSelector(selectIsLoadingData);
 
   const getUserData = async (date: string) => {
@@ -47,29 +37,6 @@ const TrackerPage = () => {
       dispatch(setDayData(data));
     }
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      dispatch(setIsLoadingData(true));
-      await getUserData(dbFormatDate(new Date()));
-    };
-    const getProjectsData = async () => {
-      if (!user) return;
-      dispatch(setIsLoadingData(true));
-      const projects = await getProjects(user);
-      dispatch(setProjects(projects));
-    };
-    if (user && projectSelected?.id) {
-      getData();
-    }
-    if (projects.length < 1 && user) {
-      getProjectsData();
-    }
-  }, [projectSelected, projects, user]);
-
-  useEffect(() => {
-    dispatch(setDaySelected(today));
-  }, [today]);
 
   return (
     <PremiumLayout withPadding={false}>

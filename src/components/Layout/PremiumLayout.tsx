@@ -18,8 +18,24 @@ import Settings from '../Settings/Settings';
 import {
   selectDayData,
   selectIsLoadingData,
+  selectProjects,
+  selectProjectSelected,
+  selectToday,
   selectWeekSelected,
+  setDayData,
+  setDaySelected,
+  setIsLoadingData,
+  setProjects,
 } from 'store/slices/trackerSlice';
+import {
+  selectTodos,
+  selectTodoSelected,
+  setTodos,
+} from 'store/slices/todosSlice';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/utils/firebase.config';
+import { getProjects, getTodos } from '@/hooks/firebase';
+import { dbFormatDate } from '@/utils/formatDate';
 
 export default function PremiumLayout({
   children,
@@ -36,7 +52,6 @@ export default function PremiumLayout({
   const sidebarOpen = useSelector(selectSidebarState);
   const isProfileOpen = useSelector(selectIsProfileOpen);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
-  const isLoadingData = useSelector(selectIsLoadingData);
 
   useEffect(() => {
     let localTheme = window.localStorage.getItem('theme');
@@ -53,6 +68,67 @@ export default function PremiumLayout({
   useEffect(() => {
     user && dispatch(setIsLoading(false));
   }, [user]);
+
+  const projectSelected = useSelector(selectProjectSelected);
+  const todoSelected = useSelector(selectTodoSelected);
+  const projects = useSelector(selectProjects);
+  const todos = useSelector(selectTodos);
+  const weekSelected = useSelector(selectWeekSelected);
+  const today = useSelector(selectToday);
+  const isLoadingData = useSelector(selectIsLoadingData);
+
+  const getUserData = async (date: string) => {
+    if (user && date && projectSelected?.id) {
+      console.log('Fetching Data');
+      const docRef = doc(
+        db,
+        'users',
+        user.uid,
+        'projects',
+        projectSelected.id,
+        'dates',
+        date
+      );
+      const querySnapshot = await getDoc(docRef);
+      let data: any = querySnapshot.data();
+      dispatch(setDayData(data));
+    }
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      dispatch(setIsLoadingData(true));
+      await getUserData(dbFormatDate(new Date()));
+    };
+    const getProjectsData = async () => {
+      if (!user) return;
+      dispatch(setIsLoadingData(true));
+      const projects = await getProjects(user);
+      dispatch(setProjects(projects));
+    };
+
+    if (user && projectSelected?.id) {
+      getData();
+    }
+    if (projects.length < 1 && user) {
+      getProjectsData();
+    }
+  }, [projectSelected, projects, user]);
+
+  useEffect(() => {
+    const getTodosData = async () => {
+      if (!user) return;
+      const todos = await getTodos(user);
+      dispatch(setTodos(todos));
+    };
+    if (todos.length < 1 && user) {
+      getTodosData();
+    }
+  }, [todoSelected, user]);
+
+  useEffect(() => {
+    dispatch(setDaySelected(today));
+  }, [today]);
 
   return (
     <section>

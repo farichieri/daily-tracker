@@ -6,6 +6,7 @@ interface LayoutSlice {
   isSidebarOpen: boolean;
   isCreatingProject: boolean;
   isEditingProject: boolean;
+  isEditingTodo: boolean;
   isLoading: boolean;
   isProfileOpen: boolean;
 }
@@ -15,6 +16,7 @@ const initialState: LayoutSlice = {
   isSidebarOpen: false,
   isCreatingProject: false,
   isEditingProject: false,
+  isEditingTodo: false,
   isLoading: false,
   isProfileOpen: false,
 };
@@ -32,6 +34,9 @@ export const layoutSlice = createSlice({
     },
     toggleIsEditingProject: (state) => {
       state.isEditingProject = !state.isEditingProject;
+    },
+    toggleIsEditingTodo: (state) => {
+      state.isEditingTodo = !state.isEditingTodo;
     },
     closeModal: (state) => {
       state.isCreatingProject = false;
@@ -54,6 +59,7 @@ export const {
   closeModal,
   setIsLoading,
   toggleIsProfileOpen,
+  toggleIsEditingTodo,
 } = layoutSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -63,6 +69,8 @@ export const selectIsCreatingProject = (state: RootState) =>
   state.layout.isCreatingProject;
 export const selectIsEditingProject = (state: RootState) =>
   state.layout.isEditingProject;
+export const selectIsEditingTodo = (state: RootState) =>
+  state.layout.isEditingTodo;
 export const selectIsLoading = (state: RootState) => state.layout.isLoading;
 export const selectIsProfileOpen = (state: RootState) =>
   state.layout.isProfileOpen;

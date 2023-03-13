@@ -23,3 +23,9 @@ export interface Project {
   isDefault: boolean;
   isFavorite: boolean;
 }
+export interface Todo {
+  id: string;
+  todoName: string;
+  isDefault: boolean;
+  isFavorite: boolean;
+}

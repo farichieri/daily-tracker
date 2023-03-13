@@ -50,7 +50,12 @@ const Avatar = ({
       {photo ? (
         <div className='image'>
           {changeable && (
-            <input type='file' onChange={handleChange} accept='image/*' />
+            <input
+              title='Upload a new photo'
+              type='file'
+              onChange={handleChange}
+              accept='image/*'
+            />
           )}
           <Image
             src={photo}
@@ -64,7 +69,12 @@ const Avatar = ({
         <div className='no-photo'>
           <span>{userSettings?.displayName[0]?.toLowerCase()}</span>
           {changeable && (
-            <input type='file' onChange={handleChange} accept='image/*' />
+            <input
+              title='Upload a new photo'
+              type='file'
+              onChange={handleChange}
+              accept='image/*'
+            />
           )}
         </div>
       )}
@@ -117,6 +127,9 @@ const Avatar = ({
           }
           input:hover {
             opacity: 1;
+          }
+          input[type='file']::after {
+            content: 'Attach Your CV: ';
           }
         `}
       </style>

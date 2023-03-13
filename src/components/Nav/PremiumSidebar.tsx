@@ -2,6 +2,7 @@ import {
   selectSidebarState,
   toggleIsCreatingProject,
   toggleIsEditingProject,
+  toggleIsEditingTodo,
 } from 'store/slices/layoutSlice';
 import {
   selectProjects,
@@ -13,22 +14,40 @@ import { useSelector, useDispatch } from 'react-redux';
 import ButtonAction from '../Layout/ButtonAction/ButtonAction';
 import Image from 'next/image';
 import Avatar from '../Avatar/Avatar';
+import {
+  selectTodos,
+  selectTodoSelected,
+  setTodoEdit,
+} from 'store/slices/todosSlice';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const PremiumSidebar = () => {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector(selectSidebarState);
   const projects = useSelector(selectProjects);
   const projectSelected = useSelector(selectProjectSelected);
+  const todos = useSelector(selectTodos);
+  const todoSelected = useSelector(selectTodoSelected);
+  const router = useRouter();
+  const { id } = router.query;
 
   const handleIsCreatingProject = () => {
     dispatch(toggleIsCreatingProject());
   };
 
-  const handleIsEditingProject = (event: any) => {
+  const handleEditProject = (event: any) => {
     event.preventDefault();
     const projectID = (event.target as HTMLButtonElement).id;
     dispatch(toggleIsEditingProject());
     dispatch(setProjectEdit(projectID));
+  };
+
+  const handleEditTodo = (event: any) => {
+    event.preventDefault();
+    const todoID = (event.target as HTMLButtonElement).id;
+    dispatch(toggleIsEditingTodo());
+    dispatch(setTodoEdit(todoID));
   };
 
   const handleSelectProject = (event: React.MouseEvent<HTMLElement>) => {
@@ -43,6 +62,18 @@ const PremiumSidebar = () => {
     dispatch(setProjectSelected(newProjectSelected));
   };
 
+  const handleTodoSelected = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    const todoID = (event.target as HTMLButtonElement).id;
+    const newTodoSelected = projects.find((t) => t.id === todoID) || {
+      id: '',
+      projectName: '',
+      isDefault: false,
+      isFavorite: false,
+    };
+    dispatch(setProjectSelected(newTodoSelected));
+  };
+
   return (
     <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
       <div className='tracks' onClick={(e) => e.stopPropagation()}>
@@ -52,20 +83,38 @@ const PremiumSidebar = () => {
         </div>
         {projects.map((project) => (
           <div key={project.id} className='project-container'>
-            <span
-              id={project.id}
-              className={`project ${
-                project.id === projectSelected.id ? 'selected' : ''
-              }`}
-              onClick={handleSelectProject}
-            >
-              {project.projectName}
+            <Link href={`/app/tracker/${project.id}`}>
+              <span
+                className={`project ${project.id === id ? 'selected' : ''}`}
+              >
+                {project.projectName}
+              </span>
+            </Link>
+            <span className='edit' id={project.id} onClick={handleEditProject}>
+              <Image
+                alt='edit-icon'
+                src={'/icons/edit.png'}
+                width={14}
+                height={14}
+                style={{ pointerEvents: 'none' }}
+              />
             </span>
-            <span
-              className='edit'
-              id={project.id}
-              onClick={handleIsEditingProject}
-            >
+          </div>
+        ))}
+      </div>
+      <div className='to-do'>
+        <div className='title'>
+          <span>To Do</span>
+          <ButtonAction text={'+'} onClick={''} />
+        </div>
+        {todos.map((todo) => (
+          <div key={todo.id} className='project-container'>
+            <Link href={`/app/todo/${todo.id}`}>
+              <span className={`project ${todo.id === id ? 'selected' : ''}`}>
+                {todo.todoName}
+              </span>
+            </Link>
+            <span className='edit' id={todo.id} onClick={handleEditTodo}>
               <Image
                 alt='edit-icon'
                 src={'/icons/edit.png'}
@@ -100,6 +149,7 @@ const PremiumSidebar = () => {
           z-index: 8;
           background: var(--cool);
           backdrop-filter: blur(12px);
+          padding-top: var(--premium-nav-height);
         }
         .project-container {
           display: flex;
@@ -110,6 +160,8 @@ const PremiumSidebar = () => {
           cursor: pointer;
           opacity: 0.5;
           transition: 0.3s;
+          width: 100%;
+          display: flex;
         }
         .project:hover {
           opacity: 1;
@@ -118,12 +170,14 @@ const PremiumSidebar = () => {
           left: 0;
           transition: all 0.3s;
         }
-        .tracks {
+        .tracks,
+        .to-do {
           display: flex;
           flex-direction: column;
           gap: 1rem;
           align-items: start;
           width: 100%;
+          padding: 1rem 0;
         }
         .title {
           display: flex;
@@ -137,7 +191,9 @@ const PremiumSidebar = () => {
         }
         .selected {
           opacity: 1;
+          color: var(--text-color);
         }
+
         .edit {
           cursor: pointer;
         }

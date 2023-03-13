@@ -3,6 +3,7 @@ import authSlice from './slices/authSlice';
 import themeSlice from './slices/themeSlice';
 import trackerSlice from './slices/trackerSlice';
 import layoutSlice from './slices/layoutSlice';
+import todosSlice from './slices/todosSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     auth: authSlice,
     tracker: trackerSlice,
     layout: layoutSlice,
+    todo: todosSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

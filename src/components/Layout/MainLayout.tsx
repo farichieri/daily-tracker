@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';
 import { selectIsLoading } from 'store/slices/layoutSlice';
 import Loader from './Loader/Loader';
+import { selectUser } from 'store/slices/authSlice';
+import { useRouter } from 'next/router';
 
 export default function MainLayout({
   children,
@@ -16,6 +18,8 @@ export default function MainLayout({
   const padding = withPadding ? 1.5 : 0;
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
+  const { user } = useSelector(selectUser);
+  const router = useRouter();
 
   const theme = useSelector(selectTheme);
 

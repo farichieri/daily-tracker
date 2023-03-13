@@ -3,18 +3,14 @@ import MainLayout from '@/components/Layout/MainLayout';
 import Pagination from '@/components/Pagination/Pagination';
 import Posts from '@/components/Posts/Posts';
 import { getSortedPostData } from '@/utils/posts';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Home({
   posts,
-  user,
 }: {
   user: any;
   posts: { title: string; id: string; date: string }[];
 }) {
-  const router = useRouter();
-
   const [postsState, setPostsState] = useState(posts);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
