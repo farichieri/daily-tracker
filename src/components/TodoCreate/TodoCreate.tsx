@@ -1,16 +1,16 @@
-import { getProjects } from '@/hooks/firebase';
+import { getProjects, getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { closeModal } from 'store/slices/layoutSlice';
-import { setProjects, setProjectSelected } from 'store/slices/trackerSlice';
+import { setTodos } from 'store/slices/todosSlice';
 import Modal from '../Modal/Modal';
 
-const ProjectCreate = () => {
+const TodoCreate = () => {
   const dispatch = useDispatch();
-  const [projectInput, setProjectInput] = useState('');
+  const [todoInput, setTodoInput] = useState('');
   const { user } = useSelector(selectUser);
 
   const handleCloseModal = () => {
@@ -18,43 +18,33 @@ const ProjectCreate = () => {
   };
 
   const handleChange = (e: any) => {
-    setProjectInput(e.target.value);
+    setTodoInput(e.target.value);
   };
 
   const handleAddTracker = async () => {
     if (user) {
       dispatch(closeModal());
-      const docRef = collection(db, 'users', user.uid, 'projects');
+      const docRef = collection(db, 'users', user.uid, 'todos');
       await addDoc(docRef, {
-        projectName: projectInput,
+        todoName: todoInput,
         isDefault: false,
         isFavorite: false,
         isArchivated: false,
       });
-      const projects = await getProjects(user);
-      dispatch(setProjects(projects));
-      const newProjectSelected = projects.find(
-        (p) => p.projectName === projectInput
-      ) || {
-        id: '',
-        projectName: '',
-        isDefault: false,
-        isFavorite: false,
-        isArchivated: false,
-      };
-      dispatch(setProjectSelected(newProjectSelected));
+      const todos = await getTodos(user);
+      dispatch(setTodos(todos));
     }
   };
 
   return (
     <Modal>
       <div className='container'>
-        <div className='title'>New Tracker</div>
+        <div className='title'>New To-do</div>
         <div className='form'>
           <input
             type='text'
             placeholder=''
-            value={projectInput}
+            value={todoInput}
             onChange={handleChange}
           />
           <div className='buttons'>
@@ -105,4 +95,4 @@ const ProjectCreate = () => {
   );
 };
 
-export default ProjectCreate;
+export default TodoCreate;

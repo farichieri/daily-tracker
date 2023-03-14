@@ -46,6 +46,7 @@ const Login = () => {
             projectName: 'Personal',
             isDefault: false,
             isFavorite: false,
+            isArchivated: false,
           });
           router.push('/app');
         } else {

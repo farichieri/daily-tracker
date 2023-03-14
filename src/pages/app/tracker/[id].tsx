@@ -46,10 +46,10 @@ const TrackerPage = () => {
   };
 
   useEffect(() => {
-    getUserData(daySelected);
+    // getUserData(daySelected);
     const projectSelected = projects.find((p) => p.id === id);
     projectSelected && dispatch(setProjectSelected(projectSelected));
-  }, [id, projects]);
+  }, [id, projects, daySelected]);
 
   return (
     <PremiumLayout withPadding={false}>

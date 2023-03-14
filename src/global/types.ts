@@ -24,10 +24,12 @@ export interface Project {
   projectName: string;
   isDefault: boolean;
   isFavorite: boolean;
+  isArchivated: boolean;
 }
 export interface Todo {
   id: string;
   todoName: string;
   isDefault: boolean;
   isFavorite: boolean;
+  isArchivated: boolean;
 }

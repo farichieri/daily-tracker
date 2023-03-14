@@ -5,6 +5,7 @@ import type { RootState } from '../store';
 interface LayoutSlice {
   isSidebarOpen: boolean;
   isCreatingProject: boolean;
+  isCreatingTodo: boolean;
   isEditingProject: boolean;
   isEditingTodo: boolean;
   isLoading: boolean;
@@ -15,6 +16,7 @@ interface LayoutSlice {
 const initialState: LayoutSlice = {
   isSidebarOpen: false,
   isCreatingProject: false,
+  isCreatingTodo: false,
   isEditingProject: false,
   isEditingTodo: false,
   isLoading: false,
@@ -32,6 +34,9 @@ export const layoutSlice = createSlice({
     toggleIsCreatingProject: (state) => {
       state.isCreatingProject = !state.isCreatingProject;
     },
+    toggleIsCreatingTodo: (state) => {
+      state.isCreatingTodo = !state.isCreatingTodo;
+    },
     toggleIsEditingProject: (state) => {
       state.isEditingProject = !state.isEditingProject;
     },
@@ -41,6 +46,8 @@ export const layoutSlice = createSlice({
     closeModal: (state) => {
       state.isCreatingProject = false;
       state.isEditingProject = false;
+      state.isCreatingTodo = false;
+      state.isEditingTodo = false;
       state.isProfileOpen = false;
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
@@ -56,6 +63,7 @@ export const {
   toggleSidebar,
   toggleIsCreatingProject,
   toggleIsEditingProject,
+  toggleIsCreatingTodo,
   closeModal,
   setIsLoading,
   toggleIsProfileOpen,
@@ -69,6 +77,8 @@ export const selectIsCreatingProject = (state: RootState) =>
   state.layout.isCreatingProject;
 export const selectIsEditingProject = (state: RootState) =>
   state.layout.isEditingProject;
+export const selectIsCreatingTodo = (state: RootState) =>
+  state.layout.isCreatingTodo;
 export const selectIsEditingTodo = (state: RootState) =>
   state.layout.isEditingTodo;
 export const selectIsLoading = (state: RootState) => state.layout.isLoading;

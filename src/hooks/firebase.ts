@@ -15,6 +15,7 @@ export const getProjects = async (user: User) => {
         projectName: docData.projectName,
         isDefault: docData.isDefault,
         isFavorite: docData.isFavorite,
+        isArchivated: docData.isArchivated,
       });
     });
     return data.sort((a, b) => b.isDefault - a.isDefault);
@@ -36,6 +37,7 @@ export const getTodos = async (user: User) => {
         todoName: docData.todoName,
         isDefault: docData.isDefault,
         isFavorite: docData.isFavorite,
+        isArchivated: docData.isArchivated,
       });
     });
     return data.sort((a, b) => b.isDefault - a.isDefault);

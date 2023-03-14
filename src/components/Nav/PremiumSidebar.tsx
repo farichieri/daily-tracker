@@ -1,6 +1,7 @@
 import {
   selectSidebarState,
   toggleIsCreatingProject,
+  toggleIsCreatingTodo,
   toggleIsEditingProject,
   toggleIsEditingTodo,
 } from 'store/slices/layoutSlice';
@@ -35,6 +36,9 @@ const PremiumSidebar = () => {
   const handleIsCreatingProject = () => {
     dispatch(toggleIsCreatingProject());
   };
+  const handleIsCreatingTodo = () => {
+    dispatch(toggleIsCreatingTodo());
+  };
 
   const handleEditProject = (event: any) => {
     event.preventDefault();
@@ -48,30 +52,6 @@ const PremiumSidebar = () => {
     const todoID = (event.target as HTMLButtonElement).id;
     dispatch(toggleIsEditingTodo());
     dispatch(setTodoEdit(todoID));
-  };
-
-  const handleSelectProject = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    const projectID = (event.target as HTMLButtonElement).id;
-    const newProjectSelected = projects.find((p) => p.id === projectID) || {
-      id: '',
-      projectName: '',
-      isDefault: false,
-      isFavorite: false,
-    };
-    dispatch(setProjectSelected(newProjectSelected));
-  };
-
-  const handleTodoSelected = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    const todoID = (event.target as HTMLButtonElement).id;
-    const newTodoSelected = projects.find((t) => t.id === todoID) || {
-      id: '',
-      projectName: '',
-      isDefault: false,
-      isFavorite: false,
-    };
-    dispatch(setProjectSelected(newTodoSelected));
   };
 
   return (
@@ -105,7 +85,7 @@ const PremiumSidebar = () => {
       <div className='to-do'>
         <div className='title'>
           <span>To Do</span>
-          <ButtonAction text={'+'} onClick={''} />
+          <ButtonAction text={'+'} onClick={handleIsCreatingTodo} />
         </div>
         {todos.map((todo) => (
           <div key={todo.id} className='project-container'>

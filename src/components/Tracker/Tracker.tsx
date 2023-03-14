@@ -61,10 +61,6 @@ const Tracker = ({
     setData();
   }, [dayData, daySelected]);
 
-  useEffect(() => {
-    getUserData(daySelected);
-  }, [daySelected]);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     type: string

@@ -33,11 +33,7 @@ const TodoPage = () => {
       );
       const querySnapshot = await getDocs(docRef);
       querySnapshot.forEach((todo) => {
-        const todoData = todo.data();
-        data.push({
-          id: todo.id,
-          ...todoData,
-        });
+        data.push(todo.data());
       });
       dispatch(setTodoData(data));
     }

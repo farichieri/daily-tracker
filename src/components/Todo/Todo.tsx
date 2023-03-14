@@ -1,19 +1,15 @@
 import { Task } from '@/global/types';
 import { db } from '@/utils/firebase.config';
-import { User } from 'firebase/auth';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { selectTodo } from 'store/slices/todosSlice';
 import Clock from '../Clock/Clock';
-import Button from '../Layout/Button/Button';
 import IconButton from '../Layout/Icon/IconButton';
 
 const Todo = ({ id }: { id: string }) => {
   const { todoData } = useSelector(selectTodo);
-  const [isSaveable, setIsSaveable] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [todos, setTodos] = useState<Task[]>(todoData);
   const { user } = useSelector(selectUser);
   const [taskInput, setTaskInput] = useState('');
@@ -35,12 +31,9 @@ const Todo = ({ id }: { id: string }) => {
   };
 
   const handleSave = async (taskID: string, task: Task) => {
-    setIsSaving(true);
     if (!user) return;
     const docRef = doc(db, 'users', user.uid, 'todos', todoID, 'tasks', taskID);
     await setDoc(docRef, task);
-    setIsSaving(false);
-    setIsSaveable(!isSaveable);
   };
 
   const handleAdd = async (e: any) => {
@@ -63,23 +56,58 @@ const Todo = ({ id }: { id: string }) => {
         todoID,
         'tasks'
       );
-      await addDoc(docRef, newTask).then((res) => (newTask.id = res.id));
+      const taskID = await addDoc(docRef, newTask).then((res) => res.id);
+      newTask.id = taskID;
+      const addedDocRef = doc(
+        db,
+        'users',
+        user.uid,
+        'todos',
+        todoID,
+        'tasks',
+        taskID
+      );
+      await setDoc(addedDocRef, newTask);
       setTodos([...todos, newTask]);
       setTaskInput('');
     }
+  };
+
+  const handleDelete = async (e: any) => {
+    e.preventDefault();
+    if (!user) return;
+    const index = e.target.value;
+    const newTodos: any = todos.slice();
+    const taskToRemove = newTodos.splice(index, 1)[0].id;
+    const docRef = doc(
+      db,
+      'users',
+      user.uid,
+      'todos',
+      todoID,
+      'tasks',
+      taskToRemove
+    );
+    await deleteDoc(docRef);
+    setTodos(newTodos);
   };
 
   useEffect(() => {
     setTodos(todoData);
   }, [todoData]);
 
+  const sortData = (data: Task[]) => {
+    const arrayForSort = [...data];
+    const sorted = arrayForSort.sort((a, b) => Number(a.done) - Number(b.done));
+    return sorted;
+  };
   return (
     <div className='todo'>
       <div className='header'>
         <Clock />
       </div>
       {todos?.length > 0 &&
-        todos?.map((todo) => (
+        sortData(todos)?.map((todo, index) => (
           <div className='task' key={todo.id}>
             <div className={`name ${todo.done ? 'done' : ''}`}>{todo.task}</div>
             <div className='checkbox'>
@@ -90,6 +118,16 @@ const Todo = ({ id }: { id: string }) => {
                   todo.done ? '/icons/checkbox-done.png' : '/icons/checkbox.png'
                 }
                 alt={todo.done ? 'Done-Icon' : 'Checkbox-Icon'}
+                width={24}
+                height={24}
+              />
+            </div>
+            <div className='delete'>
+              <IconButton
+                props={{ value: index }}
+                onClick={handleDelete}
+                src={'/icons/delete.png'}
+                alt='Delete-Icon'
                 width={24}
                 height={24}
               />

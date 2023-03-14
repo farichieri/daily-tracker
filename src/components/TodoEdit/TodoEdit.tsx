@@ -1,30 +1,24 @@
-import { Project } from '@/global/types';
-import { getProjects } from '@/hooks/firebase';
+import { Todo } from '@/global/types';
+import { getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
-import {
-  collection,
-  doc,
-  getDocs,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { closeModal } from 'store/slices/layoutSlice';
-import { setProjects, selectProjectEdit } from 'store/slices/trackerSlice';
+import { selectTodoEdit, setTodos } from 'store/slices/todosSlice';
 import Modal from '../Modal/Modal';
 
-const ProjectEdit = () => {
+const TodoEdit = () => {
   const dispatch = useDispatch();
-  const projectEdit = useSelector(selectProjectEdit);
-  console.log({ projectEdit });
-  const [projectInput, setProjectInput] = useState<Project>({
-    id: projectEdit.id,
-    projectName: projectEdit.projectName,
-    isDefault: projectEdit.isDefault,
-    isFavorite: projectEdit.isFavorite,
-    isArchivated: projectEdit.isArchivated,
+  const todoEdit = useSelector(selectTodoEdit);
+  console.log({ todoEdit });
+  const [todoInput, setTodoInput] = useState<Todo>({
+    id: todoEdit.id,
+    todoName: todoEdit.todoName,
+    isDefault: todoEdit.isDefault,
+    isFavorite: todoEdit.isFavorite,
+    isArchivated: todoEdit.isArchivated,
   });
   const { user } = useSelector(selectUser);
 
@@ -33,8 +27,8 @@ const ProjectEdit = () => {
   };
 
   const handleChange = (e: any) => {
-    setProjectInput({
-      ...projectInput,
+    setTodoInput({
+      ...todoInput,
       [e.target.name]: e.target.value,
     });
   };
@@ -42,75 +36,73 @@ const ProjectEdit = () => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     const name: string = (e.target as HTMLButtonElement).name;
-    const newInput: any = { ...projectInput };
+    const newInput: any = { ...todoInput };
     const bool: boolean = !newInput[name];
-    console.log({ newInput });
-    setProjectInput({
+    setTodoInput({
       ...newInput,
       [name]: bool,
     });
   };
 
-  const handleEditProject = async () => {
-    console.log({ projectInput });
+  const handleEditTodo = async () => {
     if (user) {
       dispatch(closeModal());
-      if (projectEdit.isDefault === false && projectInput.isDefault === true) {
-        const docRef = collection(db, 'users', user.uid, 'projects');
+      if (todoEdit.isDefault === false && todoInput.isDefault === true) {
+        const docRef = collection(db, 'users', user.uid, 'todos');
         const querySnapshot = await getDocs(docRef);
         const removeDefaults = async () => {
           querySnapshot.forEach((docToUpdate) => {
-            updateDoc(doc(db, 'users', user.uid, 'projects', docToUpdate.id), {
+            updateDoc(doc(db, 'users', user.uid, 'todos', docToUpdate.id), {
               isDefault: false,
             });
           });
         };
         await removeDefaults();
       }
-      const docRef = doc(db, 'users', user.uid, 'projects', projectEdit.id);
+      const docRef = doc(db, 'users', user.uid, 'todos', todoEdit.id);
       await updateDoc(docRef, {
-        projectName: projectInput.projectName,
-        isDefault: projectInput.isDefault,
-        isFavorite: projectInput.isFavorite,
-        isArchivated: projectInput.isArchivated,
+        todoName: todoInput.todoName,
+        isDefault: todoInput.isDefault,
+        isFavorite: todoInput.isFavorite,
+        isArchivated: todoInput.isArchivated,
       });
-      const projects = await getProjects(user);
-      dispatch(setProjects(projects));
+      const todos = await getTodos(user);
+      dispatch(setTodos(todos));
     }
   };
 
   return (
     <Modal>
       <div className='container'>
-        <div className='title'>Edit Project</div>
+        <div className='title'>Edit Todo</div>
         <div className='form'>
           <div className='name'>
             <span>Name:</span>
             <input
               type='text'
-              name='projectName'
-              value={projectInput.projectName}
+              name='todoName'
+              value={todoInput.todoName}
               onChange={handleChange}
             />
           </div>
           <div className='default'>
             <button name='isDefault' onClick={handleClick}>
-              {projectInput.isDefault ? 'Default' : 'Make Default'}
+              {todoInput.isDefault ? 'Default' : 'Make Default'}
             </button>
           </div>
           <div className='favorite'>
             <button name='isFavorite' onClick={handleClick}>
-              {projectInput.isFavorite ? 'Favorite' : 'Make Favorite'}
+              {todoInput.isFavorite ? 'Favorite' : 'Make Favorite'}
             </button>
           </div>
           <div className='archivated'>
             <button name='isArchivated' onClick={handleClick}>
-              {projectInput.isArchivated ? 'Desarchivate' : 'Archivate'}
+              {todoInput.isArchivated ? 'Desarchivate' : 'Archivate'}
             </button>
           </div>
           <div className='buttons'>
             <button onClick={handleCloseModal}>Cancel</button>
-            <button onClick={handleEditProject}>Accept</button>
+            <button onClick={handleEditTodo}>Accept</button>
           </div>
         </div>
         <style jsx>
@@ -161,4 +153,4 @@ const ProjectEdit = () => {
   );
 };
 
-export default ProjectEdit;
+export default TodoEdit;

@@ -20,12 +20,14 @@ const initialState: TodosSlice = {
     todoName: '',
     isDefault: false,
     isFavorite: false,
+    isArchivated: false,
   },
   todoEdit: {
     id: '',
     todoName: '',
     isDefault: false,
     isFavorite: false,
+    isArchivated: false,
   },
   isLoadingData: false,
 };

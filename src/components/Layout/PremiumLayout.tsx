@@ -5,7 +5,9 @@ import { selectTheme, setTheme } from 'store/slices/themeSlice';
 import PremiumSidebar from '../Nav/PremiumSidebar';
 import {
   selectIsCreatingProject,
+  selectIsCreatingTodo,
   selectIsEditingProject,
+  selectIsEditingTodo,
   selectIsProfileOpen,
   selectSidebarState,
   setIsLoading,
@@ -36,6 +38,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { getProjects, getTodos } from '@/hooks/firebase';
 import { dbFormatDate } from '@/utils/formatDate';
+import TodoCreate from '../TodoCreate/TodoCreate';
+import TodoEdit from '../TodoEdit/TodoEdit';
 
 export default function PremiumLayout({
   children,
@@ -49,6 +53,8 @@ export default function PremiumLayout({
   const theme = useSelector(selectTheme);
   const isCreatingProject = useSelector(selectIsCreatingProject);
   const isEditingProject = useSelector(selectIsEditingProject);
+  const isCreatingTodo = useSelector(selectIsCreatingTodo);
+  const isEditingTodo = useSelector(selectIsEditingTodo);
   const sidebarOpen = useSelector(selectSidebarState);
   const isProfileOpen = useSelector(selectIsProfileOpen);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
@@ -73,7 +79,6 @@ export default function PremiumLayout({
   const todoSelected = useSelector(selectTodoSelected);
   const projects = useSelector(selectProjects);
   const todos = useSelector(selectTodos);
-  const weekSelected = useSelector(selectWeekSelected);
   const today = useSelector(selectToday);
   const isLoadingData = useSelector(selectIsLoadingData);
 
@@ -137,6 +142,8 @@ export default function PremiumLayout({
           {isProfileOpen && <Settings />}
           {isCreatingProject && <ProjectCreate />}
           {isEditingProject && <ProjectEdit />}
+          {isCreatingTodo && <TodoCreate />}
+          {isEditingTodo && <TodoEdit />}
           <PremiumNav />
           <PremiumSidebar />
           {sidebarOpen && (
