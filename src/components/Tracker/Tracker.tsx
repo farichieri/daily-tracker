@@ -19,14 +19,9 @@ import {
 import Header from './Header';
 import { parseISO } from 'date-fns';
 import { Task } from '@/global/types';
+import Tooltip from '../Layout/Tooltip/Tooltip';
 
-const Tracker = ({
-  userID,
-  getUserData,
-}: {
-  userID: string;
-  getUserData: Function;
-}) => {
+const Tracker = ({ userID }: { userID: string }) => {
   const dispatch = useDispatch();
   const dayData = useSelector(selectDayData);
   const daySelected = useSelector(selectDaySelected);
@@ -220,7 +215,7 @@ const Tracker = ({
         tasks={tasks}
         task={task}
       />
-      <div style={{ margin: '1rem 0 0 0', width: '100%' }}>
+      <div className='goals-container'>
         <Button
           style={null}
           content={showObjetives ? 'Hide Goals' : 'Show Goals'}
@@ -228,6 +223,16 @@ const Tracker = ({
           isDisabled={false}
           loadMessage={''}
           onClick={handleObjetives}
+        />
+        <Tooltip
+          content={
+            <>
+              Write down your goals <br /> every day to increase <br /> the
+              likelihood of achieving them.
+            </>
+          }
+          direction='top'
+          delay={400}
         />
       </div>
       {showObjetives && (
@@ -248,6 +253,14 @@ const Tracker = ({
           width: 100%;
           gap: 1rem;
           padding-bottom: 10rem;
+        }
+        .goals-container {
+          margin: 1rem 0 0 0;
+          width: 100%;
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+          justify-content: center;
         }
       `}</style>
     </section>

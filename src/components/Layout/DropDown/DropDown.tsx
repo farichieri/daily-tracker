@@ -93,7 +93,6 @@ const DropDown = ({
         .drop-menu {
           position: absolute;
           background: var(--cool);
-          backdrop-filter: blur(12px);
           border-radius: 6px;
           top: 2.65rem;
           right: 0.1rem;

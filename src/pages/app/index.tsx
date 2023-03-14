@@ -46,7 +46,7 @@ const TrackerPage = () => {
     if (projectSelected.id && user) {
       router.push(`/app/tracker/${projectSelected.id}`);
     }
-  }, [projectSelected]);
+  }, [projectSelected, user]);
 
   return (
     <PremiumLayout withPadding={false}>
@@ -63,7 +63,7 @@ const TrackerPage = () => {
       )}
       {user && !isLoadingData && weekSelected.length > 0 && (
         <div className='dashboard-container'>
-          <Tracker userID={user.uid} getUserData={getUserData} />
+          <Tracker userID={user.uid} />
         </div>
       )}
       <style jsx>{`

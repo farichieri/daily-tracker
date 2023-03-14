@@ -30,20 +30,24 @@ const TrackerPage = () => {
   const projectSelected = useSelector(selectProjectSelected);
 
   const getUserData = async (date: string) => {
-    if (user && date && id) {
-      console.log('Fetching Data');
-      const docRef = doc(
-        db,
-        'users',
-        user.uid,
-        'projects',
-        String(id),
-        'dates',
-        date
-      );
-      const querySnapshot = await getDoc(docRef);
-      let data: any = querySnapshot.data();
-      dispatch(setDayData(data));
+    if (user && date && id && projects) {
+      if (!projects.find((project) => project.id === id)) {
+        router.push('/app');
+      } else {
+        console.log('Fetching Data');
+        const docRef = doc(
+          db,
+          'users',
+          user.uid,
+          'projects',
+          String(id),
+          'dates',
+          date
+        );
+        const querySnapshot = await getDoc(docRef);
+        let data: any = querySnapshot.data();
+        dispatch(setDayData(data));
+      }
     }
   };
 
@@ -71,7 +75,7 @@ const TrackerPage = () => {
       )}
       {user && !isLoadingData && weekSelected.length > 0 && (
         <div className='dashboard-container'>
-          <Tracker userID={user.uid} getUserData={getUserData} />
+          <Tracker userID={user.uid} />
         </div>
       )}
       <style jsx>{`

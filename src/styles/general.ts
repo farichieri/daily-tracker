@@ -8,6 +8,9 @@ const general = css.global`
     --max-width: 1200px;
     --max-width-content: 900px;
     --break-point: 900px;
+    /* Tooltip */
+    --tooltip-margin: 32px;
+    --tooltip-arrow-size: 4px;
   }
 `;
 

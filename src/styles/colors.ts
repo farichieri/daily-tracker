@@ -17,6 +17,9 @@ const colors = css.global`
     --gray-color: #232323;
     --bg-modal: #00000080;
     --cool: #00000080;
+    /* Tooltip */
+    --tooltip-text-color: gray;
+    --tooltip-background-color: #00000080;
   }
   div.light {
     --text-color: black;
@@ -34,6 +37,9 @@ const colors = css.global`
     --gray-color: #e7e7e7;
     --bg-modal: #00000080;
     --cool: #ffffff90;
+    /* Tooltip */
+    --tooltip-text-color: black;
+    --tooltip-background-color: #00000080;
   }
 `;
 
