@@ -101,20 +101,12 @@ export default function PremiumLayout({
   };
 
   useEffect(() => {
-    const getData = async () => {
-      dispatch(setIsLoadingData(true));
-      await getUserData(dbFormatDate(new Date()));
-    };
     const getProjectsData = async () => {
       if (!user) return;
       dispatch(setIsLoadingData(true));
       const projects = await getProjects(user);
       dispatch(setProjects(projects));
     };
-
-    if (user && projectSelected?.id) {
-      getData();
-    }
     if (projects.length < 1 && user) {
       getProjectsData();
     }

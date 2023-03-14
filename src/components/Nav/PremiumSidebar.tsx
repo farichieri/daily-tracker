@@ -5,31 +5,21 @@ import {
   toggleIsEditingProject,
   toggleIsEditingTodo,
 } from 'store/slices/layoutSlice';
-import {
-  selectProjects,
-  selectProjectSelected,
-  setProjectEdit,
-  setProjectSelected,
-} from 'store/slices/trackerSlice';
+import { selectProjects, setProjectEdit } from 'store/slices/trackerSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import ButtonAction from '../Layout/ButtonAction/ButtonAction';
 import Image from 'next/image';
 import Avatar from '../Avatar/Avatar';
-import {
-  selectTodos,
-  selectTodoSelected,
-  setTodoEdit,
-} from 'store/slices/todosSlice';
+import { selectTodos, setTodoEdit } from 'store/slices/todosSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Project, Todo } from '@/global/types';
 
 const PremiumSidebar = () => {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector(selectSidebarState);
   const projects = useSelector(selectProjects);
-  const projectSelected = useSelector(selectProjectSelected);
   const todos = useSelector(selectTodos);
-  const todoSelected = useSelector(selectTodoSelected);
   const router = useRouter();
   const { id } = router.query;
 
@@ -54,6 +44,13 @@ const PremiumSidebar = () => {
     dispatch(setTodoEdit(todoID));
   };
 
+  const filterTodos = (data: Todo[]) => {
+    return data.filter((d) => !d.isArchivated);
+  };
+  const filterProjects = (data: Project[]) => {
+    return data.filter((d) => !d.isArchivated);
+  };
+
   return (
     <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
       <div className='tracks' onClick={(e) => e.stopPropagation()}>
@@ -61,7 +58,7 @@ const PremiumSidebar = () => {
           <span>My Tracks</span>
           <ButtonAction text={'+'} onClick={handleIsCreatingProject} />
         </div>
-        {projects.map((project) => (
+        {filterProjects(projects).map((project) => (
           <div key={project.id} className='project-container'>
             <Link href={`/app/tracker/${project.id}`}>
               <span
@@ -87,7 +84,7 @@ const PremiumSidebar = () => {
           <span>To Do</span>
           <ButtonAction text={'+'} onClick={handleIsCreatingTodo} />
         </div>
-        {todos.map((todo) => (
+        {filterTodos(todos).map((todo) => (
           <div key={todo.id} className='project-container'>
             <Link href={`/app/todo/${todo.id}`}>
               <span className={`project ${todo.id === id ? 'selected' : ''}`}>

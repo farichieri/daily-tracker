@@ -12,9 +12,13 @@ import {
   setDayData,
 } from 'store/slices/trackerSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const TrackerPage = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const { user, isVerifyingUser } = useSelector(selectUser);
   const projectSelected = useSelector(selectProjectSelected);
   const weekSelected = useSelector(selectWeekSelected);
@@ -37,6 +41,12 @@ const TrackerPage = () => {
       dispatch(setDayData(data));
     }
   };
+
+  useEffect(() => {
+    if (projectSelected.id) {
+      router.push(`/app/tracker/${projectSelected.id}`);
+    }
+  }, [projectSelected]);
 
   return (
     <PremiumLayout withPadding={false}>

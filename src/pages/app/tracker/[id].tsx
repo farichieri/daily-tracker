@@ -9,6 +9,7 @@ import {
   selectDaySelected,
   selectIsLoadingData,
   selectProjects,
+  selectProjectSelected,
   selectWeekSelected,
   setDayData,
   setProjectSelected,
@@ -26,6 +27,7 @@ const TrackerPage = () => {
   const { id } = router.query;
   const daySelected = useSelector(selectDaySelected);
   const projects = useSelector(selectProjects);
+  const projectSelected = useSelector(selectProjectSelected);
 
   const getUserData = async (date: string) => {
     if (user && date && id) {
@@ -46,10 +48,13 @@ const TrackerPage = () => {
   };
 
   useEffect(() => {
-    // getUserData(daySelected);
     const projectSelected = projects.find((p) => p.id === id);
     projectSelected && dispatch(setProjectSelected(projectSelected));
-  }, [id, projects, daySelected]);
+  }, [id, projects]);
+
+  useEffect(() => {
+    getUserData(daySelected);
+  }, [daySelected, projectSelected]);
 
   return (
     <PremiumLayout withPadding={false}>
