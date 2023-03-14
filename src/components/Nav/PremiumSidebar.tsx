@@ -125,9 +125,9 @@ const PremiumSidebar = () => {
           z-index: 8;
           background: var(--cool);
           backdrop-filter: blur(12px);
-          margin-top: var(--premium-nav-height);
+          padding-top: var(--premium-nav-height);
           overflow: auto;
-          height: calc(100vh - var(--premium-nav-height));
+          height: 100%;
         }
         .project-container {
           display: flex;

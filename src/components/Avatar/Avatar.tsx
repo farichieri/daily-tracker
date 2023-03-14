@@ -64,7 +64,7 @@ const Avatar = ({
             alt='Profile Photo'
             width={size}
             height={size}
-            style={{ pointerEvents: 'none' }}
+            style={{ pointerEvents: 'none', objectFit: 'cover' }}
           />
         </div>
       ) : (
@@ -96,6 +96,9 @@ const Avatar = ({
             overflow: hidden;
             position: relative;
             box-shadow: 0 0 10px 1px var(--box-shadow-dark);
+            height: ${size}px;
+            width: ${size}px;
+            vertical-align: middle;
           }
           .no-photo {
             align-items: center;

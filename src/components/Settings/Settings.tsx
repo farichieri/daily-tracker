@@ -10,12 +10,12 @@ const settingOptions = [
     component: <Profile />,
   },
   {
-    option: 'general',
-    component: <General />,
-  },
-  {
     option: 'plan',
     component: <Plan />,
+  },
+  {
+    option: 'general',
+    component: <General />,
   },
 ];
 

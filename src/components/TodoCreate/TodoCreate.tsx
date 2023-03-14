@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { closeModal } from 'store/slices/layoutSlice';
 import { setTodos } from 'store/slices/todosSlice';
+import Button from '../Layout/Button/Button';
 import Modal from '../Modal/Modal';
 
 const TodoCreate = () => {
@@ -21,7 +22,7 @@ const TodoCreate = () => {
     setTodoInput(e.target.value);
   };
 
-  const handleAddTracker = async () => {
+  const handleAddTodo = async () => {
     if (user) {
       dispatch(closeModal());
       const docRef = collection(db, 'users', user.uid, 'todos');
@@ -39,7 +40,7 @@ const TodoCreate = () => {
   return (
     <Modal>
       <div className='container'>
-        <div className='title'>New To-do</div>
+        <div className='title'>New To Do List</div>
         <div className='form'>
           <input
             type='text'
@@ -48,28 +49,45 @@ const TodoCreate = () => {
             onChange={handleChange}
           />
           <div className='buttons'>
-            <button onClick={handleCloseModal}>Cancel</button>
-            <button onClick={handleAddTracker}>Add</button>
+            <Button
+              onClick={handleCloseModal}
+              content='Cancel'
+              isLoading={false}
+              isDisabled={false}
+              loadMessage={''}
+              style={null}
+            />
+            <Button
+              onClick={handleAddTodo}
+              content='Acept'
+              isLoading={false}
+              isDisabled={false}
+              loadMessage={''}
+              style={null}
+            />
           </div>
         </div>
         <style jsx>
           {`
             .container {
-              background: var(--box-shadow);
-              border-radius: 6px;
+              border-radius: 1rem;
               display: flex;
               flex-direction: column;
               align-items: center;
               justify-content: center;
               box-shadow: 0 0 10px 1px var(--box-shadow-light);
               overflow: auto;
+              padding: 1rem;
             }
             .title {
               padding: 0.5rem 1rem;
+              font-weight: bold;
+              font-size: 1.2rem;
             }
             .form {
               display: flex;
               flex-direction: column;
+              gap: 0.5rem;
             }
             input {
               background: none;
@@ -77,9 +95,12 @@ const TodoCreate = () => {
               border: 1px solid var(--box-shadow-light);
               outline: none;
               padding: 0.25rem 0.3rem 0.25rem 0.5rem;
+              margin-bottom: 0.5rem;
+              border-radius: 6px;
             }
             .buttons {
               display: flex;
+              gap: 0.5rem;
             }
             button {
               width: 100%;
