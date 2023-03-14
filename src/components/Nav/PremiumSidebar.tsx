@@ -55,7 +55,7 @@ const PremiumSidebar = () => {
     <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
       <div className='tracks' onClick={(e) => e.stopPropagation()}>
         <div className='title'>
-          <span>My Tracks</span>
+          <span>My Trackers</span>
           <ButtonAction text={'+'} onClick={handleIsCreatingProject} />
         </div>
         {filterProjects(projects).map((project) => (
@@ -81,7 +81,7 @@ const PremiumSidebar = () => {
       </div>
       <div className='to-do'>
         <div className='title'>
-          <span>To Do</span>
+          <span>To Do Lists</span>
           <ButtonAction text={'+'} onClick={handleIsCreatingTodo} />
         </div>
         {filterTodos(todos).map((todo) => (
@@ -116,7 +116,6 @@ const PremiumSidebar = () => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          height: 100%;
           left: -200px;
           padding: 1rem 1rem;
           position: fixed;
@@ -126,7 +125,9 @@ const PremiumSidebar = () => {
           z-index: 8;
           background: var(--cool);
           backdrop-filter: blur(12px);
-          padding-top: var(--premium-nav-height);
+          margin-top: var(--premium-nav-height);
+          overflow: auto;
+          height: calc(100vh - var(--premium-nav-height));
         }
         .project-container {
           display: flex;

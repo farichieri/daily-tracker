@@ -33,7 +33,7 @@ const colors = css.global`
     --nav-background-color: white;
     --gray-color: #e7e7e7;
     --bg-modal: #00000080;
-    --cool: #ffffff1a;
+    --cool: #ffffff90;
   }
 `;
 

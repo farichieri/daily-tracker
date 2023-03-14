@@ -129,7 +129,7 @@ export default function PremiumLayout({
 
   return (
     <section>
-      {user && userSettings.displayName && !isVerifyingUser && (
+      {user && userSettings.display_name && !isVerifyingUser && (
         <>
           {isProfileOpen && <Settings />}
           {isCreatingProject && <ProjectCreate />}

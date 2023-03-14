@@ -38,8 +38,10 @@ const Login = () => {
         if (additinalInfo?.isNewUser) {
           await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
-            displayName: user.displayName,
+            display_name: user.displayName,
             photo: '',
+            plan_name: 'free',
+            is_premium: false,
           });
           const docRef = collection(db, 'users', user.uid, 'projects');
           await addDoc(docRef, {

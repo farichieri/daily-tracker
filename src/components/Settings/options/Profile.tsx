@@ -12,7 +12,7 @@ const Profile = () => {
       </div>
       <div className='input-container'>
         <span>Name</span>
-        <input type='text' value={String(user?.displayName)} />
+        <input type='text' value={String(userSettings?.display_name)} />
       </div>
       <div className='input-container'>
         <span>Email</span>

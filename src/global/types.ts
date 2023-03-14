@@ -14,9 +14,11 @@ export interface Task {
 }
 
 export interface UserSettings {
-  displayName: string;
+  display_name: string;
   email: string;
   photo: string;
+  is_premium: boolean;
+  plan_name: string;
 }
 
 export interface Project {

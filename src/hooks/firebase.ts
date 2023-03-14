@@ -1,3 +1,4 @@
+import { UserSettings } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { User } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
@@ -50,5 +51,13 @@ export const getUserSettings = async (user: User) => {
   const docRef = doc(db, 'users', user.uid);
   const querySnapshot = await getDoc(docRef);
   const userData = querySnapshot.data();
-  return userData;
+  if (userData) {
+    return {
+      display_name: userData.display_name,
+      email: userData.email,
+      is_premium: userData.is_premium,
+      photo: userData.photo,
+      plan_name: userData.plan_name,
+    };
+  }
 };

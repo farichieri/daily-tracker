@@ -15,6 +15,7 @@ import {
 import { selectTheme } from 'store/slices/themeSlice';
 import { useSelector } from 'react-redux';
 import { getUserSettings } from '@/hooks/firebase';
+import { UserSettings } from '@/global/types';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();

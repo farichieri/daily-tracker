@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import General from './options/General';
+import Plan from './options/Plan';
 import Profile from './options/Profile';
 
 const settingOptions = [
@@ -11,6 +12,10 @@ const settingOptions = [
   {
     option: 'general',
     component: <General />,
+  },
+  {
+    option: 'plan',
+    component: <Plan />,
   },
 ];
 

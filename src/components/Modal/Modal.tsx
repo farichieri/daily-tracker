@@ -33,13 +33,14 @@ const Modal = ({ children }: { children: ReactNode }) => {
             justify-content: center;
           }
           .modal {
-            background: var(--gray-color);
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 6px;
-            box-shadow: 0 0 10px 1px var(--box-shadow-light);
+            box-shadow: 0 0 10px 1px var(--cool);
             position: relative;
+            background: var(--cool);
+            backdrop-filter: blur(12px);
           }
           .close {
             position: absolute;

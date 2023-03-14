@@ -2,6 +2,7 @@ import Avatar from '@/components/Avatar/Avatar';
 import { auth } from '@/utils/firebase.config';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { toggleIsProfileOpen } from 'store/slices/layoutSlice';
@@ -11,9 +12,11 @@ const ProfileDropDown = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
   const router = useRouter();
+  const [closeDrop, setCloseDrop] = useState(false);
 
   const handleLogout = async (event: React.MouseEvent) => {
     event.preventDefault();
+    router.push('/');
     await signOut(auth)
       .then(() => {})
       .catch((error) => {
@@ -23,10 +26,15 @@ const ProfileDropDown = () => {
 
   const handleOpenProfile = () => {
     dispatch(toggleIsProfileOpen());
+    setCloseDrop(true);
   };
 
   return (
-    <DropDown btnText={<Avatar size={24} changeable={false} />}>
+    <DropDown
+      closeDrop={closeDrop}
+      setCloseDrop={setCloseDrop}
+      btnText={<Avatar size={24} changeable={false} />}
+    >
       <span>Account</span>
       <div className='section' onClick={handleOpenProfile}>
         <button>Profile</button>

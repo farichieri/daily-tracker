@@ -15,9 +15,11 @@ const initialState: AuthState = {
   user: null,
   isVerifyingUser: true,
   userSettings: {
-    displayName: '',
+    display_name: '',
     email: '',
     photo: '',
+    is_premium: false,
+    plan_name: '',
   },
 };
 
@@ -33,12 +35,14 @@ export const authSlice = createSlice({
       state.user = action.payload;
       state.isVerifyingUser = false;
     },
-    setUserSettings: (state, action: PayloadAction<any>) => {
+    setUserSettings: (state, action: PayloadAction<UserSettings>) => {
       const userSettings = action.payload;
       state.userSettings = {
-        displayName: userSettings.displayName,
+        display_name: userSettings.display_name,
         email: userSettings.email,
         photo: userSettings.photo,
+        is_premium: userSettings.is_premium,
+        plan_name: userSettings.plan_name,
       };
     },
   },

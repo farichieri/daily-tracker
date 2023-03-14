@@ -43,7 +43,7 @@ const TrackerPage = () => {
   };
 
   useEffect(() => {
-    if (projectSelected.id) {
+    if (projectSelected.id && user) {
       router.push(`/app/tracker/${projectSelected.id}`);
     }
   }, [projectSelected]);

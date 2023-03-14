@@ -1,23 +1,25 @@
-import { ReactNode, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDaySelected, setDaySelected } from 'store/slices/trackerSlice';
+import { ReactNode, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 const DropDown = ({
   children,
   btnText,
+  closeDrop,
+  setCloseDrop,
 }: {
   children: ReactNode;
   btnText: any;
+  closeDrop: boolean;
+  setCloseDrop: Function;
 }) => {
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
-  const handleSelect = (day: Date | undefined) => {
-    if (day) {
-      setOpen(!open);
+  useEffect(() => {
+    if (closeDrop === true) {
+      setOpen(false);
+      setCloseDrop(false);
     }
-  };
+  }, [closeDrop, open]);
 
   return (
     <div className='container'>
@@ -90,14 +92,13 @@ const DropDown = ({
         }
         .drop-menu {
           position: absolute;
-          background: var(--bg-color);
-          box-shadow: 0 0 10px 1px var(--box-shadow-light);
+          background: var(--cool);
+          backdrop-filter: blur(12px);
           border-radius: 6px;
-          top: 2.2rem;
+          top: 2.65rem;
           right: 0.1rem;
-          z-index: 998;
+          z-index: 12;
           font-size: 80%;
-          background: var(--bg-color);
           height: auto;
           width: 12rem;
           padding: 0.5rem 0rem;

@@ -28,8 +28,10 @@ const Avatar = ({
           getDownloadURL(imageRef)
             .then(async (newImageUrl) => {
               await setDoc(doc(db, 'users', user.uid), {
-                email: user.email,
-                displayName: user.displayName,
+                email: userSettings.email,
+                display_name: userSettings.display_name,
+                is_premium: userSettings.is_premium,
+                plan_name: userSettings.plan_name,
                 photo: newImageUrl,
               });
               const settings = await getUserSettings(user);
@@ -67,7 +69,7 @@ const Avatar = ({
         </div>
       ) : (
         <div className='no-photo'>
-          <span>{userSettings?.displayName[0]?.toLowerCase()}</span>
+          <span>{userSettings?.display_name[0]?.toLowerCase()}</span>
           {changeable && (
             <input
               title='Upload a new photo'
