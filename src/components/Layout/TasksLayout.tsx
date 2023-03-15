@@ -1,8 +1,8 @@
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { db } from '@/utils/firebase.config';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import {
@@ -10,20 +10,20 @@ import {
   setTodoData,
   setTodoSelected,
 } from 'store/slices/todosSlice';
-import Todo from '@/components/Todo/Todo';
+import TodoList from '@/components/TodoList/TodoList';
 import Loader from '@/components/Layout/Loader/Loader';
 
-const TodoPage = () => {
+const TasksLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { id } = router.query;
+  const { listID } = router.query;
   const { user } = useSelector(selectUser);
   const { todos } = useSelector(selectTodo);
   const [isLoading, setIsLoading] = useState(true);
 
   const getTodoData = async () => {
-    if (user && id && todos.length > 0) {
-      if (!todos.find((todo) => todo.id === id)) {
+    if (user && listID && todos.length > 0) {
+      if (!todos.find((todo) => todo.id === listID)) {
         router.push('/app');
       } else {
         console.log('Fetching Todo Data');
@@ -33,7 +33,7 @@ const TodoPage = () => {
           'users',
           user.uid,
           'todos',
-          String(id),
+          String(listID),
           'tasks'
         );
         const querySnapshot = await getDocs(docRef);
@@ -48,14 +48,15 @@ const TodoPage = () => {
 
   useEffect(() => {
     getTodoData();
-    const todoSelected = todos.find((todo) => todo.id === id);
+    const todoSelected = todos.find((todo) => todo.id === listID);
     todoSelected && dispatch(setTodoSelected(todoSelected));
-  }, [id, user, todos]);
+  }, [listID, user, todos]);
 
   return (
     <PremiumLayout withPadding={false}>
       {isLoading && <Loader fullScreen={false} text={''} />}
-      <div className='todo'>{user && <Todo id={String(id)} />}</div>
+      <div className='todo'>{user && <TodoList />}</div>
+      {children}
       <style jsx>{`
         .todo {
           max-width: var(--max-width-content);
@@ -72,4 +73,4 @@ const TodoPage = () => {
   );
 };
 
-export default TodoPage;
+export default TasksLayout;

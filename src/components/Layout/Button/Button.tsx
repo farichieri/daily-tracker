@@ -27,8 +27,8 @@ const Button = ({
           background: var(--background-color);
           border: 1px solid var(--text-color);
           position: relative;
-          min-height: 35px;
-          max-width: 150px;
+          min-height: 25px;
+          max-width: 125px;
           color: var(--text-color);
         }
         .button-background {

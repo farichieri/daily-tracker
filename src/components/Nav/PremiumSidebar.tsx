@@ -21,6 +21,7 @@ const PremiumSidebar = () => {
   const projects = useSelector(selectProjects);
   const todos = useSelector(selectTodos);
   const router = useRouter();
+  const { listID } = router.query;
   const { id } = router.query;
 
   const handleIsCreatingProject = () => {
@@ -81,13 +82,15 @@ const PremiumSidebar = () => {
       </div>
       <div className='to-do'>
         <div className='title'>
-          <span>To Do Lists</span>
+          <span>Tasks Lists</span>
           <ButtonAction text={'+'} onClick={handleIsCreatingTodo} />
         </div>
         {filterTodos(todos).map((todo) => (
           <div key={todo.id} className='project-container'>
-            <Link href={`/app/todo/${todo.id}`}>
-              <span className={`project ${todo.id === id ? 'selected' : ''}`}>
+            <Link href={`/app/tasks/${todo.id}`}>
+              <span
+                className={`project ${todo.id === listID ? 'selected' : ''}`}
+              >
                 {todo.todoName}
               </span>
             </Link>
@@ -102,6 +105,11 @@ const PremiumSidebar = () => {
             </span>
           </div>
         ))}
+      </div>
+      <div className='labels'>
+        <div className='title'>
+          <span>Labels</span>
+        </div>
       </div>
       <div className='avatar'>
         <Avatar size={65} changeable={false} />
@@ -149,7 +157,8 @@ const PremiumSidebar = () => {
           transition: all 0.3s;
         }
         .tracks,
-        .to-do {
+        .to-do,
+        .labels {
           display: flex;
           flex-direction: column;
           gap: 1rem;

@@ -5,12 +5,22 @@ export interface DayData {
 }
 
 export interface Task {
-  comments: string;
+  added_at: string;
+  added_by_uid: string;
+  comments: Array<string>;
+  completed_at: string;
+  content: string;
+  description: string;
   done: boolean;
-  hour: string;
-  task: string;
   labels: Array<string>;
-  id: string;
+  priority: number;
+  project_id: string;
+  section_id: string;
+  task_id: string;
+  time_set: string;
+  updated_at: string;
+  task_order: number;
+  minutes_spent: number;
 }
 
 export interface UserSettings {

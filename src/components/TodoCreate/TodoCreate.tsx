@@ -40,7 +40,7 @@ const TodoCreate = () => {
   return (
     <Modal>
       <div className='container'>
-        <div className='title'>New To Do List</div>
+        <div className='title'>New Tasks List</div>
         <div className='form'>
           <input
             type='text'

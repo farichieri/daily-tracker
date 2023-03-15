@@ -13,8 +13,8 @@ const PremiumNav = () => {
   const sidebarState = useSelector(selectSidebarState);
   const projectSelected = useSelector(selectProjectSelected);
   const todoSelected = useSelector(selectTodoSelected);
-  const selected = router.pathname.includes('todo')
-    ? `To-do: ${todoSelected.todoName}`
+  const selected = router.pathname.includes('tasks')
+    ? `Task List: ${todoSelected.todoName}`
     : `Tracker: ${projectSelected.projectName}`;
 
   const handleToggleSidebar = () => {
