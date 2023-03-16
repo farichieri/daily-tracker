@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import {
   selectTodo,
-  setTodoData,
+  setTodoTasks,
   setTodoSelected,
 } from 'store/slices/todosSlice';
 import TodoList from '@/components/TodoList/TodoList';
@@ -16,14 +16,14 @@ import Loader from '@/components/Layout/Loader/Loader';
 const TasksLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { listID } = router.query;
+  const { listID, taskID } = router.query;
   const { user } = useSelector(selectUser);
   const { todos } = useSelector(selectTodo);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getTodoData = async () => {
+  const getTodoTasks = async () => {
     if (user && listID && todos.length > 0) {
-      if (!todos.find((todo) => todo.id === listID)) {
+      if (!todos.find((todo) => todo.list_id === listID)) {
         router.push('/app');
       } else {
         console.log('Fetching Todo Data');
@@ -40,15 +40,15 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
         querySnapshot.forEach((todo) => {
           data.push(todo.data());
         });
-        dispatch(setTodoData(data));
+        dispatch(setTodoTasks(data));
         setIsLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    getTodoData();
-    const todoSelected = todos.find((todo) => todo.id === listID);
+    getTodoTasks();
+    const todoSelected = todos.find((todo) => todo.list_id === listID);
     todoSelected && dispatch(setTodoSelected(todoSelected));
   }, [listID, user, todos]);
 

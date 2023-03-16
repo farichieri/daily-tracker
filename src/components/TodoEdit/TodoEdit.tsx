@@ -14,13 +14,15 @@ import Modal from '../Modal/Modal';
 const TodoEdit = () => {
   const dispatch = useDispatch();
   const todoEdit = useSelector(selectTodoEdit);
-  console.log({ todoEdit });
   const [todoInput, setTodoInput] = useState<Todo>({
-    id: todoEdit.id,
-    todoName: todoEdit.todoName,
-    isDefault: todoEdit.isDefault,
-    isFavorite: todoEdit.isFavorite,
-    isArchivated: todoEdit.isArchivated,
+    is_archived: todoEdit.is_archived,
+    is_default: todoEdit.is_default,
+    is_favorite: todoEdit.is_favorite,
+    is_private: todoEdit.is_private,
+    labels: todoEdit.labels,
+    list_id: todoEdit.list_id,
+    list_name: todoEdit.list_name,
+    members: todoEdit.members,
   });
   const { user } = useSelector(selectUser);
 
@@ -49,24 +51,28 @@ const TodoEdit = () => {
   const handleEditTodo = async () => {
     if (user) {
       dispatch(closeModal());
-      if (todoEdit.isDefault === false && todoInput.isDefault === true) {
+      if (todoEdit.is_default === false && todoInput.is_default === true) {
         const docRef = collection(db, 'users', user.uid, 'todos');
         const querySnapshot = await getDocs(docRef);
         const removeDefaults = async () => {
           querySnapshot.forEach((docToUpdate) => {
             updateDoc(doc(db, 'users', user.uid, 'todos', docToUpdate.id), {
-              isDefault: false,
+              is_default: false,
             });
           });
         };
         await removeDefaults();
       }
-      const docRef = doc(db, 'users', user.uid, 'todos', todoEdit.id);
+      const docRef = doc(db, 'users', user.uid, 'todos', todoEdit.list_id);
       await updateDoc(docRef, {
-        todoName: todoInput.todoName,
-        isDefault: todoInput.isDefault,
-        isFavorite: todoInput.isFavorite,
-        isArchivated: todoInput.isArchivated,
+        is_archived: todoInput.is_archived,
+        is_default: todoInput.is_default,
+        is_favorite: todoInput.is_favorite,
+        is_private: todoInput.is_private,
+        labels: todoInput.labels,
+        list_id: todoInput.list_id,
+        list_name: todoInput.list_name,
+        members: todoInput.members,
       });
       const todos = await getTodos(user);
       dispatch(setTodos(todos));
@@ -74,7 +80,7 @@ const TodoEdit = () => {
   };
 
   return (
-    <Modal>
+    <Modal onCloseRedirect=''>
       <div className='container'>
         <div className='title'>Edit Project</div>
         <div className='form'>
@@ -83,40 +89,23 @@ const TodoEdit = () => {
               <span>Name:</span>
               <input
                 type='text'
-                name='todoName'
-                value={todoInput.todoName}
+                name='list_name'
+                value={todoInput.list_name}
                 onChange={handleChange}
               />
             </div>
             <div className='option'>
-              <span>{todoInput.isDefault ? 'Default' : 'Make Default'}</span>
+              <span>{todoInput.is_default ? 'Default' : 'Make Default'}</span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'isDefault' }}
+                  props={{ name: 'is_default' }}
                   src={
-                    todoInput.isDefault
+                    todoInput.is_default
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={todoInput.isDefault ? 'On-Icon' : 'Off-Icon'}
-                  width={24}
-                  height={24}
-                />
-              </span>
-            </div>
-            <div className='option'>
-              <span>{todoInput.isFavorite ? 'Favorite' : 'Make Favorite'}</span>
-              <span>
-                <IconButton
-                  onClick={handleClick}
-                  props={{ name: 'isFavorite' }}
-                  src={
-                    todoInput.isFavorite
-                      ? '/icons/toggle-on.png'
-                      : '/icons/toggle-off.png'
-                  }
-                  alt={todoInput.isFavorite ? 'On-Icon' : 'Off-Icon'}
+                  alt={todoInput.is_default ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />
@@ -124,18 +113,37 @@ const TodoEdit = () => {
             </div>
             <div className='option'>
               <span>
-                {todoInput.isArchivated ? 'Desarchivate' : 'Archivate'}
+                {todoInput.is_favorite ? 'Favorite' : 'Make Favorite'}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'isArchivated' }}
+                  props={{ name: 'is_favorite' }}
                   src={
-                    todoInput.isArchivated
+                    todoInput.is_favorite
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={todoInput.isArchivated ? 'On-Icon' : 'Off-Icon'}
+                  alt={todoInput.is_favorite ? 'On-Icon' : 'Off-Icon'}
+                  width={24}
+                  height={24}
+                />
+              </span>
+            </div>
+            <div className='option'>
+              <span>
+                {todoInput.is_archived ? 'Desarchivate' : 'Archivate'}
+              </span>
+              <span>
+                <IconButton
+                  onClick={handleClick}
+                  props={{ name: 'is_archived' }}
+                  src={
+                    todoInput.is_archived
+                      ? '/icons/toggle-on.png'
+                      : '/icons/toggle-off.png'
+                  }
+                  alt={todoInput.is_archived ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />

@@ -1,3 +1,4 @@
+import { Todo } from '@/global/types';
 import { getProjects, getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
@@ -11,7 +12,16 @@ import Modal from '../Modal/Modal';
 
 const TodoCreate = () => {
   const dispatch = useDispatch();
-  const [todoInput, setTodoInput] = useState('');
+  const [todoInput, setTodoInput] = useState<Todo>({
+    is_archived: false,
+    is_default: false,
+    is_favorite: false,
+    is_private: false,
+    labels: [],
+    list_id: '',
+    list_name: '',
+    members: [],
+  });
   const { user } = useSelector(selectUser);
 
   const handleCloseModal = () => {
@@ -19,7 +29,10 @@ const TodoCreate = () => {
   };
 
   const handleChange = (e: any) => {
-    setTodoInput(e.target.value);
+    setTodoInput({
+      ...todoInput,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleAddTodo = async () => {
@@ -27,10 +40,14 @@ const TodoCreate = () => {
       dispatch(closeModal());
       const docRef = collection(db, 'users', user.uid, 'todos');
       await addDoc(docRef, {
-        todoName: todoInput,
-        isDefault: false,
-        isFavorite: false,
-        isArchivated: false,
+        is_archived: false,
+        is_default: false,
+        is_favorite: false,
+        is_private: false,
+        labels: [],
+        list_id: '',
+        list_name: todoInput.list_name,
+        members: [],
       });
       const todos = await getTodos(user);
       dispatch(setTodos(todos));
@@ -38,14 +55,15 @@ const TodoCreate = () => {
   };
 
   return (
-    <Modal>
+    <Modal onCloseRedirect=''>
       <div className='container'>
         <div className='title'>New Tasks List</div>
         <div className='form'>
           <input
             type='text'
             placeholder=''
-            value={todoInput}
+            name='list_name'
+            value={todoInput.list_name}
             onChange={handleChange}
           />
           <div className='buttons'>

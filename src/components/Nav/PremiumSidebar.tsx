@@ -21,8 +21,8 @@ const PremiumSidebar = () => {
   const projects = useSelector(selectProjects);
   const todos = useSelector(selectTodos);
   const router = useRouter();
-  const { listID } = router.query;
-  const { id } = router.query;
+  const { listID, id } = router.query;
+  const { pathname } = router;
 
   const handleIsCreatingProject = () => {
     dispatch(toggleIsCreatingProject());
@@ -46,10 +46,10 @@ const PremiumSidebar = () => {
   };
 
   const filterTodos = (data: Todo[]) => {
-    return data.filter((d) => !d.isArchivated);
+    return data.filter((d) => !d.is_archived);
   };
   const filterProjects = (data: Project[]) => {
-    return data.filter((d) => !d.isArchivated);
+    return data.filter((d) => !d.is_archived);
   };
 
   return (
@@ -60,15 +60,21 @@ const PremiumSidebar = () => {
           <ButtonAction text={'+'} onClick={handleIsCreatingProject} />
         </div>
         {filterProjects(projects).map((project) => (
-          <div key={project.id} className='project-container'>
-            <Link href={`/app/tracker/${project.id}`}>
+          <div key={project.project_id} className='project-container'>
+            <Link href={`/app/tracker/${project.project_id}`}>
               <span
-                className={`project ${project.id === id ? 'selected' : ''}`}
+                className={`project ${
+                  project.project_id === id ? 'selected' : ''
+                }`}
               >
-                {project.projectName}
+                {project.project_name}
               </span>
             </Link>
-            <span className='edit' id={project.id} onClick={handleEditProject}>
+            <span
+              className='edit'
+              id={project.project_id}
+              onClick={handleEditProject}
+            >
               <Image
                 alt='edit-icon'
                 src={'/icons/edit.png'}
@@ -86,15 +92,17 @@ const PremiumSidebar = () => {
           <ButtonAction text={'+'} onClick={handleIsCreatingTodo} />
         </div>
         {filterTodos(todos).map((todo) => (
-          <div key={todo.id} className='project-container'>
-            <Link href={`/app/tasks/${todo.id}`}>
+          <div key={todo.list_id} className='project-container'>
+            <Link href={`/app/tasks/${todo.list_id}`}>
               <span
-                className={`project ${todo.id === listID ? 'selected' : ''}`}
+                className={`project ${
+                  todo.list_id === listID ? 'selected' : ''
+                }`}
               >
-                {todo.todoName}
+                {todo.list_name}
               </span>
             </Link>
-            <span className='edit' id={todo.id} onClick={handleEditTodo}>
+            <span className='edit' id={todo.list_id} onClick={handleEditTodo}>
               <Image
                 alt='edit-icon'
                 src={'/icons/edit.png'}
@@ -108,7 +116,15 @@ const PremiumSidebar = () => {
       </div>
       <div className='labels'>
         <div className='title'>
-          <span>Labels</span>
+          <Link href={'/app/labels'}>
+            <span
+              className={`project ${
+                pathname === '/app/labels' ? 'selected' : ''
+              }`}
+            >
+              Labels
+            </span>
+          </Link>
         </div>
       </div>
       <div className='avatar'>

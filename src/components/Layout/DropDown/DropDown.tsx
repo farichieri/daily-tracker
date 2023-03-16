@@ -92,7 +92,8 @@ const DropDown = ({
         }
         .drop-menu {
           position: absolute;
-          background: var(--cool);
+          background: var(--modal);
+          box-shadow: 0 0 6px 1px var(--box-shadow-light);
           border-radius: 6px;
           top: 2.65rem;
           right: 0.1rem;

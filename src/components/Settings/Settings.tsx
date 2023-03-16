@@ -36,7 +36,7 @@ const Settings = () => {
   };
 
   return (
-    <Modal>
+    <Modal onCloseRedirect=''>
       <div className='settings'>
         <div className='sidebar'>
           <p className='title'>Settings</p>

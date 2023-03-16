@@ -31,9 +31,6 @@ const Task = ({
           >
             <div className='task-container'>
               <div className='task' id={todo.task_id}>
-                <div className={`name ${todo.done ? 'done' : ''}`}>
-                  {todo.content}
-                </div>
                 <div className='checkbox'>
                   <IconButton
                     onClick={handleToggleDone}
@@ -48,16 +45,21 @@ const Task = ({
                     height={24}
                   />
                 </div>
-                <div className='delete'>
-                  <IconButton
-                    props={{ value: index }}
-                    onClick={handleDelete}
-                    src={'/icons/delete.png'}
-                    alt='Delete-Icon'
-                    width={24}
-                    height={24}
-                  />
+                <div className={`name ${todo.done ? 'done' : ''}`}>
+                  {todo.content}
                 </div>
+                {todo.done && (
+                  <div className='delete'>
+                    <IconButton
+                      props={{ value: index }}
+                      onClick={handleDelete}
+                      src={'/icons/delete.png'}
+                      alt='Delete-Icon'
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </Link>
@@ -83,6 +85,7 @@ const Task = ({
           width: 100%;
           display: flex;
           pointer-events: none;
+          gap: 0.5rem;
         }
         .name {
           width: 100%;

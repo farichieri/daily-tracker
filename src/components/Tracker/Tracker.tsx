@@ -17,7 +17,7 @@ import {
   setDaySelected,
 } from 'store/slices/trackerSlice';
 import Header from './Header';
-import { parseISO } from 'date-fns';
+import { formatISO, parseISO } from 'date-fns';
 import { Task } from '@/global/types';
 import Tooltip from '../Layout/Tooltip/Tooltip';
 
@@ -33,12 +33,28 @@ const Tracker = ({ userID }: { userID: string }) => {
   const [objetive, setObjetive] = useState<string>('');
   const [tasks, setTasks] = useState<Task[]>([]);
   const [task, setTask] = useState<Task>({
-    hour: '',
-    task: '',
-    comments: '',
+    date_set: '',
+    content: '',
+    description: '',
     labels: [],
     done: false,
-    id: '',
+    task_id: '',
+    activity: [],
+    added_at: '',
+    added_by_uid: '',
+    assigned_to: [],
+    attachments: [],
+    comments: [],
+    completed_at: '',
+    is_archived: false,
+    minutes_spent: 0,
+    priority: 0,
+    project_id: '',
+    reminder_date: '',
+    section_id: '',
+    subtasks: [],
+    task_order: 0,
+    updated_at: '',
   });
   const [showObjetives, setShowObjetives] = useState(false);
   const [isSaveable, setIsSaveable] = useState(false);
@@ -97,15 +113,31 @@ const Tracker = ({ userID }: { userID: string }) => {
       }
     }
     if (type === types.tasks) {
-      if (task.task) {
+      if (task.content) {
         setTasks([...tasks, task]);
         setTask({
-          hour: '',
-          task: '',
-          comments: '',
+          date_set: '',
+          content: '',
+          description: '',
           labels: [],
           done: false,
-          id: '',
+          task_id: '',
+          activity: [],
+          added_at: formatISO(new Date()),
+          added_by_uid: userID,
+          assigned_to: [],
+          attachments: [],
+          comments: [],
+          completed_at: '',
+          is_archived: false,
+          minutes_spent: 0,
+          priority: 0,
+          project_id: projectSelected.project_id,
+          reminder_date: '',
+          section_id: '',
+          subtasks: [],
+          task_order: 0,
+          updated_at: '',
         });
       }
     }
@@ -142,7 +174,7 @@ const Tracker = ({ userID }: { userID: string }) => {
   const handleSave = async () => {
     setIsSaving(true);
     const date = daySelected;
-    const project = projectSelected.id;
+    const project = projectSelected.project_id;
     const docRef = doc(db, 'users', userID, 'projects', project, 'dates', date);
     await setDoc(docRef, {
       date: date,

@@ -1,19 +1,41 @@
+import Link from 'next/dist/client/link';
 import { ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'store/slices/layoutSlice';
 
-const Modal = ({ children }: { children: ReactNode }) => {
+const Modal = ({
+  children,
+  onCloseRedirect,
+}: {
+  children: ReactNode;
+  onCloseRedirect: string;
+}) => {
   const dispatch = useDispatch();
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (e: any) => {
     dispatch(closeModal());
   };
 
   return (
-    <div className='full-screen' onClick={handleCloseModal}>
-      <div className='modal' onClick={(e) => e.stopPropagation()}>
-        {children}
-      </div>
+    <>
+      {onCloseRedirect ? (
+        <div className='container'>
+          <Link href={onCloseRedirect} style={{ cursor: 'initial' }}>
+            <div className='full-screen' onClick={handleCloseModal}></div>
+          </Link>
+          <div className='modal-container'>
+            <Link href={onCloseRedirect} style={{ cursor: 'initial' }}>
+              <span className='close'>X</span>
+            </Link>
+            <div className='modal'>{children}</div>
+          </div>
+        </div>
+      ) : (
+        <div className='full-screen' onClick={handleCloseModal}>
+          <div className='modal'>{children}</div>
+        </div>
+      )}
+
       <style jsx>
         {`
           .full-screen {
@@ -26,8 +48,22 @@ const Modal = ({ children }: { children: ReactNode }) => {
             right: 0;
             bottom: 0;
             margin: 0;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+          }
+          .container {
+            position: fixed;
+            min-height: 100vh;
+            min-width: 100vw;
+            background: var(--bg-modal);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
             max-width: 100vw;
-            z-index: 11;
+            z-index: 997;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -36,21 +72,26 @@ const Modal = ({ children }: { children: ReactNode }) => {
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
-            box-shadow: 0 0 10px 1px var(--cool);
+            border-radius: 1rem;
+            box-shadow: 0 0 6px 1px var(--box-shadow-light);
             position: relative;
-            background: var(--cool);
-            backdrop-filter: blur(12px);
+            background: var(--modal);
+            z-index: 998;
+            overflow: auto;
+          }
+          .modal-container {
+            position: relative;
           }
           .close {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: 1rem;
+            right: 1rem;
             cursor: pointer;
+            z-index: 999;
           }
         `}
       </style>
-    </div>
+    </>
   );
 };
 

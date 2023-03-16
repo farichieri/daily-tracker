@@ -31,7 +31,7 @@ const TrackerPage = () => {
 
   const getUserData = async (date: string) => {
     if (user && date && id && projects) {
-      if (!projects.find((project) => project.id === id)) {
+      if (!projects.find((project) => project.project_id === id)) {
         router.push('/app');
       } else {
         console.log('Fetching Data');
@@ -53,7 +53,7 @@ const TrackerPage = () => {
   };
 
   useEffect(() => {
-    const projectSelected = projects.find((p) => p.id === id);
+    const projectSelected = projects.find((p) => p.project_id === id);
     projectSelected && dispatch(setProjectSelected(projectSelected));
   }, [id, projects]);
 

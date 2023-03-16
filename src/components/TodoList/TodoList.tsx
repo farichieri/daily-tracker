@@ -13,8 +13,8 @@ import { useRouter } from 'next/router';
 
 const TodoList = () => {
   const router = useRouter();
-  const { todoData } = useSelector(selectTodo);
-  const [todos, setTodos] = useState<TaskType[]>(todoData);
+  const { todoTasks } = useSelector(selectTodo);
+  const [todos, setTodos] = useState<TaskType[]>(todoTasks);
   const { user } = useSelector(selectUser);
   const [taskInput, setTaskInput] = useState('');
   const { listID } = router.query;
@@ -53,21 +53,27 @@ const TodoList = () => {
     if (!user) return;
     if (taskInput) {
       const newTask = {
+        activity: [],
         added_at: formatISO(new Date()),
         added_by_uid: user.uid,
+        assigned_to: [],
+        attachments: [],
         comments: [],
         completed_at: '',
         content: taskInput,
+        date_set: '',
         description: '',
         done: false,
+        is_archived: false,
         labels: [],
         minutes_spent: 0,
         priority: 0,
         project_id: String(listID),
+        reminder_date: '',
         section_id: '',
+        subtasks: [],
         task_id: '',
         task_order: 0,
-        time_set: '',
         updated_at: '',
       };
       const docRef = collection(
@@ -115,8 +121,8 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-    setTodos(todoData);
-  }, [todoData]);
+    setTodos(todoTasks);
+  }, [todoTasks]);
 
   return (
     <div className='todo'>

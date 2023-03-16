@@ -1,50 +1,27 @@
 import Loader from '@/components/Layout/Loader/Loader';
-import { db } from '@/utils/firebase.config';
 import Login from '@/components/Auth/Login';
 import Tracker from '@/components/Tracker/Tracker';
-import { doc, getDoc } from 'firebase/firestore';
 import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { selectUser } from 'store/slices/authSlice';
 import {
   selectIsLoadingData,
   selectProjectSelected,
   selectWeekSelected,
-  setDayData,
 } from 'store/slices/trackerSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 const TrackerPage = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
-
   const { user, isVerifyingUser } = useSelector(selectUser);
   const projectSelected = useSelector(selectProjectSelected);
   const weekSelected = useSelector(selectWeekSelected);
   const isLoadingData = useSelector(selectIsLoadingData);
 
-  const getUserData = async (date: string) => {
-    if (user && date && projectSelected?.id) {
-      console.log('Fetching Data');
-      const docRef = doc(
-        db,
-        'users',
-        user.uid,
-        'projects',
-        projectSelected.id,
-        'dates',
-        date
-      );
-      const querySnapshot = await getDoc(docRef);
-      let data: any = querySnapshot.data();
-      dispatch(setDayData(data));
-    }
-  };
-
   useEffect(() => {
-    if (projectSelected.id && user) {
-      router.push(`/app/tracker/${projectSelected.id}`);
+    if (projectSelected?.project_id && user) {
+      router.push(`/app/tracker/${projectSelected.project_id}`);
     }
   }, [projectSelected, user]);
 
@@ -61,11 +38,14 @@ const TrackerPage = () => {
           </div>
         )
       )}
-      {user && !isLoadingData && weekSelected.length > 0 && (
-        <div className='dashboard-container'>
-          <Tracker userID={user.uid} />
-        </div>
-      )}
+      {user &&
+        !isLoadingData &&
+        weekSelected.length > 0 &&
+        projectSelected.project_id && (
+          <div className='dashboard-container'>
+            <Tracker userID={user.uid} />
+          </div>
+        )}
       <style jsx>{`
         .dashboard-container {
           max-width: var(--max-width);

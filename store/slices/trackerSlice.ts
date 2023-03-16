@@ -28,18 +28,24 @@ const initialState: TrackerSlice = {
   weekSelected: [],
   projects: [],
   projectSelected: {
-    id: '',
-    projectName: '',
-    isDefault: false,
-    isFavorite: false,
-    isArchivated: false,
+    is_archived: false,
+    is_default: false,
+    is_favorite: false,
+    is_private: false,
+    labels: [],
+    project_id: '',
+    project_name: '',
+    members: [],
   },
   projectEdit: {
-    id: '',
-    projectName: '',
-    isDefault: false,
-    isFavorite: false,
-    isArchivated: false,
+    is_archived: false,
+    is_default: false,
+    is_favorite: false,
+    is_private: false,
+    labels: [],
+    project_id: '',
+    project_name: '',
+    members: [],
   },
   today: dbFormatDate(new Date()),
   isLoadingData: false,
@@ -65,16 +71,18 @@ export const trackerSlice = createSlice({
     setProjects: (state, action: PayloadAction<Project[]>) => {
       state.projects = action.payload;
       state.projectSelected =
-        action.payload.find((project) => project.isDefault === true) ||
-        action.payload[0];
+        action.payload.find((project) => project.is_default === true) ||
+        action.payload[0] ||
+        state.projectSelected;
     },
     setProjectSelected: (state, action: PayloadAction<Project>) => {
       state.projectSelected = action.payload;
     },
     setProjectEdit: (state, action: PayloadAction<string>) => {
       state.projectEdit =
-        state.projects.find((project) => project.id === action.payload) ||
-        state.projectEdit;
+        state.projects.find(
+          (project) => project.project_id === action.payload
+        ) || state.projectEdit;
     },
     setIsLoadingData: (state, action: PayloadAction<boolean>) => {
       state.isLoadingData = action.payload;

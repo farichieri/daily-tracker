@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import PremiumNav from '../Nav/PremiumNav';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';
@@ -11,6 +11,7 @@ import {
   selectIsProfileOpen,
   selectSidebarState,
   setIsLoading,
+  toggleIsCreatingProject,
   toggleSidebar,
 } from 'store/slices/layoutSlice';
 import ProjectCreate from '../ProjectCreate/ProjectCreate';
@@ -18,13 +19,9 @@ import ProjectEdit from '../ProjectEdit/ProjectEdit';
 import { selectUser } from 'store/slices/authSlice';
 import Settings from '../Settings/Settings';
 import {
-  selectDayData,
-  selectIsLoadingData,
   selectProjects,
   selectProjectSelected,
   selectToday,
-  selectWeekSelected,
-  setDayData,
   setDaySelected,
   setIsLoadingData,
   setProjects,
@@ -34,10 +31,7 @@ import {
   selectTodoSelected,
   setTodos,
 } from 'store/slices/todosSlice';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/utils/firebase.config';
 import { getProjects, getTodos } from '@/hooks/firebase';
-import { dbFormatDate } from '@/utils/formatDate';
 import TodoCreate from '../TodoCreate/TodoCreate';
 import TodoEdit from '../TodoEdit/TodoEdit';
 
@@ -80,37 +74,22 @@ export default function PremiumLayout({
   const projects = useSelector(selectProjects);
   const todos = useSelector(selectTodos);
   const today = useSelector(selectToday);
-  const isLoadingData = useSelector(selectIsLoadingData);
-
-  const getUserData = async (date: string) => {
-    if (user && date && projectSelected?.id) {
-      console.log('Fetching Data');
-      const docRef = doc(
-        db,
-        'users',
-        user.uid,
-        'projects',
-        projectSelected.id,
-        'dates',
-        date
-      );
-      const querySnapshot = await getDoc(docRef);
-      let data: any = querySnapshot.data();
-      dispatch(setDayData(data));
-    }
-  };
 
   useEffect(() => {
     const getProjectsData = async () => {
       if (!user) return;
       dispatch(setIsLoadingData(true));
       const projects = await getProjects(user);
+      if (projects.length < 1) {
+        dispatch(toggleIsCreatingProject());
+        dispatch(setIsLoadingData(false));
+      }
       dispatch(setProjects(projects));
     };
     if (projects.length < 1 && user) {
       getProjectsData();
     }
-  }, [projectSelected, projects, user]);
+  }, [projectSelected, user]);
 
   useEffect(() => {
     const getTodosData = async () => {

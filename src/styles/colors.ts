@@ -17,6 +17,7 @@ const colors = css.global`
     --gray-color: #232323;
     --bg-modal: #00000080;
     --cool: #00000080;
+    --modal: #242424;
     /* Tooltip */
     --tooltip-text-color: gray;
     --tooltip-background-color: #00000080;
@@ -35,8 +36,9 @@ const colors = css.global`
     --link-color: gray;
     --nav-background-color: white;
     --gray-color: #e7e7e7;
-    --bg-modal: #00000080;
+    --bg-modal: #adadad4d;
     --cool: #ffffff90;
+    --modal: #ffffff;
     /* Tooltip */
     --tooltip-text-color: black;
     --tooltip-background-color: #00000080;

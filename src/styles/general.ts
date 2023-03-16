@@ -7,6 +7,7 @@ const general = css.global`
     --premium-nav-height: 50px;
     --max-width: 1200px;
     --max-width-content: 900px;
+    --max-width-task: 700px;
     --break-point: 900px;
     /* Tooltip */
     --tooltip-margin: 32px;

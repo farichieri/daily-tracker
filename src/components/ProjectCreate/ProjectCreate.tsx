@@ -1,3 +1,4 @@
+import { Project } from '@/global/types';
 import { getProjects } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
@@ -11,7 +12,16 @@ import Modal from '../Modal/Modal';
 
 const ProjectCreate = () => {
   const dispatch = useDispatch();
-  const [projectInput, setProjectInput] = useState('');
+  const [projectInput, setProjectInput] = useState<Project>({
+    is_archived: false,
+    is_default: false,
+    is_favorite: false,
+    is_private: false,
+    labels: [],
+    project_id: '',
+    project_name: '',
+    members: [],
+  });
   const { user } = useSelector(selectUser);
 
   const handleCloseModal = () => {
@@ -19,7 +29,10 @@ const ProjectCreate = () => {
   };
 
   const handleChange = (e: any) => {
-    setProjectInput(e.target.value);
+    setProjectInput({
+      ...projectInput,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleAddTracker = async () => {
@@ -27,35 +40,43 @@ const ProjectCreate = () => {
       dispatch(closeModal());
       const docRef = collection(db, 'users', user.uid, 'projects');
       await addDoc(docRef, {
-        projectName: projectInput,
-        isDefault: false,
-        isFavorite: false,
-        isArchivated: false,
+        is_archived: false,
+        is_default: false,
+        is_favorite: false,
+        is_private: false,
+        labels: [],
+        project_id: '',
+        project_name: projectInput.project_name,
+        members: [],
       });
       const projects = await getProjects(user);
       dispatch(setProjects(projects));
       const newProjectSelected = projects.find(
-        (p) => p.projectName === projectInput
+        (p) => p.project_name === projectInput.project_name
       ) || {
-        id: '',
-        projectName: '',
-        isDefault: false,
-        isFavorite: false,
-        isArchivated: false,
+        is_archived: false,
+        is_default: false,
+        is_favorite: false,
+        is_private: false,
+        labels: [],
+        project_id: '',
+        project_name: '',
+        members: [],
       };
       dispatch(setProjectSelected(newProjectSelected));
     }
   };
 
   return (
-    <Modal>
+    <Modal onCloseRedirect=''>
       <div className='container'>
         <div className='title'>New Tracker</div>
         <div className='form'>
           <input
             type='text'
             placeholder=''
-            value={projectInput}
+            name='project_name'
+            value={projectInput.project_name}
             onChange={handleChange}
           />
           <div className='buttons'>

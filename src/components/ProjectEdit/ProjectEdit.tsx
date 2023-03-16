@@ -14,13 +14,15 @@ import Modal from '../Modal/Modal';
 const ProjectEdit = () => {
   const dispatch = useDispatch();
   const projectEdit = useSelector(selectProjectEdit);
-  console.log({ projectEdit });
   const [projectInput, setProjectInput] = useState<Project>({
-    id: projectEdit.id,
-    projectName: projectEdit.projectName,
-    isDefault: projectEdit.isDefault,
-    isFavorite: projectEdit.isFavorite,
-    isArchivated: projectEdit.isArchivated,
+    is_archived: projectEdit.is_archived,
+    is_default: projectEdit.is_default,
+    is_favorite: projectEdit.is_favorite,
+    is_private: projectEdit.is_private,
+    labels: projectEdit.labels,
+    project_id: projectEdit.project_id,
+    project_name: projectEdit.project_name,
+    members: projectEdit.members,
   });
   const { user } = useSelector(selectUser);
 
@@ -40,7 +42,6 @@ const ProjectEdit = () => {
     const name: string = (e.target as HTMLButtonElement).name;
     const newInput: any = { ...projectInput };
     const bool: boolean = !newInput[name];
-    console.log({ newInput });
     setProjectInput({
       ...newInput,
       [name]: bool,
@@ -48,35 +49,55 @@ const ProjectEdit = () => {
   };
 
   const handleEditProject = async () => {
-    console.log({ projectInput });
-    if (user) {
-      dispatch(closeModal());
-      if (projectEdit.isDefault === false && projectInput.isDefault === true) {
-        const docRef = collection(db, 'users', user.uid, 'projects');
-        const querySnapshot = await getDocs(docRef);
-        const removeDefaults = async () => {
-          querySnapshot.forEach((docToUpdate) => {
-            updateDoc(doc(db, 'users', user.uid, 'projects', docToUpdate.id), {
-              isDefault: false,
+    try {
+      console.log({ projectInput });
+      if (user) {
+        dispatch(closeModal());
+        if (
+          projectEdit.is_default === false &&
+          projectInput.is_default === true
+        ) {
+          const docRef = collection(db, 'users', user.uid, 'projects');
+          const querySnapshot = await getDocs(docRef);
+          const removeDefaults = async () => {
+            querySnapshot.forEach((docToUpdate) => {
+              updateDoc(
+                doc(db, 'users', user.uid, 'projects', docToUpdate.id),
+                {
+                  is_default: false,
+                }
+              );
             });
-          });
-        };
-        await removeDefaults();
+          };
+          await removeDefaults();
+        }
+        const docRef = doc(
+          db,
+          'users',
+          user.uid,
+          'projects',
+          projectInput.project_id
+        );
+        await updateDoc(docRef, {
+          is_archived: projectInput.is_archived,
+          is_default: projectInput.is_default,
+          is_favorite: projectInput.is_favorite,
+          is_private: projectInput.is_private,
+          labels: projectInput.labels,
+          project_id: projectInput.project_id,
+          project_name: projectInput.project_name,
+          members: projectInput.members,
+        });
+        const projects = await getProjects(user);
+        dispatch(setProjects(projects));
       }
-      const docRef = doc(db, 'users', user.uid, 'projects', projectEdit.id);
-      await updateDoc(docRef, {
-        projectName: projectInput.projectName,
-        isDefault: projectInput.isDefault,
-        isFavorite: projectInput.isFavorite,
-        isArchivated: projectInput.isArchivated,
-      });
-      const projects = await getProjects(user);
-      dispatch(setProjects(projects));
+    } catch (error) {
+      console.log({ error });
     }
   };
 
   return (
-    <Modal>
+    <Modal onCloseRedirect=''>
       <div className='container'>
         <div className='title'>Edit Project</div>
         <div className='form'>
@@ -85,23 +106,25 @@ const ProjectEdit = () => {
               <span>Name:</span>
               <input
                 type='text'
-                name='projectName'
-                value={projectInput.projectName}
+                name='project_name'
+                value={projectInput.project_name}
                 onChange={handleChange}
               />
             </div>
             <div className='option'>
-              <span>{projectInput.isDefault ? 'Default' : 'Make Default'}</span>
+              <span>
+                {projectInput.is_default ? 'Default' : 'Make Default'}
+              </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'isDefault' }}
+                  props={{ name: 'is_default' }}
                   src={
-                    projectInput.isDefault
+                    projectInput.is_default
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={projectInput.isDefault ? 'On-Icon' : 'Off-Icon'}
+                  alt={projectInput.is_default ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />
@@ -109,18 +132,18 @@ const ProjectEdit = () => {
             </div>
             <div className='option'>
               <span>
-                {projectInput.isFavorite ? 'Favorite' : 'Make Favorite'}
+                {projectInput.is_favorite ? 'Favorite' : 'Make Favorite'}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'isFavorite' }}
+                  props={{ name: 'is_favorite' }}
                   src={
-                    projectInput.isFavorite
+                    projectInput.is_favorite
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={projectInput.isFavorite ? 'On-Icon' : 'Off-Icon'}
+                  alt={projectInput.is_favorite ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />
@@ -128,18 +151,18 @@ const ProjectEdit = () => {
             </div>
             <div className='option'>
               <span>
-                {projectInput.isArchivated ? 'Desarchivate' : 'Archivate'}
+                {projectInput.is_archived ? 'Desarchivate' : 'Archivate'}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'isArchivated' }}
+                  props={{ name: 'is_archived' }}
                   src={
-                    projectInput.isArchivated
+                    projectInput.is_archived
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={projectInput.isArchivated ? 'On-Icon' : 'Off-Icon'}
+                  alt={projectInput.is_archived ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />
