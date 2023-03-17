@@ -5,13 +5,9 @@ import { useRouter } from 'next/router';
 import { ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import {
-  selectTodo,
-  setTodoTasks,
-  setTodoSelected,
-} from 'store/slices/todosSlice';
+import { selectTodo, setTodoSelected, setTasks } from 'store/slices/todosSlice';
 import TodoList from '@/components/TodoList/TodoList';
-import Loader from '@/components/Layout/Loader/Loader';
+import { TaskGroup } from '@/global/types';
 
 const TasksLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -19,15 +15,19 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
   const { listID, taskID } = router.query;
   const { user } = useSelector(selectUser);
   const { todos } = useSelector(selectTodo);
-  const [isLoading, setIsLoading] = useState(true);
 
   const getTodoTasks = async () => {
-    if (user && listID && todos.length > 0) {
-      if (!todos.find((todo) => todo.list_id === listID)) {
+    if (
+      user &&
+      listID &&
+      Object.keys(listID).length > 0 &&
+      Object.keys(todos).length > 0
+    ) {
+      if (!todos[String(listID)]) {
         router.push('/app');
       } else {
         console.log('Fetching Todo Data');
-        let data: any[] = [];
+        let data: TaskGroup = {};
         const docRef = collection(
           db,
           'users',
@@ -37,24 +37,25 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
           'tasks'
         );
         const querySnapshot = await getDocs(docRef);
-        querySnapshot.forEach((todo) => {
-          data.push(todo.data());
+        querySnapshot.forEach((todo: any) => {
+          data[todo.id] = todo.data();
         });
-        dispatch(setTodoTasks(data));
-        setIsLoading(false);
+        dispatch(setTasks(data));
       }
     }
   };
 
   useEffect(() => {
-    getTodoTasks();
-    const todoSelected = todos.find((todo) => todo.list_id === listID);
-    todoSelected && dispatch(setTodoSelected(todoSelected));
+    if (user) {
+      console.log('tasksLayoutUeffect');
+      getTodoTasks();
+      const todoSelected = todos[String(listID)];
+      todoSelected && dispatch(setTodoSelected(todoSelected));
+    }
   }, [listID, user, todos]);
 
   return (
     <PremiumLayout withPadding={false}>
-      {isLoading && <Loader fullScreen={false} text={''} />}
       <div className='todo'>{user && <TodoList />}</div>
       {children}
       <style jsx>{`

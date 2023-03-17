@@ -1,7 +1,7 @@
 import TasksLayout from '@/components/Layout/TasksLayout';
 import Modal from '@/components/Modal/Modal';
-import { useSelector } from 'react-redux';
-import { selectTodo } from 'store/slices/todosSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectTodo, setUpdateTask } from 'store/slices/todosSlice';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubTask, Task } from '@/global/types';
@@ -9,22 +9,22 @@ import Loader from '@/components/Layout/Loader/Loader';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { selectUser } from 'store/slices/authSlice';
-import Subtask from '@/components/TodoList/Task/Subtask/Subtask';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { formatISO } from 'date-fns';
+import Subtasks from '@/components/TodoList/Task/Subtasks/Subtasks';
+import TaskActions from '@/components/TodoList/Task/TaskActions/TaskActions';
 
-const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
+const TaskID = () => {
   const router = useRouter();
-  const { todoTasks, todos } = useSelector(selectTodo);
+  const dispatch = useDispatch();
+  const { tasks, todos } = useSelector(selectTodo);
   const { taskID, listID } = router.query;
   const { user } = useSelector(selectUser);
-  const task = todoTasks.find((task) => task.task_id === taskID);
-  const list = todos.find((list) => list.list_id === listID);
+  const task = tasks[String(taskID)];
+  const list = todos[String(listID)];
   const [taskState, setTaskState] = useState<Task>(task);
   const taskIDLink = `/app/tasks/${listID}`;
-  const [isSaving, setIsSaving] = useState(false);
   const [isSaveable, setIsSaveable] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
   const [subtaskState, setSubtaskState] = useState<SubTask>({
     added_at: formatISO(new Date()),
     added_by_uid: '',
@@ -48,10 +48,6 @@ const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
 
   useEffect(() => {
     setTaskState(task);
-    // Improve
-    // if (todoTasks && listID && taskID && !task) {
-    //   router.push(taskIDLink);
-    // }
   }, [task, listID, list, task]);
 
   useEffect(() => {
@@ -88,71 +84,9 @@ const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
     }
   };
 
-  const handleDoneSubtask = (event: React.MouseEvent) => {
-    event.preventDefault();
-    const name: string = (event.target as HTMLButtonElement).name;
-    const index: number = Number((event.target as HTMLButtonElement).id);
-    if (name === 'done') {
-      const subtasks = [...taskState.subtasks];
-      const subTask = { ...subtasks[index] };
-      subTask.done = !subtasks[index].done;
-      subTask.completed_at = subTask.done ? formatISO(new Date()) : '';
-      subtasks[index] = subTask;
-      setTaskState({
-        ...taskState,
-        subtasks,
-      });
-      setIsSaveable(true);
-    }
-  };
-
-  const handleDelete = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    if (!user) return;
-    const index: number = Number((event.target as HTMLButtonElement).id);
-    const newSubtasks: any = taskState.subtasks.slice();
-    newSubtasks.splice(index, 1);
-    const newTasks = { ...taskState };
-    newTasks.subtasks = newSubtasks;
-    setTaskState(newTasks);
-    setIsSaveable(true);
-  };
-
-  const handleAddSubtask = (event: React.MouseEvent) => {
-    if (!user) return;
-    event.preventDefault();
-    setTaskState({
-      ...taskState,
-      subtasks: taskState.subtasks.concat(subtaskState),
-    });
-    setSubtaskState({
-      added_at: formatISO(new Date()),
-      added_by_uid: user.uid,
-      assigned_to: [],
-      comments: [],
-      completed_at: '',
-      content: '',
-      date_set: '',
-      description: '',
-      done: false,
-      is_archived: false,
-      minutes_spent: 0,
-      parent_id: String(taskID),
-      priority: 0,
-      project_id: String(listID),
-      reminder_date: '',
-      section_id: '',
-      task_order: 0,
-      updated_at: '',
-    });
-    setIsSaveable(true);
-  };
-
   const handleSave = async () => {
     if (JSON.stringify(task) !== JSON.stringify(taskState)) {
       if (!user) return;
-      setIsSaving(true);
-      setIsDisabled(true);
       console.log('Saving taskID');
       const docRef = doc(
         db,
@@ -164,10 +98,11 @@ const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
         String(taskID)
       );
       await setDoc(docRef, taskState);
-      setIsSaving(false);
-      setIsDisabled(false);
+      dispatch(setUpdateTask(taskState));
     }
   };
+
+  const closeModalOnClick = () => {};
 
   return (
     <TasksLayout>
@@ -179,6 +114,7 @@ const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
           closeModalOnClick={closeModalOnClick}
         >
           <div className='task-container'>
+            <TaskActions />
             <div className='task-content'>
               <input
                 type='text'
@@ -213,34 +149,15 @@ const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
                 }}
               />
             </div>
-            <div className='subtasks-container'>
-              <span className='title'>Subtasks</span>
-              <div className='subtasks'>
-                {taskState.subtasks.map((subtask, index: number) => (
-                  <Subtask
-                    addSubtask={false}
-                    handleAddSubtask={null}
-                    handleChange={handleChange}
-                    handleDelete={handleDelete}
-                    handleDoneSubtask={handleDoneSubtask}
-                    index={index}
-                    key={index}
-                    subtaskState={subtask}
-                    handleSave={handleSave}
-                  />
-                ))}
-                <Subtask
-                  addSubtask={true}
-                  handleAddSubtask={handleAddSubtask}
-                  handleChange={handleChange}
-                  handleDelete={handleDelete}
-                  handleDoneSubtask={handleDoneSubtask}
-                  index={-1}
-                  subtaskState={subtaskState}
-                  handleSave={handleSave}
-                />
-              </div>
-            </div>
+            <Subtasks
+              setIsSaveable={setIsSaveable}
+              handleSave={handleSave}
+              handleChange={handleChange}
+              setTaskState={setTaskState}
+              taskState={taskState}
+              subtaskState={subtaskState}
+              setSubtaskState={setSubtaskState}
+            />
             <div className='attachments-container'>
               <span className='title'>Attachments</span>
               <div className='attachments'></div>
@@ -248,7 +165,6 @@ const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
           </div>
         </Modal>
       )}
-
       <style jsx>
         {`
           .task-container {
@@ -274,9 +190,6 @@ const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
             border: none;
             color: var(--text-color);
             font-size: 1.5rem;
-          }
-          .subtasks {
-            width: 100%;
           }
           .attachments {
             width: 100%;

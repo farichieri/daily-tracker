@@ -1,4 +1,4 @@
-import { Todo } from '@/global/types';
+import { Todo, TodoGroup } from '@/global/types';
 import { getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
@@ -69,9 +69,9 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
         list_name: todoInput.list_name,
         members: todoInput.members,
       });
-      const todos = await getTodos(user);
+      const todos: TodoGroup = await getTodos(user);
       dispatch(setTodos(todos));
-      closeModalOnClick;
+      closeModalOnClick();
     }
   };
 

@@ -5,7 +5,6 @@ import { selectTheme, setTheme } from 'store/slices/themeSlice';
 import PremiumSidebar from '../Nav/PremiumSidebar';
 import {
   selectSidebarState,
-  setIsLoading,
   toggleIsCreatingProject,
   toggleSidebar,
 } from 'store/slices/layoutSlice';
@@ -24,6 +23,10 @@ import {
   setTodos,
 } from 'store/slices/todosSlice';
 import { getProjects, getTodos } from '@/hooks/firebase';
+import { LabelGroup, TodoGroup } from '@/global/types';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/utils/firebase.config';
+import { setLabels } from 'store/slices/labelsSlice';
 
 export default function PremiumLayout({
   children,
@@ -50,10 +53,6 @@ export default function PremiumLayout({
     dispatch(toggleSidebar());
   };
 
-  useEffect(() => {
-    user && dispatch(setIsLoading(false));
-  }, [user]);
-
   const projectSelected = useSelector(selectProjectSelected);
   const todoSelected = useSelector(selectTodoSelected);
   const projects = useSelector(selectProjects);
@@ -79,10 +78,10 @@ export default function PremiumLayout({
   useEffect(() => {
     const getTodosData = async () => {
       if (!user) return;
-      const todos = await getTodos(user);
+      const todos: TodoGroup = await getTodos(user);
       dispatch(setTodos(todos));
     };
-    if (todos.length < 1 && user) {
+    if (Object.keys(todos).length < 1 && user) {
       getTodosData();
     }
   }, [todoSelected, user]);
@@ -90,6 +89,23 @@ export default function PremiumLayout({
   useEffect(() => {
     dispatch(setDaySelected(today));
   }, [today]);
+
+  const getLabels = async () => {
+    if (user) {
+      console.log('Fetching Labels');
+      let data: LabelGroup = {};
+      const docRef = collection(db, 'users', user.uid, 'labels');
+      const querySnapshot = await getDocs(docRef);
+      querySnapshot.forEach((label: any) => {
+        data[label.id] = label.data();
+      });
+      dispatch(setLabels(data));
+    }
+  };
+
+  useEffect(() => {
+    getLabels();
+  }, [user]);
 
   return (
     <section>

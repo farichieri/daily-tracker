@@ -1,11 +1,11 @@
-import { Task, Todo } from '@/global/types';
+import { Task, TaskGroup, Todo, TodoGroup } from '@/global/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 // Define a type for the slice state
 interface TodosSlice {
-  todoTasks: any[];
-  todos: Todo[];
+  tasks: TaskGroup;
+  todos: TodoGroup;
   todoSelected: Todo;
   todoEdit: Todo;
   isLoadingData: boolean;
@@ -13,8 +13,8 @@ interface TodosSlice {
 
 // Define the initial state using that type
 const initialState: TodosSlice = {
-  todoTasks: [],
-  todos: [],
+  tasks: {},
+  todos: {},
   todoSelected: {
     is_archived: false,
     is_default: false,
@@ -43,23 +43,36 @@ export const todosSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setTodoTasks: (state, action: PayloadAction<Task[]>) => {
-      state.todoTasks = action.payload;
+    setTodos: (state, action: PayloadAction<TodoGroup>) => {
+      state.todos = { ...state.todos, ...action.payload };
+      // state.todoSelected =
+      //   action.payload.find((todo) => todo.is_default === true) ||
+      //   action.payload[0];
+    },
+    setTasks: (state, action: PayloadAction<TaskGroup>) => {
+      state.tasks = action.payload;
       state.isLoadingData = false;
     },
-    setTodos: (state, action: PayloadAction<Todo[]>) => {
-      state.todos = action.payload;
-      state.todoSelected =
-        action.payload.find((todo) => todo.is_default === true) ||
-        action.payload[0];
+    setAddNewTask: (state, action: PayloadAction<Task>) => {
+      state.tasks = {
+        ...state.tasks,
+        [action.payload.task_id]: action.payload,
+      };
+    },
+    setUpdateTask: (state, action: PayloadAction<Task>) => {
+      state.tasks = {
+        ...state.tasks,
+        [action.payload.task_id]: action.payload,
+      };
+    },
+    setDeleteTask: (state, action: PayloadAction<string>) => {
+      delete state.tasks[action.payload];
     },
     setTodoSelected: (state, action: PayloadAction<Todo>) => {
       state.todoSelected = action.payload;
     },
     setTodoEdit: (state, action: PayloadAction<string>) => {
-      state.todoEdit =
-        state.todos.find((todo) => todo.list_id === action.payload) ||
-        state.todoEdit;
+      state.todoEdit = state.todos[action.payload];
     },
     setIsLoadingData: (state, action: PayloadAction<boolean>) => {
       state.isLoadingData = action.payload;
@@ -68,11 +81,14 @@ export const todosSlice = createSlice({
 });
 
 export const {
-  setTodoTasks,
+  setTasks,
   setTodoSelected,
   setTodos,
   setTodoEdit,
   setIsLoadingData,
+  setAddNewTask,
+  setUpdateTask,
+  setDeleteTask,
 } = todosSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

@@ -1,17 +1,32 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
-import CreateLabel from './CreateLabel';
+import CreateAndEditLabel from './CreateAndEditLabel';
 
 const Labels = () => {
   const { labels } = useSelector(selectLabels);
   const [createLabel, setCreateLabel] = useState(false);
+  const [labelToEdit, setLabelToEdit] = useState('');
   const closeModalOnClick = () => {
     setCreateLabel(false);
+    setLabelToEdit('');
   };
   return (
     <div className='labels'>
-      {createLabel && <CreateLabel closeModalOnClick={closeModalOnClick} />}
+      {createLabel && (
+        <CreateAndEditLabel
+          labelToEdit={''}
+          action='create'
+          closeModalOnClick={closeModalOnClick}
+        />
+      )}
+      {labelToEdit && (
+        <CreateAndEditLabel
+          labelToEdit={labelToEdit}
+          action='edit'
+          closeModalOnClick={closeModalOnClick}
+        />
+      )}
       <div className='title-container'>
         <span className=''>Labels</span>
         <button className='add-label' onClick={() => setCreateLabel(true)}>
@@ -23,6 +38,12 @@ const Labels = () => {
           Object.keys(labels).map((label) => (
             <div className='label-container' key={label}>
               <span>{labels[label].label_name}</span>
+              <button
+                onClick={() => setLabelToEdit(label)}
+                className='edit-label'
+              >
+                Edit
+              </button>
             </div>
           ))}
       </div>
@@ -54,10 +75,14 @@ const Labels = () => {
           border-radius: 6px;
           width: 100%;
           padding: 0.5rem 1rem;
+          display: flex;
+          justify-content: space-between;
+        }
+        button {
+          cursor: pointer;
         }
         .add-label {
           margin-left: auto;
-          cursor: pointer;
         }
       `}</style>
     </div>

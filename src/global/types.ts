@@ -79,6 +79,14 @@ export interface Todo {
   labels: string[];
 }
 
+export interface TodoGroup {
+  [id: string]: Todo;
+}
+
+export interface TaskGroup {
+  [id: string]: Task;
+}
+
 export interface Label {
   is_favorite: boolean;
   label_color: string;

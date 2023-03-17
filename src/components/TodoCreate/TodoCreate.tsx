@@ -1,11 +1,10 @@
-import { Todo } from '@/global/types';
+import { Todo, TodoGroup } from '@/global/types';
 import { getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
-import { addDoc, collection } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { closeModal } from 'store/slices/layoutSlice';
 import { setTodos } from 'store/slices/todosSlice';
 import Button from '../Layout/Button/Button';
 import Modal from '../Modal/Modal';
@@ -33,18 +32,11 @@ const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
 
   const handleAddTodo = async () => {
     if (user) {
-      const docRef = collection(db, 'users', user.uid, 'todos');
-      await addDoc(docRef, {
-        is_archived: false,
-        is_default: false,
-        is_favorite: false,
-        is_private: false,
-        labels: [],
-        list_id: '',
-        list_name: todoInput.list_name,
-        members: [],
-      });
-      const todos = await getTodos(user);
+      const newDocRef = doc(collection(db, 'users', user.uid, 'todos'));
+      todoInput.list_id = newDocRef.id;
+      todoInput.list_name = todoInput.list_name;
+      await setDoc(newDocRef, todoInput);
+      const todos: TodoGroup = await getTodos(user);
       dispatch(setTodos(todos));
       closeModalOnClick();
     }

@@ -18,7 +18,7 @@ export const labelsSlice = createSlice({
   initialState,
   reducers: {
     setLabels: (state, action: PayloadAction<LabelGroup>) => {
-      state.labels = { ...state.labels, ...action.payload };
+      state.labels = action.payload;
     },
     setAddNewLabel: (state, action: PayloadAction<Label>) => {
       state.labels = {
@@ -26,10 +26,20 @@ export const labelsSlice = createSlice({
         [action.payload.label_id]: action.payload,
       };
     },
+    setEditLabel: (state, action: PayloadAction<Label>) => {
+      state.labels = {
+        ...state.labels,
+        [action.payload.label_id]: action.payload,
+      };
+    },
+    setDeleteLabel: (state, action: PayloadAction<string>) => {
+      delete state.labels[action.payload];
+    },
   },
 });
 
-export const { setLabels, setAddNewLabel } = labelsSlice.actions;
+export const { setLabels, setAddNewLabel, setEditLabel, setDeleteLabel } =
+  labelsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectLabels = (state: RootState) => state.labels;

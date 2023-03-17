@@ -7,7 +7,7 @@ import Avatar from '../Avatar/Avatar';
 import { selectTodos, setTodoEdit } from 'store/slices/todosSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Project, Todo } from '@/global/types';
+import { Project } from '@/global/types';
 import { useState } from 'react';
 import ProjectEdit from '../ProjectEdit/ProjectEdit';
 import ProjectCreate from '../ProjectCreate/ProjectCreate';
@@ -37,9 +37,6 @@ const PremiumSidebar = () => {
     setEditTodo(true);
   };
 
-  const filterTodos = (data: Todo[]) => {
-    return data.filter((d) => !d.is_archived);
-  };
   const filterProjects = (data: Project[]) => {
     return data.filter((d) => !d.is_archived);
   };
@@ -99,28 +96,29 @@ const PremiumSidebar = () => {
             <span>Tasks Lists</span>
             <ButtonAction text={'+'} onClick={() => setTodoCreate(true)} />
           </div>
-          {filterTodos(todos).map((todo) => (
-            <div key={todo.list_id} className='project-container'>
-              <Link href={`/app/tasks/${todo.list_id}`}>
-                <span
-                  className={`project ${
-                    todo.list_id === listID ? 'selected' : ''
-                  }`}
-                >
-                  {todo.list_name}
-                </span>
-              </Link>
-              <span className='edit' id={todo.list_id} onClick={handleEditTodo}>
-                <Image
-                  alt='edit-icon'
-                  src={'/icons/edit.png'}
-                  width={14}
-                  height={14}
-                  style={{ pointerEvents: 'none' }}
-                />
-              </span>
-            </div>
-          ))}
+          {Object.keys(todos).map(
+            (todo) =>
+              !todos[todo].is_archived && (
+                <div key={todo} className='project-container'>
+                  <Link href={`/app/tasks/${todo}`}>
+                    <span
+                      className={`project ${todo === listID ? 'selected' : ''}`}
+                    >
+                      {todos[todo].list_name}
+                    </span>
+                  </Link>
+                  <span className='edit' id={todo} onClick={handleEditTodo}>
+                    <Image
+                      alt='edit-icon'
+                      src={'/icons/edit.png'}
+                      width={14}
+                      height={14}
+                      style={{ pointerEvents: 'none' }}
+                    />
+                  </span>
+                </div>
+              )
+          )}
         </div>
         <div className='labels'>
           <div className='title'>

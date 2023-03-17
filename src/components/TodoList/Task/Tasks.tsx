@@ -1,57 +1,57 @@
 import IconButton from '@/components/Layout/Icon/IconButton';
-import { Task, Todo } from '@/global/types';
+import { Task, TaskGroup, Todo } from '@/global/types';
 import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const Task = ({
-  todos,
+const Tasks = ({
+  tasks,
   handleToggleDone,
   handleDelete,
 }: {
-  todos: Task[];
+  tasks: TaskGroup;
   handleToggleDone: any;
   handleDelete: any;
 }) => {
   const router = useRouter();
   const { listID } = router.query;
-  const sortData = (data: Task[]) => {
-    const arrayForSort = [...data];
-    const sorted = arrayForSort.sort((a, b) => Number(a.done) - Number(b.done));
-    return sorted;
+  console.log({ tasks });
+  const sortData = (tasks: TaskGroup) => {
+    // const arrayForSort = [...tasks];
+    // const sorted = arrayForSort.sort((a, b) => Number(a.done) - Number(b.done));
+    // return sorted;
   };
+
+  sortData(tasks);
 
   return (
     <>
-      {todos?.length > 0 &&
-        sortData(todos)?.map((todo, index) => (
-          <Link
-            href={`/app/tasks/${listID}/task/${todo.task_id}`}
-            key={todo.task_id}
-          >
+      {Object.keys(tasks)?.length > 0 &&
+        Object.keys(tasks).map((task) => (
+          <Link href={`/app/tasks/${listID}/task/${task}`} key={task}>
             <div className='task-container'>
-              <div className='task' id={todo.task_id}>
+              <div className='task' id={task}>
                 <div className='checkbox'>
                   <IconButton
                     onClick={handleToggleDone}
-                    props={{ id: todo.task_id }}
+                    props={{ id: task }}
                     src={
-                      todo.done
+                      tasks[task].done
                         ? '/icons/checkbox-done.png'
                         : '/icons/checkbox.png'
                     }
-                    alt={todo.done ? 'Done-Icon' : 'Checkbox-Icon'}
+                    alt={tasks[task].done ? 'Done-Icon' : 'Checkbox-Icon'}
                     width={24}
                     height={24}
                   />
                 </div>
-                <div className={`name ${todo.done ? 'done' : ''}`}>
-                  {todo.content}
+                <div className={`name ${tasks[task].done ? 'done' : ''}`}>
+                  {tasks[task].content}
                 </div>
-                {todo.done && (
+                {tasks[task].done && (
                   <div className='delete'>
                     <IconButton
-                      props={{ value: index }}
+                      props={{ id: task }}
                       onClick={handleDelete}
                       src={'/icons/delete.png'}
                       alt='Delete-Icon'
@@ -105,4 +105,4 @@ const Task = ({
   );
 };
 
-export default Task;
+export default Tasks;

@@ -1,7 +1,5 @@
 import Link from 'next/dist/client/link';
 import { ReactNode } from 'react';
-import { useDispatch } from 'react-redux';
-import { closeModal } from 'store/slices/layoutSlice';
 
 const Modal = ({
   children,
@@ -12,14 +10,9 @@ const Modal = ({
   onCloseRedirect: string;
   closeModalOnClick: Function;
 }) => {
-  const dispatch = useDispatch();
-
   const handleCloseModal = (e: any) => {
-    e.preventDefault();
     if (closeModalOnClick) {
       closeModalOnClick();
-    } else {
-      dispatch(closeModal());
     }
   };
 
@@ -28,7 +21,7 @@ const Modal = ({
       {onCloseRedirect ? (
         <div className='container'>
           <Link href={onCloseRedirect} style={{ cursor: 'initial' }}>
-            <div className='full-screen' onClick={handleCloseModal}></div>
+            <div className='full-screen'></div>
           </Link>
           <div className='modal-container'>
             <Link href={onCloseRedirect} style={{ cursor: 'initial' }}>
@@ -81,7 +74,7 @@ const Modal = ({
             align-items: center;
             justify-content: center;
             border-radius: 1rem;
-            box-shadow: 0 0 6px 1px var(--box-shadow-light);
+            box-shadow: 0 0 6px 1px var(--cool);
             position: relative;
             background: var(--modal);
             z-index: 998;
