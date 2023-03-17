@@ -4,6 +4,7 @@ import themeSlice from './slices/themeSlice';
 import trackerSlice from './slices/trackerSlice';
 import layoutSlice from './slices/layoutSlice';
 import todosSlice from './slices/todosSlice';
+import labelsSlice from './slices/labelsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     tracker: trackerSlice,
     layout: layoutSlice,
     todo: todosSlice,
+    labels: labelsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

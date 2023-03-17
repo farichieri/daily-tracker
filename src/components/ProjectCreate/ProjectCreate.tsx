@@ -1,16 +1,19 @@
 import { Project } from '@/global/types';
 import { getProjects } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { closeModal } from 'store/slices/layoutSlice';
 import { setProjects, setProjectSelected } from 'store/slices/trackerSlice';
 import Button from '../Layout/Button/Button';
 import Modal from '../Modal/Modal';
 
-const ProjectCreate = () => {
+const ProjectCreate = ({
+  closeModalOnClick,
+}: {
+  closeModalOnClick: Function;
+}) => {
   const dispatch = useDispatch();
   const [projectInput, setProjectInput] = useState<Project>({
     is_archived: false,
@@ -24,10 +27,6 @@ const ProjectCreate = () => {
   });
   const { user } = useSelector(selectUser);
 
-  const handleCloseModal = () => {
-    dispatch(closeModal());
-  };
-
   const handleChange = (e: any) => {
     setProjectInput({
       ...projectInput,
@@ -37,7 +36,6 @@ const ProjectCreate = () => {
 
   const handleAddTracker = async () => {
     if (user) {
-      dispatch(closeModal());
       const docRef = collection(db, 'users', user.uid, 'projects');
       await addDoc(docRef, {
         is_archived: false,
@@ -64,11 +62,12 @@ const ProjectCreate = () => {
         members: [],
       };
       dispatch(setProjectSelected(newProjectSelected));
+      closeModalOnClick();
     }
   };
 
   return (
-    <Modal onCloseRedirect=''>
+    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
       <div className='container'>
         <div className='title'>New Tracker</div>
         <div className='form'>
@@ -81,7 +80,7 @@ const ProjectCreate = () => {
           />
           <div className='buttons'>
             <Button
-              onClick={handleCloseModal}
+              onClick={() => closeModalOnClick()}
               content='Cancel'
               isLoading={false}
               isDisabled={false}

@@ -1,7 +1,7 @@
 import { Todo } from '@/global/types';
-import { getProjects, getTodos } from '@/hooks/firebase';
+import { getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
@@ -10,7 +10,7 @@ import { setTodos } from 'store/slices/todosSlice';
 import Button from '../Layout/Button/Button';
 import Modal from '../Modal/Modal';
 
-const TodoCreate = () => {
+const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
   const [todoInput, setTodoInput] = useState<Todo>({
     is_archived: false,
@@ -24,10 +24,6 @@ const TodoCreate = () => {
   });
   const { user } = useSelector(selectUser);
 
-  const handleCloseModal = () => {
-    dispatch(closeModal());
-  };
-
   const handleChange = (e: any) => {
     setTodoInput({
       ...todoInput,
@@ -37,7 +33,6 @@ const TodoCreate = () => {
 
   const handleAddTodo = async () => {
     if (user) {
-      dispatch(closeModal());
       const docRef = collection(db, 'users', user.uid, 'todos');
       await addDoc(docRef, {
         is_archived: false,
@@ -51,11 +46,12 @@ const TodoCreate = () => {
       });
       const todos = await getTodos(user);
       dispatch(setTodos(todos));
+      closeModalOnClick();
     }
   };
 
   return (
-    <Modal onCloseRedirect=''>
+    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
       <div className='container'>
         <div className='title'>New Tasks List</div>
         <div className='form'>
@@ -68,7 +64,7 @@ const TodoCreate = () => {
           />
           <div className='buttons'>
             <Button
-              onClick={handleCloseModal}
+              onClick={() => closeModalOnClick()}
               content='Cancel'
               isLoading={false}
               isDisabled={false}

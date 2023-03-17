@@ -5,13 +5,16 @@ import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { closeModal } from 'store/slices/layoutSlice';
 import { setProjects, selectProjectEdit } from 'store/slices/trackerSlice';
 import Button from '../Layout/Button/Button';
 import IconButton from '../Layout/Icon/IconButton';
 import Modal from '../Modal/Modal';
 
-const ProjectEdit = () => {
+const ProjectEdit = ({
+  closeModalOnClick,
+}: {
+  closeModalOnClick: Function;
+}) => {
   const dispatch = useDispatch();
   const projectEdit = useSelector(selectProjectEdit);
   const [projectInput, setProjectInput] = useState<Project>({
@@ -25,10 +28,6 @@ const ProjectEdit = () => {
     members: projectEdit.members,
   });
   const { user } = useSelector(selectUser);
-
-  const handleCloseModal = () => {
-    dispatch(closeModal());
-  };
 
   const handleChange = (e: any) => {
     setProjectInput({
@@ -50,9 +49,7 @@ const ProjectEdit = () => {
 
   const handleEditProject = async () => {
     try {
-      console.log({ projectInput });
       if (user) {
-        dispatch(closeModal());
         if (
           projectEdit.is_default === false &&
           projectInput.is_default === true
@@ -90,6 +87,7 @@ const ProjectEdit = () => {
         });
         const projects = await getProjects(user);
         dispatch(setProjects(projects));
+        closeModalOnClick();
       }
     } catch (error) {
       console.log({ error });
@@ -97,7 +95,7 @@ const ProjectEdit = () => {
   };
 
   return (
-    <Modal onCloseRedirect=''>
+    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
       <div className='container'>
         <div className='title'>Edit Project</div>
         <div className='form'>
@@ -171,7 +169,7 @@ const ProjectEdit = () => {
           </div>
           <div className='buttons'>
             <Button
-              onClick={handleCloseModal}
+              onClick={() => closeModalOnClick()}
               content='Cancel'
               isLoading={false}
               isDisabled={false}
@@ -229,6 +227,7 @@ const ProjectEdit = () => {
             .buttons {
               display: flex;
               gap: 0.5rem;
+              justify-content: center;
             }
             .option {
               display: flex;

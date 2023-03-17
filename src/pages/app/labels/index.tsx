@@ -1,18 +1,7 @@
-import PremiumLayout from '@/components/Layout/PremiumLayout';
-import { useEffect } from 'react';
+import LabelsLayout from '@/components/Layout/LabelsLayout';
 
 const Labels = () => {
-  useEffect(() => {}, []);
-  return (
-    <PremiumLayout withPadding={false}>
-      <div className='labels'>labels</div>
-      <style jsx>{`
-        .labels {
-          padding-top: calc(var(--premium-nav-height) + 1rem);
-        }
-      `}</style>
-    </PremiumLayout>
-  );
+  return <LabelsLayout>{}</LabelsLayout>;
 };
 
 export default Labels;

@@ -4,20 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';
 import PremiumSidebar from '../Nav/PremiumSidebar';
 import {
-  selectIsCreatingProject,
-  selectIsCreatingTodo,
-  selectIsEditingProject,
-  selectIsEditingTodo,
-  selectIsProfileOpen,
   selectSidebarState,
   setIsLoading,
   toggleIsCreatingProject,
   toggleSidebar,
 } from 'store/slices/layoutSlice';
-import ProjectCreate from '../ProjectCreate/ProjectCreate';
-import ProjectEdit from '../ProjectEdit/ProjectEdit';
 import { selectUser } from 'store/slices/authSlice';
-import Settings from '../Settings/Settings';
 import {
   selectProjects,
   selectProjectSelected,
@@ -32,8 +24,6 @@ import {
   setTodos,
 } from 'store/slices/todosSlice';
 import { getProjects, getTodos } from '@/hooks/firebase';
-import TodoCreate from '../TodoCreate/TodoCreate';
-import TodoEdit from '../TodoEdit/TodoEdit';
 
 export default function PremiumLayout({
   children,
@@ -45,12 +35,7 @@ export default function PremiumLayout({
   const padding = withPadding ? 1.5 : 0;
   const dispatch = useDispatch();
   const theme = useSelector(selectTheme);
-  const isCreatingProject = useSelector(selectIsCreatingProject);
-  const isEditingProject = useSelector(selectIsEditingProject);
-  const isCreatingTodo = useSelector(selectIsCreatingTodo);
-  const isEditingTodo = useSelector(selectIsEditingTodo);
   const sidebarOpen = useSelector(selectSidebarState);
-  const isProfileOpen = useSelector(selectIsProfileOpen);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
 
   useEffect(() => {
@@ -110,11 +95,6 @@ export default function PremiumLayout({
     <section>
       {user && userSettings.display_name && !isVerifyingUser && (
         <>
-          {isProfileOpen && <Settings />}
-          {isCreatingProject && <ProjectCreate />}
-          {isEditingProject && <ProjectEdit />}
-          {isCreatingTodo && <TodoCreate />}
-          {isEditingTodo && <TodoEdit />}
           <PremiumNav />
           <PremiumSidebar />
           {sidebarOpen && (

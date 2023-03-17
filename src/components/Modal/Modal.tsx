@@ -6,14 +6,21 @@ import { closeModal } from 'store/slices/layoutSlice';
 const Modal = ({
   children,
   onCloseRedirect,
+  closeModalOnClick,
 }: {
   children: ReactNode;
   onCloseRedirect: string;
+  closeModalOnClick: Function;
 }) => {
   const dispatch = useDispatch();
 
   const handleCloseModal = (e: any) => {
-    dispatch(closeModal());
+    e.preventDefault();
+    if (closeModalOnClick) {
+      closeModalOnClick();
+    } else {
+      dispatch(closeModal());
+    }
   };
 
   return (
@@ -31,7 +38,8 @@ const Modal = ({
           </div>
         </div>
       ) : (
-        <div className='full-screen' onClick={handleCloseModal}>
+        <div className='container'>
+          <div className='full-screen' onClick={handleCloseModal}></div>
           <div className='modal'>{children}</div>
         </div>
       )}

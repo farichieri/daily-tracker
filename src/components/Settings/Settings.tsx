@@ -35,8 +35,10 @@ const Settings = () => {
     }
   };
 
+  const closeModalOnClick = () => {};
+
   return (
-    <Modal onCloseRedirect=''>
+    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
       <div className='settings'>
         <div className='sidebar'>
           <p className='title'>Settings</p>

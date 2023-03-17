@@ -13,7 +13,7 @@ import Subtask from '@/components/TodoList/Task/Subtask/Subtask';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { formatISO } from 'date-fns';
 
-const TaskID = () => {
+const TaskID = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const router = useRouter();
   const { todoTasks, todos } = useSelector(selectTodo);
   const { taskID, listID } = router.query;
@@ -174,7 +174,10 @@ const TaskID = () => {
       {!taskState ? (
         <Loader fullScreen={true} text={''} />
       ) : (
-        <Modal onCloseRedirect={taskIDLink}>
+        <Modal
+          onCloseRedirect={taskIDLink}
+          closeModalOnClick={closeModalOnClick}
+        >
           <div className='task-container'>
             <div className='task-content'>
               <input

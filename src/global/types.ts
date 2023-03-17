@@ -76,12 +76,17 @@ export interface Todo {
   list_id: string;
   list_name: string;
   members: Array<string>;
-  labels: Array<Label>;
+  labels: string[];
 }
 
 export interface Label {
+  is_favorite: boolean;
   label_color: string;
   label_id: string;
   label_name: string;
-  label_parent: string;
+  label_order: number;
+}
+
+export interface LabelGroup {
+  [id: string]: Label;
 }

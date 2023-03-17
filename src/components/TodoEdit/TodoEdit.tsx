@@ -11,7 +11,7 @@ import Button from '../Layout/Button/Button';
 import IconButton from '../Layout/Icon/IconButton';
 import Modal from '../Modal/Modal';
 
-const TodoEdit = () => {
+const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
   const todoEdit = useSelector(selectTodoEdit);
   const [todoInput, setTodoInput] = useState<Todo>({
@@ -25,10 +25,6 @@ const TodoEdit = () => {
     members: todoEdit.members,
   });
   const { user } = useSelector(selectUser);
-
-  const handleCloseModal = () => {
-    dispatch(closeModal());
-  };
 
   const handleChange = (e: any) => {
     setTodoInput({
@@ -50,7 +46,6 @@ const TodoEdit = () => {
 
   const handleEditTodo = async () => {
     if (user) {
-      dispatch(closeModal());
       if (todoEdit.is_default === false && todoInput.is_default === true) {
         const docRef = collection(db, 'users', user.uid, 'todos');
         const querySnapshot = await getDocs(docRef);
@@ -76,11 +71,12 @@ const TodoEdit = () => {
       });
       const todos = await getTodos(user);
       dispatch(setTodos(todos));
+      closeModalOnClick;
     }
   };
 
   return (
-    <Modal onCloseRedirect=''>
+    <Modal closeModalOnClick={closeModalOnClick} onCloseRedirect=''>
       <div className='container'>
         <div className='title'>Edit Project</div>
         <div className='form'>
@@ -152,7 +148,7 @@ const TodoEdit = () => {
           </div>
           <div className='buttons'>
             <Button
-              onClick={handleCloseModal}
+              onClick={() => closeModalOnClick()}
               content='Cancel'
               isLoading={false}
               isDisabled={false}
@@ -210,6 +206,7 @@ const TodoEdit = () => {
             .buttons {
               display: flex;
               gap: 0.5rem;
+              justify-content: center;
             }
             .option {
               display: flex;
