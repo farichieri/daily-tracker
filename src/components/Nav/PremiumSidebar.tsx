@@ -18,7 +18,7 @@ const PremiumSidebar = () => {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector(selectSidebarState);
   const projects = useSelector(selectProjects);
-  const todos = useSelector(selectTodos);
+  const lists = useSelector(selectTodos);
   const router = useRouter();
   const { listID, id } = router.query;
   const { pathname } = router;
@@ -96,15 +96,15 @@ const PremiumSidebar = () => {
             <span>Tasks Lists</span>
             <ButtonAction text={'+'} onClick={() => setTodoCreate(true)} />
           </div>
-          {Object.keys(todos).map(
+          {Object.keys(lists).map(
             (todo) =>
-              !todos[todo].is_archived && (
+              !lists[todo].is_archived && (
                 <div key={todo} className='project-container'>
                   <Link href={`/app/tasks/${todo}`}>
                     <span
                       className={`project ${todo === listID ? 'selected' : ''}`}
                     >
-                      {todos[todo].list_name}
+                      {lists[todo].list_name}
                     </span>
                   </Link>
                   <span className='edit' id={todo} onClick={handleEditTodo}>

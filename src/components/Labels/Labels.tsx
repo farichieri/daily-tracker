@@ -9,7 +9,6 @@ const Labels = () => {
   const [createLabel, setCreateLabel] = useState(false);
   const [labelToEdit, setLabelToEdit] = useState('');
 
-  console.log({ labelToEdit });
   const closeModalOnClick = () => {
     setCreateLabel(false);
     setLabelToEdit('');
@@ -40,7 +39,12 @@ const Labels = () => {
         {labels &&
           Object.keys(labels).map((label) => (
             <div className='label-container' key={label}>
-              <span>{labels[label].label_name}</span>
+              <span
+                className='label-name'
+                style={{ background: `${labels[label].label_color}` }}
+              >
+                {labels[label].label_name}
+              </span>
               <div className='buttons'>
                 <Link href={`/app/labels/${label}`}>
                   <button>Tasks</button>
@@ -93,6 +97,10 @@ const Labels = () => {
         }
         .add-label {
           margin-left: auto;
+        }
+        .label-name {
+          padding: 0.25rem 0.5rem;
+          border-radius: 6px;
         }
       `}</style>
     </div>

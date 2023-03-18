@@ -17,11 +17,11 @@ import TaskActions from '@/components/TodoList/Task/TaskActions/TaskActions';
 const TaskID = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { tasks, todos } = useSelector(selectTodo);
+  const { tasks, lists } = useSelector(selectTodo);
   const { taskID, listID } = router.query;
   const { user } = useSelector(selectUser);
   const task = tasks[String(taskID)];
-  const list = todos[String(listID)];
+  const list = lists[String(listID)];
   const [taskState, setTaskState] = useState<Task>(task);
   const taskIDLink = `/app/tasks/${listID}`;
   const [isSaveable, setIsSaveable] = useState(false);

@@ -22,7 +22,6 @@ const TodoList = () => {
   const { tasks } = useSelector(selectTodo);
   const { listID } = router.query;
   const tasksByListID = filterObject(tasks, 'project_id', String(listID));
-  console.log({ tasksByListID });
   const [tasksState, setTasksState] = useState<TaskGroup>(tasksByListID);
   const { user } = useSelector(selectUser);
 
@@ -66,7 +65,7 @@ const TodoList = () => {
         <Clock />
       </div>
       <Tasks
-        tasks={tasksState}
+        tasksState={tasksState}
         handleToggleDone={handleToggleDone}
         handleDelete={handleDelete}
       />

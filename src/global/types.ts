@@ -68,7 +68,7 @@ export interface Project {
   members: Array<string>;
   labels: Array<Label>;
 }
-export interface Todo {
+export interface List {
   is_archived: boolean;
   is_default: boolean;
   is_favorite: boolean;
@@ -79,8 +79,8 @@ export interface Todo {
   labels: string[];
 }
 
-export interface TodoGroup {
-  [id: string]: Todo;
+export interface ListGroup {
+  [id: string]: List;
 }
 
 export interface TaskGroup {

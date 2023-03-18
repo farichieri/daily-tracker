@@ -1,5 +1,4 @@
 import Modal from '@/components/Modal/Modal';
-import { Label } from '@/global/types';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
@@ -17,7 +16,7 @@ const AssignLabel = ({
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { taskID, listID } = router.query;
+  const { taskID } = router.query;
   const { labels } = useSelector(selectLabels);
   const { tasks } = useSelector(selectTodo);
   const { user } = useSelector(selectUser);

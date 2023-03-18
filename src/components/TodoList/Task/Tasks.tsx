@@ -1,32 +1,44 @@
 import IconButton from '@/components/Layout/Icon/IconButton';
-import { Task, TaskGroup, Todo } from '@/global/types';
-import React from 'react';
+import { TaskGroup } from '@/global/types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { selectTodo } from 'store/slices/todosSlice';
+import { selectLabels } from 'store/slices/labelsSlice';
 
 const Tasks = ({
-  tasks,
+  tasksState,
   handleToggleDone,
   handleDelete,
 }: {
-  tasks: TaskGroup;
+  tasksState: TaskGroup;
   handleToggleDone: any;
   handleDelete: any;
 }) => {
   const router = useRouter();
   const { listID } = router.query;
+  const { tasks } = useSelector(selectTodo);
+  const { labels } = useSelector(selectLabels);
+
+  const getLabelsByTask = (taskID: string) => {
+    const task = { ...tasks[String(taskID)] };
+    const labelsSelected = task.labels;
+    const labelsFiltered = labelsSelected.map((label) => labels[label]);
+    return labelsFiltered;
+  };
+
   const sortData = (tasks: TaskGroup) => {
     // const arrayForSort = [...tasks];
     // const sorted = arrayForSort.sort((a, b) => Number(a.done) - Number(b.done));
     // return sorted;
   };
 
-  sortData(tasks);
+  sortData(tasksState);
 
   return (
     <>
-      {Object.keys(tasks)?.length > 0 &&
-        Object.keys(tasks).map((task) => (
+      {Object.keys(tasksState)?.length > 0 &&
+        Object.keys(tasksState).map((task) => (
           <Link href={`/app/tasks/${listID}/task/${task}`} key={task}>
             <div className='task-container'>
               <div className='task' id={task}>
@@ -35,19 +47,19 @@ const Tasks = ({
                     onClick={handleToggleDone}
                     props={{ id: task }}
                     src={
-                      tasks[task].done
+                      tasksState[task].done
                         ? '/icons/checkbox-done.png'
                         : '/icons/checkbox.png'
                     }
-                    alt={tasks[task].done ? 'Done-Icon' : 'Checkbox-Icon'}
+                    alt={tasksState[task].done ? 'Done-Icon' : 'Checkbox-Icon'}
                     width={24}
                     height={24}
                   />
                 </div>
-                <div className={`name ${tasks[task].done ? 'done' : ''}`}>
-                  {tasks[task].content}
+                <div className={`name ${tasksState[task].done ? 'done' : ''}`}>
+                  {tasksState[task].content}
                 </div>
-                {tasks[task].done && (
+                {tasksState[task].done && (
                   <div className='delete'>
                     <IconButton
                       props={{ id: task }}
@@ -59,6 +71,14 @@ const Tasks = ({
                     />
                   </div>
                 )}
+                <div className='labels'>
+                  {getLabelsByTask(task)?.map((label) => (
+                    <div
+                      className='label'
+                      style={{ background: `${label.label_color}` }}
+                    ></div>
+                  ))}
+                </div>
               </div>
             </div>
           </Link>
@@ -98,6 +118,16 @@ const Tasks = ({
         .checkbox,
         .delete {
           pointer-events: initial;
+        }
+        .labels {
+          display: flex;
+          gap: 0.2rem;
+          align-items: center;
+        }
+        .label {
+          width: 1rem;
+          height: 0.2rem;
+          border-radius: 5px;
         }
       `}</style>
     </>

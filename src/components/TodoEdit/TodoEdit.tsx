@@ -1,4 +1,4 @@
-import { Todo, TodoGroup } from '@/global/types';
+import { List, ListGroup } from '@/global/types';
 import { getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
@@ -13,7 +13,7 @@ import Modal from '../Modal/Modal';
 const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
   const todoEdit = useSelector(selectTodoEdit);
-  const [todoInput, setTodoInput] = useState<Todo>({
+  const [todoInput, setTodoInput] = useState<List>({
     is_archived: todoEdit.is_archived,
     is_default: todoEdit.is_default,
     is_favorite: todoEdit.is_favorite,
@@ -46,18 +46,18 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const handleEditTodo = async () => {
     if (user) {
       if (todoEdit.is_default === false && todoInput.is_default === true) {
-        const docRef = collection(db, 'users', user.uid, 'todos');
+        const docRef = collection(db, 'users', user.uid, 'lists');
         const querySnapshot = await getDocs(docRef);
         const removeDefaults = async () => {
           querySnapshot.forEach((docToUpdate) => {
-            updateDoc(doc(db, 'users', user.uid, 'todos', docToUpdate.id), {
+            updateDoc(doc(db, 'users', user.uid, 'lists', docToUpdate.id), {
               is_default: false,
             });
           });
         };
         await removeDefaults();
       }
-      const docRef = doc(db, 'users', user.uid, 'todos', todoEdit.list_id);
+      const docRef = doc(db, 'users', user.uid, 'lists', todoEdit.list_id);
       await updateDoc(docRef, {
         is_archived: todoInput.is_archived,
         is_default: todoInput.is_default,
@@ -68,8 +68,8 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
         list_name: todoInput.list_name,
         members: todoInput.members,
       });
-      const todos: TodoGroup = await getTodos(user);
-      dispatch(setTodos(todos));
+      const lists: ListGroup = await getTodos(user);
+      dispatch(setTodos(lists));
       closeModalOnClick();
     }
   };

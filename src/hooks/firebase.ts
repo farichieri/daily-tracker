@@ -1,4 +1,4 @@
-import { Project, Todo, TodoGroup, UserSettings } from '@/global/types';
+import { Project, ListGroup, UserSettings } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { User } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
@@ -31,8 +31,8 @@ export const getProjects = async (user: User) => {
 export const getTodos = async (user: User) => {
   if (user) {
     console.log('Fetching Todos');
-    let data: TodoGroup = {};
-    const docRef = collection(db, 'users', user.uid, 'todos');
+    let data: ListGroup = {};
+    const docRef = collection(db, 'users', user.uid, 'lists');
     const querySnapshot = await getDocs(docRef);
     querySnapshot.forEach((todo: any) => {
       data[todo.id] = todo.data();

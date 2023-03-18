@@ -1,4 +1,4 @@
-import { Todo, TodoGroup } from '@/global/types';
+import { List, ListGroup } from '@/global/types';
 import { getTodos } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { collection, doc, setDoc } from 'firebase/firestore';
@@ -11,7 +11,7 @@ import Modal from '../Modal/Modal';
 
 const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
-  const [todoInput, setTodoInput] = useState<Todo>({
+  const [todoInput, setTodoInput] = useState<List>({
     is_archived: false,
     is_default: false,
     is_favorite: false,
@@ -32,12 +32,12 @@ const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
 
   const handleAddTodo = async () => {
     if (user) {
-      const newDocRef = doc(collection(db, 'users', user.uid, 'todos'));
+      const newDocRef = doc(collection(db, 'users', user.uid, 'lists'));
       todoInput.list_id = newDocRef.id;
       todoInput.list_name = todoInput.list_name;
       await setDoc(newDocRef, todoInput);
-      const todos: TodoGroup = await getTodos(user);
-      dispatch(setTodos(todos));
+      const lists: ListGroup = await getTodos(user);
+      dispatch(setTodos(lists));
       closeModalOnClick();
     }
   };
