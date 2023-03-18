@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
-import { selectTodo } from 'store/slices/todosSlice';
+import { selectList } from 'store/slices/listsSlice';
 import AssignLabel from './TaskActionsModals/AssignLabel';
 import AssignReminder from './TaskActionsModals/AssignReminder';
 import { Label } from '@/global/types';
@@ -11,7 +11,7 @@ const TaskActions = () => {
   const router = useRouter();
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignReminder, setOpenAssignReminder] = useState(false);
-  const { tasks } = useSelector(selectTodo);
+  const { tasks } = useSelector(selectList);
   const { taskID } = router.query;
   const task = { ...tasks[String(taskID)] };
   const labelsSelected = task.labels;

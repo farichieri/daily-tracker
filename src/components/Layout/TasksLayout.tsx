@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import TodoList from '@/components/TodoList/TodoList';
+import TasksList from '@/components/TasksList/TasksList';
 
 const TasksLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -11,10 +11,10 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <PremiumLayout withPadding={false}>
-      <div className='todo'>{user && <TodoList />}</div>
+      <div className='list'>{user && <TasksList />}</div>
       {children}
       <style jsx>{`
-        .todo {
+        .list {
           max-width: var(--max-width-content);
           display: flex;
           flex-direction: column;

@@ -6,20 +6,20 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import {
-  selectTodo,
+  selectList,
   setDeleteTask,
   setUpdateTask,
-} from 'store/slices/todosSlice';
+} from 'store/slices/listsSlice';
 import Clock from '../Clock/Clock';
 import { useRouter } from 'next/router';
 import Tasks from './Task/Tasks';
 import AddTask from './Task/AddTask';
 import { filterObject } from '@/hooks/helpers';
 
-const TodoList = () => {
+const TasksList = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { tasks } = useSelector(selectTodo);
+  const { tasks } = useSelector(selectList);
   const { listID } = router.query;
   const tasksByListID = filterObject(tasks, 'project_id', String(listID));
   const [tasksState, setTasksState] = useState<TaskGroup>(tasksByListID);
@@ -30,11 +30,11 @@ const TodoList = () => {
     const taskID: string = (event.target as HTMLButtonElement).id;
     const task = tasksState[taskID];
     if (!task) return;
-    const newTodos = { ...tasksState };
+    const newList = { ...tasksState };
     const newTask = { ...task };
     newTask.done = !newTask.done;
     newTask.completed_at = newTask.completed_at ? '' : formatISO(new Date());
-    newTodos[taskID] = newTask;
+    newList[taskID] = newTask;
     handleSave(taskID, newTask);
   };
 
@@ -60,7 +60,7 @@ const TodoList = () => {
   }, [tasks, listID]);
 
   return (
-    <div className='todo'>
+    <div className='list'>
       <div className='header'>
         <Clock />
       </div>
@@ -71,7 +71,7 @@ const TodoList = () => {
       />
       <AddTask />
       <style jsx>{`
-        .todo {
+        .list {
           width: 100%;
           display: flex;
           max-width: 600px;
@@ -88,4 +88,4 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+export default TasksList;

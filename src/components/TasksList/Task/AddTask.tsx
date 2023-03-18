@@ -6,7 +6,7 @@ import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { setAddNewTask } from 'store/slices/todosSlice';
+import { setAddNewTask } from 'store/slices/listsSlice';
 
 const AddTask = () => {
   const router = useRouter();
@@ -52,7 +52,7 @@ const AddTask = () => {
   };
 
   return (
-    <form className='new-todo' onSubmit={handleAdd}>
+    <form className='new-list' onSubmit={handleAdd}>
       <div className='name'>
         <input
           type='text'
@@ -72,7 +72,7 @@ const AddTask = () => {
         />
       </div>
       <style jsx>{`
-        .new-todo {
+        .new-list {
           border: 1px solid gray;
           border-radius: 6px;
           width: 100%;

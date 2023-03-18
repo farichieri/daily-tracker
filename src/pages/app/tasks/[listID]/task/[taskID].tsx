@@ -1,7 +1,7 @@
 import TasksLayout from '@/components/Layout/TasksLayout';
 import Modal from '@/components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTodo, setUpdateTask } from 'store/slices/todosSlice';
+import { selectList, setUpdateTask } from 'store/slices/listsSlice';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubTask, Task } from '@/global/types';
@@ -11,13 +11,13 @@ import { db } from '@/utils/firebase.config';
 import { selectUser } from 'store/slices/authSlice';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { formatISO } from 'date-fns';
-import Subtasks from '@/components/TodoList/Task/Subtasks/Subtasks';
-import TaskActions from '@/components/TodoList/Task/TaskActions/TaskActions';
+import Subtasks from '@/components/TasksList/Task/Subtasks/Subtasks';
+import TaskActions from '@/components/TasksList/Task/TaskActions/TaskActions';
 
 const TaskID = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { tasks, lists } = useSelector(selectTodo);
+  const { tasks, lists } = useSelector(selectList);
   const { taskID, listID } = router.query;
   const { user } = useSelector(selectUser);
   const task = tasks[String(taskID)];

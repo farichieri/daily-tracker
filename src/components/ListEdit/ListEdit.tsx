@@ -1,33 +1,33 @@
 import { List, ListGroup } from '@/global/types';
-import { getTodos } from '@/hooks/firebase';
+import { getLists } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { selectTodoEdit, setTodos } from 'store/slices/todosSlice';
+import { selectListEdit, setLists } from 'store/slices/listsSlice';
 import Button from '../Layout/Button/Button';
 import IconButton from '../Layout/Icon/IconButton';
 import Modal from '../Modal/Modal';
 
-const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
+const ListEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
-  const todoEdit = useSelector(selectTodoEdit);
-  const [todoInput, setTodoInput] = useState<List>({
-    is_archived: todoEdit.is_archived,
-    is_default: todoEdit.is_default,
-    is_favorite: todoEdit.is_favorite,
-    is_private: todoEdit.is_private,
-    labels: todoEdit.labels,
-    list_id: todoEdit.list_id,
-    list_name: todoEdit.list_name,
-    members: todoEdit.members,
+  const listEdit = useSelector(selectListEdit);
+  const [listInput, setListInput] = useState<List>({
+    is_archived: listEdit.is_archived,
+    is_default: listEdit.is_default,
+    is_favorite: listEdit.is_favorite,
+    is_private: listEdit.is_private,
+    labels: listEdit.labels,
+    list_id: listEdit.list_id,
+    list_name: listEdit.list_name,
+    members: listEdit.members,
   });
   const { user } = useSelector(selectUser);
 
   const handleChange = (e: any) => {
-    setTodoInput({
-      ...todoInput,
+    setListInput({
+      ...listInput,
       [e.target.name]: e.target.value,
     });
   };
@@ -35,17 +35,17 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     const name: string = (e.target as HTMLButtonElement).name;
-    const newInput: any = { ...todoInput };
+    const newInput: any = { ...listInput };
     const bool: boolean = !newInput[name];
-    setTodoInput({
+    setListInput({
       ...newInput,
       [name]: bool,
     });
   };
 
-  const handleEditTodo = async () => {
+  const handleEditList = async () => {
     if (user) {
-      if (todoEdit.is_default === false && todoInput.is_default === true) {
+      if (listEdit.is_default === false && listInput.is_default === true) {
         const docRef = collection(db, 'users', user.uid, 'lists');
         const querySnapshot = await getDocs(docRef);
         const removeDefaults = async () => {
@@ -57,19 +57,19 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
         };
         await removeDefaults();
       }
-      const docRef = doc(db, 'users', user.uid, 'lists', todoEdit.list_id);
+      const docRef = doc(db, 'users', user.uid, 'lists', listEdit.list_id);
       await updateDoc(docRef, {
-        is_archived: todoInput.is_archived,
-        is_default: todoInput.is_default,
-        is_favorite: todoInput.is_favorite,
-        is_private: todoInput.is_private,
-        labels: todoInput.labels,
-        list_id: todoInput.list_id,
-        list_name: todoInput.list_name,
-        members: todoInput.members,
+        is_archived: listInput.is_archived,
+        is_default: listInput.is_default,
+        is_favorite: listInput.is_favorite,
+        is_private: listInput.is_private,
+        labels: listInput.labels,
+        list_id: listInput.list_id,
+        list_name: listInput.list_name,
+        members: listInput.members,
       });
-      const lists: ListGroup = await getTodos(user);
-      dispatch(setTodos(lists));
+      const lists: ListGroup = await getLists(user);
+      dispatch(setLists(lists));
       closeModalOnClick();
     }
   };
@@ -85,22 +85,22 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
               <input
                 type='text'
                 name='list_name'
-                value={todoInput.list_name}
+                value={listInput.list_name}
                 onChange={handleChange}
               />
             </div>
             <div className='option'>
-              <span>{todoInput.is_default ? 'Default' : 'Make Default'}</span>
+              <span>{listInput.is_default ? 'Default' : 'Make Default'}</span>
               <span>
                 <IconButton
                   onClick={handleClick}
                   props={{ name: 'is_default' }}
                   src={
-                    todoInput.is_default
+                    listInput.is_default
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={todoInput.is_default ? 'On-Icon' : 'Off-Icon'}
+                  alt={listInput.is_default ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />
@@ -108,18 +108,18 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
             </div>
             <div className='option'>
               <span>
-                {todoInput.is_favorite ? 'Favorite' : 'Make Favorite'}
+                {listInput.is_favorite ? 'Favorite' : 'Make Favorite'}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
                   props={{ name: 'is_favorite' }}
                   src={
-                    todoInput.is_favorite
+                    listInput.is_favorite
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={todoInput.is_favorite ? 'On-Icon' : 'Off-Icon'}
+                  alt={listInput.is_favorite ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />
@@ -127,18 +127,18 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
             </div>
             <div className='option'>
               <span>
-                {todoInput.is_archived ? 'Desarchivate' : 'Archivate'}
+                {listInput.is_archived ? 'Desarchivate' : 'Archivate'}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
                   props={{ name: 'is_archived' }}
                   src={
-                    todoInput.is_archived
+                    listInput.is_archived
                       ? '/icons/toggle-on.png'
                       : '/icons/toggle-off.png'
                   }
-                  alt={todoInput.is_archived ? 'On-Icon' : 'Off-Icon'}
+                  alt={listInput.is_archived ? 'On-Icon' : 'Off-Icon'}
                   width={24}
                   height={24}
                 />
@@ -155,7 +155,7 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
               style={null}
             />
             <Button
-              onClick={handleEditTodo}
+              onClick={handleEditList}
               content='Acept'
               isLoading={false}
               isDisabled={false}
@@ -225,4 +225,4 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   );
 };
 
-export default TodoEdit;
+export default ListEdit;

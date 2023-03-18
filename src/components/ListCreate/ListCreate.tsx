@@ -1,17 +1,17 @@
 import { List, ListGroup } from '@/global/types';
-import { getTodos } from '@/hooks/firebase';
+import { getLists } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { setTodos } from 'store/slices/todosSlice';
+import { setLists } from 'store/slices/listsSlice';
 import Button from '../Layout/Button/Button';
 import Modal from '../Modal/Modal';
 
-const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
+const ListCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
-  const [todoInput, setTodoInput] = useState<List>({
+  const [listInput, setListInput] = useState<List>({
     is_archived: false,
     is_default: false,
     is_favorite: false,
@@ -24,20 +24,20 @@ const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const { user } = useSelector(selectUser);
 
   const handleChange = (e: any) => {
-    setTodoInput({
-      ...todoInput,
+    setListInput({
+      ...listInput,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleAddTodo = async () => {
+  const handleAddList = async () => {
     if (user) {
       const newDocRef = doc(collection(db, 'users', user.uid, 'lists'));
-      todoInput.list_id = newDocRef.id;
-      todoInput.list_name = todoInput.list_name;
-      await setDoc(newDocRef, todoInput);
-      const lists: ListGroup = await getTodos(user);
-      dispatch(setTodos(lists));
+      listInput.list_id = newDocRef.id;
+      listInput.list_name = listInput.list_name;
+      await setDoc(newDocRef, listInput);
+      const lists: ListGroup = await getLists(user);
+      dispatch(setLists(lists));
       closeModalOnClick();
     }
   };
@@ -51,7 +51,7 @@ const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
             type='text'
             placeholder=''
             name='list_name'
-            value={todoInput.list_name}
+            value={listInput.list_name}
             onChange={handleChange}
           />
           <div className='buttons'>
@@ -64,7 +64,7 @@ const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
               style={null}
             />
             <Button
-              onClick={handleAddTodo}
+              onClick={handleAddList}
               content='Acept'
               isLoading={false}
               isDisabled={false}
@@ -122,4 +122,4 @@ const TodoCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   );
 };
 
-export default TodoCreate;
+export default ListCreate;

@@ -18,7 +18,7 @@ const Loader = ({
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: ${fullScreen ? 10 : 5};
+          z-index: ${fullScreen ? 9999 : 5};
           top: 0;
           left: 0;
           background: var(--bg-color);

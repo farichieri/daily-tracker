@@ -1,4 +1,10 @@
-import { Project, ListGroup, UserSettings } from '@/global/types';
+import {
+  Project,
+  ListGroup,
+  UserSettings,
+  LabelGroup,
+  TaskGroup,
+} from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { User } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
@@ -28,19 +34,15 @@ export const getProjects = async (user: User) => {
   }
 };
 
-export const getTodos = async (user: User) => {
-  if (user) {
-    console.log('Fetching Todos');
-    let data: ListGroup = {};
-    const docRef = collection(db, 'users', user.uid, 'lists');
-    const querySnapshot = await getDocs(docRef);
-    querySnapshot.forEach((todo: any) => {
-      data[todo.id] = todo.data();
-    });
-    return data;
-  } else {
-    return {};
-  }
+export const getLists = async (user: User) => {
+  console.log('Fetching lists');
+  let data: ListGroup = {};
+  const docRef = collection(db, 'users', user.uid, 'lists');
+  const querySnapshot = await getDocs(docRef);
+  querySnapshot.forEach((list: any) => {
+    data[list.id] = list.data();
+  });
+  return data;
 };
 
 export const getUserSettings = async (user: User) => {
@@ -56,4 +58,24 @@ export const getUserSettings = async (user: User) => {
       plan_name: userData.plan_name,
     };
   }
+};
+
+export const getLabels = async (user: User) => {
+  let data: LabelGroup = {};
+  const labelsDocRef = collection(db, 'users', user.uid, 'labels');
+  const querySnapshot = await getDocs(labelsDocRef);
+  querySnapshot.forEach((label: any) => {
+    data[label.id] = label.data();
+  });
+  return data;
+};
+
+export const getTasks = async (user: User) => {
+  let data: TaskGroup = {};
+  const tasksDocRef = collection(db, 'users', user.uid, 'tasks');
+  const querySnapshot = await getDocs(tasksDocRef);
+  querySnapshot.forEach((list: any) => {
+    data[list.id] = list.data();
+  });
+  return data;
 };

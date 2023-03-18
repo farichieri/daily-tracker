@@ -4,21 +4,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import ButtonAction from '../Layout/ButtonAction/ButtonAction';
 import Image from 'next/image';
 import Avatar from '../Avatar/Avatar';
-import { selectTodos, setTodoEdit } from 'store/slices/todosSlice';
+import { selectLists, setListEdit } from 'store/slices/listsSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Project } from '@/global/types';
 import { useState } from 'react';
 import ProjectEdit from '../ProjectEdit/ProjectEdit';
 import ProjectCreate from '../ProjectCreate/ProjectCreate';
-import TodoCreate from '../TodoCreate/TodoCreate';
-import TodoEdit from '../TodoEdit/TodoEdit';
+import ListCreate from '../ListCreate/ListCreate';
+import ListEdit from '../ListEdit/ListEdit';
 
 const PremiumSidebar = () => {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector(selectSidebarState);
   const projects = useSelector(selectProjects);
-  const lists = useSelector(selectTodos);
+  const lists = useSelector(selectLists);
   const router = useRouter();
   const { listID, id } = router.query;
   const { pathname } = router;
@@ -30,11 +30,11 @@ const PremiumSidebar = () => {
     setEditProject(true);
   };
 
-  const handleEditTodo = (event: any) => {
+  const handleEditList = (event: any) => {
     event.preventDefault();
-    const todoID = (event.target as HTMLButtonElement).id;
-    dispatch(setTodoEdit(todoID));
-    setEditTodo(true);
+    const listID = (event.target as HTMLButtonElement).id;
+    dispatch(setListEdit(listID));
+    setEditList(true);
   };
 
   const filterProjects = (data: Project[]) => {
@@ -43,21 +43,21 @@ const PremiumSidebar = () => {
 
   const [createProject, setCreateProject] = useState(false);
   const [editProject, setEditProject] = useState(false);
-  const [todoCreate, setTodoCreate] = useState(false);
-  const [editTodo, setEditTodo] = useState(false);
+  const [listCreate, setListCreate] = useState(false);
+  const [editList, setEditList] = useState(false);
   const closeModalOnClick = () => {
     setEditProject(false);
     setCreateProject(false);
-    setTodoCreate(false);
-    setEditTodo(false);
+    setListCreate(false);
+    setEditList(false);
   };
 
   return (
     <>
       {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {createProject && <ProjectCreate closeModalOnClick={closeModalOnClick} />}
-      {todoCreate && <TodoCreate closeModalOnClick={closeModalOnClick} />}
-      {editTodo && <TodoEdit closeModalOnClick={closeModalOnClick} />}
+      {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
+      {editList && <ListEdit closeModalOnClick={closeModalOnClick} />}
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className='tracks' onClick={(e) => e.stopPropagation()}>
           <div className='title'>
@@ -94,20 +94,20 @@ const PremiumSidebar = () => {
         <div className='to-do'>
           <div className='title'>
             <span>Tasks Lists</span>
-            <ButtonAction text={'+'} onClick={() => setTodoCreate(true)} />
+            <ButtonAction text={'+'} onClick={() => setListCreate(true)} />
           </div>
           {Object.keys(lists).map(
-            (todo) =>
-              !lists[todo].is_archived && (
-                <div key={todo} className='project-container'>
-                  <Link href={`/app/tasks/${todo}`}>
+            (list) =>
+              !lists[list].is_archived && (
+                <div key={list} className='project-container'>
+                  <Link href={`/app/tasks/${list}`}>
                     <span
-                      className={`project ${todo === listID ? 'selected' : ''}`}
+                      className={`project ${list === listID ? 'selected' : ''}`}
                     >
-                      {lists[todo].list_name}
+                      {lists[list].list_name}
                     </span>
                   </Link>
-                  <span className='edit' id={todo} onClick={handleEditTodo}>
+                  <span className='edit' id={list} onClick={handleEditList}>
                     <Image
                       alt='edit-icon'
                       src={'/icons/edit.png'}

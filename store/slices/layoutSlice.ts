@@ -5,22 +5,24 @@ import type { RootState } from '../store';
 interface LayoutSlice {
   isSidebarOpen: boolean;
   isCreatingProject: boolean;
-  isCreatingTodo: boolean;
+  isCreatingList: boolean;
   isEditingProject: boolean;
-  isEditingTodo: boolean;
+  isEditingList: boolean;
   isLoading: boolean;
   isProfileOpen: boolean;
+  page: string;
 }
 
 // Define the initial state using that type
 const initialState: LayoutSlice = {
   isSidebarOpen: false,
   isCreatingProject: false,
-  isCreatingTodo: false,
+  isCreatingList: false,
   isEditingProject: false,
-  isEditingTodo: false,
+  isEditingList: false,
   isLoading: false,
   isProfileOpen: false,
+  page: '',
 };
 
 export const layoutSlice = createSlice({
@@ -34,20 +36,20 @@ export const layoutSlice = createSlice({
     toggleIsCreatingProject: (state) => {
       state.isCreatingProject = !state.isCreatingProject;
     },
-    toggleIsCreatingTodo: (state) => {
-      state.isCreatingTodo = !state.isCreatingTodo;
+    toggleIsCreatingList: (state) => {
+      state.isCreatingList = !state.isCreatingList;
     },
     toggleIsEditingProject: (state) => {
       state.isEditingProject = !state.isEditingProject;
     },
-    toggleIsEditingTodo: (state) => {
-      state.isEditingTodo = !state.isEditingTodo;
+    toggleIsEditingList: (state) => {
+      state.isEditingList = !state.isEditingList;
     },
     closeModal: (state) => {
       state.isCreatingProject = false;
       state.isEditingProject = false;
-      state.isCreatingTodo = false;
-      state.isEditingTodo = false;
+      state.isCreatingList = false;
+      state.isEditingList = false;
       state.isProfileOpen = false;
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
@@ -56,6 +58,7 @@ export const layoutSlice = createSlice({
     toggleIsProfileOpen: (state) => {
       state.isProfileOpen = !state.isProfileOpen;
     },
+    setPage: (state, action: PayloadAction<string>) => {},
   },
 });
 
@@ -63,11 +66,11 @@ export const {
   toggleSidebar,
   toggleIsCreatingProject,
   toggleIsEditingProject,
-  toggleIsCreatingTodo,
+  toggleIsCreatingList,
   closeModal,
   setIsLoading,
   toggleIsProfileOpen,
-  toggleIsEditingTodo,
+  toggleIsEditingList,
 } = layoutSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -77,10 +80,10 @@ export const selectIsCreatingProject = (state: RootState) =>
   state.layout.isCreatingProject;
 export const selectIsEditingProject = (state: RootState) =>
   state.layout.isEditingProject;
-export const selectIsCreatingTodo = (state: RootState) =>
-  state.layout.isCreatingTodo;
-export const selectIsEditingTodo = (state: RootState) =>
-  state.layout.isEditingTodo;
+export const selectIsCreatingList = (state: RootState) =>
+  state.layout.isCreatingList;
+export const selectIsEditingList = (state: RootState) =>
+  state.layout.isEditingList;
 export const selectIsLoading = (state: RootState) => state.layout.isLoading;
 export const selectIsProfileOpen = (state: RootState) =>
   state.layout.isProfileOpen;

@@ -5,16 +5,16 @@ import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
 import Image from 'next/image';
 import { selectProjectSelected } from 'store/slices/trackerSlice';
 import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
-import { selectTodoSelected } from 'store/slices/todosSlice';
+import { selectListSelected } from 'store/slices/listsSlice';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const sidebarState = useSelector(selectSidebarState);
   const projectSelected = useSelector(selectProjectSelected);
-  const todoSelected = useSelector(selectTodoSelected);
+  const listSelected = useSelector(selectListSelected);
   const selected = router.pathname.includes('tasks')
-    ? `Task List: ${todoSelected?.list_name}`
+    ? `Task List: ${listSelected?.list_name}`
     : `Tracker: ${projectSelected?.project_name}`;
 
   const handleToggleSidebar = () => {

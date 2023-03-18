@@ -1,7 +1,7 @@
 import TasksLayout from '@/components/Layout/TasksLayout';
 
-const TodoPage = () => {
+const ListPage = () => {
   return <TasksLayout>{}</TasksLayout>;
 };
 
-export default TodoPage;
+export default ListPage;

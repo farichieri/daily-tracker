@@ -3,7 +3,7 @@ import { TaskGroup } from '@/global/types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import { selectTodo } from 'store/slices/todosSlice';
+import { selectList } from 'store/slices/listsSlice';
 import { selectLabels } from 'store/slices/labelsSlice';
 
 const Tasks = ({
@@ -17,7 +17,7 @@ const Tasks = ({
 }) => {
   const router = useRouter();
   const { listID } = router.query;
-  const { tasks } = useSelector(selectTodo);
+  const { tasks } = useSelector(selectList);
   const { labels } = useSelector(selectLabels);
 
   const getLabelsByTask = (taskID: string) => {
@@ -56,8 +56,21 @@ const Tasks = ({
                     height={24}
                   />
                 </div>
-                <div className={`name ${tasksState[task].done ? 'done' : ''}`}>
-                  {tasksState[task].content}
+                <div className='name-labels'>
+                  <div
+                    className={`name ${tasksState[task].done ? 'done' : ''}`}
+                  >
+                    {tasksState[task].content}
+                  </div>
+                  <div className='labels'>
+                    {getLabelsByTask(task)?.map((label) => (
+                      <div
+                        key={label.label_id}
+                        className='label'
+                        style={{ background: `${label.label_color}` }}
+                      ></div>
+                    ))}
+                  </div>
                 </div>
                 {tasksState[task].done && (
                   <div className='delete'>
@@ -71,14 +84,6 @@ const Tasks = ({
                     />
                   </div>
                 )}
-                <div className='labels'>
-                  {getLabelsByTask(task)?.map((label) => (
-                    <div
-                      className='label'
-                      style={{ background: `${label.label_color}` }}
-                    ></div>
-                  ))}
-                </div>
               </div>
             </div>
           </Link>
@@ -118,6 +123,12 @@ const Tasks = ({
         .checkbox,
         .delete {
           pointer-events: initial;
+        }
+        .name-labels {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
         }
         .labels {
           display: flex;

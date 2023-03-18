@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PremiumNav from '../Nav/PremiumNav';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTheme, setTheme } from 'store/slices/themeSlice';
+import { setTheme } from 'store/slices/themeSlice';
 import PremiumSidebar from '../Nav/PremiumSidebar';
 import {
   selectSidebarState,
@@ -10,24 +10,17 @@ import {
 } from 'store/slices/layoutSlice';
 import { selectUser } from 'store/slices/authSlice';
 import {
-  selectProjects,
-  selectProjectSelected,
   selectToday,
   setDaySelected,
   setIsLoadingData,
   setProjects,
 } from 'store/slices/trackerSlice';
-import {
-  selectTodos,
-  selectTodoSelected,
-  setTasks,
-  setTodos,
-} from 'store/slices/todosSlice';
-import { getProjects, getTodos } from '@/hooks/firebase';
+import { setTasks, setLists } from 'store/slices/listsSlice';
+import { getProjects, getLists, getLabels, getTasks } from '@/hooks/firebase';
 import { LabelGroup, TaskGroup, ListGroup } from '@/global/types';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '@/utils/firebase.config';
 import { setLabels } from 'store/slices/labelsSlice';
+import { selectGlobalState, setIsDataFetched } from 'store/slices/globalSlice';
+import Loader from './Loader/Loader';
 
 export default function PremiumLayout({
   children,
@@ -38,108 +31,59 @@ export default function PremiumLayout({
 }) {
   const padding = withPadding ? 1.5 : 0;
   const dispatch = useDispatch();
-  const theme = useSelector(selectTheme);
   const sidebarOpen = useSelector(selectSidebarState);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
-
-  useEffect(() => {
-    let localTheme = window.localStorage.getItem('theme');
-    if (!localTheme) {
-      window.localStorage.setItem('theme', 'dark');
-    }
-    dispatch(setTheme(String(localTheme)));
-  }, [theme]);
-
+  const today = useSelector(selectToday);
+  const { isDataFetched } = useSelector(selectGlobalState);
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
 
-  const projectSelected = useSelector(selectProjectSelected);
-  const todoSelected = useSelector(selectTodoSelected);
-  const projects = useSelector(selectProjects);
-  const lists = useSelector(selectTodos);
-  const today = useSelector(selectToday);
-
-  useEffect(() => {
-    const getProjectsData = async () => {
-      if (!user) return;
-      dispatch(setIsLoadingData(true));
-      const projects = await getProjects(user);
-      if (projects.length < 1) {
-        dispatch(toggleIsCreatingProject());
-        dispatch(setIsLoadingData(false));
-      }
-      dispatch(setProjects(projects));
-    };
-    if (projects.length < 1 && user) {
-      getProjectsData();
+  const fetchAllData = async () => {
+    let localTheme = window.localStorage.getItem('theme');
+    if (!localTheme) {
+      window.localStorage.setItem('theme', 'dark');
     }
-  }, [projectSelected, user]);
-
-  useEffect(() => {
-    const getTodosData = async () => {
-      if (!user) return;
-      const lists: ListGroup = await getTodos(user);
-      dispatch(setTodos(lists));
-    };
-    if (Object.keys(lists).length < 1 && user) {
-      getTodosData();
-    }
-  }, [todoSelected, user]);
-
-  useEffect(() => {
-    dispatch(setDaySelected(today));
-  }, [today]);
-
-  const getLabels = async () => {
-    if (user) {
-      console.log('Fetching Labels');
-      let data: LabelGroup = {};
-      const docRef = collection(db, 'users', user.uid, 'labels');
-      const querySnapshot = await getDocs(docRef);
-      querySnapshot.forEach((label: any) => {
-        data[label.id] = label.data();
-      });
-      dispatch(setLabels(data));
-    }
-  };
-
-  useEffect(() => {
-    getLabels();
-  }, [user]);
-
-  const getTasks = async () => {
-    // lists should exist.
     if (!user) return;
-    if (user && Object.keys(lists).length > 0) {
-      let data: TaskGroup = {};
-      console.log('Fetching List Data');
-      const docRef = collection(db, 'users', user.uid, 'tasks');
-      const querySnapshot = await getDocs(docRef);
-      querySnapshot.forEach((todo: any) => {
-        data[todo.id] = todo.data();
-      });
-      dispatch(setTasks(data));
+    const labelsData: LabelGroup = await getLabels(user);
+    const listsData: ListGroup = await getLists(user);
+    const tasksData: TaskGroup = await getTasks(user);
+    const projects = await getProjects(user);
+    if (projects.length < 1) {
+      dispatch(toggleIsCreatingProject());
+      dispatch(setIsLoadingData(false));
     }
+    dispatch(setDaySelected(today));
+    dispatch(setTheme(String(localTheme)));
+    dispatch(setLabels(labelsData));
+    dispatch(setLists(listsData));
+    dispatch(setTasks(tasksData));
+    dispatch(setProjects(projects));
+    dispatch(setIsDataFetched(true));
   };
 
   useEffect(() => {
-    if (user) {
-      console.log('tasksLayoutUeffect');
-      getTasks();
+    if (!isDataFetched) {
+      fetchAllData();
     }
-  }, [user, lists]);
+  }, [user]);
 
   return (
     <section>
-      {user && userSettings.display_name && !isVerifyingUser && (
-        <>
-          <PremiumNav />
-          <PremiumSidebar />
-          {sidebarOpen && (
-            <span className='modal' onClick={handleToggleSidebar}></span>
-          )}
-        </>
+      {isDataFetched === false ? (
+        <Loader text='asd' fullScreen={true} />
+      ) : (
+        user &&
+        userSettings.display_name &&
+        !isVerifyingUser && (
+          <>
+            <PremiumNav />
+            <PremiumSidebar />
+            {sidebarOpen && (
+              <span className='modal' onClick={handleToggleSidebar}></span>
+            )}
+          </>
+        )
       )}
       <div className='container'>{children}</div>
       <style jsx>

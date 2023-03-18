@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
 import { useRouter } from 'next/router';
-import { selectTodo, setUpdateTask } from 'store/slices/todosSlice';
+import { selectList, setUpdateTask } from 'store/slices/listsSlice';
 import IconButton from '@/components/Layout/Icon/IconButton';
 import { selectUser } from 'store/slices/authSlice';
 import { doc, setDoc } from 'firebase/firestore';
@@ -18,7 +18,7 @@ const AssignLabel = ({
   const dispatch = useDispatch();
   const { taskID } = router.query;
   const { labels } = useSelector(selectLabels);
-  const { tasks } = useSelector(selectTodo);
+  const { tasks } = useSelector(selectList);
   const { user } = useSelector(selectUser);
   const task = { ...tasks[String(taskID)] };
   const [labelsState, setLabelsState] = useState(labels);

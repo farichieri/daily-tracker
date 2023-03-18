@@ -3,19 +3,19 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 // Define a type for the slice state
-interface TodosSlice {
+interface ListSlice {
   tasks: TaskGroup;
   lists: ListGroup;
-  todoSelected: List;
-  todoEdit: List;
+  listSelected: List;
+  listEdit: List;
   isLoadingData: boolean;
 }
 
 // Define the initial state using that type
-const initialState: TodosSlice = {
+const initialState: ListSlice = {
   tasks: {},
   lists: {},
-  todoSelected: {
+  listSelected: {
     is_archived: false,
     is_default: false,
     is_favorite: false,
@@ -25,7 +25,7 @@ const initialState: TodosSlice = {
     list_name: '',
     members: [],
   },
-  todoEdit: {
+  listEdit: {
     is_archived: false,
     is_default: false,
     is_favorite: false,
@@ -38,16 +38,13 @@ const initialState: TodosSlice = {
   isLoadingData: false,
 };
 
-export const todosSlice = createSlice({
-  name: 'todo',
+export const listsSlice = createSlice({
+  name: 'list',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setTodos: (state, action: PayloadAction<ListGroup>) => {
+    setLists: (state, action: PayloadAction<ListGroup>) => {
       state.lists = { ...state.lists, ...action.payload };
-      // state.todoSelected =
-      //   action.payload.find((todo) => todo.is_default === true) ||
-      //   action.payload[0];
     },
     setTasks: (state, action: PayloadAction<TaskGroup>) => {
       state.tasks = action.payload;
@@ -68,11 +65,11 @@ export const todosSlice = createSlice({
     setDeleteTask: (state, action: PayloadAction<string>) => {
       delete state.tasks[action.payload];
     },
-    setTodoSelected: (state, action: PayloadAction<List>) => {
-      state.todoSelected = action.payload;
+    setListSelected: (state, action: PayloadAction<List>) => {
+      state.listSelected = action.payload;
     },
-    setTodoEdit: (state, action: PayloadAction<string>) => {
-      state.todoEdit = state.lists[action.payload];
+    setListEdit: (state, action: PayloadAction<string>) => {
+      state.listEdit = state.lists[action.payload];
     },
     setIsLoadingData: (state, action: PayloadAction<boolean>) => {
       state.isLoadingData = action.payload;
@@ -82,21 +79,20 @@ export const todosSlice = createSlice({
 
 export const {
   setTasks,
-  setTodoSelected,
-  setTodos,
-  setTodoEdit,
+  setListSelected,
+  setLists,
+  setListEdit,
   setIsLoadingData,
   setAddNewTask,
   setUpdateTask,
   setDeleteTask,
-} = todosSlice.actions;
-
+} = listsSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
-export const selectTodo = (state: RootState) => state.todo;
-export const selectTodos = (state: RootState) => state.todo.lists;
-export const selectTodoSelected = (state: RootState) => state.todo.todoSelected;
-export const selectTodoEdit = (state: RootState) => state.todo.todoEdit;
+export const selectList = (state: RootState) => state.list;
+export const selectLists = (state: RootState) => state.list.lists;
+export const selectListSelected = (state: RootState) => state.list.listSelected;
+export const selectListEdit = (state: RootState) => state.list.listEdit;
 export const selectIsLoadingData = (state: RootState) =>
-  state.todo.isLoadingData;
+  state.list.isLoadingData;
 
-export default todosSlice.reducer;
+export default listsSlice.reducer;
