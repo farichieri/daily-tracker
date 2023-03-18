@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Footer from '../Footer/Footer';
+import Footer from '../LandingPage/Footer/Footer';
 import Nav from '../Nav/Nav';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTheme, setTheme } from 'store/slices/themeSlice';

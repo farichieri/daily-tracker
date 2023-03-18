@@ -1,6 +1,6 @@
-import Filter from '@/components/Filter/Filter';
+import Filter from '@/components/LandingPage/Filter/Filter';
 import MainLayout from '@/components/Layout/MainLayout';
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/LandingPage/Pagination/Pagination';
 import Posts from '@/components/Posts/Posts';
 import { getSortedPostData } from '@/utils/posts';
 import { useState } from 'react';

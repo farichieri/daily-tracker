@@ -1,5 +1,5 @@
 import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/LandingPage/Pagination/Pagination';
 import PostsAuthor from '@/components/Posts/PostsAuthor';
 import { authors } from '@/utils/authors';
 import { getSortedPostData } from '@/utils/posts';

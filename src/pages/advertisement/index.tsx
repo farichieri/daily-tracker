@@ -1,4 +1,4 @@
-import Form from '@/components/Form/Form';
+import Form from '@/components/LandingPage/Form/Form';
 import MainLayout from '@/components/Layout/MainLayout';
 
 const index = () => {

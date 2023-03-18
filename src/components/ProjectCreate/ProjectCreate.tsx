@@ -1,7 +1,7 @@
 import { Project } from '@/global/types';
 import { getProjects } from '@/hooks/firebase';
 import { db } from '@/utils/firebase.config';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
@@ -34,34 +34,14 @@ const ProjectCreate = ({
     });
   };
 
-  const handleAddTracker = async () => {
+  const handleAddProject = async () => {
     if (user) {
-      const docRef = collection(db, 'users', user.uid, 'projects');
-      await addDoc(docRef, {
-        is_archived: false,
-        is_default: false,
-        is_favorite: false,
-        is_private: false,
-        labels: [],
-        project_id: '',
-        project_name: projectInput.project_name,
-        members: [],
-      });
+      const docRef = doc(collection(db, 'users', user.uid, 'projects'));
+      projectInput.project_id = docRef.id;
+      await setDoc(docRef, projectInput);
+      // Fix to Redux.
       const projects = await getProjects(user);
       dispatch(setProjects(projects));
-      const newProjectSelected = projects.find(
-        (p) => p.project_name === projectInput.project_name
-      ) || {
-        is_archived: false,
-        is_default: false,
-        is_favorite: false,
-        is_private: false,
-        labels: [],
-        project_id: '',
-        project_name: '',
-        members: [],
-      };
-      dispatch(setProjectSelected(newProjectSelected));
       closeModalOnClick();
     }
   };
@@ -88,7 +68,7 @@ const ProjectCreate = ({
               style={null}
             />
             <Button
-              onClick={handleAddTracker}
+              onClick={handleAddProject}
               content='Acept'
               isLoading={false}
               isDisabled={false}

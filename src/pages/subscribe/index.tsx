@@ -1,5 +1,5 @@
 import MainLayout from '@/components/Layout/MainLayout';
-import SubscribeInvitation from '@/components/SubscribeInvitation/SubscribeInvitation';
+import SubscribeInvitation from '@/components/LandingPage/SubscribeInvitation/SubscribeInvitation';
 import Link from 'next/link';
 
 const index = () => {

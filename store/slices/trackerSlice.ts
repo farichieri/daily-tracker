@@ -20,9 +20,9 @@ interface TrackerSlice {
 // Define the initial state using that type
 const initialState: TrackerSlice = {
   dayData: {
-    date: '',
-    objetives: [],
-    tasks: [],
+    day_date: '',
+    day_goals: [],
+    day_tasks: {},
   },
   daySelected: '',
   weekSelected: [],
@@ -101,6 +101,7 @@ export const {
 } = trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
+export const selectTrackerSlice = (state: RootState) => state.tracker;
 export const selectDayData = (state: RootState) => state.tracker.dayData;
 export const selectDaySelected = (state: RootState) =>
   state.tracker.daySelected;

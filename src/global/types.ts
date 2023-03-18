@@ -1,8 +1,29 @@
 export interface DayData {
-  date: string;
-  objetives: string[];
-  tasks: Task[];
+  day_date: string;
+  day_goals: string[];
+  day_tasks: DayTasksGroup;
 }
+
+export interface DayTasksGroup {
+  [id: string]: Task;
+}
+export interface DayGoalsGroup {
+  [id: string]: Task;
+}
+
+export interface UserDoc {
+  display_name: string;
+  email: string;
+  is_premium: boolean;
+  photo: string;
+  plan_name: string;
+  user_id: string;
+}
+
+// The idea is:
+// If a Task has a date_set, it will be rendered in the tracker.
+// And if a day_task has labels, it will be rendered in the labels
+// And if a day_task has a project_id, it will be rendered in the list of tasks.
 
 export interface Task {
   activity: Array<string>;
@@ -58,6 +79,16 @@ export interface UserSettings {
   plan_name: string;
 }
 
+export interface Tracker {
+  user_id: string;
+  tracker_name: string;
+  is_private: boolean;
+  is_archived: boolean;
+  is_favorite: boolean;
+  tracker_id: string;
+  members: Array<string>;
+}
+
 export interface Project {
   is_archived: boolean;
   is_default: boolean;
@@ -78,7 +109,6 @@ export interface List {
   members: Array<string>;
   labels: string[];
 }
-
 export interface ListGroup {
   [id: string]: List;
 }

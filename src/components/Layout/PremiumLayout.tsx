@@ -21,6 +21,7 @@ import { LabelGroup, TaskGroup, ListGroup } from '@/global/types';
 import { setLabels } from 'store/slices/labelsSlice';
 import { selectGlobalState, setIsDataFetched } from 'store/slices/globalSlice';
 import Loader from './Loader/Loader';
+import { useRouter } from 'next/router';
 
 export default function PremiumLayout({
   children,
@@ -30,6 +31,7 @@ export default function PremiumLayout({
   withPadding: boolean;
 }) {
   const padding = withPadding ? 1.5 : 0;
+  const router = useRouter();
   const dispatch = useDispatch();
   const sidebarOpen = useSelector(selectSidebarState);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
@@ -68,10 +70,16 @@ export default function PremiumLayout({
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!user && !isVerifyingUser) {
+      router.push('/user');
+    }
+  }, [user, isVerifyingUser]);
+
   return (
     <section>
       {isDataFetched === false ? (
-        <Loader text='asd' fullScreen={true} />
+        <Loader text='' fullScreen={true} />
       ) : (
         user &&
         userSettings.display_name &&

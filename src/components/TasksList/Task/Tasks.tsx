@@ -23,7 +23,7 @@ const Tasks = ({
   const getLabelsByTask = (taskID: string) => {
     const task = { ...tasks[String(taskID)] };
     const labelsSelected = task.labels;
-    const labelsFiltered = labelsSelected.map((label) => labels[label]);
+    const labelsFiltered = labelsSelected?.map((label) => labels[label]);
     return labelsFiltered;
   };
 

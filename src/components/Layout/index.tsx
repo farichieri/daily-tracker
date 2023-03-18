@@ -11,6 +11,7 @@ import {
   verifyUser,
   userVerified,
   setUserSettings,
+  selectUser,
 } from 'store/slices/authSlice';
 import { selectTheme } from 'store/slices/themeSlice';
 import { useSelector } from 'react-redux';

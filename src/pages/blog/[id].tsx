@@ -1,9 +1,9 @@
-import AD from '@/components/AD/AD';
+import AD from '@/components/LandingPage/AD/AD';
 import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
 import AuthorName from '@/components/Layout/AuthorName/AuthorName';
-import NewsLetterInvitation from '@/components/NewsLetterInvitation/NewsLetterInvitation';
+import NewsLetterInvitation from '@/components/LandingPage/NewsLetterInvitation/NewsLetterInvitation';
 import Posts from '@/components/Posts/Posts';
-import SubscribeInvitation from '@/components/SubscribeInvitation/SubscribeInvitation';
+import SubscribeInvitation from '@/components/LandingPage/SubscribeInvitation/SubscribeInvitation';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

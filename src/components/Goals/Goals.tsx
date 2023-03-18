@@ -1,33 +1,52 @@
-import { types } from '@/utils/types';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectTrackerSlice } from 'store/slices/trackerSlice';
 import IconButton from '../Layout/Icon/IconButton';
 
-const Objetives = ({
-  handleChange,
-  handleAdd,
-  handleRemove,
-  objetive,
-  objetives,
-}: {
-  handleChange: any;
-  handleAdd: any;
-  handleRemove: any;
-  objetive: string;
-  objetives: string[];
-}) => {
-  // -Repetition of affirmation of orders to your subconscious mind is the only known method of voluntary developtment of the emotions of faith.
-  // -Any impulse of thought which is repeatedly passed on to the subconscious mind is, finally accepted and acted upon by the subsconscious mind, which proceeds to translate that impulse into its physical equivalent, by the most practical procedure available.
+const Goals = () => {
+  const { dayData } = useSelector(selectTrackerSlice);
+  const { day_goals } = dayData;
+  const [goals, setGoals] = useState<string[]>([]);
+  const [newGoal, setnewGoal] = useState('');
+
+  console.log({ newGoal });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const value = (e.target as HTMLButtonElement).value;
+    const id: number = Number((e.target as HTMLButtonElement).id || -1);
+    if (goals.indexOf(goals[id]) > -1) {
+      const newObjetives = [...goals];
+      newObjetives[id] = value;
+      setGoals(newObjetives);
+    } else {
+      setnewGoal(value);
+    }
+  };
+
+  const handleAdd = async (e: any) => {
+    e.preventDefault();
+    if (newGoal) {
+      setGoals([...goals, newGoal]);
+      setnewGoal('');
+    }
+  };
+
+  const handleRemove = (e: any) => {
+    e.preventDefault();
+    const newObjetives = goals.slice();
+    newObjetives.splice(e.target.value, 1);
+    setGoals(newObjetives);
+  };
+
   return (
     <section>
       <div className='objetives-container'>
-        {objetives?.map((obj, i) => (
+        {day_goals?.map((obj, i) => (
           <div className='objetive-container' key={i}>
-            <Objetive
-              value={obj}
-              handleChange={(e: string) => handleChange(e, types.objetives)}
-              id={i}
-            />
+            <Goal value={obj} handleChange={handleChange} id={i} />
             <IconButton
-              onClick={(e) => handleRemove(e, types.objetives)}
+              onClick={(e) => handleRemove(e)}
               props={{ value: i }}
               src={'/icons/delete.png'}
               alt='Delete-Icon'
@@ -36,15 +55,11 @@ const Objetives = ({
             />
           </div>
         ))}
-        <form onSubmit={(e) => handleAdd(e, types.objetives)}>
-          <Objetive
-            handleChange={(e: string) => handleChange(e, types.objetives)}
-            value={objetive}
-            id={null}
-          />
+        <form onSubmit={(e) => handleAdd(e)}>
+          <Goal handleChange={handleChange} value={newGoal} id={null} />
           <IconButton
             props={null}
-            onClick={(e) => handleAdd(e, types.objetives)}
+            onClick={(e) => handleAdd(e)}
             src={'/icons/add.png'}
             alt='Add-Icon'
             width={24}
@@ -90,9 +105,9 @@ const Objetives = ({
   );
 };
 
-export default Objetives;
+export default Goals;
 
-const Objetive = ({
+const Goal = ({
   handleChange,
   value,
   id,

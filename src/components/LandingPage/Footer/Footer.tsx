@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { learn_pages, more_pages, pages } from '../../utils/pages';
+import { learn_pages, more_pages, pages } from '../../../utils/pages';
 
 const ExternalLink = ({
   href,

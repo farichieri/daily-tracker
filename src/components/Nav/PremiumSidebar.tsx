@@ -61,35 +61,27 @@ const PremiumSidebar = () => {
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className='tracks' onClick={(e) => e.stopPropagation()}>
           <div className='title'>
-            <span>My Trackers</span>
-            <ButtonAction text={'+'} onClick={() => setCreateProject(true)} />
-          </div>
-          {filterProjects(projects).map((project) => (
-            <div key={project.project_id} className='project-container'>
-              <Link href={`/app/tracker/${project.project_id}`}>
-                <span
-                  className={`project ${
-                    project.project_id === id ? 'selected' : ''
-                  }`}
-                >
-                  {project.project_name}
-                </span>
-              </Link>
+            <Link href={'/app'}>
               <span
-                className='edit'
-                id={project.project_id}
-                onClick={handleEditProject}
+                className={`tracker ${pathname === '/app' ? 'selected' : ''}`}
               >
-                <Image
-                  alt='edit-icon'
-                  src={'/icons/edit.png'}
-                  width={14}
-                  height={14}
-                  style={{ pointerEvents: 'none' }}
-                />
+                My Tracker
               </span>
-            </div>
-          ))}
+            </Link>
+          </div>
+        </div>
+        <div className='labels'>
+          <div className='title'>
+            <Link href={'/app/labels'}>
+              <span
+                className={`labels ${
+                  pathname === '/app/labels' ? 'selected' : ''
+                }`}
+              >
+                Labels
+              </span>
+            </Link>
+          </div>
         </div>
         <div className='to-do'>
           <div className='title'>
@@ -120,18 +112,38 @@ const PremiumSidebar = () => {
               )
           )}
         </div>
-        <div className='labels'>
+
+        <div className='projects'>
           <div className='title'>
-            <Link href={'/app/labels'}>
-              <span
-                className={`project ${
-                  pathname === '/app/labels' ? 'selected' : ''
-                }`}
-              >
-                Labels
-              </span>
-            </Link>
+            <span>My Projects</span>
+            <ButtonAction text={'+'} onClick={() => setCreateProject(true)} />
           </div>
+          {filterProjects(projects).map((project) => (
+            <div key={project.project_id} className='project-container'>
+              <Link href={`/app/tracker/${project.project_id}`}>
+                <span
+                  className={`project ${
+                    project.project_id === id ? 'selected' : ''
+                  }`}
+                >
+                  {project.project_name}
+                </span>
+              </Link>
+              <span
+                className='edit'
+                id={project.project_id}
+                onClick={handleEditProject}
+              >
+                <Image
+                  alt='edit-icon'
+                  src={'/icons/edit.png'}
+                  width={14}
+                  height={14}
+                  style={{ pointerEvents: 'none' }}
+                />
+              </span>
+            </div>
+          ))}
         </div>
         <div className='avatar'>
           <Avatar size={65} changeable={false} />
@@ -159,6 +171,7 @@ const PremiumSidebar = () => {
           padding-top: var(--premium-nav-height);
           overflow: auto;
           height: 100%;
+          gap: 1.5rem;
         }
         .project-container {
           display: flex;
@@ -171,6 +184,7 @@ const PremiumSidebar = () => {
           transition: 0.3s;
           width: 100%;
           display: flex;
+          padding-left: 0.5rem;
         }
         .project:hover {
           opacity: 1;
@@ -179,6 +193,7 @@ const PremiumSidebar = () => {
           left: 0;
           transition: all 0.3s;
         }
+        .projects,
         .tracks,
         .to-do,
         .labels {
@@ -187,7 +202,6 @@ const PremiumSidebar = () => {
           gap: 1rem;
           align-items: start;
           width: 100%;
-          padding: 1rem 0;
         }
         .title {
           display: flex;
@@ -202,6 +216,9 @@ const PremiumSidebar = () => {
         .selected {
           opacity: 1;
           color: var(--text-color);
+        }
+        .tracker {
+          padding-top: 1rem;
         }
 
         .edit {

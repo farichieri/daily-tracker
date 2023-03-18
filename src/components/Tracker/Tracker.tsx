@@ -1,7 +1,7 @@
 import Selector from './Selector';
 import Day from './Day';
 import { useEffect, useState } from 'react';
-import Objetives from '../Goals/Goals';
+import Goals from '../Goals/Goals';
 import Button from '../Layout/Button/Button';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
@@ -29,8 +29,8 @@ const Tracker = ({ userID }: { userID: string }) => {
   const projectSelected = useSelector(selectProjectSelected);
   const today = useSelector(selectToday);
   const [isSaving, setIsSaving] = useState(false);
-  const [objetives, setObjetives] = useState<string[]>([]);
-  const [objetive, setObjetive] = useState<string>('');
+  const [goals, setGoals] = useState<string[]>([]);
+  const [goal, setGoal] = useState<string>('');
   const [tasks, setTasks] = useState<Task[]>([]);
   const [task, setTask] = useState<Task>({
     date_set: '',
@@ -64,10 +64,12 @@ const Tracker = ({ userID }: { userID: string }) => {
 
   useEffect(() => {
     const setData = () => {
-      const objetives = dayData?.objetives || [];
-      const tasks = dayData?.tasks || [];
+      const goals: any = [];
+      const tasks: any = [];
+      // const goals = dayData?.goals || [];
+      // const tasks = dayData?.tasks || [];
       setTasks(tasks);
-      setObjetives(objetives);
+      setGoals(goals);
     };
     setData();
   }, [dayData, daySelected]);
@@ -81,12 +83,12 @@ const Tracker = ({ userID }: { userID: string }) => {
     const name: string = String((e.target as HTMLButtonElement).name);
     if (type === types.objetives) {
       const id: number = Number((e.target as HTMLButtonElement).id || -1);
-      if (objetives.indexOf(objetives[id]) > -1) {
-        const newObjetives = [...objetives];
+      if (goals.indexOf(goals[id]) > -1) {
+        const newObjetives = [...goals];
         newObjetives[id] = value;
-        setObjetives(newObjetives);
+        setGoals(newObjetives);
       } else {
-        setObjetive(value);
+        setGoal(value);
       }
     }
     if (type === types.tasks) {
@@ -107,9 +109,9 @@ const Tracker = ({ userID }: { userID: string }) => {
   const handleAdd = async (e: any, type: string) => {
     e.preventDefault();
     if (type === types.objetives) {
-      if (objetive) {
-        setObjetives([...objetives, objetive]);
-        setObjetive('');
+      if (goal) {
+        setGoals([...goals, goal]);
+        setGoal('');
       }
     }
     if (type === types.tasks) {
@@ -147,9 +149,9 @@ const Tracker = ({ userID }: { userID: string }) => {
   const handleRemove = (e: any, type: string) => {
     e.preventDefault();
     if (type === types.objetives) {
-      const newObjetives = objetives.slice();
+      const newObjetives = goals.slice();
       newObjetives.splice(e.target.value, 1);
-      setObjetives(newObjetives);
+      setGoals(newObjetives);
     }
     if (type === types.tasks) {
       const newTasks = tasks.slice();
@@ -178,7 +180,7 @@ const Tracker = ({ userID }: { userID: string }) => {
     const docRef = doc(db, 'users', userID, 'projects', project, 'dates', date);
     await setDoc(docRef, {
       date: date,
-      objetives: objetives,
+      objetives: goals,
       tasks: tasks,
     });
     setIsSaving(false);
@@ -267,15 +269,7 @@ const Tracker = ({ userID }: { userID: string }) => {
           delay={400}
         />
       </div>
-      {showObjetives && (
-        <Objetives
-          handleChange={handleChange}
-          handleAdd={handleAdd}
-          handleRemove={handleRemove}
-          objetives={objetives}
-          objetive={objetive}
-        />
-      )}
+      {showObjetives && <Goals />}
       <style jsx>{`
         section {
           padding: 1rem;

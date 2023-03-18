@@ -1,4 +1,4 @@
-import EmailInput from '@/components/EmailInput/EmailInput';
+import EmailInput from '@/components/LandingPage/EmailInput/EmailInput';
 import MainLayout from '@/components/Layout/MainLayout';
 import Image from 'next/image';
 

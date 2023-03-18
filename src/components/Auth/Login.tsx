@@ -8,10 +8,10 @@ import {
 } from 'firebase/auth';
 import Button from '../Layout/Button/Button';
 import { useRouter } from 'next/router';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import { setIsLoading } from 'store/slices/layoutSlice';
 import GoogleLoginButton from '../Layout/GoogleLoginButton/GoogleLoginButton';
+import { setNewUserData } from './newUserData';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -36,20 +36,7 @@ const Login = () => {
         // IdP data available using getAdditionalUserInfo(result)
         const additinalInfo = getAdditionalUserInfo(result);
         if (additinalInfo?.isNewUser) {
-          await setDoc(doc(db, 'users', user.uid), {
-            email: user.email,
-            display_name: user.displayName,
-            photo: '',
-            plan_name: 'free',
-            is_premium: false,
-          });
-          const docRef = collection(db, 'users', user.uid, 'projects');
-          await addDoc(docRef, {
-            projectName: 'Personal',
-            isDefault: false,
-            isFavorite: false,
-            isArchivated: false,
-          });
+          await setNewUserData(user);
           router.push('/app');
         } else {
           router.push('/app');

@@ -1,6 +1,6 @@
-import EmailInput from '@/components/EmailInput/EmailInput';
+import EmailInput from '@/components/LandingPage/EmailInput/EmailInput';
 import MainLayout from '@/components/Layout/MainLayout';
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/LandingPage/Pagination/Pagination';
 import Posts from '@/components/Posts/Posts';
 import { getSortedPostData } from '@/utils/posts';
 import { useState } from 'react';

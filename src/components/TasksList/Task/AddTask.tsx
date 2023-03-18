@@ -52,7 +52,7 @@ const AddTask = () => {
   };
 
   return (
-    <form className='new-list' onSubmit={handleAdd}>
+    <form className='new-task' onSubmit={handleAdd}>
       <div className='name'>
         <input
           type='text'
@@ -72,7 +72,7 @@ const AddTask = () => {
         />
       </div>
       <style jsx>{`
-        .new-list {
+        .new-task {
           border: 1px solid gray;
           border-radius: 6px;
           width: 100%;
