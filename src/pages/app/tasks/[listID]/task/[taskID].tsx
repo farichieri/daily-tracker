@@ -88,15 +88,7 @@ const TaskID = () => {
     if (JSON.stringify(task) !== JSON.stringify(taskState)) {
       if (!user) return;
       console.log('Saving taskID');
-      const docRef = doc(
-        db,
-        'users',
-        user.uid,
-        'todos',
-        String(listID),
-        'tasks',
-        String(taskID)
-      );
+      const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
       await setDoc(docRef, taskState);
       dispatch(setUpdateTask(taskState));
     }

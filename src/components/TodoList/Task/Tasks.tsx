@@ -15,7 +15,6 @@ const Tasks = ({
 }) => {
   const router = useRouter();
   const { listID } = router.query;
-  console.log({ tasks });
   const sortData = (tasks: TaskGroup) => {
     // const arrayForSort = [...tasks];
     // const sorted = arrayForSort.sort((a, b) => Number(a.done) - Number(b.done));

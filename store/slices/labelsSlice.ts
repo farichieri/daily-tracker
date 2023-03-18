@@ -8,9 +8,7 @@ interface LabelsSlice {
 }
 
 // Define the initial state using that type
-const initialState: LabelsSlice = {
-  labels: {},
-};
+const initialState: LabelGroup = {};
 
 export const labelsSlice = createSlice({
   name: 'label',
@@ -18,22 +16,22 @@ export const labelsSlice = createSlice({
   initialState,
   reducers: {
     setLabels: (state, action: PayloadAction<LabelGroup>) => {
-      state.labels = action.payload;
+      return action.payload;
     },
     setAddNewLabel: (state, action: PayloadAction<Label>) => {
-      state.labels = {
-        ...state.labels,
+      return {
+        ...state,
         [action.payload.label_id]: action.payload,
       };
     },
     setEditLabel: (state, action: PayloadAction<Label>) => {
-      state.labels = {
-        ...state.labels,
+      return {
+        ...state,
         [action.payload.label_id]: action.payload,
       };
     },
     setDeleteLabel: (state, action: PayloadAction<string>) => {
-      delete state.labels[action.payload];
+      delete state[action.payload];
     },
   },
 });
@@ -42,6 +40,6 @@ export const { setLabels, setAddNewLabel, setEditLabel, setDeleteLabel } =
   labelsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectLabels = (state: RootState) => state.labels;
+export const selectLabels = (state: RootState) => state;
 
 export default labelsSlice.reducer;

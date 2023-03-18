@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
@@ -7,6 +8,8 @@ const Labels = () => {
   const { labels } = useSelector(selectLabels);
   const [createLabel, setCreateLabel] = useState(false);
   const [labelToEdit, setLabelToEdit] = useState('');
+
+  console.log({ labelToEdit });
   const closeModalOnClick = () => {
     setCreateLabel(false);
     setLabelToEdit('');
@@ -38,12 +41,17 @@ const Labels = () => {
           Object.keys(labels).map((label) => (
             <div className='label-container' key={label}>
               <span>{labels[label].label_name}</span>
-              <button
-                onClick={() => setLabelToEdit(label)}
-                className='edit-label'
-              >
-                Edit
-              </button>
+              <div className='buttons'>
+                <Link href={`/app/labels/${label}`}>
+                  <button>Tasks</button>
+                </Link>
+                <button
+                  onClick={() => setLabelToEdit(label)}
+                  className='edit-label'
+                >
+                  Edit
+                </button>
+              </div>
             </div>
           ))}
       </div>
@@ -77,9 +85,11 @@ const Labels = () => {
           padding: 0.5rem 1rem;
           display: flex;
           justify-content: space-between;
+          pointer-events: none;
         }
         button {
           cursor: pointer;
+          pointer-events: initial;
         }
         .add-label {
           margin-left: auto;

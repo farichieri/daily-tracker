@@ -1,10 +1,14 @@
 import Modal from '@/components/Modal/Modal';
 import { Label } from '@/global/types';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
 import { useRouter } from 'next/router';
-import { selectTodo } from 'store/slices/todosSlice';
+import { selectTodo, setUpdateTask } from 'store/slices/todosSlice';
+import IconButton from '@/components/Layout/Icon/IconButton';
+import { selectUser } from 'store/slices/authSlice';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/utils/firebase.config';
 
 const AssignLabel = ({
   closeModalOnClick,
@@ -12,12 +16,35 @@ const AssignLabel = ({
   closeModalOnClick: Function;
 }) => {
   const router = useRouter();
-  const { taskID } = router.query;
+  const dispatch = useDispatch();
+  const { taskID, listID } = router.query;
   const { labels } = useSelector(selectLabels);
   const { tasks } = useSelector(selectTodo);
-  const task = tasks[String(taskID)];
+  const { user } = useSelector(selectUser);
+  const task = { ...tasks[String(taskID)] };
   const [labelsState, setLabelsState] = useState(labels);
   const [labelsSelected, setLabelsSelected] = useState<string[]>(task.labels);
+
+  const handleToggleLabel = (event: React.MouseEvent) => {
+    event.preventDefault();
+    const id = (event.target as HTMLButtonElement).id;
+    const labelExists = labelsSelected.indexOf(id) !== -1;
+    const newLabelsSelected = [...labelsSelected];
+    labelExists
+      ? newLabelsSelected.splice(labelsSelected.indexOf(id), 1)
+      : newLabelsSelected.push(id);
+    setLabelsSelected(newLabelsSelected);
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+    console.log('Saving Labels in taskID');
+    task.labels = labelsSelected;
+    const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
+    await setDoc(docRef, task);
+    dispatch(setUpdateTask(task));
+    closeModalOnClick();
+  };
 
   return (
     <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
@@ -25,18 +52,38 @@ const AssignLabel = ({
         <div className='title'>Asign Label</div>
         <div className='labels-container'>
           {Object.keys(labelsState).map((label) => (
-            <button
-              id={labelsState[label].label_id}
+            <span
+              key={label}
+              id={label}
               className='label'
               style={{ background: `${labelsState[label].label_color}` }}
+              onClick={handleToggleLabel}
             >
-              {labelsState[label].label_name}
-            </button>
+              <span>{labelsState[label].label_name}</span>
+              <span>
+                <IconButton
+                  onClick={handleToggleLabel}
+                  props={{ id: label }}
+                  src={
+                    labelsSelected.includes(label)
+                      ? '/icons/checkbox-done.png'
+                      : '/icons/checkbox.png'
+                  }
+                  alt={
+                    labelsSelected.includes(label)
+                      ? 'Done-Icon'
+                      : 'Checkbox-Icon'
+                  }
+                  width={24}
+                  height={24}
+                />
+              </span>
+            </span>
           ))}
         </div>
         <div className='action-buttons'>
-          <button>Cancel</button>
-          <button>Accept</button>
+          <button onClick={() => closeModalOnClick()}>Cancel</button>
+          <button onClick={handleSave}>Accept</button>
         </div>
       </div>
       <style jsx>{`
@@ -62,6 +109,10 @@ const AssignLabel = ({
           width: 100%;
           padding: 0.5rem;
           border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
         }
       `}</style>
     </Modal>

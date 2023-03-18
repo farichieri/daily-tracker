@@ -20,10 +20,11 @@ import {
 import {
   selectTodos,
   selectTodoSelected,
+  setTasks,
   setTodos,
 } from 'store/slices/todosSlice';
 import { getProjects, getTodos } from '@/hooks/firebase';
-import { LabelGroup, TodoGroup } from '@/global/types';
+import { LabelGroup, TaskGroup, TodoGroup } from '@/global/types';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { setLabels } from 'store/slices/labelsSlice';
@@ -106,6 +107,29 @@ export default function PremiumLayout({
   useEffect(() => {
     getLabels();
   }, [user]);
+
+  const getTasks = async () => {
+    // todos should exist.
+    if (!user) return;
+    if (user && Object.keys(todos).length > 0) {
+      let data: TaskGroup = {};
+      console.log('Fetching Todo Data');
+      const docRef = collection(db, 'users', user.uid, 'tasks');
+      const querySnapshot = await getDocs(docRef);
+      querySnapshot.forEach((todo: any) => {
+        data[todo.id] = todo.data();
+      });
+      console.log({ data });
+      dispatch(setTasks(data));
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      console.log('tasksLayoutUeffect');
+      getTasks();
+    }
+  }, [user, todos]);
 
   return (
     <section>

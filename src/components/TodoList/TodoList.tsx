@@ -14,14 +14,17 @@ import Clock from '../Clock/Clock';
 import { useRouter } from 'next/router';
 import Tasks from './Task/Tasks';
 import AddTask from './Task/AddTask';
+import { filterObject } from '@/hooks/helpers';
 
 const TodoList = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { tasks } = useSelector(selectTodo);
-  const [tasksState, setTasksState] = useState<TaskGroup>(tasks);
-  const { user } = useSelector(selectUser);
   const { listID } = router.query;
+  const tasksByListID = filterObject(tasks, 'project_id', String(listID));
+  console.log({ tasksByListID });
+  const [tasksState, setTasksState] = useState<TaskGroup>(tasksByListID);
+  const { user } = useSelector(selectUser);
 
   const handleToggleDone = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -39,38 +42,23 @@ const TodoList = () => {
   const handleSave = async (taskID: string, task: TaskType) => {
     console.log('Saving Task');
     if (!user) return;
-    const docRef = doc(
-      db,
-      'users',
-      user.uid,
-      'todos',
-      String(listID),
-      'tasks',
-      taskID
-    );
+    const docRef = doc(db, 'users', user.uid, 'tasks', taskID);
     await setDoc(docRef, task);
     dispatch(setUpdateTask(task));
   };
+
   const handleDelete = async (event: React.MouseEvent) => {
     event.preventDefault();
     if (!user) return;
     const taskID: string = (event.target as HTMLButtonElement).id;
-    const docRef = doc(
-      db,
-      'users',
-      user.uid,
-      'todos',
-      String(listID),
-      'tasks',
-      String(taskID)
-    );
+    const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
     await deleteDoc(docRef);
     dispatch(setDeleteTask(taskID));
   };
 
   useEffect(() => {
-    setTasksState(tasks);
-  }, [tasks]);
+    setTasksState(tasksByListID);
+  }, [tasks, listID]);
 
   return (
     <div className='todo'>

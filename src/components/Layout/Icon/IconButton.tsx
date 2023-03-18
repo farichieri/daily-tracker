@@ -13,7 +13,7 @@ const IconButton = ({
   alt: string;
   width: number;
   height: number;
-  onClick: MouseEventHandler;
+  onClick: MouseEventHandler | null;
   props: any | null;
 }) => {
   return (

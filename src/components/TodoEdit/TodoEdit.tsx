@@ -5,7 +5,6 @@ import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { closeModal } from 'store/slices/layoutSlice';
 import { selectTodoEdit, setTodos } from 'store/slices/todosSlice';
 import Button from '../Layout/Button/Button';
 import IconButton from '../Layout/Icon/IconButton';
@@ -78,7 +77,7 @@ const TodoEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   return (
     <Modal closeModalOnClick={closeModalOnClick} onCloseRedirect=''>
       <div className='container'>
-        <div className='title'>Edit Project</div>
+        <div className='title'>Edit List</div>
         <div className='form'>
           <div className='content'>
             <div className='name'>

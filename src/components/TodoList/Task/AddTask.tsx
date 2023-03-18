@@ -43,9 +43,7 @@ const AddTask = () => {
         task_order: 0,
         updated_at: '',
       };
-      const newDocRef = doc(
-        collection(db, 'users', user.uid, 'todos', String(listID), 'tasks')
-      );
+      const newDocRef = doc(collection(db, 'users', user.uid, 'tasks'));
       newTask.task_id = newDocRef.id;
       await setDoc(newDocRef, newTask);
       dispatch(setAddNewTask(newTask));
@@ -85,6 +83,9 @@ const AddTask = () => {
           justify-content: space-between;
           min-height: 2.5rem;
           margin-top: auto;
+        }
+        .name {
+          width: 100%;
         }
         input {
           display: flex;
