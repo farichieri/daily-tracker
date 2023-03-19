@@ -1,19 +1,20 @@
 import { useSelector } from 'react-redux';
-import { selectDaySelected } from 'store/slices/trackerSlice';
+import { selectTrackerSlice } from 'store/slices/trackerSlice';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-const Tracker = ({
+const DaysSelector = ({
   week,
-  handleSelectDay,
-  today,
   handleDatesSelected,
 }: {
   week: any;
-  handleSelectDay: any;
-  today: string;
   handleDatesSelected: any;
 }) => {
-  const daySelected = useSelector(selectDaySelected);
+  const { today } = useSelector(selectTrackerSlice);
+  const router = useRouter();
+  const { date } = router.query;
+
   return (
     <div className='selector-container'>
       <div className='dates-and-changes'>
@@ -28,17 +29,16 @@ const Tracker = ({
         </button>
         <div className='dates-container'>
           {week.map((day: any) => (
-            <button
-              className={`date-button ${
-                day.date === daySelected ? 'selected' : ''
-              } ${day.date === today ? 'today' : ''}`}
-              key={day.date}
-              onClick={handleSelectDay}
-              id={day.date}
-            >
-              <span className='weekday'>{day.weekDay}</span>
-              <span className='date'>{day.numberOfMonth}</span>
-            </button>
+            <Link href={`/app/tracker/${day.date}`} key={day.date}>
+              <div
+                className={`date-button ${
+                  day.date === date ? 'selected' : ''
+                } ${day.date === today ? 'today' : ''}`}
+              >
+                <span className='weekday'>{day.weekDay}</span>
+                <span className='date'>{day.numberOfMonth}</span>
+              </div>
+            </Link>
           ))}
         </div>
         <button onClick={handleDatesSelected} id={'next'} className='change'>
@@ -142,4 +142,4 @@ const Tracker = ({
   );
 };
 
-export default Tracker;
+export default DaysSelector;

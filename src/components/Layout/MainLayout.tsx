@@ -17,7 +17,6 @@ export default function MainLayout({
 }) {
   const padding = withPadding ? 1.5 : 0;
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
   const { user } = useSelector(selectUser);
   const router = useRouter();
 
@@ -33,7 +32,6 @@ export default function MainLayout({
 
   return (
     <section>
-      {isLoading && <Loader fullScreen={true} text={''} />}
       <Nav />
       <div className='container'>{children}</div>
       <Footer />

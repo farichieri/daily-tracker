@@ -1,4 +1,4 @@
-import Selector from './Selector';
+import DaysSelector from './DaysSelector';
 import Day from './Day';
 import { useEffect, useState } from 'react';
 import Goals from '../Goals/Goals';
@@ -192,12 +192,6 @@ const Tracker = ({ userID }: { userID: string }) => {
     setShowObjetives(!showObjetives);
   };
 
-  const handleSelectDay = (event: Event) => {
-    event.preventDefault();
-    const date = (event.target as HTMLButtonElement).id;
-    dispatch(setDaySelected(date));
-  };
-
   const handleDatesSelected = (e: Event) => {
     e.preventDefault();
     const action = (e.target as HTMLButtonElement).id;
@@ -235,10 +229,8 @@ const Tracker = ({ userID }: { userID: string }) => {
         optionSelected={filterSelectOptionsSelected}
         handleSelectFilterOption={handleSelectFilterOption}
       />
-      <Selector
+      <DaysSelector
         week={weekSelected}
-        handleSelectDay={handleSelectDay}
-        today={today}
         handleDatesSelected={handleDatesSelected}
       />
       <Day

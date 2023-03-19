@@ -5,7 +5,7 @@ import { selectUser } from 'store/slices/authSlice';
 import Tracker from '../Tracker/Tracker';
 
 const TrackerLayout = ({ children }: { children: ReactNode }) => {
-  const { user, isVerifyingUser } = useSelector(selectUser);
+  const { user } = useSelector(selectUser);
 
   return (
     <PremiumLayout withPadding={false}>

@@ -1,5 +1,7 @@
-import { Label, List, Project, Tracker, UserDoc } from '@/global/types';
+import { Label, List, Project, Task, UserDoc } from '@/global/types';
 import { db } from '@/utils/firebase.config';
+import { dbFormatDate } from '@/utils/formatDate';
+import { formatISO } from 'date-fns';
 import { User } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
 
@@ -16,17 +18,49 @@ export const setNewUserData = async (user: User) => {
     };
     await setDoc(newUserRef, newUser);
 
-    const newTrackerRef = doc(collection(db, 'users', user.uid, 'tracker'));
-    const newTracker: Tracker = {
-      user_id: newTrackerRef.id,
-      tracker_name: 'Tracker',
-      is_private: true,
-      is_archived: false,
-      is_favorite: false,
-      tracker_id: newTrackerRef.id,
-      members: [],
+    const today = dbFormatDate(new Date());
+    const newTrackerRef = doc(db, 'users', user.uid, 'tracker', today);
+    const newDayData = {
+      day_date: today,
+      day_goals: [],
     };
-    await setDoc(newTrackerRef, newTracker);
+    await setDoc(newTrackerRef, newDayData);
+
+    const newDayRef = doc(db, 'users', user.uid, 'tracker', today);
+    const newDay = {
+      day_date: today,
+      day_goals: [],
+    };
+    await setDoc(newDayRef, newDay);
+
+    const newTaskRef = doc(
+      collection(db, 'users', user.uid, 'tracker', today, 'tasks')
+    );
+    const newTask: Task = {
+      activity: [],
+      added_at: formatISO(new Date()),
+      added_by_uid: user.uid,
+      assigned_to: [],
+      attachments: [],
+      comments: [],
+      completed_at: '',
+      content: 'Plan my week',
+      date_set: '',
+      description: '',
+      done: false,
+      is_archived: false,
+      labels: [],
+      minutes_spent: 0,
+      priority: 0,
+      project_id: 'tracker',
+      reminder_date: '',
+      section_id: '',
+      subtasks: [],
+      task_id: newTaskRef.id,
+      task_order: 0,
+      updated_at: '',
+    };
+    await setDoc(newTaskRef, newTask);
 
     const newListRef = doc(collection(db, 'users', user.uid, 'lists'));
     const newList: List = {

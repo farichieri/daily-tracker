@@ -14,7 +14,6 @@ interface TrackerSlice {
   projectSelected: Project;
   projectEdit: Project;
   today: string;
-  isLoadingData: boolean;
 }
 
 // Define the initial state using that type
@@ -48,7 +47,6 @@ const initialState: TrackerSlice = {
     members: [],
   },
   today: dbFormatDate(new Date()),
-  isLoadingData: false,
 };
 
 export const trackerSlice = createSlice({
@@ -58,7 +56,6 @@ export const trackerSlice = createSlice({
   reducers: {
     setDayData: (state, action: PayloadAction<DayData>) => {
       state.dayData = action.payload;
-      state.isLoadingData = false;
     },
     setDaySelected: (state, action: PayloadAction<string>) => {
       state.daySelected = action.payload;
@@ -84,9 +81,6 @@ export const trackerSlice = createSlice({
           (project) => project.project_id === action.payload
         ) || state.projectEdit;
     },
-    setIsLoadingData: (state, action: PayloadAction<boolean>) => {
-      state.isLoadingData = action.payload;
-    },
   },
 });
 
@@ -97,7 +91,6 @@ export const {
   setProjects,
   setProjectEdit,
   setDayData,
-  setIsLoadingData,
 } = trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -113,7 +106,5 @@ export const selectProjectSelected = (state: RootState) =>
 export const selectProjectEdit = (state: RootState) =>
   state.tracker.projectEdit;
 export const selectToday = (state: RootState) => state.tracker.today;
-export const selectIsLoadingData = (state: RootState) =>
-  state.tracker.isLoadingData;
 
 export default trackerSlice.reducer;

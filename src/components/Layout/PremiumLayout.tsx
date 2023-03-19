@@ -12,7 +12,6 @@ import { selectUser } from 'store/slices/authSlice';
 import {
   selectToday,
   setDaySelected,
-  setIsLoadingData,
   setProjects,
 } from 'store/slices/trackerSlice';
 import { setTasks, setLists } from 'store/slices/listsSlice';
@@ -22,6 +21,7 @@ import { setLabels } from 'store/slices/labelsSlice';
 import { selectGlobalState, setIsDataFetched } from 'store/slices/globalSlice';
 import Loader from './Loader/Loader';
 import { useRouter } from 'next/router';
+import Login from '../Auth/Login';
 
 export default function PremiumLayout({
   children,
@@ -46,6 +46,7 @@ export default function PremiumLayout({
     if (!localTheme) {
       window.localStorage.setItem('theme', 'dark');
     }
+    dispatch(setTheme(String(localTheme)));
     if (!user) return;
     const labelsData: LabelGroup = await getLabels(user);
     const listsData: ListGroup = await getLists(user);
@@ -53,10 +54,8 @@ export default function PremiumLayout({
     const projects = await getProjects(user);
     if (projects.length < 1) {
       dispatch(toggleIsCreatingProject());
-      dispatch(setIsLoadingData(false));
     }
     dispatch(setDaySelected(today));
-    dispatch(setTheme(String(localTheme)));
     dispatch(setLabels(labelsData));
     dispatch(setLists(listsData));
     dispatch(setTasks(tasksData));
@@ -78,7 +77,13 @@ export default function PremiumLayout({
 
   return (
     <section>
-      {isDataFetched === false ? (
+      {isVerifyingUser ? (
+        <Loader fullScreen={false} text={''} />
+      ) : !user ? (
+        <div className='login-container'>
+          <Login />
+        </div>
+      ) : isDataFetched === false ? (
         <Loader text='' fullScreen={true} />
       ) : (
         user &&
@@ -103,7 +108,15 @@ export default function PremiumLayout({
             margin: auto;
             min-height: calc(100vh - var(--premium-nav-height));
             padding: ${padding}rem;
-            width: 100%;
+            width: 100vw;
+          }
+          .login-container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            margin: auto;
+            justify-content: center;
+            min-width: 100vw;
           }
           .container {
             width: 100%;

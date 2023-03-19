@@ -71,9 +71,6 @@ export const listsSlice = createSlice({
     setListEdit: (state, action: PayloadAction<string>) => {
       state.listEdit = state.lists[action.payload];
     },
-    setIsLoadingData: (state, action: PayloadAction<boolean>) => {
-      state.isLoadingData = action.payload;
-    },
   },
 });
 
@@ -82,7 +79,6 @@ export const {
   setListSelected,
   setLists,
   setListEdit,
-  setIsLoadingData,
   setAddNewTask,
   setUpdateTask,
   setDeleteTask,

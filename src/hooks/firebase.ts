@@ -79,3 +79,15 @@ export const getTasks = async (user: User) => {
   });
   return data;
 };
+
+export const getDayData = async (user: User, date: string) => {
+  let data: TaskGroup = {};
+  const tasksDocRef = collection(db, 'users', user.uid, 'tracker');
+  const docData = await getDoc(doc(tasksDocRef));
+  console.log(docData.data());
+  const querySnapshot = await getDocs(tasksDocRef);
+  querySnapshot.forEach((list: any) => {
+    data[list.id] = list.data();
+  });
+  return data;
+};
