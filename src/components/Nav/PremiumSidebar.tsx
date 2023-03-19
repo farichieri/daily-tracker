@@ -1,5 +1,9 @@
 import { selectSidebarState } from 'store/slices/layoutSlice';
-import { selectProjects, setProjectEdit } from 'store/slices/trackerSlice';
+import {
+  selectProjects,
+  selectToday,
+  setProjectEdit,
+} from 'store/slices/trackerSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import ButtonAction from '../Layout/ButtonAction/ButtonAction';
 import Image from 'next/image';
@@ -22,6 +26,7 @@ const PremiumSidebar = () => {
   const router = useRouter();
   const { listID, id } = router.query;
   const { pathname } = router;
+  const today = useSelector(selectToday);
 
   const handleEditProject = (event: any) => {
     event.preventDefault();
@@ -61,7 +66,7 @@ const PremiumSidebar = () => {
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className='tracks' onClick={(e) => e.stopPropagation()}>
           <div className='title'>
-            <Link href={'/app'}>
+            <Link href={`/app/tracker/${today}`}>
               <span
                 className={`tracker ${pathname === '/app' ? 'selected' : ''}`}
               >

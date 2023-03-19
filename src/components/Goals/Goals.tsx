@@ -1,24 +1,39 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectTrackerSlice } from 'store/slices/trackerSlice';
+import { db } from '@/utils/firebase.config';
+import { doc, updateDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from 'store/slices/authSlice';
+import {
+  selectTrackerSlice,
+  setUpdateDayGoals,
+} from 'store/slices/trackerSlice';
+import Button from '../Layout/Button/Button';
 import IconButton from '../Layout/Icon/IconButton';
+import Tooltip from '../Layout/Tooltip/Tooltip';
 
 const Goals = () => {
+  const dispatch = useDispatch();
   const { dayData } = useSelector(selectTrackerSlice);
-  const { day_goals } = dayData;
-  const [goals, setGoals] = useState<string[]>([]);
+  const { day_goals, day_date } = dayData;
+  const { user } = useSelector(selectUser);
+  const [goalsState, setGoalsState] = useState<string[]>(day_goals);
   const [newGoal, setnewGoal] = useState('');
+  const [isSaveable, setIsSaveable] = useState(false);
+  const [showGoals, setShowObjetives] = useState(false);
 
-  console.log({ newGoal });
+  const handleObjetives = (e: any) => {
+    e.preventDefault();
+    setShowObjetives(!showGoals);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const value = (e.target as HTMLButtonElement).value;
     const id: number = Number((e.target as HTMLButtonElement).id || -1);
-    if (goals.indexOf(goals[id]) > -1) {
-      const newObjetives = [...goals];
-      newObjetives[id] = value;
-      setGoals(newObjetives);
+    if (goalsState.indexOf(goalsState[id]) > -1) {
+      const newGoals = [...goalsState];
+      newGoals[id] = value;
+      setGoalsState(newGoals);
     } else {
       setnewGoal(value);
     }
@@ -27,50 +42,118 @@ const Goals = () => {
   const handleAdd = async (e: any) => {
     e.preventDefault();
     if (newGoal) {
-      setGoals([...goals, newGoal]);
+      setGoalsState([...goalsState, newGoal]);
       setnewGoal('');
+      setIsSaveable(true);
     }
   };
 
   const handleRemove = (e: any) => {
     e.preventDefault();
-    const newObjetives = goals.slice();
+    const newObjetives = goalsState.slice();
     newObjetives.splice(e.target.value, 1);
-    setGoals(newObjetives);
+    setGoalsState(newObjetives);
+    setIsSaveable(true);
   };
+
+  const handleSave = async () => {
+    if (JSON.stringify(day_goals) !== JSON.stringify(goalsState)) {
+      if (!user) return;
+      console.log('Updating Goals');
+      const docRef = doc(db, 'users', user.uid, 'tracker', day_date);
+      await updateDoc(docRef, { day_goals: goalsState });
+      dispatch(setUpdateDayGoals(goalsState));
+    }
+  };
+
+  useEffect(() => {
+    setGoalsState(day_goals);
+  }, [day_date]);
+
+  useEffect(() => {
+    if (isSaveable) {
+      handleSave();
+      setIsSaveable(false);
+    }
+  }, [isSaveable]);
 
   return (
     <section>
-      <div className='objetives-container'>
-        {day_goals?.map((obj, i) => (
-          <div className='objetive-container' key={i}>
-            <Goal value={obj} handleChange={handleChange} id={i} />
+      <div className='goals-button'>
+        <Button
+          style={null}
+          content={showGoals ? 'Hide Goals' : 'Show Goals'}
+          isLoading={false}
+          isDisabled={false}
+          loadMessage={''}
+          onClick={handleObjetives}
+        />
+        <Tooltip
+          content={
+            <>
+              Write down your goals <br /> every day to increase <br /> the
+              likelihood of achieving them.
+            </>
+          }
+          direction='top'
+          delay={400}
+        />
+      </div>
+      {showGoals && (
+        <div className='objetives-container'>
+          {goalsState?.map((obj, i) => (
+            <div className='objetive-container' key={i}>
+              <Goal
+                value={obj}
+                handleChange={handleChange}
+                id={i}
+                handleSave={handleSave}
+              />
+              <IconButton
+                onClick={(e) => handleRemove(e)}
+                props={{ value: i }}
+                src={'/icons/delete.png'}
+                alt='Delete-Icon'
+                width={24}
+                height={24}
+              />
+            </div>
+          ))}
+          <form onSubmit={(e) => handleAdd(e)}>
+            <Goal
+              handleChange={handleChange}
+              value={newGoal}
+              id={null}
+              handleSave={handleSave}
+            />
             <IconButton
-              onClick={(e) => handleRemove(e)}
-              props={{ value: i }}
-              src={'/icons/delete.png'}
-              alt='Delete-Icon'
+              props={null}
+              onClick={(e) => handleAdd(e)}
+              src={'/icons/add.png'}
+              alt='Add-Icon'
               width={24}
               height={24}
             />
-          </div>
-        ))}
-        <form onSubmit={(e) => handleAdd(e)}>
-          <Goal handleChange={handleChange} value={newGoal} id={null} />
-          <IconButton
-            props={null}
-            onClick={(e) => handleAdd(e)}
-            src={'/icons/add.png'}
-            alt='Add-Icon'
-            width={24}
-            height={24}
-          />
-        </form>
-      </div>
+          </form>
+        </div>
+      )}
+
       <style jsx>{`
         section {
           width: 100%;
           background: transparent;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: start;
+          align-items: center;
+          margin-top: 1rem;
+        }
+        .goals-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
         }
         .objetives-container {
           width: 100%;
@@ -111,10 +194,12 @@ const Goal = ({
   handleChange,
   value,
   id,
+  handleSave,
 }: {
   handleChange: any;
   value: string;
   id: any;
+  handleSave: any;
 }) => {
   return (
     <>
@@ -126,6 +211,7 @@ const Goal = ({
         id={id}
         spellCheck='false'
         autoComplete='off'
+        onBlur={handleSave}
       />
       <style jsx>{`
         input {

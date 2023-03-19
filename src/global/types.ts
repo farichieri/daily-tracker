@@ -26,6 +26,7 @@ export interface UserDoc {
 // And if a day_task has a project_id, it will be rendered in the list of tasks.
 
 export interface Task {
+  [key: string]: any;
   activity: Array<string>;
   added_at: string;
   added_by_uid: string;

@@ -1,195 +1,46 @@
 import DaysSelector from './DaysSelector';
-import Day from './Day';
-import { useEffect, useState } from 'react';
+import DayTasks from './DayTasks/DayTasks';
+import { useState } from 'react';
 import Goals from '../Goals/Goals';
 import Button from '../Layout/Button/Button';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/utils/firebase.config';
-import { types } from '@/utils/types';
 import { dbFormatDate } from '@/utils/formatDate';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectDayData,
   selectDaySelected,
-  selectProjectSelected,
   selectToday,
+  selectTrackerSlice,
   selectWeekSelected,
   setDaySelected,
 } from 'store/slices/trackerSlice';
 import Header from './Header';
-import { formatISO, parseISO } from 'date-fns';
-import { Task } from '@/global/types';
+import { parseISO } from 'date-fns';
 import Tooltip from '../Layout/Tooltip/Tooltip';
+import LoaderData from '../Layout/Loader/LoaderData';
 
-const Tracker = ({ userID }: { userID: string }) => {
+const Tracker = () => {
   const dispatch = useDispatch();
-  const dayData = useSelector(selectDayData);
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
-  const projectSelected = useSelector(selectProjectSelected);
   const today = useSelector(selectToday);
   const [isSaving, setIsSaving] = useState(false);
-  const [goals, setGoals] = useState<string[]>([]);
-  const [goal, setGoal] = useState<string>('');
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [task, setTask] = useState<Task>({
-    date_set: '',
-    content: '',
-    description: '',
-    labels: [],
-    done: false,
-    task_id: '',
-    activity: [],
-    added_at: '',
-    added_by_uid: '',
-    assigned_to: [],
-    attachments: [],
-    comments: [],
-    completed_at: '',
-    is_archived: false,
-    minutes_spent: 0,
-    priority: 0,
-    project_id: '',
-    reminder_date: '',
-    section_id: '',
-    subtasks: [],
-    task_order: 0,
-    updated_at: '',
-  });
-  const [showObjetives, setShowObjetives] = useState(false);
   const [isSaveable, setIsSaveable] = useState(false);
   const [filterSelectOptionsSelected, setFilterSelectOptionsSelected] =
     useState('week');
   const filterSelectOptions = ['today'];
-
-  useEffect(() => {
-    const setData = () => {
-      const goals: any = [];
-      const tasks: any = [];
-      // const goals = dayData?.goals || [];
-      // const tasks = dayData?.tasks || [];
-      setTasks(tasks);
-      setGoals(goals);
-    };
-    setData();
-  }, [dayData, daySelected]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: string
-  ) => {
-    e.preventDefault();
-    const value = (e.target as HTMLButtonElement).value;
-    const name: string = String((e.target as HTMLButtonElement).name);
-    if (type === types.objetives) {
-      const id: number = Number((e.target as HTMLButtonElement).id || -1);
-      if (goals.indexOf(goals[id]) > -1) {
-        const newObjetives = [...goals];
-        newObjetives[id] = value;
-        setGoals(newObjetives);
-      } else {
-        setGoal(value);
-      }
-    }
-    if (type === types.tasks) {
-      const id: number = Number((e.target as HTMLButtonElement).id || -1);
-      if (tasks.indexOf(tasks[id]) > -1) {
-        const newTasks: Task[] = [...tasks];
-        const newTask: any = { ...newTasks[id] };
-        newTask[name] = value;
-        newTasks[id] = newTask;
-        setTasks(newTasks);
-      } else {
-        setTask({ ...task, [name]: value });
-      }
-    }
-    setIsSaveable(true);
-  };
-
-  const handleAdd = async (e: any, type: string) => {
-    e.preventDefault();
-    if (type === types.objetives) {
-      if (goal) {
-        setGoals([...goals, goal]);
-        setGoal('');
-      }
-    }
-    if (type === types.tasks) {
-      if (task.content) {
-        setTasks([...tasks, task]);
-        setTask({
-          date_set: '',
-          content: '',
-          description: '',
-          labels: [],
-          done: false,
-          task_id: '',
-          activity: [],
-          added_at: formatISO(new Date()),
-          added_by_uid: userID,
-          assigned_to: [],
-          attachments: [],
-          comments: [],
-          completed_at: '',
-          is_archived: false,
-          minutes_spent: 0,
-          priority: 0,
-          project_id: projectSelected.project_id,
-          reminder_date: '',
-          section_id: '',
-          subtasks: [],
-          task_order: 0,
-          updated_at: '',
-        });
-      }
-    }
-    setIsSaveable(true);
-  };
-
-  const handleRemove = (e: any, type: string) => {
-    e.preventDefault();
-    if (type === types.objetives) {
-      const newObjetives = goals.slice();
-      newObjetives.splice(e.target.value, 1);
-      setGoals(newObjetives);
-    }
-    if (type === types.tasks) {
-      const newTasks = tasks.slice();
-      newTasks.splice(e.target.value, 1);
-      setTasks(newTasks);
-    }
-    setIsSaveable(true);
-  };
-
-  const handleToggleDone = (e: any, type: string) => {
-    e.preventDefault();
-    if (type === types.tasks) {
-      const newTasks = [...tasks];
-      const newTask = { ...newTasks[e.target.id] };
-      newTask.done = !newTasks[e.target.id].done;
-      newTasks[e.target.id] = newTask;
-      setTasks(newTasks);
-    }
-    setIsSaveable(true);
-  };
+  const { isLoadingData } = useSelector(selectTrackerSlice);
 
   const handleSave = async () => {
-    setIsSaving(true);
-    const date = daySelected;
-    const project = projectSelected.project_id;
-    const docRef = doc(db, 'users', userID, 'projects', project, 'dates', date);
-    await setDoc(docRef, {
-      date: date,
-      objetives: goals,
-      tasks: tasks,
-    });
-    setIsSaving(false);
-    setIsSaveable(!isSaveable);
-  };
-
-  const handleObjetives = (e: any) => {
-    e.preventDefault();
-    setShowObjetives(!showObjetives);
+    // setIsSaving(true);
+    // const date = daySelected;
+    // const project = projectSelected.project_id;
+    // const docRef = doc(db, 'users', userID, 'projects', project, 'dates', date);
+    // await setDoc(docRef, {
+    //   date: date,
+    //   objetives: goals,
+    //   tasks: tasks,
+    // });
+    // setIsSaving(false);
+    // setIsSaveable(!isSaveable);
   };
 
   const handleDatesSelected = (e: Event) => {
@@ -233,52 +84,33 @@ const Tracker = ({ userID }: { userID: string }) => {
         week={weekSelected}
         handleDatesSelected={handleDatesSelected}
       />
-      <Day
-        handleChange={handleChange}
-        handleAdd={handleAdd}
-        handleRemove={handleRemove}
-        handleToggleDone={handleToggleDone}
-        tasks={tasks}
-        task={task}
-      />
-      <div className='goals-container'>
-        <Button
-          style={null}
-          content={showObjetives ? 'Hide Goals' : 'Show Goals'}
-          isLoading={false}
-          isDisabled={false}
-          loadMessage={''}
-          onClick={handleObjetives}
-        />
-        <Tooltip
-          content={
-            <>
-              Write down your goals <br /> every day to increase <br /> the
-              likelihood of achieving them.
-            </>
-          }
-          direction='top'
-          delay={400}
-        />
+      <div className='tasks-goals-container'>
+        {isLoadingData ? (
+          <LoaderData />
+        ) : (
+          <>
+            <DayTasks />
+            <Goals />
+          </>
+        )}
       </div>
-      {showObjetives && <Goals />}
+
       <style jsx>{`
         section {
-          padding: 1rem;
+          padding: 1rem 0.25rem;
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 100%;
           gap: 1rem;
-          padding-bottom: 10rem;
+          height: calc(100vh - var(--premium-nav-height));
         }
-        .goals-container {
-          margin: 1rem 0 0 0;
+        .tasks-goals-container {
+          position: relative;
           width: 100%;
           display: flex;
-          gap: 1rem;
-          align-items: center;
-          justify-content: center;
+          flex-direction: column;
+          align-items: start;
         }
       `}</style>
     </section>

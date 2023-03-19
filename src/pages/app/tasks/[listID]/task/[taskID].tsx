@@ -11,8 +11,8 @@ import { db } from '@/utils/firebase.config';
 import { selectUser } from 'store/slices/authSlice';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { formatISO } from 'date-fns';
-import Subtasks from '@/components/TasksList/Task/Subtasks/Subtasks';
-import TaskActions from '@/components/TasksList/Task/TaskActions/TaskActions';
+import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
+import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
 
 const TaskID = () => {
   const router = useRouter();

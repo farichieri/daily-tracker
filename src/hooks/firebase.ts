@@ -1,13 +1,7 @@
-import {
-  Project,
-  ListGroup,
-  UserSettings,
-  LabelGroup,
-  TaskGroup,
-} from '@/global/types';
+import { Project, ListGroup, LabelGroup, TaskGroup } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { User } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 
 export const getProjects = async (user: User) => {
   if (user) {
@@ -81,13 +75,38 @@ export const getTasks = async (user: User) => {
 };
 
 export const getDayData = async (user: User, date: string) => {
-  let data: TaskGroup = {};
-  const tasksDocRef = collection(db, 'users', user.uid, 'tracker');
-  const docData = await getDoc(doc(tasksDocRef));
-  console.log(docData.data());
-  const querySnapshot = await getDocs(tasksDocRef);
-  querySnapshot.forEach((list: any) => {
-    data[list.id] = list.data();
-  });
-  return data;
+  const dayRef = doc(db, 'users', user.uid, 'tracker', date);
+  const docSnap = await getDoc(dayRef);
+  if (docSnap.exists()) {
+    const docData = docSnap.data();
+
+    let day_tasks: TaskGroup = {};
+    const tasksRef = collection(
+      db,
+      'users',
+      user.uid,
+      'tracker',
+      date,
+      'tasks'
+    );
+    const querySnapshot = await getDocs(tasksRef);
+    querySnapshot.forEach((list: any) => {
+      day_tasks[list.id] = list.data();
+    });
+    return {
+      day_date: docData?.day_date || date,
+      day_goals: docData?.day_goals || [],
+      day_tasks: day_tasks,
+    };
+  } else {
+    await setDoc(dayRef, {
+      day_date: date,
+      day_goals: [],
+    });
+    return {
+      day_date: date,
+      day_goals: [],
+      day_tasks: {},
+    };
+  }
 };

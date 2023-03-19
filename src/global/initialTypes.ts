@@ -1,0 +1,26 @@
+import { Task } from './types';
+
+export const NewTaskInitial: Task = {
+  date_set: '',
+  content: '',
+  description: '',
+  labels: [],
+  done: false,
+  task_id: '',
+  activity: [],
+  added_at: '',
+  added_by_uid: '',
+  assigned_to: [],
+  attachments: [],
+  comments: [],
+  completed_at: '',
+  is_archived: false,
+  minutes_spent: 0,
+  priority: 0,
+  project_id: '',
+  reminder_date: '',
+  section_id: '',
+  subtasks: [],
+  task_order: 0,
+  updated_at: '',
+};

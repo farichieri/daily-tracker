@@ -12,8 +12,8 @@ import {
 } from 'store/slices/listsSlice';
 import Clock from '../Clock/Clock';
 import { useRouter } from 'next/router';
-import Tasks from './Task/Tasks';
-import AddTask from './Task/AddTask';
+import Tasks from './Tasks/Tasks';
+import AddTask from './Tasks/AddTask';
 import { filterObject } from '@/hooks/helpers';
 
 const TasksList = () => {

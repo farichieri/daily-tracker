@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectDaySelected, setDaySelected } from 'store/slices/trackerSlice';
 import { dbFormatDate } from '@/utils/formatDate';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const DayPickerC = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const daySelected = useSelector(selectDaySelected);
   const monthSelected = daySelected
     ? format(new Date(daySelected), 'LLLL u')
@@ -20,7 +22,8 @@ const DayPickerC = () => {
     if (day) {
       setSelected(day);
       setOpen(!open);
-      dispatch(setDaySelected(dbFormatDate(day)));
+      router.push(`/app/tracker/${dbFormatDate(day)}`);
+      // dispatch(setDaySelected(dbFormatDate(day)));
     }
   };
 

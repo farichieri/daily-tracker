@@ -10,7 +10,7 @@ const TrackerLayout = ({ children }: { children: ReactNode }) => {
   return (
     <PremiumLayout withPadding={false}>
       <div className='container'>
-        {user && <Tracker userID={user.uid} />}
+        {user && <Tracker />}
         {children}
       </div>
       <style jsx>{`

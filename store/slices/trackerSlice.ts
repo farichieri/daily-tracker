@@ -1,4 +1,4 @@
-import { DayData, Project } from '@/global/types';
+import { DayData, Project, Task } from '@/global/types';
 import { getDaysInAWeek } from '@/hooks/dates';
 import { dbFormatDate } from '@/utils/formatDate';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -8,6 +8,7 @@ import type { RootState } from '../store';
 // Define a type for the slice state
 interface TrackerSlice {
   dayData: DayData;
+  isLoadingData: boolean;
   daySelected: string;
   weekSelected: any[];
   projects: Project[];
@@ -23,6 +24,7 @@ const initialState: TrackerSlice = {
     day_goals: [],
     day_tasks: {},
   },
+  isLoadingData: true,
   daySelected: '',
   weekSelected: [],
   projects: [],
@@ -56,6 +58,15 @@ export const trackerSlice = createSlice({
   reducers: {
     setDayData: (state, action: PayloadAction<DayData>) => {
       state.dayData = action.payload;
+      state.isLoadingData = false;
+    },
+    setCleanDayData: (state) => {
+      state.dayData = {
+        day_date: '',
+        day_goals: [],
+        day_tasks: {},
+      };
+      state.isLoadingData = true;
     },
     setDaySelected: (state, action: PayloadAction<string>) => {
       state.daySelected = action.payload;
@@ -81,6 +92,25 @@ export const trackerSlice = createSlice({
           (project) => project.project_id === action.payload
         ) || state.projectEdit;
     },
+    setUpdateDayGoals: (state, action: PayloadAction<string[]>) => {
+      state.dayData.day_goals = action.payload;
+    },
+    setAddNewDayTask: (state, action: PayloadAction<Task>) => {
+      state.dayData.day_tasks = {
+        ...state.dayData.day_tasks,
+        [action.payload.task_id]: action.payload,
+      };
+    },
+
+    setUpdateDayTask: (state, action: PayloadAction<Task>) => {
+      state.dayData.day_tasks = {
+        ...state.dayData.day_tasks,
+        [action.payload.task_id]: action.payload,
+      };
+    },
+    setDeleteDayTask: (state, action: PayloadAction<string>) => {
+      delete state.dayData.day_tasks[action.payload];
+    },
   },
 });
 
@@ -91,6 +121,11 @@ export const {
   setProjects,
   setProjectEdit,
   setDayData,
+  setUpdateDayGoals,
+  setAddNewDayTask,
+  setCleanDayData,
+  setUpdateDayTask,
+  setDeleteDayTask,
 } = trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
