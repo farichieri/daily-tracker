@@ -66,9 +66,11 @@ const PremiumSidebar = () => {
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className='tracks' onClick={(e) => e.stopPropagation()}>
           <div className='title'>
-            <Link href={`/app/tracker/${today}`}>
+            <Link href={`/app/tracker/${today}`} style={{ width: '100%' }}>
               <span
-                className={`tracker ${pathname === '/app' ? 'selected' : ''}`}
+                className={`tracker ${
+                  pathname.includes('/app/tracker') ? 'selected' : ''
+                }`}
               >
                 My Tracker
               </span>
@@ -97,7 +99,7 @@ const PremiumSidebar = () => {
             (list) =>
               !lists[list].is_archived && (
                 <div key={list} className='project-container'>
-                  <Link href={`/app/tasks/${list}`}>
+                  <Link href={`/app/tasks/${list}`} style={{ width: '100%' }}>
                     <span
                       className={`project ${list === listID ? 'selected' : ''}`}
                     >
@@ -199,7 +201,7 @@ const PremiumSidebar = () => {
           transition: all 0.3s;
         }
         .projects,
-        .tracks,
+        .track,
         .to-do,
         .labels {
           display: flex;
@@ -212,20 +214,26 @@ const PremiumSidebar = () => {
           display: flex;
           gap: 0.5em;
           align-items: center;
-          justify-content: space-between;
           width: 100%;
         }
         .title span {
           display: flex;
+          width: 100%;
         }
+        .tracks,
+        .labels,
+        .projects {
+          width: 100%;
+        }
+
         .selected {
           opacity: 1;
           color: var(--text-color);
         }
         .tracker {
-          padding-top: 1rem;
+          margin-top: 1rem;
+          width: 100%;
         }
-
         .edit {
           cursor: pointer;
         }

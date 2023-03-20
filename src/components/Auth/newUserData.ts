@@ -1,3 +1,4 @@
+import { NewTaskInitial } from '@/global/initialTypes';
 import { Label, List, Project, Task, UserDoc } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { dbFormatDate } from '@/utils/formatDate';
@@ -33,34 +34,21 @@ export const setNewUserData = async (user: User) => {
     };
     await setDoc(newDayRef, newDay);
 
-    const newTaskRef = doc(
-      collection(db, 'users', user.uid, 'tracker', today, 'tasks')
-    );
+    const newTaskRef = doc(collection(db, 'users', user.uid, 'tasks'));
     const newTask: Task = {
-      activity: [],
+      ...NewTaskInitial,
       added_at: formatISO(new Date()),
       added_by_uid: user.uid,
-      assigned_to: [],
-      attachments: [],
-      comments: [],
-      completed_at: '',
+      date_set: {
+        date_iso: formatISO(new Date()),
+        is_recurring: false,
+        time_from: 'string',
+        time_to: 'string',
+        with_time: false,
+      },
       content: 'Plan my week',
-      date_set: '',
-      description: '',
-      done: false,
-      is_archived: false,
-      labels: [],
-      minutes_spent: 0,
-      priority: 0,
       project_id: 'tracker',
-      reminder_date: '',
-      section_id: '',
-      subtasks: [],
       task_id: newTaskRef.id,
-      task_order: 0,
-      time_from: '',
-      time_to: '',
-      updated_at: '',
     };
     await setDoc(newTaskRef, newTask);
 

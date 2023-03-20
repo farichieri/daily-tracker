@@ -1,6 +1,5 @@
 import Modal from '@/components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUpdateTask } from 'store/slices/listsSlice';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubTask, Task } from '@/global/types';
@@ -13,39 +12,24 @@ import { formatISO } from 'date-fns';
 import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
 import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
 import TrackerLayout from '@/components/Layout/TrackerLayout';
-import { selectDayData } from 'store/slices/trackerSlice';
+import { NewSubtaskIinitial } from '@/global/initialTypes';
+import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
 
 const TaskID = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
-  const { day_tasks } = useSelector(selectDayData);
-
   const { taskID, date } = router.query;
+  const { tasks } = useSelector(selectTasks);
   const { user } = useSelector(selectUser);
-  const task = day_tasks[String(taskID)];
+  const task = tasks[String(taskID)];
   const [taskState, setTaskState] = useState<Task>(task);
   const taskIDLink = `/app/tracker/${date}`;
   const [isSaveable, setIsSaveable] = useState(false);
   const [subtaskState, setSubtaskState] = useState<SubTask>({
+    ...NewSubtaskIinitial,
     added_at: formatISO(new Date()),
-    added_by_uid: '',
-    assigned_to: [],
-    comments: [],
-    completed_at: '',
-    content: '',
-    date_set: '',
-    description: '',
-    done: false,
-    is_archived: false,
-    minutes_spent: 0,
     parent_id: String(taskID),
-    priority: 0,
-    project_id: 'tracker',
-    reminder_date: '',
-    section_id: '',
-    task_order: 0,
-    time_from: '',
-    time_to: '',
-    updated_at: '',
+    project_id: '',
   });
 
   useEffect(() => {
@@ -92,7 +76,7 @@ const TaskID = () => {
       console.log('Saving taskID');
       const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
       await setDoc(docRef, taskState);
-      // dispatch(setUpdateTask(taskState));
+      dispatch(setUpdateTask(taskState));
     }
   };
 

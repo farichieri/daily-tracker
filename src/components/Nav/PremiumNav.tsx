@@ -3,21 +3,23 @@ import DarkMode from '../DarkMode/DarkMode';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
 import Image from 'next/image';
-import { selectProjectSelected } from 'store/slices/trackerSlice';
+import { selectList } from 'store/slices/listsSlice';
 import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
-import { selectListSelected } from 'store/slices/listsSlice';
 import { useState } from 'react';
 import Settings from '../Settings/Settings';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { listID } = router.query;
   const sidebarState = useSelector(selectSidebarState);
-  const projectSelected = useSelector(selectProjectSelected);
-  const listSelected = useSelector(selectListSelected);
+  const { lists } = useSelector(selectList);
+  const listSelected = lists[String(listID)];
   const selected = router.pathname.includes('tasks')
     ? `Task List: ${listSelected?.list_name}`
-    : `Tracker: ${projectSelected?.project_name}`;
+    : router.pathname.includes('labels')
+    ? 'Labels'
+    : `Tracker`;
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 

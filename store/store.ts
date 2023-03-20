@@ -6,6 +6,7 @@ import layoutSlice from './slices/layoutSlice';
 import listsSlice from './slices/listsSlice';
 import labelsSlice from './slices/labelsSlice';
 import globalSlice from './slices/globalSlice';
+import tasksSlice from './slices/tasksSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     auth: authSlice,
     tracker: trackerSlice,
     layout: layoutSlice,
+    tasks: tasksSlice,
     list: listsSlice,
     labels: labelsSlice,
     global: globalSlice,

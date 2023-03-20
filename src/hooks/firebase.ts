@@ -55,6 +55,7 @@ export const getUserSettings = async (user: User) => {
 };
 
 export const getLabels = async (user: User) => {
+  console.log('Fetching Labels');
   let data: LabelGroup = {};
   const labelsDocRef = collection(db, 'users', user.uid, 'labels');
   const querySnapshot = await getDocs(labelsDocRef);
@@ -65,6 +66,7 @@ export const getLabels = async (user: User) => {
 };
 
 export const getTasks = async (user: User) => {
+  console.log('Fetching Tasks');
   let data: TaskGroup = {};
   const tasksDocRef = collection(db, 'users', user.uid, 'tasks');
   const querySnapshot = await getDocs(tasksDocRef);

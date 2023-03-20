@@ -2,22 +2,18 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
-import { selectList } from 'store/slices/listsSlice';
 import AssignLabel from './TaskActionsModals/AssignLabel';
 import AssignReminder from './TaskActionsModals/AssignReminder';
 import { Label } from '@/global/types';
-import { selectDayData } from 'store/slices/trackerSlice';
+import { selectTasks } from 'store/slices/tasksSlice';
 
 const TaskActions = () => {
   const router = useRouter();
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignReminder, setOpenAssignReminder] = useState(false);
-  const { tasks } = useSelector(selectList);
-  const { day_tasks } = useSelector(selectDayData);
-  const { taskID, date } = router.query;
-  const task = date
-    ? { ...day_tasks[String(taskID)] }
-    : { ...tasks[String(taskID)] };
+  const { tasks } = useSelector(selectTasks);
+  const { taskID } = router.query;
+  const task = { ...tasks[String(taskID)] };
   const labelsSelected = task.labels;
   const { labels } = useSelector(selectLabels);
   const [labelsInTask, setLabelsInTask] = useState<Label[]>([]);

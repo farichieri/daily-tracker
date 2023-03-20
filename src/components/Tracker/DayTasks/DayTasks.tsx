@@ -1,25 +1,17 @@
 import { TasksArray, Task, TaskGroup } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import {
-  selectDayData,
-  setDeleteDayTask,
-  setUpdateDayTask,
-} from 'store/slices/trackerSlice';
+import { setDeleteTask, setUpdateTask } from 'store/slices/tasksSlice';
 import AddDayTask from './AddDayTask';
 import DayTask from './DayTask';
 
-const DayTasks = () => {
+const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const { date } = router.query;
   const { user } = useSelector(selectUser);
-  const { day_tasks } = useSelector(selectDayData);
-  const [tasksState, setTasksState] = useState<TaskGroup>(day_tasks);
+  const [tasksState, setTasksState] = useState<TaskGroup>(tasksFiltered);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -45,17 +37,9 @@ const DayTasks = () => {
     setTasksState({
       ...newTasks,
     });
-    const docRef = doc(
-      db,
-      'users',
-      user.uid,
-      'tracker',
-      String(date),
-      'tasks',
-      taskDeleted.task_id
-    );
+    const docRef = doc(db, 'users', user.uid, 'tasks', taskDeleted.task_id);
     await deleteDoc(docRef);
-    dispatch(setDeleteDayTask(taskDeleted.task_id));
+    dispatch(setDeleteTask(taskDeleted.task_id));
   };
 
   const handleToggleDone = (event: React.MouseEvent) => {
@@ -72,38 +56,28 @@ const DayTasks = () => {
   };
 
   const handleSave = async (task: Task) => {
-    if (JSON.stringify(task) !== JSON.stringify(day_tasks[task.task_id])) {
+    if (JSON.stringify(task) !== JSON.stringify(tasksFiltered[task.task_id])) {
       if (!user) return;
       console.log('Saving DayTask');
-      const docRef = doc(
-        db,
-        'users',
-        user.uid,
-        'tracker',
-        String(date),
-        'tasks',
-        task.task_id
-      );
+      const docRef = doc(db, 'users', user.uid, 'tasks', task.task_id);
       await setDoc(docRef, task);
-      dispatch(setUpdateDayTask(task));
+      dispatch(setUpdateTask(task));
     }
   };
 
   const [sortedArrayOfTasks, setSortedArrayOfTasks] = useState<TasksArray>([]);
 
   useEffect(() => {
-    setTasksState(day_tasks);
-    const sortedArray = Object.values(day_tasks).sort((a, b) =>
+    const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
       a.time_from.localeCompare(b.time_from)
     );
     setSortedArrayOfTasks(sortedArray);
-  }, [day_tasks]);
-
-  console.log({ tasksState });
+    setTasksState(tasksFiltered);
+  }, [tasksFiltered]);
 
   return (
     <section className='table'>
-      {sortedArrayOfTasks.map((task) => (
+      {sortedArrayOfTasks?.map((task) => (
         <div
           key={task.task_id}
           className={`task-container ${task.done ? 'done' : ''}`}
@@ -111,7 +85,7 @@ const DayTasks = () => {
           <DayTask
             handleSave={handleSave}
             handleRemove={handleRemove}
-            task={tasksState[task.task_id]}
+            task={task}
             handleChange={handleChange}
             handleToggleDone={handleToggleDone}
             taskID={task.task_id}

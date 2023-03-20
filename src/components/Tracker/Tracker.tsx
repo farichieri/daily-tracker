@@ -5,21 +5,23 @@ import { dbFormatDate } from '@/utils/formatDate';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectDaySelected,
-  selectTrackerSlice,
   selectWeekSelected,
   setDaySelected,
 } from 'store/slices/trackerSlice';
 import Header from './Header';
 import { parseISO } from 'date-fns';
-import LoaderData from '../Layout/Loader/LoaderData';
 import { useRouter } from 'next/dist/client/router';
+import { selectTasks } from 'store/slices/tasksSlice';
+import { filterTasksByDateSet } from '@/hooks/helpers';
 
 const Tracker = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { date } = router.query;
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
-  const { isLoadingData } = useSelector(selectTrackerSlice);
+  const { tasks } = useSelector(selectTasks);
+  const tasksFiltered = filterTasksByDateSet(tasks, String(date));
 
   const handleDatesSelected = (e: Event) => {
     e.preventDefault();
@@ -47,19 +49,15 @@ const Tracker = () => {
         handleDatesSelected={handleDatesSelected}
       />
       <div className='tasks-goals-container'>
-        {isLoadingData ? (
-          <LoaderData />
-        ) : (
-          <>
-            <DayTasks />
-            <Goals />
-          </>
-        )}
+        <>
+          <DayTasks tasksFiltered={tasksFiltered} />
+          <Goals />
+        </>
       </div>
 
       <style jsx>{`
         section {
-          padding: 1rem 0.25rem;
+          padding: 1rem 0.5rem;
           display: flex;
           flex-direction: column;
           align-items: center;

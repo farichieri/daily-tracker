@@ -14,7 +14,8 @@ import {
   setDaySelected,
   setProjects,
 } from 'store/slices/trackerSlice';
-import { setTasks, setLists } from 'store/slices/listsSlice';
+import { setLists } from 'store/slices/listsSlice';
+import { setTasks } from 'store/slices/tasksSlice';
 import { getProjects, getLists, getLabels, getTasks } from '@/hooks/firebase';
 import { LabelGroup, TaskGroup, ListGroup } from '@/global/types';
 import { setLabels } from 'store/slices/labelsSlice';

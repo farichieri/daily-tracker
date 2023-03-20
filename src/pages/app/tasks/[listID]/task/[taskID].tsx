@@ -1,7 +1,8 @@
 import TasksLayout from '@/components/Layout/TasksLayout';
 import Modal from '@/components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectList, setUpdateTask } from 'store/slices/listsSlice';
+import { selectList } from 'store/slices/listsSlice';
+import { setUpdateTask } from 'store/slices/tasksSlice';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubTask, Task } from '@/global/types';
@@ -13,11 +14,14 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import { formatISO } from 'date-fns';
 import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
 import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
+import { NewSubtaskIinitial } from '@/global/initialTypes';
+import { selectTasks } from 'store/slices/tasksSlice';
 
 const TaskID = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { tasks, lists } = useSelector(selectList);
+  const { lists } = useSelector(selectList);
+  const { tasks } = useSelector(selectTasks);
   const { taskID, listID } = router.query;
   const { user } = useSelector(selectUser);
   const task = tasks[String(taskID)];
@@ -26,28 +30,14 @@ const TaskID = () => {
   const taskIDLink = `/app/tasks/${listID}`;
   const [isSaveable, setIsSaveable] = useState(false);
   const [subtaskState, setSubtaskState] = useState<SubTask>({
+    ...NewSubtaskIinitial,
     added_at: formatISO(new Date()),
-    added_by_uid: '',
-    assigned_to: [],
-    comments: [],
-    completed_at: '',
-    content: '',
-    date_set: '',
-    description: '',
-    done: false,
-    is_archived: false,
-    minutes_spent: 0,
     parent_id: String(taskID),
-    priority: 0,
     project_id: String(listID),
-    reminder_date: '',
-    section_id: '',
-    task_order: 0,
-    time_from: '',
-    time_to: '',
-    updated_at: '',
   });
-
+  console.log({ tasks });
+  console.log({ task });
+  console.log({ taskID });
   useEffect(() => {
     setTaskState(task);
   }, [task, listID, list, task]);
@@ -95,6 +85,8 @@ const TaskID = () => {
       dispatch(setUpdateTask(taskState));
     }
   };
+
+  console.log({ taskState });
 
   const closeModalOnClick = () => {};
 

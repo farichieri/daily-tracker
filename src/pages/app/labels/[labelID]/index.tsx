@@ -4,12 +4,12 @@ import { TaskGroup } from '@/global/types';
 import { filterObjectIncludes } from '@/hooks/helpers';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { selectList } from 'store/slices/listsSlice';
+import { selectTasks } from 'store/slices/tasksSlice';
 
 const LabelID = () => {
   const router = useRouter();
   const taskIDLink = `/app/labels`;
-  const { tasks } = useSelector(selectList);
+  const { tasks } = useSelector(selectTasks);
   const { labelID } = router.query;
 
   const tasksWithLabel: TaskGroup = filterObjectIncludes(

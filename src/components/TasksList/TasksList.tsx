@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import {
-  selectList,
+  selectTasks,
   setDeleteTask,
   setUpdateTask,
-} from 'store/slices/listsSlice';
+} from 'store/slices/tasksSlice';
 import Clock from '../Clock/Clock';
 import { useRouter } from 'next/router';
 import Tasks from './Tasks/Tasks';
@@ -19,7 +19,7 @@ import { filterObject } from '@/hooks/helpers';
 const TasksList = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { tasks } = useSelector(selectList);
+  const { tasks } = useSelector(selectTasks);
   const { listID } = router.query;
   const tasksByListID = filterObject(tasks, 'project_id', String(listID));
   const [tasksState, setTasksState] = useState<TaskGroup>(tasksByListID);

@@ -37,7 +37,7 @@ export interface Task {
   comments: Array<string>;
   completed_at: string;
   content: string;
-  date_set: string;
+  date_set: DateSet;
   description: string;
   done: boolean;
   is_archived: boolean;
@@ -50,9 +50,15 @@ export interface Task {
   subtasks: Array<SubTask>;
   task_id: string;
   task_order: number;
+  updated_at: string;
+}
+
+interface DateSet {
+  date_iso: string;
+  is_recurring: boolean;
   time_from: string;
   time_to: string;
-  updated_at: string;
+  with_time: boolean;
 }
 
 export interface SubTask {
@@ -62,20 +68,18 @@ export interface SubTask {
   comments: Array<string>;
   completed_at: string;
   content: string;
-  date_set: string;
+  date_set: DateSet;
   description: string;
   done: boolean;
   is_archived: boolean;
   minutes_spent: number;
   parent_id: string;
   priority: number;
-  reminder_date: string;
   project_id: string;
+  reminder_date: string;
   section_id: string;
   task_order: number;
   updated_at: string;
-  time_from: string;
-  time_to: string;
 }
 
 export interface UserSettings {

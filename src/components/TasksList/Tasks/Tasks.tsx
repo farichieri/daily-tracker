@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { selectList } from 'store/slices/listsSlice';
 import { selectLabels } from 'store/slices/labelsSlice';
+import { selectTasks } from 'store/slices/tasksSlice';
 
 const Tasks = ({
   tasksState,
@@ -17,7 +18,7 @@ const Tasks = ({
 }) => {
   const router = useRouter();
   const { listID } = router.query;
-  const { tasks } = useSelector(selectList);
+  const { tasks } = useSelector(selectTasks);
   const { labels } = useSelector(selectLabels);
 
   const getLabelsByTask = (taskID: string) => {
@@ -36,7 +37,7 @@ const Tasks = ({
   sortData(tasksState);
 
   return (
-    <>
+    <div className='tasks-container'>
       {Object.keys(tasksState)?.length > 0 &&
         Object.keys(tasksState).map((task) => (
           <Link href={`/app/tasks/${listID}/task/${task}`} key={task}>
@@ -89,6 +90,11 @@ const Tasks = ({
           </Link>
         ))}
       <style jsx>{`
+        .tasks-container {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
         .task-container {
           border: 1px solid gray;
           border-radius: 6px;
@@ -141,7 +147,7 @@ const Tasks = ({
           border-radius: 5px;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

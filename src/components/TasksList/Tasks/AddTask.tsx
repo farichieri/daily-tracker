@@ -1,4 +1,6 @@
 import IconButton from '@/components/Layout/Icon/IconButton';
+import { NewTaskInitial } from '@/global/initialTypes';
+import { Task } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { formatISO } from 'date-fns';
 import { collection, doc, setDoc } from 'firebase/firestore';
@@ -6,7 +8,7 @@ import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { setAddNewTask } from 'store/slices/listsSlice';
+import { setAddNewTask } from 'store/slices/tasksSlice';
 
 const AddTask = () => {
   const router = useRouter();
@@ -19,31 +21,19 @@ const AddTask = () => {
     e.preventDefault();
     if (!user) return;
     if (taskInput) {
-      const newTask = {
-        activity: [],
+      const newTask: Task = {
+        ...NewTaskInitial,
         added_at: formatISO(new Date()),
         added_by_uid: user.uid,
-        assigned_to: [],
-        attachments: [],
-        comments: [],
-        completed_at: '',
         content: taskInput,
-        date_set: '',
-        description: '',
-        done: false,
-        is_archived: false,
-        labels: [],
-        minutes_spent: 0,
-        priority: 0,
         project_id: String(listID),
-        reminder_date: '',
-        section_id: '',
-        subtasks: [],
-        task_id: '',
-        task_order: 0,
-        time_from: '',
-        time_to: '',
-        updated_at: '',
+        date_set: {
+          date_iso: '',
+          is_recurring: false,
+          time_from: '',
+          time_to: '',
+          with_time: false,
+        },
       };
       const newDocRef = doc(collection(db, 'users', user.uid, 'tasks'));
       newTask.task_id = newDocRef.id;

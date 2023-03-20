@@ -8,20 +8,17 @@ import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { setAddNewDayTask } from 'store/slices/trackerSlice';
+import { setAddNewTask } from 'store/slices/tasksSlice';
 
 const AddDayTask = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
-  const { date } = router.query;
   const [newTaskState, setNewTaskState] = useState<Task>(NewTaskInitial);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
-    console.log({ value });
     setNewTaskState({
       ...newTaskState,
       [name]: value,
@@ -32,18 +29,23 @@ const AddDayTask = () => {
     e.preventDefault();
     if (!user) return;
     if (newTaskState.content) {
-      const newTaskRef = doc(
-        collection(db, 'users', user.uid, 'tracker', String(date), 'tasks')
-      );
+      const newTaskRef = doc(collection(db, 'users', user.uid, 'tasks'));
       const newTask = {
         ...newTaskState,
         added_at: formatISO(new Date()),
         project_id: 'tracker',
         task_id: newTaskRef.id,
+        date_set: {
+          date_iso: formatISO(new Date()),
+          is_recurring: false,
+          time_from: '',
+          time_to: '',
+          with_time: false,
+        },
       };
 
       await setDoc(newTaskRef, newTask);
-      dispatch(setAddNewDayTask(newTask));
+      dispatch(setAddNewTask(newTask));
       setNewTaskState(NewTaskInitial);
     }
   };

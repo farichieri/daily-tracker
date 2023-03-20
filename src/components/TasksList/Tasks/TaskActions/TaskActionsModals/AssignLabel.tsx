@@ -3,12 +3,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLabels } from 'store/slices/labelsSlice';
 import { useRouter } from 'next/router';
-import { selectList, setUpdateTask } from 'store/slices/listsSlice';
 import IconButton from '@/components/Layout/Icon/IconButton';
 import { selectUser } from 'store/slices/authSlice';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
-import { selectDayData } from 'store/slices/trackerSlice';
+import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
 
 const AssignLabel = ({
   closeModalOnClick,
@@ -17,14 +16,11 @@ const AssignLabel = ({
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { taskID, date } = router.query;
+  const { taskID } = router.query;
   const { labels } = useSelector(selectLabels);
-  const { day_tasks } = useSelector(selectDayData);
-  const { tasks } = useSelector(selectList);
+  const { tasks } = useSelector(selectTasks);
   const { user } = useSelector(selectUser);
-  const task = date
-    ? { ...day_tasks[String(taskID)] }
-    : { ...tasks[String(taskID)] };
+  const task = { ...tasks[String(taskID)] };
   const [labelsState, setLabelsState] = useState(labels);
   const [labelsSelected, setLabelsSelected] = useState<string[]>(task.labels);
 
