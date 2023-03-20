@@ -42,8 +42,8 @@ const TasksList = () => {
     console.log('Saving Task');
     if (!user) return;
     const docRef = doc(db, 'users', user.uid, 'tasks', taskID);
-    await setDoc(docRef, task);
     dispatch(setUpdateTask(task));
+    await setDoc(docRef, task);
   };
 
   const handleDelete = async (event: React.MouseEvent) => {
@@ -51,8 +51,8 @@ const TasksList = () => {
     if (!user) return;
     const taskID: string = (event.target as HTMLButtonElement).id;
     const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
-    await deleteDoc(docRef);
     dispatch(setDeleteTask(taskID));
+    await deleteDoc(docRef);
   };
 
   useEffect(() => {

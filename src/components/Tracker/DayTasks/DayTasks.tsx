@@ -1,34 +1,31 @@
-import { TasksArray, Task, TaskGroup } from '@/global/types';
+import AddTask from '@/components/TasksList/Tasks/AddTask';
+import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
+import { TasksArray, TaskGroup, Task } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { setDeleteTask, setUpdateTask } from 'store/slices/tasksSlice';
-import AddDayTask from './AddDayTask';
-import DayTask from './DayTask';
+import { selectLabels } from 'store/slices/labelsSlice';
+import {
+  selectTasks,
+  setDeleteTask,
+  setUpdateTask,
+} from 'store/slices/tasksSlice';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { user } = useSelector(selectUser);
   const [tasksState, setTasksState] = useState<TaskGroup>(tasksFiltered);
+  const { tasks } = useSelector(selectTasks);
+  const { labels } = useSelector(selectLabels);
+  const { date } = router.query;
 
-  const handleChange = (event: React.ChangeEvent) => {
+  const handleDelete = async (event: React.MouseEvent) => {
     event.preventDefault();
-    const value: string = (event.target as HTMLButtonElement).value;
-    const name: string = (event.target as HTMLButtonElement).name;
-    const id: string = (event.target as HTMLButtonElement).id;
-    const taskSelected: Task = { ...tasksState[id] };
-    taskSelected[name] = value;
-    setTasksState({
-      ...tasksState,
-      [id]: taskSelected,
-    });
-  };
-
-  const handleRemove = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    console.log(event.target);
     if (!user) return;
     const id: string = (event.target as HTMLButtonElement).id;
     const newTasks: any = { ...tasksState };
@@ -38,8 +35,8 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
       ...newTasks,
     });
     const docRef = doc(db, 'users', user.uid, 'tasks', taskDeleted.task_id);
-    await deleteDoc(docRef);
     dispatch(setDeleteTask(taskDeleted.task_id));
+    await deleteDoc(docRef);
   };
 
   const handleToggleDone = (event: React.MouseEvent) => {
@@ -47,6 +44,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     const id: string = (event.target as HTMLButtonElement).id;
     const newTasks = { ...tasksState };
     const taskSelected: Task = { ...tasksState[id] };
+    console.log({ taskSelected });
     taskSelected.done = !newTasks[id].done;
     setTasksState({
       ...tasksState,
@@ -60,8 +58,8 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
       if (!user) return;
       console.log('Saving DayTask');
       const docRef = doc(db, 'users', user.uid, 'tasks', task.task_id);
-      await setDoc(docRef, task);
       dispatch(setUpdateTask(task));
+      await setDoc(docRef, task);
     }
   };
 
@@ -75,27 +73,30 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     setTasksState(tasksFiltered);
   }, [tasksFiltered]);
 
+  const getLabelsByTask = (taskID: string) => {
+    const task = { ...tasks[String(taskID)] };
+    const labelsSelected = task.labels;
+    const labelsFiltered = labelsSelected?.map((label) => labels[label]);
+    return labelsFiltered;
+  };
+
   return (
     <section className='table'>
       {sortedArrayOfTasks?.map((task) => (
-        <div
+        <Link
+          href={`/app/tracker/${date}/task/${task.task_id}`}
           key={task.task_id}
-          className={`task-container ${task.done ? 'done' : ''}`}
         >
-          <DayTask
-            handleSave={handleSave}
-            handleRemove={handleRemove}
-            task={task}
-            handleChange={handleChange}
-            handleToggleDone={handleToggleDone}
+          <TaskComponent
+            handleDelete={handleDelete}
             taskID={task.task_id}
-            addTask={false}
+            task={task}
+            handleToggleDone={handleToggleDone}
+            getLabelsByTask={getLabelsByTask}
           />
-        </div>
+        </Link>
       ))}
-      <div className='add-task'>
-        <AddDayTask />
-      </div>
+      <AddTask />
       <style jsx>{`
         section {
           width: 100%;

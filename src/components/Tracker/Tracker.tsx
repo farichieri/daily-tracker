@@ -49,10 +49,8 @@ const Tracker = () => {
         handleDatesSelected={handleDatesSelected}
       />
       <div className='tasks-goals-container'>
-        <>
-          <DayTasks tasksFiltered={tasksFiltered} />
-          <Goals />
-        </>
+        <DayTasks tasksFiltered={tasksFiltered} />
+        <Goals />
       </div>
 
       <style jsx>{`

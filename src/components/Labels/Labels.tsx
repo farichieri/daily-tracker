@@ -84,7 +84,7 @@ const Labels = () => {
         }
         .label-container {
           border: 1px solid var(--box-shadow-light);
-          border-radius: 6px;
+          border-radius: 999px;
           width: 100%;
           padding: 0.5rem 1rem;
           display: flex;

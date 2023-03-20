@@ -40,7 +40,7 @@ const DayTask = ({
               value={task.time_from}
             />
           </div>
-          <div className='to-container'>
+          {/* <div className='to-container'>
             <input
               autoComplete='off'
               id={taskID}
@@ -51,7 +51,7 @@ const DayTask = ({
               type='time'
               value={task.time_to}
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className='column task-description'>

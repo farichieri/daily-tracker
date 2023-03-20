@@ -1,21 +1,21 @@
-import TasksLayout from '@/components/Layout/TasksLayout';
-import Modal from '@/components/Modal/Modal';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectList } from 'store/slices/listsSlice';
-import { setUpdateTask } from 'store/slices/tasksSlice';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { SubTask, Task } from '@/global/types';
-import Loader from '@/components/Layout/Loader/Loader';
-import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
-import { selectUser } from 'store/slices/authSlice';
-import ReactTextareaAutosize from 'react-textarea-autosize';
+import { doc, setDoc } from 'firebase/firestore';
 import { formatISO } from 'date-fns';
+import { NewSubtaskIinitial } from '@/global/initialTypes';
+import { selectList } from 'store/slices/listsSlice';
+import { selectTasks } from 'store/slices/tasksSlice';
+import { selectUser } from 'store/slices/authSlice';
+import { setUpdateTask } from 'store/slices/tasksSlice';
+import { SubTask, Task } from '@/global/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import Loader from '@/components/Layout/Loader/Loader';
+import Modal from '@/components/Modal/Modal';
+import React, { useEffect, useState } from 'react';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
 import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
-import { NewSubtaskIinitial } from '@/global/initialTypes';
-import { selectTasks } from 'store/slices/tasksSlice';
+import TasksLayout from '@/components/Layout/TasksLayout';
 
 const TaskID = () => {
   const router = useRouter();
@@ -35,9 +35,7 @@ const TaskID = () => {
     parent_id: String(taskID),
     project_id: String(listID),
   });
-  console.log({ tasks });
-  console.log({ task });
-  console.log({ taskID });
+
   useEffect(() => {
     setTaskState(task);
   }, [task, listID, list, task]);
