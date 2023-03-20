@@ -1,6 +1,6 @@
 import LabelsLayout from '@/components/Layout/LabelsLayout';
 import Modal from '@/components/Modal/Modal';
-import { Task, TaskGroup } from '@/global/types';
+import { TaskGroup } from '@/global/types';
 import { filterObjectIncludes } from '@/hooks/helpers';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -34,9 +34,9 @@ const LabelID = () => {
       <style jsx>{`
         .label-id {
           padding: 2rem 1.5rem;
-          width: 80vw;
+          width: 95vw;
+          height: 90vh;
           max-width: var(--max-width-task);
-          height: 80vh;
           text-align: left;
           display: flex;
           flex-direction: column;

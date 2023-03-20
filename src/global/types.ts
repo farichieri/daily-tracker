@@ -25,6 +25,8 @@ export interface UserDoc {
 // And if a day_task has labels, it will be rendered in the labels
 // And if a day_task has a project_id, it will be rendered in the list of tasks.
 
+export interface TasksArray extends Array<Task> {}
+
 export interface Task {
   [key: string]: any;
   activity: Array<string>;
@@ -48,6 +50,8 @@ export interface Task {
   subtasks: Array<SubTask>;
   task_id: string;
   task_order: number;
+  time_from: string;
+  time_to: string;
   updated_at: string;
 }
 
@@ -70,6 +74,8 @@ export interface SubTask {
   section_id: string;
   task_order: number;
   updated_at: string;
+  time_from: string;
+  time_to: string;
 }
 
 export interface UserSettings {

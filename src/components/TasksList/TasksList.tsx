@@ -64,12 +64,14 @@ const TasksList = () => {
       <div className='header'>
         <Clock />
       </div>
-      <Tasks
-        tasksState={tasksState}
-        handleToggleDone={handleToggleDone}
-        handleDelete={handleDelete}
-      />
-      <AddTask />
+      <div className='tasks-container'>
+        <Tasks
+          tasksState={tasksState}
+          handleToggleDone={handleToggleDone}
+          handleDelete={handleDelete}
+        />
+        <AddTask />
+      </div>
       <style jsx>{`
         .list {
           width: 100%;
@@ -78,6 +80,12 @@ const TasksList = () => {
           flex-direction: column;
           gap: 0.5rem;
           height: calc(100vh - var(--premium-nav-height) - 2rem);
+        }
+        .tasks-container {
+          justify-content: space-between;
+          display: flex;
+          flex-direction: column;
+          height: calc(100% - 5rem);
         }
         .header {
           display: flex;

@@ -118,7 +118,7 @@ const PremiumSidebar = () => {
           )}
         </div>
 
-        <div className='projects'>
+        {/* <div className='projects'>
           <div className='title'>
             <span>My Projects</span>
             <ButtonAction text={'+'} onClick={() => setCreateProject(true)} />
@@ -149,7 +149,7 @@ const PremiumSidebar = () => {
               </span>
             </div>
           ))}
-        </div>
+        </div> */}
         <div className='avatar'>
           <Avatar size={65} changeable={false} />
         </div>

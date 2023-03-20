@@ -19,7 +19,7 @@ const settingOptions = [
   },
 ];
 
-const Settings = () => {
+const Settings = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const [settingSelected, setSettingSelected] = useState('profile');
 
   const handleClick = (event: React.MouseEvent) => {
@@ -34,8 +34,6 @@ const Settings = () => {
         ?.component;
     }
   };
-
-  const closeModalOnClick = () => {};
 
   return (
     <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>

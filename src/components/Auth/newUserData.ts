@@ -58,6 +58,8 @@ export const setNewUserData = async (user: User) => {
       subtasks: [],
       task_id: newTaskRef.id,
       task_order: 0,
+      time_from: '',
+      time_to: '',
       updated_at: '',
     };
     await setDoc(newTaskRef, newTask);

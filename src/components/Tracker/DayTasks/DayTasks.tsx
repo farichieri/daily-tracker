@@ -1,6 +1,6 @@
-import { Task, TaskGroup } from '@/global/types';
+import { TasksArray, Task, TaskGroup } from '@/global/types';
 import { db } from '@/utils/firebase.config';
-import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,9 +17,9 @@ const DayTasks = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { date } = router.query;
+  const { user } = useSelector(selectUser);
   const { day_tasks } = useSelector(selectDayData);
   const [tasksState, setTasksState] = useState<TaskGroup>(day_tasks);
-  const { user } = useSelector(selectUser);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -36,6 +36,7 @@ const DayTasks = () => {
 
   const handleRemove = async (event: React.MouseEvent) => {
     event.preventDefault();
+    console.log(event.target);
     if (!user) return;
     const id: string = (event.target as HTMLButtonElement).id;
     const newTasks: any = { ...tasksState };
@@ -88,35 +89,36 @@ const DayTasks = () => {
     }
   };
 
+  const [sortedArrayOfTasks, setSortedArrayOfTasks] = useState<TasksArray>([]);
+
   useEffect(() => {
     setTasksState(day_tasks);
+    const sortedArray = Object.values(day_tasks).sort((a, b) =>
+      a.time_from.localeCompare(b.time_from)
+    );
+    setSortedArrayOfTasks(sortedArray);
   }, [day_tasks]);
+
+  console.log({ tasksState });
 
   return (
     <section className='table'>
-      {Object.keys(tasksState) ? (
-        Object.keys(tasksState).map((taskID: string) => (
-          <div
-            key={taskID}
-            className={`task-container ${
-              tasksState[taskID].done ? 'done' : ''
-            }`}
-          >
-            <DayTask
-              handleSave={handleSave}
-              handleAdd={null}
-              handleRemove={handleRemove}
-              task={tasksState[taskID]}
-              handleChange={handleChange}
-              handleToggleDone={handleToggleDone}
-              taskID={taskID}
-              addTask={false}
-            />
-          </div>
-        ))
-      ) : (
-        <div>Empty</div>
-      )}
+      {sortedArrayOfTasks.map((task) => (
+        <div
+          key={task.task_id}
+          className={`task-container ${task.done ? 'done' : ''}`}
+        >
+          <DayTask
+            handleSave={handleSave}
+            handleRemove={handleRemove}
+            task={tasksState[task.task_id]}
+            handleChange={handleChange}
+            handleToggleDone={handleToggleDone}
+            taskID={task.task_id}
+            addTask={false}
+          />
+        </div>
+      ))}
       <div className='add-task'>
         <AddDayTask />
       </div>

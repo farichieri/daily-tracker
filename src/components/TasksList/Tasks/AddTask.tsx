@@ -41,6 +41,8 @@ const AddTask = () => {
         subtasks: [],
         task_id: '',
         task_order: 0,
+        time_from: '',
+        time_to: '',
         updated_at: '',
       };
       const newDocRef = doc(collection(db, 'users', user.uid, 'tasks'));
@@ -82,7 +84,6 @@ const AddTask = () => {
           gap: 0.5rem;
           justify-content: space-between;
           min-height: 2.5rem;
-          margin-top: auto;
         }
         .name {
           width: 100%;

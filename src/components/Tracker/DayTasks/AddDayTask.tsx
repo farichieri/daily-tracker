@@ -21,6 +21,7 @@ const AddDayTask = () => {
     event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
+    console.log({ value });
     setNewTaskState({
       ...newTaskState,
       [name]: value,
@@ -50,14 +51,36 @@ const AddDayTask = () => {
   return (
     <div className={`container `}>
       <div className='column hour'>
-        <input
-          placeholder='Hour'
-          onChange={handleChange}
-          value={newTaskState.date_set}
-          name='date_set'
-          spellCheck='false'
-          autoComplete='off'
-        />
+        <div className='labels'>
+          <span className='from'>From</span>
+          <span className='to'>To</span>
+        </div>
+        <div className='hour-inputs'>
+          <div className='from-container'>
+            <input
+              type='time'
+              placeholder='Hour'
+              onChange={handleChange}
+              value={newTaskState.time_from}
+              name='time_from'
+              spellCheck='false'
+              autoComplete='off'
+              min='9:00'
+              max='15:00'
+              step='60'
+            />
+          </div>
+          <div className='to-container'>
+            <input
+              type='time'
+              onChange={handleChange}
+              value={newTaskState.time_to}
+              name='time_to'
+              spellCheck='false'
+              autoComplete='off'
+            />
+          </div>
+        </div>
       </div>
       <div className='column task-description'>
         <input
@@ -67,6 +90,15 @@ const AddDayTask = () => {
           name='content'
           spellCheck='false'
           autoComplete='off'
+        />
+        <input
+          placeholder={'Description'}
+          onChange={handleChange}
+          value={newTaskState.description}
+          name='description'
+          spellCheck='false'
+          autoComplete='off'
+          className='description'
         />
       </div>
       <div className='column action'>
@@ -88,7 +120,6 @@ const AddDayTask = () => {
           border-radius: 5px;
           padding: 0.25rem 0.25 0.25rem 0.25rem;
         }
-
         input {
           background: none;
           color: var(--text-color);
@@ -108,7 +139,20 @@ const AddDayTask = () => {
           font-size: 80%;
           border-right: 3px solid var(--box-shadow);
           margin: 0.5rem 0;
-          max-width: 7rem;
+          max-width: 6rem;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+        .description {
+          font-size: 80%;
+          color: var(--text-secondary-color);
+        }
+        input[type='time']::-webkit-calendar-picker-indicator {
+          display: none;
+        }
+        input[type='time'] {
+          cursor: text;
         }
         .action {
           width: 2.5rem;
@@ -116,6 +160,39 @@ const AddDayTask = () => {
         .container.done .hour {
           border-right: 3px solid #02c3026b;
         }
+        .from-container,
+        .to-container {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          align-items: center;
+        }
+        .labels {
+          width: 100%;
+          display: flex;
+        }
+        .from,
+        .to {
+          font-size: 80%;
+          color: var(--text-secondary-color);
+          width: 100%;
+          text-align: left;
+          padding: 0 0.5rem;
+        }
+        .to {
+          padding-left: 0.85rem;
+        }
+        .hour-inputs {
+          display: flex;
+          align-items: center;
+        }
+        .hour-inputs input {
+          opacity: 0.6;
+
+          display: flex;
+          padding: 0;
+        }
+
         @media screen and (max-width: 500px) {
           .hour {
             max-width: 5.5rem;

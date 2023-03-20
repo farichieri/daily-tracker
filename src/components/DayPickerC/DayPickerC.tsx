@@ -3,13 +3,12 @@ import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDaySelected, setDaySelected } from 'store/slices/trackerSlice';
+import { selectDaySelected } from 'store/slices/trackerSlice';
 import { dbFormatDate } from '@/utils/formatDate';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 const DayPickerC = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const daySelected = useSelector(selectDaySelected);
   const monthSelected = daySelected
@@ -23,7 +22,6 @@ const DayPickerC = () => {
       setSelected(day);
       setOpen(!open);
       router.push(`/app/tracker/${dbFormatDate(day)}`);
-      // dispatch(setDaySelected(dbFormatDate(day)));
     }
   };
 

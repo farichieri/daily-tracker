@@ -1,27 +1,16 @@
 import DayPickerC from '@/components/DayPickerC/DayPickerC';
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { selectTrackerSlice } from 'store/slices/trackerSlice';
 
-const FilterSelect = ({
-  options,
-  handleSelectFilterOption,
-  optionSelected,
-}: {
-  options: any;
-  handleSelectFilterOption: any;
-  optionSelected: string;
-}) => {
+const FilterSelect = () => {
+  const { today } = useSelector(selectTrackerSlice);
   return (
     <div>
       <DayPickerC />
-      {options.map((opt: string, i: number) => (
-        <button
-          key={i}
-          className={`${optionSelected === opt ? 'selected' : ''}`}
-          onClick={handleSelectFilterOption}
-          value={opt}
-        >
-          {opt}
-        </button>
-      ))}
+      <Link href={`/app/tracker/${today}`}>
+        <span>Today</span>
+      </Link>
       <style jsx>{`
         div {
           display: flex;
@@ -30,7 +19,7 @@ const FilterSelect = ({
         .img {
           pointer-events: none;
         }
-        button {
+        span {
           padding: 0.25rem 0.5rem;
           cursor: pointer;
           display: flex;
@@ -42,10 +31,10 @@ const FilterSelect = ({
           border: 1px solid var(--box-shadow-light);
           border-radius: 5px;
         }
-        button:hover {
+        span:hover {
           background: var(--bg-color-tertiary-light);
         }
-        button:active {
+        span:active {
           box-shadow: 0 0 10px 1px var(--box-shadow);
         }
         .selected {

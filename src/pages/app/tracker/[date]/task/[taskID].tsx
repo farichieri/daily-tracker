@@ -1,7 +1,6 @@
-import TasksLayout from '@/components/Layout/TasksLayout';
 import Modal from '@/components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectList, setUpdateTask } from 'store/slices/listsSlice';
+import { setUpdateTask } from 'store/slices/listsSlice';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubTask, Task } from '@/global/types';
@@ -13,17 +12,18 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import { formatISO } from 'date-fns';
 import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
 import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
+import TrackerLayout from '@/components/Layout/TrackerLayout';
+import { selectDayData } from 'store/slices/trackerSlice';
 
 const TaskID = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const { tasks, lists } = useSelector(selectList);
-  const { taskID, listID } = router.query;
+  const { day_tasks } = useSelector(selectDayData);
+
+  const { taskID, date } = router.query;
   const { user } = useSelector(selectUser);
-  const task = tasks[String(taskID)];
-  const list = lists[String(listID)];
+  const task = day_tasks[String(taskID)];
   const [taskState, setTaskState] = useState<Task>(task);
-  const taskIDLink = `/app/tasks/${listID}`;
+  const taskIDLink = `/app/tracker/${date}`;
   const [isSaveable, setIsSaveable] = useState(false);
   const [subtaskState, setSubtaskState] = useState<SubTask>({
     added_at: formatISO(new Date()),
@@ -39,7 +39,7 @@ const TaskID = () => {
     minutes_spent: 0,
     parent_id: String(taskID),
     priority: 0,
-    project_id: String(listID),
+    project_id: 'tracker',
     reminder_date: '',
     section_id: '',
     task_order: 0,
@@ -50,7 +50,7 @@ const TaskID = () => {
 
   useEffect(() => {
     setTaskState(task);
-  }, [task, listID, list, task]);
+  }, [task, date, task]);
 
   useEffect(() => {
     if (isSaveable) {
@@ -92,14 +92,14 @@ const TaskID = () => {
       console.log('Saving taskID');
       const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
       await setDoc(docRef, taskState);
-      dispatch(setUpdateTask(taskState));
+      // dispatch(setUpdateTask(taskState));
     }
   };
 
   const closeModalOnClick = () => {};
 
   return (
-    <TasksLayout>
+    <TrackerLayout>
       {!taskState ? (
         <Loader fullScreen={true} text={''} />
       ) : (
@@ -195,7 +195,7 @@ const TaskID = () => {
           }
         `}
       </style>
-    </TasksLayout>
+    </TrackerLayout>
   );
 };
 

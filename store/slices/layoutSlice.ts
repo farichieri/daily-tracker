@@ -9,7 +9,6 @@ interface LayoutSlice {
   isEditingProject: boolean;
   isEditingList: boolean;
   isLoading: boolean;
-  isProfileOpen: boolean;
   page: string;
 }
 
@@ -21,7 +20,6 @@ const initialState: LayoutSlice = {
   isEditingProject: false,
   isEditingList: false,
   isLoading: false,
-  isProfileOpen: false,
   page: '',
 };
 
@@ -50,15 +48,10 @@ export const layoutSlice = createSlice({
       state.isEditingProject = false;
       state.isCreatingList = false;
       state.isEditingList = false;
-      state.isProfileOpen = false;
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-    toggleIsProfileOpen: (state) => {
-      state.isProfileOpen = !state.isProfileOpen;
-    },
-    setPage: (state, action: PayloadAction<string>) => {},
   },
 });
 
@@ -69,7 +62,6 @@ export const {
   toggleIsCreatingList,
   closeModal,
   setIsLoading,
-  toggleIsProfileOpen,
   toggleIsEditingList,
 } = layoutSlice.actions;
 
@@ -85,7 +77,5 @@ export const selectIsCreatingList = (state: RootState) =>
 export const selectIsEditingList = (state: RootState) =>
   state.layout.isEditingList;
 export const selectIsLoading = (state: RootState) => state.layout.isLoading;
-export const selectIsProfileOpen = (state: RootState) =>
-  state.layout.isProfileOpen;
 
 export default layoutSlice.reducer;

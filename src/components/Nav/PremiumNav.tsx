@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { selectProjectSelected } from 'store/slices/trackerSlice';
 import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
 import { selectListSelected } from 'store/slices/listsSlice';
+import { useState } from 'react';
+import Settings from '../Settings/Settings';
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
@@ -17,12 +19,19 @@ const PremiumNav = () => {
     ? `Task List: ${listSelected?.list_name}`
     : `Tracker: ${projectSelected?.project_name}`;
 
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
 
+  const closeModalOnClick = () => {
+    setIsSettingsOpen(false); //
+  };
+
   return (
     <nav>
+      {isSettingsOpen && <Settings closeModalOnClick={closeModalOnClick} />}
       <span className='toggle-sidebar' onClick={handleToggleSidebar}>
         {sidebarState ? (
           <Image
@@ -44,7 +53,7 @@ const PremiumNav = () => {
       </span>
       <span className='project-selected'>{selected}</span>
       <div className='user-dark'>
-        <ProfileDropDown />
+        <ProfileDropDown setIsSettingsOpen={setIsSettingsOpen} />
         <DarkMode />
       </div>
       <style jsx>{`

@@ -23,4 +23,6 @@ export const NewTaskInitial: Task = {
   subtasks: [],
   task_order: 0,
   updated_at: '',
+  time_from: '',
+  time_to: '',
 };

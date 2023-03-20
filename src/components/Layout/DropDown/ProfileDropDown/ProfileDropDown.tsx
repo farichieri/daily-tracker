@@ -5,10 +5,13 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import { toggleIsProfileOpen } from 'store/slices/layoutSlice';
 import DropDown from '../DropDown';
 
-const ProfileDropDown = () => {
+const ProfileDropDown = ({
+  setIsSettingsOpen,
+}: {
+  setIsSettingsOpen: Function;
+}) => {
   const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
   const router = useRouter();
@@ -25,7 +28,7 @@ const ProfileDropDown = () => {
   };
 
   const handleOpenProfile = () => {
-    dispatch(toggleIsProfileOpen());
+    setIsSettingsOpen(true);
     setCloseDrop(true);
   };
 

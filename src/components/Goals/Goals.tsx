@@ -147,13 +147,14 @@ const Goals = () => {
           flex-direction: column;
           justify-content: start;
           align-items: center;
-          margin-top: 1rem;
+          padding-bottom: 10rem;
         }
         .goals-button {
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 1rem;
+          margin: 2rem 0 1rem 0;
         }
         .objetives-container {
           width: 100%;
