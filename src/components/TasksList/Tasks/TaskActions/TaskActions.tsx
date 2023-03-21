@@ -41,16 +41,19 @@ const TaskActions = () => {
         <button onClick={() => setOpenAssignReminder(true)}>Reminder</button>
       </div>
       <div className='task-actions-show'>
-        {labelsInTask.map((label) => (
-          <span
-            className='label'
-            key={label.label_id}
-            style={{ background: `${label.label_color}` }}
-            onClick={() => setOpenAssignLabel(true)}
-          >
-            {label.label_name}
-          </span>
-        ))}
+        {labelsInTask.map(
+          (label) =>
+            label && (
+              <span
+                className='label'
+                key={label.label_id}
+                style={{ background: `${label.label_color}` }}
+                onClick={() => setOpenAssignLabel(true)}
+              >
+                {label.label_name}
+              </span>
+            )
+        )}
       </div>
       <style jsx>{`
         .container {
