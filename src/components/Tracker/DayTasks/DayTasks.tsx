@@ -2,16 +2,12 @@ import AddTask from '@/components/TasksList/Tasks/AddTask';
 import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
 import { TasksArray, TaskGroup, Task } from '@/global/types';
 import { db } from '@/utils/firebase.config';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import { selectLabels } from 'store/slices/labelsSlice';
-import {
-  selectTasks,
-  setDeleteTask,
-  setUpdateTask,
-} from 'store/slices/tasksSlice';
+import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -23,21 +19,6 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   const { tasks } = useSelector(selectTasks);
   const { labels } = useSelector(selectLabels);
   const { date } = router.query;
-
-  const handleDelete = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    if (!user) return;
-    const id: string = (event.target as HTMLButtonElement).id;
-    const newTasks: any = { ...tasksState };
-    const taskDeleted = newTasks[id];
-    delete newTasks[id];
-    setTasksState({
-      ...newTasks,
-    });
-    const docRef = doc(db, 'users', user.uid, 'tasks', taskDeleted.task_id);
-    dispatch(setDeleteTask(taskDeleted.task_id));
-    await deleteDoc(docRef);
-  };
 
   const handleToggleDone = (event: React.MouseEvent) => {
     event.preventDefault();

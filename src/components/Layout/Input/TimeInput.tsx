@@ -9,7 +9,7 @@ type Props = {
 };
 
 const TimeInput = (props: Props) => {
-  const [timeTo, setTimeTo] = useState(false);
+  const [timeTo, setTimeTo] = useState(!!props.value);
 
   return (
     <div>
@@ -28,6 +28,7 @@ const TimeInput = (props: Props) => {
             onBlur={props.onBlur}
             spellCheck='false'
             autoComplete='off'
+            min={'18:00'}
           />
           <button
             className='close_time_to'

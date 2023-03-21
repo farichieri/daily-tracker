@@ -1,8 +1,10 @@
 import IconButton from '@/components/Layout/Icon/IconButton';
-import { Label, Task, TaskGroup } from '@/global/types';
-import { formatTime } from '@/utils/formatDate';
+import { Label, Task } from '@/global/types';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { selectLists } from 'store/slices/listsSlice';
 
-const Task = ({
+const TaskComponent = ({
   taskID,
   task,
   handleToggleDone,
@@ -13,9 +15,15 @@ const Task = ({
   handleToggleDone: any;
   getLabelsByTask: Function;
 }) => {
+  const router = useRouter();
+  const projects = useSelector(selectLists);
+
   return (
     <div className={`task-container ${task.done ? 'done' : ''}`}>
       <div className='task' id={taskID}>
+        {!router.pathname.includes('tracker') && task.date_set.date_iso && (
+          <div className='date'>{task.date_set.date_iso.slice(0, 10)}</div>
+        )}
         <div className='times'>
           {task.date_set.time_from && (
             <div className='time_from'>{task.date_set.time_from}</div>
@@ -26,9 +34,15 @@ const Task = ({
             </>
           )}
         </div>
-        <div className='name-labels'>
-          <div className={`name ${task.done ? 'done' : ''}`}>
-            {task.content}
+        <div className='column'>
+          <div className='project'>{projects[task.project_id]?.list_name}</div>
+          <div className='content-description'>
+            <div className={`name ${task.done ? 'done' : ''}`}>
+              {task.content}
+            </div>
+            {task.description && (
+              <div className='description'>{task.description}</div>
+            )}
           </div>
           <div className='labels'>
             {getLabelsByTask(taskID)?.map(
@@ -53,18 +67,6 @@ const Task = ({
             height={24}
           />
         </div>
-        {/* {task.done && (
-          <div className='delete'>
-            <IconButton
-              props={{ id: taskID }}
-              onClick={handleDelete}
-              src={'/icons/delete.png'}
-              alt='Delete-Icon'
-              width={24}
-              height={24}
-            />
-          </div>
-        )} */}
       </div>
       <style jsx>{`
         .task-container {
@@ -92,12 +94,27 @@ const Task = ({
         .task-container.done:hover {
           background: var(--done);
         }
+        .project {
+          font-size: 70%;
+          color: var(--box-shadow);
+          display: flex;
+          margin: 0;
+          padding: 0;
+          line-height: 1;
+        }
         .task {
           width: 100%;
           display: flex;
           pointer-events: none;
           gap: 0.5rem;
           align-items: center;
+        }
+        .date {
+          min-width: fit-content;
+          font-size: 70%;
+          border: 1px solid var(--box-shadow);
+          padding: 0.25rem;
+          border-radius: 6px;
         }
         .name {
           width: 100%;
@@ -112,11 +129,12 @@ const Task = ({
         .delete {
           pointer-events: initial;
         }
-        .name-labels {
+        .column {
           width: 100%;
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
+          overflow: hidden;
+          white-space: nowrap;
         }
         .labels {
           display: flex;
@@ -141,10 +159,18 @@ const Task = ({
           width: 1rem;
           height: 0.2rem;
           border-radius: 5px;
+          margin-top: 0.25rem;
+        }
+        .description {
+          font-size: 80%;
+          text-align: left;
+          opacity: 0.7;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
       `}</style>
     </div>
   );
 };
 
-export default Task;
+export default TaskComponent;

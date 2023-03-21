@@ -91,9 +91,21 @@ const Labels = () => {
           justify-content: space-between;
           pointer-events: none;
         }
+        .buttons {
+          display: flex;
+          gap: 0.5rem;
+        }
         button {
           cursor: pointer;
           pointer-events: initial;
+          background: transparent;
+          color: var(--text-color);
+          border: 1px solid var(--box-shadow);
+          border-radius: 6px;
+          padding: 0.25rem 0.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .add-label {
           margin-left: auto;

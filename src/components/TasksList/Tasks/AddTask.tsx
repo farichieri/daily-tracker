@@ -13,6 +13,7 @@ import AssignLabel from './TaskActions/TaskActionsModals/AssignLabel';
 import { selectLabels } from 'store/slices/labelsSlice';
 import LabelsButton from '@/components/Layout/Button/LabelsButton';
 import TimeInput from '@/components/Layout/Input/TimeInput';
+import DayPickerC from '@/components/DayPickerC/DayPickerC';
 
 const AddTask = () => {
   const router = useRouter();
@@ -184,6 +185,9 @@ const AddTask = () => {
           )}
           <div className='labels'>
             <LabelsButton onClick={handleOpenLabels} />
+          </div>
+          <div className='day-picker'>
+            <DayPickerC />
           </div>
           <div className='add-button'>
             <IconButton

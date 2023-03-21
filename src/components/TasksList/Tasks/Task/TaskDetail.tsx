@@ -92,6 +92,9 @@ const TaskID = ({
   };
 
   const handleSave = async () => {
+    console.log({ task });
+    console.log({ taskState });
+    console.log(JSON.stringify(task) !== JSON.stringify(taskState));
     if (JSON.stringify(task) !== JSON.stringify(taskState)) {
       if (!user) return;
       console.log('Saving taskID');
@@ -139,6 +142,7 @@ const TaskID = ({
       ...taskState,
       ['date_set']: newDateSet,
     });
+    setIsSaveable(true);
   };
 
   return (

@@ -1,12 +1,10 @@
 import PremiumLayout from '@/components/Layout/PremiumLayout';
-import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
 import TasksList from '@/components/TasksList/TasksList';
 
 const TasksLayout = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
   const { user } = useSelector(selectUser);
 
   return (

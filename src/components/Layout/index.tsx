@@ -11,12 +11,11 @@ import {
   verifyUser,
   userVerified,
   setUserSettings,
-  selectUser,
 } from 'store/slices/authSlice';
 import { selectTheme } from 'store/slices/themeSlice';
 import { useSelector } from 'react-redux';
 import { getUserSettings } from '@/hooks/firebase';
-import { UserSettings } from '@/global/types';
+import effects from '@/styles/effects';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
@@ -79,6 +78,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </style>
       <style jsx global>
         {colors}
+      </style>
+      <style jsx global>
+        {effects}
       </style>
     </>
   );
