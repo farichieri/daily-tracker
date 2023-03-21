@@ -7,21 +7,25 @@ import IconButton from '@/components/Layout/Icon/IconButton';
 import { selectUser } from 'store/slices/authSlice';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
-import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
+import { setUpdateTask } from 'store/slices/tasksSlice';
+import { Task } from '@/global/types';
 
 const AssignLabel = ({
   closeModalOnClick,
+  isNewTask,
+  task,
+  handleChangeLabels,
 }: {
   closeModalOnClick: Function;
+  isNewTask: boolean;
+  task: Task;
+  handleChangeLabels: Function;
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { taskID } = router.query;
   const { labels } = useSelector(selectLabels);
-  const { tasks } = useSelector(selectTasks);
   const { user } = useSelector(selectUser);
-  const task = { ...tasks[String(taskID)] };
-  const [labelsState, setLabelsState] = useState(labels);
   const [labelsSelected, setLabelsSelected] = useState<string[]>(task.labels);
 
   const handleToggleLabel = (event: React.MouseEvent) => {
@@ -36,13 +40,18 @@ const AssignLabel = ({
   };
 
   const handleSave = async () => {
-    if (!user) return;
-    console.log('Saving Labels in taskID');
-    task.labels = labelsSelected;
-    const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
-    await setDoc(docRef, task);
-    dispatch(setUpdateTask(task));
-    closeModalOnClick();
+    if (isNewTask) {
+      handleChangeLabels(labelsSelected);
+      closeModalOnClick();
+    } else {
+      if (!user) return;
+      console.log('Saving Labels in taskID');
+      task.labels = labelsSelected;
+      const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
+      await setDoc(docRef, task);
+      dispatch(setUpdateTask(task));
+      closeModalOnClick();
+    }
   };
 
   return (
@@ -50,15 +59,15 @@ const AssignLabel = ({
       <div className='assign-labels-container'>
         <div className='title'>Asign Label</div>
         <div className='labels-container'>
-          {Object.keys(labelsState).map((label) => (
+          {Object.keys(labels).map((label) => (
             <span
               key={label}
               id={label}
               className='label'
-              style={{ background: `${labelsState[label].label_color}` }}
+              style={{ background: `${labels[label].label_color}` }}
               onClick={handleToggleLabel}
             >
-              <span>{labelsState[label].label_name}</span>
+              <span>{labels[label].label_name}</span>
               <span>
                 <IconButton
                   onClick={handleToggleLabel}

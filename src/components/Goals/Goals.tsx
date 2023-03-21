@@ -1,5 +1,5 @@
 import { db } from '@/utils/firebase.config';
-import { doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
@@ -10,11 +10,14 @@ import {
 import Button from '../Layout/Button/Button';
 import IconButton from '../Layout/Icon/IconButton';
 import Tooltip from '../Layout/Tooltip/Tooltip';
+import { useRouter } from 'next/router';
 
 const Goals = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { dayData } = useSelector(selectTrackerSlice);
   const { day_goals, day_date } = dayData;
+  const { date } = router.query;
   const { user } = useSelector(selectUser);
   const [goalsState, setGoalsState] = useState<string[]>(day_goals);
   const [newGoal, setnewGoal] = useState('');
@@ -60,8 +63,8 @@ const Goals = () => {
     if (JSON.stringify(day_goals) !== JSON.stringify(goalsState)) {
       if (!user) return;
       console.log('Updating Goals');
-      const docRef = doc(db, 'users', user.uid, 'tracker', day_date);
-      await updateDoc(docRef, { day_goals: goalsState });
+      const docRef = doc(db, 'users', user.uid, 'tracker', String(date));
+      await setDoc(docRef, { day_goals: goalsState });
       dispatch(setUpdateDayGoals(goalsState));
     }
   };

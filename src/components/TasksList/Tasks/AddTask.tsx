@@ -4,18 +4,24 @@ import { formatISO } from 'date-fns';
 import { NewTaskInitial } from '@/global/initialTypes';
 import { selectUser } from 'store/slices/authSlice';
 import { setAddNewTask } from 'store/slices/tasksSlice';
-import { Task } from '@/global/types';
+import { Label, Task } from '@/global/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/dist/client/router';
-import { useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import IconButton from '@/components/Layout/Icon/IconButton';
+import AssignLabel from './TaskActions/TaskActionsModals/AssignLabel';
+import { selectLabels } from 'store/slices/labelsSlice';
+import LabelsButton from '@/components/Layout/Button/LabelsButton';
+import TimeInput from '@/components/Layout/Input/TimeInput';
 
 const AddTask = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
   const { listID, date } = router.query;
+  const { labels } = useSelector(selectLabels);
   const [newTaskState, setNewTaskState] = useState<Task>(NewTaskInitial);
+  const [openAssignLabel, setOpenAssignLabel] = useState(false);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -27,27 +33,63 @@ const AddTask = () => {
     });
   };
 
+  const handleChangeDates = (event: React.ChangeEvent) => {
+    event.preventDefault();
+    const name: string = (event.target as HTMLButtonElement).name;
+    const value: string = (event.target as HTMLButtonElement).value;
+    const newDateSet = {
+      ...newTaskState.date_set,
+      [name]: value,
+    };
+    setNewTaskState({
+      ...newTaskState,
+      ['date_set']: newDateSet,
+    });
+  };
+
+  const handleOpenLabels = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setOpenAssignLabel(true);
+  };
+
+  const handleChangeLabels = (labelsSelected: []) => {
+    setNewTaskState({
+      ...newTaskState,
+      labels: labelsSelected,
+    });
+  };
+
+  const getLabelsSelected = () => {
+    return newTaskState.labels?.map((label) => labels[label]);
+  };
+
   const handleAdd = async (e: any) => {
     e.preventDefault();
     if (!user) return;
     if (newTaskState.content) {
       const project_id = listID ? String(listID) : 'tracker';
       const date_iso =
-        listID && newTaskState.date_iso ? newTaskState.date_iso : date;
+        !newTaskState.date_set.date_iso && !listID && date
+          ? String(date)
+          : !newTaskState.date_set.date_iso && listID
+          ? ''
+          : String(date);
+      const time_from = newTaskState.date_set.time_from;
+      const time_to = newTaskState.date_set.time_to;
 
       const newDocRef = doc(collection(db, 'users', user.uid, 'tasks'));
       const newTask: Task = {
-        ...NewTaskInitial,
+        ...newTaskState,
         added_at: formatISO(new Date()),
         added_by_uid: user.uid,
         task_id: newDocRef.id,
         content: newTaskState.content,
         project_id: project_id,
         date_set: {
-          date_iso: date_iso,
+          date_iso: date_iso || '',
           is_recurring: false,
-          time_from: newTaskState.time_from || '',
-          time_to: '',
+          time_from: time_from || '',
+          time_to: (time_from && time_to) || '',
           with_time: false,
         },
       };
@@ -58,8 +100,32 @@ const AddTask = () => {
     }
   };
 
+  const closeModalOnClick = () => {
+    setOpenAssignLabel(false);
+  };
+
+  const removeTime = (event: React.MouseEvent) => {
+    const name: string = (event.target as HTMLButtonElement).name;
+    const newDateSet = {
+      ...newTaskState.date_set,
+      [name]: '',
+    };
+    setNewTaskState({
+      ...newTaskState,
+      ['date_set']: newDateSet,
+    });
+  };
+
   return (
     <form className='new-task' onSubmit={handleAdd}>
+      {openAssignLabel && (
+        <AssignLabel
+          closeModalOnClick={closeModalOnClick}
+          isNewTask={true}
+          task={newTaskState}
+          handleChangeLabels={handleChangeLabels}
+        />
+      )}
       <div className='content-container'>
         <div className='row'>
           <input
@@ -84,21 +150,40 @@ const AddTask = () => {
           />
         </div>
         <div className='row'>
+          <div className='labels'>
+            {getLabelsSelected().map(
+              (label: Label) =>
+                label && (
+                  <div
+                    key={label.label_id}
+                    className='label'
+                    style={{ background: `${label.label_color}` }}
+                  ></div>
+                )
+            )}
+          </div>
+        </div>
+        <div className='row'>
           <div className='time_from'>
-            <input
-              type='time'
+            <TimeInput
+              onBlur={() => {}}
               name='time_from'
-              value={newTaskState.time_from}
-              onChange={handleChange}
-              spellCheck='false'
-              autoComplete='off'
+              value={newTaskState.date_set.time_from}
+              onChange={handleChangeDates}
+              removeTime={removeTime}
             />
           </div>
+          {newTaskState.date_set.time_from && (
+            <TimeInput
+              onBlur={() => {}}
+              name='time_to'
+              value={newTaskState.date_set.time_to}
+              onChange={handleChangeDates}
+              removeTime={removeTime}
+            />
+          )}
           <div className='labels'>
-            <button>Labels</button>
-          </div>
-          <div className='time'>
-            <button>Time Estimated</button>
+            <LabelsButton onClick={handleOpenLabels} />
           </div>
           <div className='add-button'>
             <IconButton
@@ -131,8 +216,6 @@ const AddTask = () => {
             inset -1px 0 0 rgb(255 255 255 / 1%), 0 0 4px 0 rgb(95 99 104 / 25%),
             0 0 6px 2px rgb(95 99 104 / 25%);
         }
-         {
-        }
         .content-container {
           width: 100%;
           display: flex;
@@ -159,17 +242,27 @@ const AddTask = () => {
         input[name='description'] {
           font-size: 80%;
         }
-        .time_from {
-          border: 1px solid var(--box-shadow);
-          display: flex;
-          max-width: 5rem;
+        .add-time_to {
+          background: none;
           border-radius: 6px;
+          color: var(--text-color);
+          border: 1px solid var(--box-shadow);
         }
         .add-button {
           margin-left: auto;
         }
         button {
           cursor: pointer;
+        }
+        .labels {
+          display: flex;
+          gap: 0.2rem;
+          align-items: center;
+        }
+        .label {
+          width: 1rem;
+          height: 0.2rem;
+          border-radius: 5px;
         }
       `}</style>
     </form>

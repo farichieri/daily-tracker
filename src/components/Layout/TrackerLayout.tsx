@@ -6,25 +6,6 @@ import { selectUser } from 'store/slices/authSlice';
 
 const TrackerLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
-  // const { day_date } = useSelector(selectDayData);
-  // const router = useRouter();
-  // const dispatch = useDispatch();
-  // const { date } = router.query;
-
-  // useEffect(() => {
-  //   if (date && date !== day_date) {
-  //     dispatch(setCleanDayData());
-  //     dispatch(setDaySelected(String(date)));
-  //     const getData = async () => {
-  //       if (!user) return;
-  //       console.log('Fetching DayData');
-  //       const data = await getDayData(user, String(date));
-  //       dispatch(setDayData(data));
-  //     };
-  //     getData();
-  //   }
-  // }, [date, user]);
-
   return (
     <PremiumLayout withPadding={false}>
       <div className='container'>

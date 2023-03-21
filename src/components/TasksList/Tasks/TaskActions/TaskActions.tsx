@@ -6,6 +6,8 @@ import AssignLabel from './TaskActionsModals/AssignLabel';
 import AssignReminder from './TaskActionsModals/AssignReminder';
 import { Label } from '@/global/types';
 import { selectTasks } from 'store/slices/tasksSlice';
+import LabelsButton from '@/components/Layout/Button/LabelsButton';
+import ReminderButton from '@/components/Layout/Button/ReminderButton';
 
 const TaskActions = () => {
   const router = useRouter();
@@ -32,13 +34,22 @@ const TaskActions = () => {
     <div className='container'>
       <div className='task-actions'>
         {openAssignLabel && (
-          <AssignLabel closeModalOnClick={closeModalOnClick} />
+          <AssignLabel
+            closeModalOnClick={closeModalOnClick}
+            isNewTask={false}
+            task={task}
+            handleChangeLabels={() => null}
+          />
         )}
         {openAssignReminder && (
           <AssignReminder closeModalOnClick={closeModalOnClick} />
         )}
-        <button onClick={() => setOpenAssignLabel(true)}>Label</button>
-        <button onClick={() => setOpenAssignReminder(true)}>Reminder</button>
+        <div className='labels'>
+          <LabelsButton onClick={() => setOpenAssignLabel(true)} />
+        </div>
+        <div className='reminder'>
+          <ReminderButton onClick={() => setOpenAssignReminder(true)} />
+        </div>
       </div>
       <div className='task-actions-show'>
         {labelsInTask.map(
