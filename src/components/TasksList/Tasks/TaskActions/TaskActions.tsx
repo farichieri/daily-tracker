@@ -14,12 +14,12 @@ const TaskActions = () => {
   const { tasks } = useSelector(selectTasks);
   const { taskID } = router.query;
   const task = { ...tasks[String(taskID)] };
-  const labelsSelected = task.labels;
+  const labelsSelected = task?.labels;
   const { labels } = useSelector(selectLabels);
   const [labelsInTask, setLabelsInTask] = useState<Label[]>([]);
 
   useEffect(() => {
-    const labelsFiltered = labelsSelected.map((label) => labels[label]);
+    const labelsFiltered = labelsSelected?.map((label) => labels[label]);
     setLabelsInTask(labelsFiltered);
   }, [labelsSelected]);
 

@@ -89,8 +89,11 @@ const DaysSelector = ({
           border: 1px solid transparent;
           border-radius: 5px;
         }
+        .date-button:hover {
+          background: var(--bg-color-tertiary-light);
+        }
         .date-button:active {
-          box-shadow: 0 0 10px 1px var(--box-shadow);
+          border: 1px solid var(--bg-color-tertiary-light);
         }
         .weekday {
           font-size: 0.7rem;

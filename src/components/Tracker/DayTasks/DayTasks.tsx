@@ -67,7 +67,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
 
   useEffect(() => {
     const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
-      a.time_from.localeCompare(b.time_from)
+      a.date_set.time_from?.localeCompare(b.date_set.time_from)
     );
     setSortedArrayOfTasks(sortedArray);
     setTasksState(tasksFiltered);
@@ -82,20 +82,21 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
 
   return (
     <section className='table'>
-      {sortedArrayOfTasks?.map((task) => (
-        <Link
-          href={`/app/tracker/${date}/task/${task.task_id}`}
-          key={task.task_id}
-        >
-          <TaskComponent
-            handleDelete={handleDelete}
-            taskID={task.task_id}
-            task={task}
-            handleToggleDone={handleToggleDone}
-            getLabelsByTask={getLabelsByTask}
-          />
-        </Link>
-      ))}
+      <div className='tasks'>
+        {sortedArrayOfTasks?.map((task) => (
+          <Link
+            href={`/app/tracker/${date}/task/${task.task_id}`}
+            key={task.task_id}
+          >
+            <TaskComponent
+              taskID={task.task_id}
+              task={task}
+              handleToggleDone={handleToggleDone}
+              getLabelsByTask={getLabelsByTask}
+            />
+          </Link>
+        ))}
+      </div>
       <AddTask />
       <style jsx>{`
         section {
@@ -109,31 +110,12 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
           display: flex;
           flex-direction: column;
           border-collapse: collapse;
+          gap: 1rem;
+        }
+        .tasks {
           gap: 0.25rem;
-        }
-        .task-container {
-          border-bottom: 1px solid var(--box-shadow-light);
           display: flex;
-          background: var(--box-shadow-light);
-          border-radius: 6px;
-          overflow: auto;
-        }
-        .add-task {
-          -webkit-box-shadow: 0 8px 16px 0 var(--box-shadow-light);
-          box-shadow: 0 8px 16px 0 var(--box-shadow-light);
-          border-bottom: 1px solid var(--box-shadow-light);
-          display: flex;
-          border-radius: 6px;
-          overflow: auto;
-        }
-        .task-container.done {
-          background: #073b0761;
-        }
-
-        .task-container:hover {
-          box-shadow: inset 1px 0 0 rgb(255 255 255 / 1%),
-            inset -1px 0 0 rgb(255 255 255 / 1%), 0 0 4px 0 rgb(95 99 104 / 25%),
-            0 0 6px 2px rgb(95 99 104 / 25%);
+          flex-direction: column;
         }
       `}</style>
     </section>

@@ -65,11 +65,7 @@ const TasksList = () => {
         <Clock />
       </div>
       <div className='tasks-container'>
-        <Tasks
-          tasksState={tasksState}
-          handleToggleDone={handleToggleDone}
-          handleDelete={handleDelete}
-        />
+        <Tasks tasksState={tasksState} handleToggleDone={handleToggleDone} />
         <AddTask />
       </div>
       <style jsx>{`

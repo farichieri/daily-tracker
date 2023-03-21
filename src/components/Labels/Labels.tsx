@@ -67,7 +67,7 @@ const Labels = () => {
           align-items: start;
           width: 100%;
           text-align: left;
-          max-width: var(--max-width-content);
+          max-width: 600px;
           gap: 1rem;
           margin: 2rem;
         }
@@ -83,8 +83,8 @@ const Labels = () => {
           gap: 0.5rem;
         }
         .label-container {
-          border: 1px solid var(--box-shadow-light);
-          border-radius: 999px;
+          border: none;
+          border-bottom: 1px solid var(--box-shadow-light);
           width: 100%;
           padding: 0.5rem 1rem;
           display: flex;

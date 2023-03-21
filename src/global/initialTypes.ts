@@ -12,8 +12,8 @@ export const NewTaskInitial: Task = {
   date_set: {
     date_iso: '',
     is_recurring: false,
-    time_from: 'string',
-    time_to: 'string',
+    time_from: '',
+    time_to: '',
     with_time: false,
   },
   description: '',
@@ -28,8 +28,6 @@ export const NewTaskInitial: Task = {
   subtasks: [],
   task_id: '',
   task_order: 0,
-  time_from: '',
-  time_to: '',
   updated_at: '',
 };
 
@@ -43,8 +41,8 @@ export const NewSubtaskIinitial: SubTask = {
   date_set: {
     date_iso: '',
     is_recurring: false,
-    time_from: 'string',
-    time_to: 'string',
+    time_from: '',
+    time_to: '',
     with_time: false,
   },
   description: '',

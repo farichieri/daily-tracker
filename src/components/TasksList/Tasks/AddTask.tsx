@@ -33,11 +33,8 @@ const AddTask = () => {
     if (newTaskState.content) {
       const project_id = listID ? String(listID) : 'tracker';
       const date_iso =
-        listID && newTaskState.date_iso
-          ? newTaskState.date_iso
-          : date
-          ? formatISO(new Date())
-          : '';
+        listID && newTaskState.date_iso ? newTaskState.date_iso : date;
+
       const newDocRef = doc(collection(db, 'users', user.uid, 'tasks'));
       const newTask: Task = {
         ...NewTaskInitial,
@@ -49,7 +46,7 @@ const AddTask = () => {
         date_set: {
           date_iso: date_iso,
           is_recurring: false,
-          time_from: '',
+          time_from: newTaskState.time_from || '',
           time_to: '',
           with_time: false,
         },
@@ -115,10 +112,9 @@ const AddTask = () => {
           </div>
         </div>
       </div>
-
       <style jsx>{`
         .new-task {
-          border: 1px solid gray;
+          border: 1px solid var(--box-shadow-light);
           border-radius: 1rem;
           width: 100%;
           display: flex;
@@ -127,6 +123,15 @@ const AddTask = () => {
           gap: 0.5rem;
           justify-content: space-between;
           min-height: 5rem;
+          transition: 0.3s;
+        }
+        .new-task:hover,
+        .new-task:focus-within {
+          box-shadow: inset 1px 0 0 rgb(255 255 255 / 1%),
+            inset -1px 0 0 rgb(255 255 255 / 1%), 0 0 4px 0 rgb(95 99 104 / 25%),
+            0 0 6px 2px rgb(95 99 104 / 25%);
+        }
+         {
         }
         .content-container {
           width: 100%;

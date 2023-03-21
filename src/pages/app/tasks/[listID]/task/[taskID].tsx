@@ -84,8 +84,6 @@ const TaskID = () => {
     }
   };
 
-  console.log({ taskState });
-
   const closeModalOnClick = () => {};
 
   return (

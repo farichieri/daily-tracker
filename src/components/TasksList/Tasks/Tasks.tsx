@@ -10,11 +10,9 @@ import { useEffect, useState } from 'react';
 const Tasks = ({
   tasksState,
   handleToggleDone,
-  handleDelete,
 }: {
   tasksState: TaskGroup;
   handleToggleDone: any;
-  handleDelete: any;
 }) => {
   const router = useRouter();
   const { listID } = router.query;
@@ -57,7 +55,6 @@ const Tasks = ({
             task={task}
             handleToggleDone={handleToggleDone}
             getLabelsByTask={getLabelsByTask}
-            handleDelete={handleDelete}
           />
         </Link>
       ))}

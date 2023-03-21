@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubTask, Task } from '@/global/types';
 import Loader from '@/components/Layout/Loader/Loader';
-import { doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { selectUser } from 'store/slices/authSlice';
 import ReactTextareaAutosize from 'react-textarea-autosize';
@@ -13,7 +13,11 @@ import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
 import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
 import TrackerLayout from '@/components/Layout/TrackerLayout';
 import { NewSubtaskIinitial } from '@/global/initialTypes';
-import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
+import {
+  selectTasks,
+  setDeleteTask,
+  setUpdateTask,
+} from 'store/slices/tasksSlice';
 
 const TaskID = () => {
   const dispatch = useDispatch();
@@ -70,6 +74,20 @@ const TaskID = () => {
     }
   };
 
+  const handleChangeDates = (event: React.ChangeEvent) => {
+    event.preventDefault();
+    const name: string = (event.target as HTMLButtonElement).name;
+    const value: string = (event.target as HTMLButtonElement).value;
+    const newDateSet = {
+      ...taskState.date_set,
+      [name]: value,
+    };
+    setTaskState({
+      ...taskState,
+      ['date_set']: newDateSet,
+    });
+  };
+
   const handleSave = async () => {
     if (JSON.stringify(task) !== JSON.stringify(taskState)) {
       if (!user) return;
@@ -78,6 +96,20 @@ const TaskID = () => {
       await setDoc(docRef, taskState);
       dispatch(setUpdateTask(taskState));
     }
+  };
+
+  const handleDelete = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    router.push(taskIDLink);
+
+    if (!user) return;
+    const id: string = (event.target as HTMLButtonElement).id;
+    const newTasks: any = { ...tasks };
+    const taskDeleted = newTasks[id];
+    delete newTasks[id];
+    const docRef = doc(db, 'users', user.uid, 'tasks', taskDeleted.task_id);
+    dispatch(setDeleteTask(taskDeleted.task_id));
+    await deleteDoc(docRef);
   };
 
   const closeModalOnClick = () => {};
@@ -92,7 +124,33 @@ const TaskID = () => {
           closeModalOnClick={closeModalOnClick}
         >
           <div className='task-container'>
+            <button
+              className='delete'
+              onClick={handleDelete}
+              id={String(taskID)}
+            >
+              Delete task
+            </button>
             <TaskActions />
+            <div className='times'>
+              <input
+                className='time_from'
+                name='time_from'
+                onBlur={handleSave}
+                onChange={handleChangeDates}
+                type='time'
+                value={taskState.date_set.time_from}
+              />
+              -
+              <input
+                className='time_to'
+                name='time_to'
+                onBlur={handleSave}
+                onChange={handleChangeDates}
+                type='time'
+                value={taskState.date_set.time_to}
+              />
+            </div>
             <div className='task-content'>
               <input
                 type='text'
@@ -176,6 +234,28 @@ const TaskID = () => {
             padding: 0.25rem;
             height: 3rem;
             border-radius: 0.5rem;
+          }
+          .delete {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+          }
+          .times {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+          }
+          .time_from,
+          .time_to {
+            border: 1px solid var(--box-shadow-light);
+            display: flex;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            justify-content: center;
+            align-items: center;
+            max-width: 6rem;
+            font-size: 1rem;
           }
         `}
       </style>

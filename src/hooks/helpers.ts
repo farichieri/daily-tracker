@@ -1,4 +1,5 @@
 import { dbFormatDate } from '@/utils/formatDate';
+import { parseISO } from 'date-fns';
 
 export const filterObjectIncludes = (
   obj: any,
@@ -32,7 +33,7 @@ export const filterTasksByDateSet = (obj: any, date: string) =>
     (acc, val) =>
       !(
         obj[val]['date_set']['date_iso'] &&
-        dbFormatDate(obj[val]['date_set']['date_iso']) === date
+        dbFormatDate(parseISO(obj[val]['date_set']['date_iso'])) === date
       )
         ? acc
         : {
