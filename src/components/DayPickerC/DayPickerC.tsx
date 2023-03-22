@@ -2,6 +2,7 @@ import 'react-day-picker/dist/style.css';
 import { DayPicker } from 'react-day-picker';
 import Image from 'next/image';
 import Modal from '../Modal/Modal';
+import { formatISO, parseISO } from 'date-fns';
 
 const DayPickerC = ({
   dateSelected,

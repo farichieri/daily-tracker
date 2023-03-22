@@ -1,6 +1,6 @@
 import { db } from '@/utils/firebase.config';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { formatISO } from 'date-fns';
+import { format, formatISO, parseISO } from 'date-fns';
 import { NewSubtaskIinitial } from '@/global/initialTypes';
 import { selectUser } from 'store/slices/authSlice';
 import { SubTask, Task } from '@/global/types';
@@ -17,6 +17,7 @@ import {
   setUpdateTask,
 } from 'store/slices/tasksSlice';
 import TimeInput from '@/components/Layout/Input/TimeInput';
+import DayPickerC from '@/components/DayPickerC/DayPickerC';
 
 const TaskID = ({
   task,
@@ -27,7 +28,7 @@ const TaskID = ({
 }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { taskID, date } = router.query;
+  const { taskID, date, listID } = router.query;
   const { tasks } = useSelector(selectTasks);
   const { user } = useSelector(selectUser);
   const [taskState, setTaskState] = useState<Task>(task);
@@ -89,6 +90,7 @@ const TaskID = ({
       ...taskState,
       ['date_set']: newDateSet,
     });
+    setIsSaveable(true);
   };
 
   const handleSave = async () => {
@@ -145,6 +147,43 @@ const TaskID = ({
     setIsSaveable(true);
   };
 
+  const removeDate = (event: React.MouseEvent) => {
+    const name: string = (event.target as HTMLButtonElement).name;
+    const newDateSet = {
+      ...taskState.date_set,
+      [name]: '',
+    };
+    setTaskState({
+      ...taskState,
+      ['date_set']: newDateSet,
+    });
+    setIsSaveable(true);
+  };
+
+  // Date
+  const dateParsed = taskState.date_set.date_iso
+    ? parseISO(taskState.date_set.date_iso)
+    : new Date();
+  const [dateSelected, setDateSelected] = useState<Date>(dateParsed);
+  const [openDateSelector, setOpenDateSelector] = useState(false);
+  const dateToShow = dateSelected && format(dateSelected, 'yyyy-dd-MM'); // April 2023
+  const [wantToAddDate, setWantToAddDate] = useState(false);
+
+  const handleDateSelected = (day: Date) => {
+    if (day) {
+      setDateSelected(day);
+      const newDateSet = {
+        ...taskState.date_set,
+        date_iso: formatISO(day),
+      };
+      setTaskState({
+        ...taskState,
+        ['date_set']: newDateSet,
+      });
+    }
+    setIsSaveable(true);
+  };
+
   return (
     <Modal onCloseRedirect={redirectLink} closeModalOnClick={closeModalOnClick}>
       <div className='task-container'>
@@ -153,23 +192,51 @@ const TaskID = ({
         </button>
         <TaskActions />
         <div className='times'>
-          <TimeInput
-            name='time_from'
-            onBlur={handleSave}
-            onChange={handleChangeDates}
-            value={taskState.date_set.time_from}
-            removeTime={removeTime}
-          />
-          {taskState.date_set.time_from && (
+          {
+            <div className='day-picker'>
+              {!wantToAddDate && !taskState.date_set.date_iso ? (
+                <button
+                  onClick={() => {
+                    setWantToAddDate(true);
+                    handleDateSelected(dateSelected);
+                  }}
+                >
+                  Set Due Date
+                </button>
+              ) : (
+                <DayPickerC
+                  open={openDateSelector}
+                  setOpen={setOpenDateSelector}
+                  withModal={true}
+                  dateSelected={dateSelected}
+                  handleDateSelected={handleDateSelected}
+                  dateToShow={dateToShow}
+                  removeDate={removeDate}
+                  setWantToAddDate={setWantToAddDate}
+                />
+              )}
+            </div>
+          }
+          {(taskState.date_set.date_iso || !listID) && (
             <>
-              -
-              <TimeInput
-                name='time_to'
-                onBlur={handleSave}
-                onChange={handleChangeDates}
-                value={taskState.date_set.time_to}
-                removeTime={removeTime}
-              />
+              <div className='time_from'>
+                <TimeInput
+                  onBlur={() => {}}
+                  name='time_from'
+                  value={taskState.date_set.time_from}
+                  onChange={handleChangeDates}
+                  removeTime={removeDate}
+                />
+              </div>
+              {taskState.date_set.time_from && (
+                <TimeInput
+                  onBlur={() => {}}
+                  name='time_to'
+                  value={taskState.date_set.time_to}
+                  onChange={handleChangeDates}
+                  removeTime={removeTime}
+                />
+              )}
             </>
           )}
         </div>
@@ -266,16 +333,13 @@ const TaskID = ({
             flex-direction: row;
             align-items: center;
           }
-          .time_from,
-          .time_to {
-            border: 1px solid var(--box-shadow-light);
-            display: flex;
-            padding: 0.25rem 0.5rem;
+          button {
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--box-shadow);
+            color: var(--text-color);
             border-radius: 6px;
-            justify-content: center;
-            align-items: center;
-            max-width: 6rem;
-            font-size: 1rem;
+            padding: 0.25rem 0.5rem;
           }
         `}
       </style>

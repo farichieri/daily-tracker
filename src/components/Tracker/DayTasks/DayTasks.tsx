@@ -1,15 +1,15 @@
-import AddTask from '@/components/TasksList/Tasks/AddTask';
-import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
-import { TasksArray, TaskGroup, Task } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { doc, setDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
 import { selectLabels } from 'store/slices/labelsSlice';
 import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
-import Link from 'next/link';
+import { selectUser } from 'store/slices/authSlice';
+import { TasksArray, TaskGroup, Task } from '@/global/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import AddTask from '@/components/TasksList/Tasks/AddTask';
+import Link from 'next/link';
+import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
 
 const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   const dispatch = useDispatch();

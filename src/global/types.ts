@@ -51,6 +51,7 @@ export interface Task {
   task_id: string;
   task_order: number;
   updated_at: string;
+  working_on: boolean;
 }
 
 interface DateSet {
@@ -80,6 +81,7 @@ export interface SubTask {
   section_id: string;
   task_order: number;
   updated_at: string;
+  working_on: boolean;
 }
 
 export interface UserSettings {

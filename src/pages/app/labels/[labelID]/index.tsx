@@ -1,34 +1,71 @@
+import { filterObjectIncludes } from '@/hooks/helpers';
+import { selectLabels } from 'store/slices/labelsSlice';
+import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
+import { Task, TaskGroup, TasksArray } from '@/global/types';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
 import LabelsLayout from '@/components/Layout/LabelsLayout';
 import Modal from '@/components/Modal/Modal';
 import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
-import { TaskGroup, TasksArray } from '@/global/types';
-import { filterObjectIncludes } from '@/hooks/helpers';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectLabels } from 'store/slices/labelsSlice';
-import { selectTasks } from 'store/slices/tasksSlice';
+import Link from 'next/link';
+import { selectUser } from 'store/slices/authSlice';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/utils/firebase.config';
 
 const LabelID = () => {
   const router = useRouter();
-  const taskIDLink = `/app/labels`;
+  const dispatch = useDispatch();
+  const linkID = `/app/labels`;
   const { tasks } = useSelector(selectTasks);
+  const { user } = useSelector(selectUser);
   const { labelID } = router.query;
   const { labels } = useSelector(selectLabels);
-
   const tasksFiltered: TaskGroup = filterObjectIncludes(
     tasks,
     'labels',
     String(labelID)
   );
+  const [tasksState, setTasksState] = useState<TaskGroup>(tasksFiltered);
 
-  const [sortedArrayOfTasks, setSortedArrayOfTasks] = useState<TasksArray>([]);
+  const handleToggleDone = (event: React.MouseEvent) => {
+    event.preventDefault();
+    const id: string = (event.target as HTMLButtonElement).id;
+    const newTasks = { ...tasksState };
+    const taskSelected: Task = { ...tasksState[id] };
+    console.log({ taskSelected });
+    taskSelected.done = !newTasks[id].done;
+    setTasksState({
+      ...tasksState,
+      [id]: taskSelected,
+    });
+    handleSave(taskSelected);
+  };
+
+  const handleSave = async (task: Task) => {
+    if (JSON.stringify(task) !== JSON.stringify(tasksFiltered[task.task_id])) {
+      if (!user) return;
+      console.log('Saving DayTask');
+      const docRef = doc(db, 'users', user.uid, 'tasks', task.task_id);
+      dispatch(setUpdateTask(task));
+      await setDoc(docRef, task);
+    }
+  };
+
+  const [arrayOfTasksNoTime, setArrayOfTasksNoTime] = useState<TasksArray>([]);
+  const [arrayOfTasksWithTime, setArrayOfTasksWithTime] = useState<TasksArray>(
+    []
+  );
 
   useEffect(() => {
     const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
-      a.date_set.time_from?.localeCompare(b.date_set.time_from)
+      a.date_set.date_iso?.localeCompare(b.date_set.date_iso)
     );
-    setSortedArrayOfTasks(sortedArray);
+    const arrayWithTime = sortedArray.filter((task) => task.date_set.time_from);
+    const arrayNoTime = sortedArray.filter((task) => !task.date_set.time_from);
+    setArrayOfTasksWithTime(arrayWithTime);
+    setArrayOfTasksNoTime(arrayNoTime);
+    setTasksState(tasksFiltered);
   }, [tasks]);
 
   const closeModalOnClick = () => {
@@ -42,31 +79,42 @@ const LabelID = () => {
     return labelsFiltered;
   };
 
-  const handleToggleDone = () => {};
-
   return (
     <LabelsLayout>
-      {labelID && (
-        <Modal
-          onCloseRedirect={taskIDLink}
-          closeModalOnClick={closeModalOnClick}
-        >
-          <div className='label-id'>
-            {sortedArrayOfTasks.length > 0 &&
-              sortedArrayOfTasks.map((task) => (
+      <Modal closeModalOnClick={closeModalOnClick} onCloseRedirect={linkID}>
+        <div className='tasks'>
+          {arrayOfTasksWithTime?.map((task) => (
+            <Link
+              href={`/app/labels/${labelID}/task/${task.task_id}`}
+              key={task.task_id}
+            >
+              <TaskComponent
+                taskID={task.task_id}
+                task={task}
+                handleToggleDone={handleToggleDone}
+                getLabelsByTask={getLabelsByTask}
+              />
+            </Link>
+          ))}
+          <div className='tasks-no-time'>
+            {arrayOfTasksNoTime?.map((task) => (
+              <Link
+                href={`/app/labels/${labelID}/task/${task.task_id}`}
+                key={task.task_id}
+              >
                 <TaskComponent
-                  key={task.task_id}
                   taskID={task.task_id}
                   task={task}
                   handleToggleDone={handleToggleDone}
                   getLabelsByTask={getLabelsByTask}
                 />
-              ))}
+              </Link>
+            ))}
           </div>
-        </Modal>
-      )}
+        </div>
+      </Modal>
       <style jsx>{`
-        .label-id {
+        .tasks {
           padding: 2rem 1.5rem;
           width: 95vw;
           height: 90vh;
@@ -74,10 +122,16 @@ const LabelID = () => {
           text-align: left;
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
+          gap: 0.5rem;
           color: var(--text-secondary-color);
           overflow: auto;
           pointer-events: initial;
+        }
+        .tasks-no-time {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-top: 1rem;
         }
       `}</style>
     </LabelsLayout>

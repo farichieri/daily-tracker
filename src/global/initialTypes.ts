@@ -29,6 +29,7 @@ export const NewTaskInitial: Task = {
   task_id: '',
   task_order: 0,
   updated_at: '',
+  working_on: false,
 };
 
 export const NewSubtaskIinitial: SubTask = {
@@ -56,4 +57,5 @@ export const NewSubtaskIinitial: SubTask = {
   section_id: '',
   task_order: 0,
   updated_at: '',
+  working_on: false,
 };

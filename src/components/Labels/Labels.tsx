@@ -67,7 +67,7 @@ const Labels = () => {
           align-items: start;
           width: 100%;
           text-align: left;
-          max-width: 600px;
+          max-width: var(--max-width-content);
           gap: 1rem;
           margin: 2rem;
         }

@@ -50,6 +50,7 @@ const TaskActions = () => {
         <div className='reminder'>
           <ReminderButton onClick={() => setOpenAssignReminder(true)} />
         </div>
+        <div className='state'></div>
       </div>
       <div className='task-actions-show'>
         {labelsInTask.map(

@@ -25,15 +25,6 @@ const Tasks = ({
     const labelsFiltered = labelsSelected?.map((label) => labels[label]);
     return labelsFiltered;
   };
-
-  const sortData = (tasks: TaskGroup) => {
-    // const arrayForSort = [...tasks];
-    // const sorted = arrayForSort.sort((a, b) => Number(a.done) - Number(b.done));
-    // return sorted;
-  };
-
-  sortData(tasksState);
-
   const [sortedArrayOfTasks, setSortedArrayOfTasks] = useState<TasksArray>([]);
 
   useEffect(() => {

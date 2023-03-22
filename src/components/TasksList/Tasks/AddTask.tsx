@@ -34,20 +34,6 @@ const AddTask = () => {
     });
   };
 
-  const handleChangeDates = (event: React.ChangeEvent) => {
-    event.preventDefault();
-    const name: string = (event.target as HTMLButtonElement).name;
-    const value: string = (event.target as HTMLButtonElement).value;
-    const newDateSet = {
-      ...newTaskState.date_set,
-      [name]: value,
-    };
-    setNewTaskState({
-      ...newTaskState,
-      ['date_set']: newDateSet,
-    });
-  };
-
   const handleOpenLabels = (event: React.MouseEvent) => {
     event.preventDefault();
     setOpenAssignLabel(true);
@@ -103,6 +89,20 @@ const AddTask = () => {
     setOpenAssignLabel(false);
   };
 
+  const handleChangeDates = (event: React.ChangeEvent) => {
+    event.preventDefault();
+    const name: string = (event.target as HTMLButtonElement).name;
+    const value: string = (event.target as HTMLButtonElement).value;
+    const newDateSet = {
+      ...newTaskState.date_set,
+      [name]: value,
+    };
+    setNewTaskState({
+      ...newTaskState,
+      ['date_set']: newDateSet,
+    });
+  };
+
   const removeDate = (event: React.MouseEvent) => {
     const name: string = (event.target as HTMLButtonElement).name;
     const newDateSet = {
@@ -134,6 +134,9 @@ const AddTask = () => {
       });
     }
   };
+
+  const dateDisplayed =
+    dateToShow === format(new Date(), 'yyyy-dd-MM') ? 'Today' : dateToShow;
 
   return (
     <form className='new-task' onSubmit={handleAdd}>
@@ -201,7 +204,7 @@ const AddTask = () => {
                   withModal={true}
                   dateSelected={dateSelected}
                   handleDateSelected={handleDateSelected}
-                  dateToShow={dateToShow}
+                  dateToShow={dateDisplayed}
                   removeDate={removeDate}
                   setWantToAddDate={setWantToAddDate}
                 />

@@ -1,15 +1,11 @@
 import { Task as TaskType, TaskGroup } from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { formatISO } from 'date-fns';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
-import {
-  selectTasks,
-  setDeleteTask,
-  setUpdateTask,
-} from 'store/slices/tasksSlice';
+import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
 import Clock from '../Clock/Clock';
 import { useRouter } from 'next/router';
 import Tasks from './Tasks/Tasks';
@@ -44,15 +40,6 @@ const TasksList = () => {
     const docRef = doc(db, 'users', user.uid, 'tasks', taskID);
     dispatch(setUpdateTask(task));
     await setDoc(docRef, task);
-  };
-
-  const handleDelete = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    if (!user) return;
-    const taskID: string = (event.target as HTMLButtonElement).id;
-    const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
-    dispatch(setDeleteTask(taskID));
-    await deleteDoc(docRef);
   };
 
   useEffect(() => {
