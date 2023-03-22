@@ -1,19 +1,20 @@
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
-import { formatISO } from 'date-fns';
+import { format, formatISO, parseISO } from 'date-fns';
 import { NewTaskInitial } from '@/global/initialTypes';
 import { selectUser } from 'store/slices/authSlice';
 import { setAddNewTask } from 'store/slices/tasksSlice';
 import { Label, Task } from '@/global/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/dist/client/router';
-import React, { MouseEventHandler, useState } from 'react';
+import { useState } from 'react';
 import IconButton from '@/components/Layout/Icon/IconButton';
 import AssignLabel from './TaskActions/TaskActionsModals/AssignLabel';
 import { selectLabels } from 'store/slices/labelsSlice';
 import LabelsButton from '@/components/Layout/Button/LabelsButton';
 import TimeInput from '@/components/Layout/Input/TimeInput';
 import DayPickerC from '@/components/DayPickerC/DayPickerC';
+import { dbFormatDate } from '@/utils/formatDate';
 
 const AddTask = () => {
   const router = useRouter();
@@ -69,12 +70,9 @@ const AddTask = () => {
     if (!user) return;
     if (newTaskState.content) {
       const project_id = listID ? String(listID) : 'tracker';
-      const date_iso =
-        !newTaskState.date_set.date_iso && !listID && date
-          ? String(date)
-          : !newTaskState.date_set.date_iso && listID
-          ? ''
-          : String(date);
+      const date_iso = listID
+        ? newTaskState.date_set.date_iso
+        : formatISO(parseISO(String(date)));
       const time_from = newTaskState.date_set.time_from;
       const time_to = newTaskState.date_set.time_to;
 
@@ -87,13 +85,14 @@ const AddTask = () => {
         content: newTaskState.content,
         project_id: project_id,
         date_set: {
-          date_iso: date_iso || '',
+          date_iso: date_iso,
           is_recurring: false,
           time_from: time_from || '',
           time_to: (time_from && time_to) || '',
           with_time: false,
         },
       };
+      console.log({ newTask });
       setNewTaskState(NewTaskInitial);
       dispatch(setAddNewTask(newTask));
       // Verify if there is an error with firebase.
@@ -115,6 +114,25 @@ const AddTask = () => {
       ...newTaskState,
       ['date_set']: newDateSet,
     });
+  };
+
+  // Date
+  const [dateSelected, setDateSelected] = useState<Date>(new Date());
+  const [openDateSelector, setOpenDateSelector] = useState(false);
+  const dateToShow = dateSelected && format(dateSelected, 'yyyy-dd-MM'); // April 2023
+
+  const handleDateSelected = (day: Date | undefined) => {
+    if (day) {
+      setDateSelected(day);
+      const newDateSet = {
+        ...newTaskState.date_set,
+        date_iso: formatISO(day),
+      };
+      setNewTaskState({
+        ...newTaskState,
+        ['date_set']: newDateSet,
+      });
+    }
   };
 
   return (
@@ -186,9 +204,24 @@ const AddTask = () => {
           <div className='labels'>
             <LabelsButton onClick={handleOpenLabels} />
           </div>
-          <div className='day-picker'>
-            <DayPickerC />
-          </div>
+          {listID && (
+            <div className='day-picker'>
+              {!dateSelected || (!dateSelected && !openDateSelector) ? (
+                <button onClick={() => setOpenDateSelector(true)}>
+                  Set Due Date
+                </button>
+              ) : (
+                <DayPickerC
+                  open={openDateSelector}
+                  setOpen={setOpenDateSelector}
+                  withModal={true}
+                  dateSelected={dateSelected}
+                  handleDateSelected={handleDateSelected}
+                  dateToShow={dateToShow}
+                />
+              )}
+            </div>
+          )}
           <div className='add-button'>
             <IconButton
               props={null}
@@ -257,6 +290,11 @@ const AddTask = () => {
         }
         button {
           cursor: pointer;
+          background: none;
+          border: 1px solid var(--box-shadow);
+          color: var(--text-color);
+          border-radius: 6px;
+          padding: 0.25rem 0.5rem;
         }
         .labels {
           display: flex;

@@ -10,8 +10,10 @@ import { useSelector } from 'react-redux';
 const Nav = () => {
   const router = useRouter();
   const [hamburgerActive, setHamburgerActive] = useState(false);
-  const [userName, setUserName] = useState('Sign in');
   const { user } = useSelector(selectUser);
+  const [userName, setUserName] = useState(
+    user?.email?.slice(0, user.email.indexOf('@')) || 'Sign in'
+  );
 
   const handleMenu = () => {
     setHamburgerActive(!hamburgerActive);

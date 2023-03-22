@@ -1,13 +1,44 @@
 import DayPickerC from '@/components/DayPickerC/DayPickerC';
+import { dbFormatDate } from '@/utils/formatDate';
+import { format, formatISO, parse, parseISO } from 'date-fns';
+import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectTrackerSlice } from 'store/slices/trackerSlice';
 
 const FilterSelect = () => {
   const { today } = useSelector(selectTrackerSlice);
+  const router = useRouter();
+  const { date } = router.query;
+
+  // console.log({ date });
+  // let d = new Date(String(date));
+  // console.log({ d });
+  // const iso = formatISO(d);
+
+  const [dateSelected, setDateSelected] = useState<Date>(new Date());
+
+  const handleDateSelected = (day: Date | undefined) => {
+    if (day) {
+      setDateSelected(day);
+      router.push(`/app/tracker/${dbFormatDate(day)}`);
+    }
+  };
+
+  const dateToShow = format(parseISO(String(date)), 'LLLL u'); // April 2023
+  const [openDateSelector, setOpenDateSelector] = useState(false);
+
   return (
     <div>
-      <DayPickerC />
+      <DayPickerC
+        open={openDateSelector}
+        setOpen={setOpenDateSelector}
+        withModal={false}
+        dateSelected={dateSelected}
+        handleDateSelected={handleDateSelected}
+        dateToShow={dateToShow}
+      />
       <Link href={`/app/tracker/${today}`}>
         <span>Today</span>
       </Link>

@@ -1,34 +1,32 @@
 import { DayPicker } from 'react-day-picker';
-import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDaySelected } from 'store/slices/trackerSlice';
-import { dbFormatDate } from '@/utils/formatDate';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Modal from '../Modal/Modal';
 
-const DayPickerC = () => {
-  const router = useRouter();
-  const daySelected = useSelector(selectDaySelected);
-  const monthSelected = daySelected
-    ? format(new Date(daySelected), 'LLLL u')
-    : '';
-  const [selected, setSelected] = useState<Date>();
-  const [open, setOpen] = useState(false);
+const DayPickerC = ({
+  dateSelected,
+  handleDateSelected,
+  dateToShow,
+  withModal,
+  open,
+  setOpen,
+}: {
+  dateSelected: Date;
+  handleDateSelected: Function;
+  dateToShow: string | null;
+  withModal: boolean;
+  open: boolean;
+  setOpen: Function;
+}) => {
+  const closeModalOnClick = () => {};
 
-  const handleSelect = (day: Date | undefined) => {
-    if (day) {
-      setSelected(day);
-      setOpen(!open);
-      router.push(`/app/tracker/${dbFormatDate(day)}`);
-    }
-  };
+  console.log({ open });
 
   return (
     <div className='container'>
       <div className='content' onClick={() => setOpen(!open)}>
-        <span>{monthSelected}</span>
+        <span>{dateToShow}</span>
         <div className='icon-container'>
           {open ? (
             <Image
@@ -49,13 +47,16 @@ const DayPickerC = () => {
           )}
         </div>
       </div>
-      {open && (
-        <>
-          <div className='calendar' onClick={(e) => e.stopPropagation()}>
+      {withModal && open ? (
+        <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
+          <div className='calendar-modal' onClick={(e) => e.stopPropagation()}>
             <DayPicker
               mode='single'
-              selected={selected}
-              onSelect={handleSelect}
+              selected={dateSelected || new Date()}
+              onSelect={(day) => {
+                setOpen(!open);
+                handleDateSelected(day);
+              }}
               modifiersClassNames={{
                 selected: 'my-selected',
                 today: 'my-today',
@@ -63,7 +64,28 @@ const DayPickerC = () => {
             />
           </div>
           <div className='modal' onClick={() => setOpen(!open)}></div>
-        </>
+        </Modal>
+      ) : (
+        open &&
+        !withModal && (
+          <>
+            <div className='calendar' onClick={(e) => e.stopPropagation()}>
+              <DayPicker
+                mode='single'
+                selected={dateSelected || new Date()}
+                onSelect={(day) => {
+                  setOpen(!open);
+                  handleDateSelected(day);
+                }}
+                modifiersClassNames={{
+                  selected: 'my-selected',
+                  today: 'my-today',
+                }}
+              />
+            </div>
+            <div className='modal' onClick={() => setOpen(!open)}></div>
+          </>
+        )
       )}
       <style>{css}</style>
       <style jsx>{`
@@ -100,6 +122,14 @@ const DayPickerC = () => {
         }
         .calendar {
           position: absolute;
+          background: var(--bg-color);
+          box-shadow: 0 0 10px 1px var(--box-shadow-light);
+          border-radius: 6px;
+          top: 2.5rem;
+          z-index: 998;
+          font-size: 80%;
+        }
+        .calendar-modal {
           background: var(--bg-color);
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
           border-radius: 6px;
