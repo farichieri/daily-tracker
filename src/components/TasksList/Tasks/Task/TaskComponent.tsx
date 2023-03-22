@@ -1,5 +1,6 @@
 import IconButton from '@/components/Layout/Icon/IconButton';
 import { Label, Task } from '@/global/types';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { selectLists } from 'store/slices/listsSlice';
@@ -17,12 +18,17 @@ const TaskComponent = ({
 }) => {
   const router = useRouter();
   const projects = useSelector(selectLists);
+  const { listID } = router.query;
 
   return (
     <div className={`task-container ${task.done ? 'done' : ''}`}>
       <div className='task' id={taskID}>
         {!router.pathname.includes('tracker') && task.date_set.date_iso && (
-          <div className='date'>{task.date_set.date_iso.slice(0, 10)}</div>
+          <div className='date_iso'>
+            <Link href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}>
+              {task.date_set.date_iso.slice(0, 10)}
+            </Link>
+          </div>
         )}
         <div className='times'>
           {task.date_set.time_from && (
@@ -35,7 +41,13 @@ const TaskComponent = ({
           )}
         </div>
         <div className='column'>
-          <div className='project'>{projects[task.project_id]?.list_name}</div>
+          <div className='project'>
+            {projects[task.project_id]?.list_name && !listID && (
+              <Link href={`/app/lists/${task.project_id}`}>
+                <span>📄List {projects[task.project_id]?.list_name}</span>
+              </Link>
+            )}
+          </div>
           <div className='content-description'>
             <div className={`name ${task.done ? 'done' : ''}`}>
               {task.content}
@@ -70,7 +82,7 @@ const TaskComponent = ({
       </div>
       <style jsx>{`
         .task-container {
-          border: 1px solid var(--box-shadow-light);
+          border: 1px solid var(--box-shadow);
           border-radius: 10px;
           width: 100%;
           padding: 0.5rem;
@@ -81,6 +93,7 @@ const TaskComponent = ({
           cursor: pointer;
           transition: 0.3s;
           color: var(--text-color);
+          background: var(--box-shadow-light);
         }
         .task-container.done {
           background: var(--done);
@@ -95,31 +108,37 @@ const TaskComponent = ({
           background: var(--done);
         }
         .project {
-          font-size: 70%;
-          color: var(--box-shadow);
+          font-size: 80%;
           display: flex;
           margin: 0;
           padding: 0;
           line-height: 1;
-        }
-        .task {
-          width: 100%;
-          display: flex;
-          pointer-events: none;
-          gap: 0.5rem;
+          pointer-events: initial;
           align-items: center;
         }
-        .date {
+        .date_iso {
           min-width: fit-content;
           font-size: 70%;
           border: 1px solid var(--box-shadow);
           padding: 0.25rem;
           border-radius: 6px;
+          pointer-events: initial;
+        }
+        .task {
+          width: 100%;
+          display: flex;
+          pointer-events: none;
+          gap: 0.35rem;
+          align-items: center;
         }
         .name {
           width: 100%;
           text-align: left;
           text-decoration: initial;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          word-break: normal;
+          height: auto;
         }
         .name.done {
           text-decoration: line-through;
@@ -134,7 +153,6 @@ const TaskComponent = ({
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          white-space: nowrap;
         }
         .labels {
           display: flex;
@@ -162,6 +180,7 @@ const TaskComponent = ({
           margin-top: 0.25rem;
         }
         .description {
+          white-space: nowrap;
           font-size: 80%;
           text-align: left;
           opacity: 0.7;

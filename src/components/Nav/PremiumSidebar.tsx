@@ -99,7 +99,7 @@ const PremiumSidebar = () => {
             (list) =>
               !lists[list].is_archived && (
                 <div key={list} className='project-container'>
-                  <Link href={`/app/tasks/${list}`} style={{ width: '100%' }}>
+                  <Link href={`/app/lists/${list}`} style={{ width: '100%' }}>
                     <span
                       className={`project ${list === listID ? 'selected' : ''}`}
                     >

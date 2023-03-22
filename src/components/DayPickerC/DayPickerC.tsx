@@ -1,6 +1,5 @@
-import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { useState } from 'react';
+import { DayPicker } from 'react-day-picker';
 import Image from 'next/image';
 import Modal from '../Modal/Modal';
 
@@ -11,17 +10,19 @@ const DayPickerC = ({
   withModal,
   open,
   setOpen,
+  removeDate,
+  setWantToAddDate,
 }: {
   dateSelected: Date;
   handleDateSelected: Function;
-  dateToShow: string | null;
+  dateToShow: string;
   withModal: boolean;
   open: boolean;
   setOpen: Function;
+  removeDate: Function;
+  setWantToAddDate: Function;
 }) => {
   const closeModalOnClick = () => {};
-
-  console.log({ open });
 
   return (
     <div className='container'>
@@ -46,6 +47,19 @@ const DayPickerC = ({
             />
           )}
         </div>
+        {withModal && (
+          <button
+            className='close_time_to'
+            name='date_iso'
+            onClick={(e) => {
+              e.stopPropagation();
+              removeDate(e);
+              setWantToAddDate(false);
+            }}
+          >
+            x
+          </button>
+        )}
       </div>
       {withModal && open ? (
         <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
@@ -96,15 +110,15 @@ const DayPickerC = ({
           position: relative;
         }
         .content {
-          display: flex;
-          cursor: pointer;
-          -webkit-user-select: none;
           -moz-user-select: none;
           -ms-user-select: none;
-          user-select: none;
+          -webkit-user-select: none;
+          align-items: center;
+          cursor: pointer;
+          display: flex;
           gap: 0.3rem;
           justify-content: center;
-          align-items: center;
+          user-select: none;
         }
         .icon-container {
           display: flex;
@@ -137,7 +151,15 @@ const DayPickerC = ({
           z-index: 998;
           font-size: 80%;
         }
-        .rdp-row {
+        .close_time_to {
+          align-items: center;
+          background: transparent;
+          border-radius: 6px;
+          border: none;
+          color: var(--box-shadow);
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
         }
       `}</style>
     </div>

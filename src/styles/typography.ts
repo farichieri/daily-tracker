@@ -53,6 +53,12 @@ const style = css.global`
     text-decoration: none;
     color: var(--link-color);
     transition: 0.3s;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    -webkit-user-drag: none;
   }
   a[href]:hover {
     color: var(--text-color);

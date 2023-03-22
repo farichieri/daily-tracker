@@ -14,7 +14,6 @@ import { selectLabels } from 'store/slices/labelsSlice';
 import LabelsButton from '@/components/Layout/Button/LabelsButton';
 import TimeInput from '@/components/Layout/Input/TimeInput';
 import DayPickerC from '@/components/DayPickerC/DayPickerC';
-import { dbFormatDate } from '@/utils/formatDate';
 
 const AddTask = () => {
   const router = useRouter();
@@ -104,7 +103,7 @@ const AddTask = () => {
     setOpenAssignLabel(false);
   };
 
-  const removeTime = (event: React.MouseEvent) => {
+  const removeDate = (event: React.MouseEvent) => {
     const name: string = (event.target as HTMLButtonElement).name;
     const newDateSet = {
       ...newTaskState.date_set,
@@ -120,6 +119,7 @@ const AddTask = () => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [openDateSelector, setOpenDateSelector] = useState(false);
   const dateToShow = dateSelected && format(dateSelected, 'yyyy-dd-MM'); // April 2023
+  const [wantToAddDate, setWantToAddDate] = useState(false);
 
   const handleDateSelected = (day: Date | undefined) => {
     if (day) {
@@ -183,31 +183,15 @@ const AddTask = () => {
           </div>
         </div>
         <div className='row'>
-          <div className='time_from'>
-            <TimeInput
-              onBlur={() => {}}
-              name='time_from'
-              value={newTaskState.date_set.time_from}
-              onChange={handleChangeDates}
-              removeTime={removeTime}
-            />
-          </div>
-          {newTaskState.date_set.time_from && (
-            <TimeInput
-              onBlur={() => {}}
-              name='time_to'
-              value={newTaskState.date_set.time_to}
-              onChange={handleChangeDates}
-              removeTime={removeTime}
-            />
-          )}
-          <div className='labels'>
-            <LabelsButton onClick={handleOpenLabels} />
-          </div>
           {listID && (
             <div className='day-picker'>
-              {!dateSelected || (!dateSelected && !openDateSelector) ? (
-                <button onClick={() => setOpenDateSelector(true)}>
+              {!wantToAddDate ? (
+                <button
+                  onClick={() => {
+                    setWantToAddDate(true);
+                    handleDateSelected(dateSelected);
+                  }}
+                >
                   Set Due Date
                 </button>
               ) : (
@@ -218,10 +202,38 @@ const AddTask = () => {
                   dateSelected={dateSelected}
                   handleDateSelected={handleDateSelected}
                   dateToShow={dateToShow}
+                  removeDate={removeDate}
+                  setWantToAddDate={setWantToAddDate}
                 />
               )}
             </div>
           )}
+          {(newTaskState.date_set.date_iso || !listID) && (
+            <>
+              <div className='time_from'>
+                <TimeInput
+                  onBlur={() => {}}
+                  name='time_from'
+                  value={newTaskState.date_set.time_from}
+                  onChange={handleChangeDates}
+                  removeTime={removeDate}
+                />
+              </div>
+              {newTaskState.date_set.time_from && (
+                <TimeInput
+                  onBlur={() => {}}
+                  name='time_to'
+                  value={newTaskState.date_set.time_to}
+                  onChange={handleChangeDates}
+                  removeTime={removeDate}
+                />
+              )}
+            </>
+          )}
+
+          <div className='labels'>
+            <LabelsButton onClick={handleOpenLabels} />
+          </div>
           <div className='add-button'>
             <IconButton
               props={null}
@@ -246,6 +258,7 @@ const AddTask = () => {
           justify-content: space-between;
           min-height: 5rem;
           transition: 0.3s;
+          background: var(--box-shadow-light);
         }
         .new-task:hover,
         .new-task:focus-within {

@@ -75,13 +75,14 @@ const TasksList = () => {
           max-width: 600px;
           flex-direction: column;
           gap: 0.5rem;
-          height: calc(100vh - var(--premium-nav-height) - 2rem);
+          height: 100%;
         }
         .tasks-container {
           justify-content: space-between;
           display: flex;
           flex-direction: column;
-          height: calc(100% - 5rem);
+          gap: 2rem;
+          margin-bottom: 10rem;
         }
         .header {
           display: flex;

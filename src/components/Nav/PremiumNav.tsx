@@ -15,8 +15,8 @@ const PremiumNav = () => {
   const sidebarState = useSelector(selectSidebarState);
   const { lists } = useSelector(selectList);
   const listSelected = lists[String(listID)];
-  const selected = router.pathname.includes('tasks')
-    ? `Task List: ${listSelected?.list_name}`
+  const selected = router.pathname.includes('lists')
+    ? `Tasks List: ${listSelected?.list_name}`
     : router.pathname.includes('labels')
     ? 'Labels'
     : `Tracker`;

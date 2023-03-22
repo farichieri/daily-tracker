@@ -47,7 +47,7 @@ const Tasks = ({
     <div className='tasks-container'>
       {sortedArrayOfTasks?.map((task) => (
         <Link
-          href={`/app/tasks/${listID}/task/${task.task_id}`}
+          href={`/app/lists/${listID}/task/${task.task_id}`}
           key={task.task_id}
         >
           <TaskComponent

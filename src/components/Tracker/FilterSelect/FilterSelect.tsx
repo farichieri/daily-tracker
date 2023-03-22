@@ -32,6 +32,8 @@ const FilterSelect = () => {
   return (
     <div>
       <DayPickerC
+        setWantToAddDate={() => {}}
+        removeDate={() => {}}
         open={openDateSelector}
         setOpen={setOpenDateSelector}
         withModal={false}

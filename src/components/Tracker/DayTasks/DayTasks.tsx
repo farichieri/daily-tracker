@@ -44,13 +44,19 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     }
   };
 
-  const [sortedArrayOfTasks, setSortedArrayOfTasks] = useState<TasksArray>([]);
+  const [arrayOfTasksNoTime, setArrayOfTasksNoTime] = useState<TasksArray>([]);
+  const [arrayOfTasksWithTime, setArrayOfTasksWithTime] = useState<TasksArray>(
+    []
+  );
 
   useEffect(() => {
     const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
       a.date_set.time_from?.localeCompare(b.date_set.time_from)
     );
-    setSortedArrayOfTasks(sortedArray);
+    const arrayWithTime = sortedArray.filter((task) => task.date_set.time_from);
+    const arrayNoTime = sortedArray.filter((task) => !task.date_set.time_from);
+    setArrayOfTasksWithTime(arrayWithTime);
+    setArrayOfTasksNoTime(arrayNoTime);
     setTasksState(tasksFiltered);
   }, [tasksFiltered]);
 
@@ -64,7 +70,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   return (
     <section className='table'>
       <div className='tasks'>
-        {sortedArrayOfTasks?.map((task) => (
+        {arrayOfTasksWithTime?.map((task) => (
           <Link
             href={`/app/tracker/${date}/task/${task.task_id}`}
             key={task.task_id}
@@ -77,6 +83,21 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
             />
           </Link>
         ))}
+        <div className='tasks-no-time'>
+          {arrayOfTasksNoTime?.map((task) => (
+            <Link
+              href={`/app/tracker/${date}/task/${task.task_id}`}
+              key={task.task_id}
+            >
+              <TaskComponent
+                taskID={task.task_id}
+                task={task}
+                handleToggleDone={handleToggleDone}
+                getLabelsByTask={getLabelsByTask}
+              />
+            </Link>
+          ))}
+        </div>
       </div>
       <AddTask />
       <style jsx>{`
@@ -94,7 +115,13 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
           gap: 1rem;
         }
         .tasks {
-          gap: 0.25rem;
+          gap: 0.5rem;
+          display: flex;
+          flex-direction: column;
+        }
+        .tasks-no-time {
+          margin-top: 1rem;
+          gap: 0.5rem;
           display: flex;
           flex-direction: column;
         }

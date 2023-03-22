@@ -10,7 +10,7 @@ const TaskID = () => {
   const { tasks } = useSelector(selectTasks);
   const { taskID, listID } = router.query;
   const task = tasks[String(taskID)];
-  const redirectLink = `/app/tasks/${listID}`;
+  const redirectLink = `/app/lists/${listID}`;
 
   return (
     <TasksLayout>
