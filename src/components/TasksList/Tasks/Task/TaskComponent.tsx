@@ -1,9 +1,11 @@
-import IconButton from '@/components/Layout/Icon/IconButton';
+import { format, parseISO } from 'date-fns';
 import { Label, Task } from '@/global/types';
-import Link from 'next/link';
+import { selectLists } from 'store/slices/listsSlice';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { selectLists } from 'store/slices/listsSlice';
+import IconButton from '@/components/Layout/Icon/IconButton';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const TaskComponent = ({
   taskID,
@@ -20,13 +22,22 @@ const TaskComponent = ({
   const projects = useSelector(selectLists);
   const { listID } = router.query;
 
+  const iso = task.date_set.date_iso;
+  const isoDisplay = iso && format(parseISO(iso), 'MM-dd-yyyy');
+  const todayDisplay = format(new Date(), 'MM-dd-yyyy'); // US Format
+  const dateDisplayed = isoDisplay === todayDisplay ? 'Today' : isoDisplay;
+
   return (
-    <div className={`task-container ${task.done ? 'done' : ''}`}>
+    <div
+      className={`task-container ${task.done ? 'done' : ''} ${
+        task.working_on ? 'working_on' : ''
+      }`}
+    >
       <div className='task' id={taskID}>
         {!router.pathname.includes('tracker') && task.date_set.date_iso && (
           <div className='date_iso'>
             <Link href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}>
-              {task.date_set.date_iso.slice(0, 10)}
+              {dateDisplayed}
             </Link>
           </div>
         )}
@@ -48,6 +59,7 @@ const TaskComponent = ({
               </Link>
             )}
           </div>
+
           <div className='content-description'>
             <div className={`name ${task.done ? 'done' : ''}`}>
               {task.content}
@@ -68,6 +80,16 @@ const TaskComponent = ({
                 )
             )}
           </div>
+        </div>
+        <div className='working-on'>
+          {task.working_on && (
+            <Image
+              src={'/icons/working.png'}
+              alt='working icon'
+              width={25}
+              height={25}
+            />
+          )}
         </div>
         <div className='checkbox'>
           <IconButton
@@ -97,6 +119,10 @@ const TaskComponent = ({
         }
         .task-container.done {
           background: var(--done);
+        }
+        .task-container.working_on {
+          border: 1px solid #a0a027;
+          background: #57571f;
         }
         .task-container:hover {
           box-shadow: inset 1px 0 0 rgb(255 255 255 / 1%),
@@ -186,6 +212,12 @@ const TaskComponent = ({
           opacity: 0.7;
           text-overflow: ellipsis;
           overflow: hidden;
+        }
+        .working-on {
+          margin: auto;
+          transform: translate(-50%);
+          display: flex;
+          align-items: center;
         }
       `}</style>
     </div>

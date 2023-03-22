@@ -7,13 +7,15 @@ import { setAddNewTask } from 'store/slices/tasksSlice';
 import { Label, Task } from '@/global/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/dist/client/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IconButton from '@/components/Layout/Icon/IconButton';
 import AssignLabel from './TaskActions/TaskActionsModals/AssignLabel';
 import { selectLabels } from 'store/slices/labelsSlice';
-import LabelsButton from '@/components/Layout/Button/LabelsButton';
+import LabelsButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton';
 import TimeInput from '@/components/Layout/Input/TimeInput';
 import DayPickerC from '@/components/DayPickerC/DayPickerC';
+import AssignList from './TaskActions/TaskActionsModals/AssignList';
+import ListButton from './TaskActions/TaskActionsButtons/ListButton';
 
 const AddTask = () => {
   const router = useRouter();
@@ -23,6 +25,7 @@ const AddTask = () => {
   const { labels } = useSelector(selectLabels);
   const [newTaskState, setNewTaskState] = useState<Task>(NewTaskInitial);
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
+  const [openAssignList, setOpenAssignList] = useState(false);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -34,15 +37,17 @@ const AddTask = () => {
     });
   };
 
-  const handleOpenLabels = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setOpenAssignLabel(true);
-  };
-
   const handleChangeLabels = (labelsSelected: []) => {
     setNewTaskState({
       ...newTaskState,
       labels: labelsSelected,
+    });
+  };
+
+  const handleChangeList = (listSelected: string) => {
+    setNewTaskState({
+      ...newTaskState,
+      project_id: listSelected,
     });
   };
 
@@ -54,7 +59,9 @@ const AddTask = () => {
     e.preventDefault();
     if (!user) return;
     if (newTaskState.content) {
-      const project_id = listID ? String(listID) : 'tracker';
+      const project_id = newTaskState.project_id
+        ? newTaskState.project_id
+        : 'tracker';
       const date_iso = listID
         ? newTaskState.date_set.date_iso
         : formatISO(parseISO(String(date)));
@@ -87,6 +94,7 @@ const AddTask = () => {
 
   const closeModalOnClick = () => {
     setOpenAssignLabel(false);
+    setOpenAssignList(false);
   };
 
   const handleChangeDates = (event: React.ChangeEvent) => {
@@ -118,7 +126,7 @@ const AddTask = () => {
   // Date
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [openDateSelector, setOpenDateSelector] = useState(false);
-  const dateToShow = dateSelected && format(dateSelected, 'yyyy-dd-MM'); // April 2023
+  const dateToShow = dateSelected && format(dateSelected, 'MM-dd-yyyy'); // April 2023
   const [wantToAddDate, setWantToAddDate] = useState(false);
 
   const handleDateSelected = (day: Date | undefined) => {
@@ -135,8 +143,16 @@ const AddTask = () => {
     }
   };
 
-  const dateDisplayed =
-    dateToShow === format(new Date(), 'yyyy-dd-MM') ? 'Today' : dateToShow;
+  const todayDisplay = format(new Date(), 'MM-dd-yyyy'); // US Format
+  const dateDisplayed = dateToShow === todayDisplay ? 'Today' : dateToShow;
+
+  useEffect(() => {
+    listID &&
+      setNewTaskState({
+        ...newTaskState,
+        project_id: String(listID),
+      });
+  }, [listID]);
 
   return (
     <form className='new-task' onSubmit={handleAdd}>
@@ -146,6 +162,14 @@ const AddTask = () => {
           isNewTask={true}
           task={newTaskState}
           handleChangeLabels={handleChangeLabels}
+        />
+      )}
+      {openAssignList && (
+        <AssignList
+          closeModalOnClick={closeModalOnClick}
+          isNewTask={true}
+          task={newTaskState}
+          handleChangeList={handleChangeList}
         />
       )}
       <div className='content-container'>
@@ -235,7 +259,21 @@ const AddTask = () => {
           )}
 
           <div className='labels'>
-            <LabelsButton onClick={handleOpenLabels} />
+            <LabelsButton
+              onClick={(event) => {
+                event.preventDefault();
+                setOpenAssignLabel(true);
+              }}
+            />
+          </div>
+          <div className='labels'>
+            <ListButton
+              onClick={(event) => {
+                event.preventDefault();
+                setOpenAssignList(true);
+              }}
+              task={newTaskState}
+            />
           </div>
           <div className='add-button'>
             <IconButton

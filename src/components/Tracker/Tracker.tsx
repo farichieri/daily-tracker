@@ -52,7 +52,6 @@ const Tracker = () => {
         <DayTasks tasksFiltered={tasksFiltered} />
         <Goals />
       </div>
-
       <style jsx>{`
         section {
           padding: 1rem 0.5rem;

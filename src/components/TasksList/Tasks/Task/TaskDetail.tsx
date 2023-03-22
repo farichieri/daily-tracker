@@ -166,8 +166,12 @@ const TaskID = ({
     : new Date();
   const [dateSelected, setDateSelected] = useState<Date>(dateParsed);
   const [openDateSelector, setOpenDateSelector] = useState(false);
-  const dateToShow = dateSelected && format(dateSelected, 'yyyy-dd-MM'); // April 2023
   const [wantToAddDate, setWantToAddDate] = useState(false);
+
+  const iso = task.date_set.date_iso;
+  const isoDisplay = iso && format(parseISO(iso), 'MM-dd-yyyy');
+  const dateDisplayed =
+    isoDisplay === format(new Date(), 'MM-dd-yyyy') ? 'Today' : isoDisplay;
 
   const handleDateSelected = (day: Date) => {
     if (day) {
@@ -210,7 +214,7 @@ const TaskID = ({
                   withModal={true}
                   dateSelected={dateSelected}
                   handleDateSelected={handleDateSelected}
-                  dateToShow={dateToShow}
+                  dateToShow={dateDisplayed}
                   removeDate={removeDate}
                   setWantToAddDate={setWantToAddDate}
                 />
@@ -291,18 +295,18 @@ const TaskID = ({
       <style jsx>
         {`
           .task-container {
-            padding: 2rem 1.5rem;
-            width: 95vw;
-            max-width: var(--max-width-task);
-            max-height: 90vh;
-            height: 100vh;
-            text-align: left;
+            color: var(--text-secondary-color);
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            color: var(--text-secondary-color);
+            height: 70vh;
+            max-height: 90vh;
+            max-width: var(--max-width-task);
             overflow: auto;
+            padding: 2rem 1.5rem;
             pointer-events: initial;
+            text-align: left;
+            width: 95vw;
           }
           div {
             display: flex;

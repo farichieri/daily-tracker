@@ -30,6 +30,7 @@ const TasksList = () => {
     const newTask = { ...task };
     newTask.done = !newTask.done;
     newTask.completed_at = newTask.completed_at ? '' : formatISO(new Date());
+    newTask.working_on = false;
     newList[taskID] = newTask;
     handleSave(taskID, newTask);
   };

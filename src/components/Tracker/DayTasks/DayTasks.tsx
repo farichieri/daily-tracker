@@ -25,8 +25,8 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     const id: string = (event.target as HTMLButtonElement).id;
     const newTasks = { ...tasksState };
     const taskSelected: Task = { ...tasksState[id] };
-    console.log({ taskSelected });
     taskSelected.done = !newTasks[id].done;
+    taskSelected.working_on = false;
     setTasksState({
       ...tasksState,
       [id]: taskSelected,

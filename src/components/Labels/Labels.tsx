@@ -35,6 +35,15 @@ const Labels = () => {
           +
         </button>
       </div>
+      <span>
+        The Labels are destinated to be able to calculate statistics in an
+        interested type of tasks
+      </span>
+      <span>
+        You will be able to see all tasks with one corresponding label, and then
+        to see the time spent in that kind of tasks in the days you wanna see
+        and with a graphic included.
+      </span>
       <div className='labels-container'>
         {labels &&
           Object.keys(labels).map((label) => (

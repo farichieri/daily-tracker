@@ -1,18 +1,22 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Label } from '@/global/types';
 import { selectLabels } from 'store/slices/labelsSlice';
+import { selectTasks } from 'store/slices/tasksSlice';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import AssignLabel from './TaskActionsModals/AssignLabel';
 import AssignReminder from './TaskActionsModals/AssignReminder';
-import { Label } from '@/global/types';
-import { selectTasks } from 'store/slices/tasksSlice';
-import LabelsButton from '@/components/Layout/Button/LabelsButton';
-import ReminderButton from '@/components/Layout/Button/ReminderButton';
+import LabelsButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton';
+import ReminderButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/ReminderButton';
+import WorkingOnButton from './TaskActionsButtons/WorkingOnButton';
+import ListButton from './TaskActionsButtons/ListButton';
+import AssignList from './TaskActionsModals/AssignList';
 
 const TaskActions = () => {
   const router = useRouter();
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignReminder, setOpenAssignReminder] = useState(false);
+  const [openAssignList, setOpenAssignList] = useState(false);
   const { tasks } = useSelector(selectTasks);
   const { taskID } = router.query;
   const task = { ...tasks[String(taskID)] };
@@ -28,6 +32,7 @@ const TaskActions = () => {
   const closeModalOnClick = () => {
     setOpenAssignLabel(false);
     setOpenAssignReminder(false);
+    setOpenAssignList(false);
   };
 
   return (
@@ -41,6 +46,14 @@ const TaskActions = () => {
             handleChangeLabels={() => null}
           />
         )}
+        {openAssignList && (
+          <AssignList
+            closeModalOnClick={closeModalOnClick}
+            isNewTask={false}
+            task={task}
+            handleChangeList={() => null}
+          />
+        )}
         {openAssignReminder && (
           <AssignReminder closeModalOnClick={closeModalOnClick} />
         )}
@@ -50,7 +63,14 @@ const TaskActions = () => {
         <div className='reminder'>
           <ReminderButton onClick={() => setOpenAssignReminder(true)} />
         </div>
-        <div className='state'></div>
+        <div className='lists'>
+          <ListButton onClick={() => setOpenAssignList(true)} task={task} />
+        </div>
+        {!task.done && (
+          <div className='working-on'>
+            <WorkingOnButton task={task} />
+          </div>
+        )}
       </div>
       <div className='task-actions-show'>
         {labelsInTask.map(
@@ -81,6 +101,7 @@ const TaskActions = () => {
         .task-actions {
           display: flex;
           gap: 1rem;
+          align-items: center;
         }
         .task-actions-show {
           display: flex;
