@@ -3,10 +3,15 @@ import { filterSubtasks } from '@/hooks/helpers';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectTasks } from 'store/slices/tasksSlice';
-import AddSubtask from './AddSubtask';
 import Subtask from './Subtask';
 
-const Subtasks = ({ task }: { task: Task }) => {
+const Subtasks = ({
+  task,
+  inTaskCompnent,
+}: {
+  task: Task;
+  inTaskCompnent: boolean;
+}) => {
   const { tasks } = useSelector(selectTasks);
   const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
   const [subtasksState, setSubtasksState] = useState<TasksArray>([]);
@@ -20,23 +25,20 @@ const Subtasks = ({ task }: { task: Task }) => {
 
   return (
     <div className='subtasks-container'>
-      <span className='title'>Subtasks</span>
-      <div className='subtasks'>
-        {subtasksState.map((subtask) => (
-          <Subtask key={subtask.task_id} subTask={subtask} />
-        ))}
-        <AddSubtask />
-        <style jsx>{`
-          div {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-          }
-          .subtasks {
-            width: 100%;
-          }
-        `}</style>
-      </div>
+      {subtasksState.map((subtask) => (
+        <Subtask
+          parentTask={task}
+          key={subtask.task_id}
+          subTask={subtask}
+          inTaskCompnent={inTaskCompnent}
+        />
+      ))}
+      <style jsx>{`
+        div {
+          display: flex;
+          flex-direction: column;
+        }
+      `}</style>
     </div>
   );
 };

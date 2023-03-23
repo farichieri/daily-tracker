@@ -1,20 +1,26 @@
-import IconButton from '@/components/Layout/Icon/IconButton';
-import { Task } from '@/global/types';
 import { db } from '@/utils/firebase.config';
-import { formatISO } from 'date-fns';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { setDeleteTask, setUpdateTask } from 'store/slices/tasksSlice';
-import { useRouter } from 'next/dist/client/router';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { formatISO } from 'date-fns';
 import { selectUser } from 'store/slices/authSlice';
+import { setDeleteTask, setUpdateTask } from 'store/slices/tasksSlice';
+import { Task } from '@/global/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import IconButton from '@/components/Layout/Icon/IconButton';
 
-const Subtask = ({ subTask }: { subTask: Task }) => {
+const Subtask = ({
+  subTask,
+  inTaskCompnent,
+  parentTask,
+}: {
+  parentTask: Task;
+  subTask: Task;
+  inTaskCompnent: boolean;
+}) => {
+  const [isSaveable, setIsSaveable] = useState(false);
   const [subTaskState, setSubTaskState] = useState<Task>(subTask);
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
-  const router = useRouter();
-  const [isSaveable, setIsSaveable] = useState(false);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -39,13 +45,12 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
   const handleDoneSubtask = (event: React.MouseEvent) => {
     event.preventDefault();
     const taskID: string = (event.target as HTMLButtonElement).id;
+    if (parentTask.done) return;
     if (!taskID) return;
-    console.log({ subTaskState });
     setSubTaskState({
       ...subTaskState,
       done: !subTaskState.done,
       completed_at: subTaskState.completed_at ? '' : formatISO(new Date()),
-      working_on: false,
     });
     setIsSaveable(true);
   };
@@ -59,7 +64,6 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
   };
 
   const handleBlur = (event: React.ChangeEvent) => {
-    console.log('blur');
     event.preventDefault();
     setIsSaveable(true);
   };
@@ -71,6 +75,17 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
     }
   }, [isSaveable]);
 
+  useEffect(() => {
+    if (parentTask.done) {
+      setSubTaskState({
+        ...subTaskState,
+        done: true,
+        completed_at: subTaskState.completed_at ? '' : formatISO(new Date()),
+      });
+      setIsSaveable(true);
+    }
+  }, [parentTask]);
+
   return (
     <div className='container'>
       <IconButton
@@ -80,8 +95,8 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
           subTaskState.done ? '/icons/checkbox-done.png' : '/icons/checkbox.png'
         }
         alt={subTaskState.done ? 'Done-Icon' : 'Checkbox-Icon'}
-        width={24}
-        height={24}
+        width={18}
+        height={18}
       />
       <input
         type='text'
@@ -96,15 +111,15 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
         autoComplete='off'
         onBlur={handleBlur}
       />
-      {subTaskState.done && (
+      {subTaskState.done && !inTaskCompnent && (
         <div className='delete'>
           <IconButton
             props={{ id: subTaskState.task_id }}
             onClick={handleDelete}
             src={'/icons/delete.png'}
             alt='Delete-Icon'
-            width={24}
-            height={24}
+            width={18}
+            height={18}
           />
         </div>
       )}
@@ -112,10 +127,8 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
         .container {
           display: flex;
           align-items: center;
-          border: 1px solid var(--box-shadow-light);
-          border-radius: 0.5rem;
-          padding: 0.5rem;
-          gap: 0.5rem;
+          gap: 0.25rem;
+          font-size: ${inTaskCompnent ? '80%' : '100%'};
         }
         input {
           width: 100%;
@@ -123,6 +136,8 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
           border: transparent;
           outline: none;
           color: var(--text-color);
+          cursor: ${inTaskCompnent ? 'pointer' : 'text'};
+          pointer-events: ${inTaskCompnent ? 'none' : 'auto'};
         }
         input:focus & form {
           border: 1px solid var(--text-shadow);
@@ -130,7 +145,7 @@ const Subtask = ({ subTask }: { subTask: Task }) => {
         }
         input.done {
           text-decoration: line-through;
-          cursor: initial;
+          cursor: ${inTaskCompnent ? 'pointer' : 'text'};
         }
       `}</style>
     </div>

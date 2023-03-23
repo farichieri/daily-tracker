@@ -22,6 +22,7 @@ const colors = css.global`
     /* Tooltip */
     --tooltip-text-color: gray;
     --tooltip-background-color: #00000080;
+    --progress-done: #01bf01;
   }
   div.light {
     --text-color: black;
@@ -44,6 +45,7 @@ const colors = css.global`
     /* Tooltip */
     --tooltip-text-color: black;
     --tooltip-background-color: #00000080;
+    --progress-done: #01bf01;
   }
 `;
 

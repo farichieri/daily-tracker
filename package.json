@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@frogress/line": "^1.2.2",
     "@next/font": "^13.1.6",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/node": "18.13.0",

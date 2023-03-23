@@ -6,16 +6,16 @@ import { useSelector } from 'react-redux';
 import IconButton from '@/components/Layout/Icon/IconButton';
 import Link from 'next/link';
 import Image from 'next/image';
+import Subtasks from '../Subtasks/Subtasks';
+import ToggleDoneTask from '../TaskActions/TaskActionsButtons/ToggleDoneTask';
 
 const TaskComponent = ({
   taskID,
   task,
-  handleToggleDone,
   getLabelsByTask,
 }: {
   taskID: string;
   task: Task;
-  handleToggleDone: any;
   getLabelsByTask: Function;
 }) => {
   const router = useRouter();
@@ -55,7 +55,7 @@ const TaskComponent = ({
           <div className='project'>
             {projects[task.project_id]?.list_name && !listID && (
               <Link href={`/app/lists/${task.project_id}`}>
-                <span>📄List {projects[task.project_id]?.list_name}</span>
+                <span>📄 List {projects[task.project_id]?.list_name}</span>
               </Link>
             )}
           </div>
@@ -80,6 +80,9 @@ const TaskComponent = ({
                 )
             )}
           </div>
+          <div className='subtasks'>
+            <Subtasks task={task} inTaskCompnent={true} />
+          </div>
         </div>
         <div className='working-on'>
           {task.working_on && (
@@ -91,16 +94,7 @@ const TaskComponent = ({
             />
           )}
         </div>
-        <div className='checkbox'>
-          <IconButton
-            onClick={handleToggleDone}
-            props={{ id: taskID }}
-            src={task.done ? '/icons/checkbox-done.png' : '/icons/checkbox.png'}
-            alt={task.done ? 'Done-Icon' : 'Checkbox-Icon'}
-            width={24}
-            height={24}
-          />
-        </div>
+        <ToggleDoneTask task={task} />
       </div>
       <style jsx>{`
         .task-container {
@@ -141,6 +135,10 @@ const TaskComponent = ({
           line-height: 1;
           pointer-events: initial;
           align-items: center;
+        }
+
+        .subtasks {
+          pointer-events: initial;
         }
         .date_iso {
           min-width: fit-content;

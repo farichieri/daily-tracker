@@ -1,7 +1,7 @@
-import PremiumLayout from '@/components/Layout/PremiumLayout';
 import { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 import { selectUser } from 'store/slices/authSlice';
+import { useSelector } from 'react-redux';
+import PremiumLayout from '@/components/Layout/PremiumLayout';
 import TasksList from '@/components/TasksList/TasksList';
 
 const TasksLayout = ({ children }: { children: ReactNode }) => {

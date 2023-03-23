@@ -5,18 +5,19 @@ import { selectUser } from 'store/slices/authSlice';
 import { Task } from '@/global/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import Modal from '@/components/Modal/Modal';
-import React, { useEffect, useState } from 'react';
-import ReactTextareaAutosize from 'react-textarea-autosize';
-import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
-import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
 import {
   selectTasks,
   setDeleteTask,
   setUpdateTask,
 } from 'store/slices/tasksSlice';
-import TimeInput from '@/components/Layout/Input/TimeInput';
+import AddSubtask from '../Subtasks/AddSubtask';
 import DayPickerC from '@/components/DayPickerC/DayPickerC';
+import Modal from '@/components/Modal/Modal';
+import React, { useEffect, useState } from 'react';
+import ReactTextareaAutosize from 'react-textarea-autosize';
+import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
+import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
+import TimeInput from '@/components/Layout/Input/TimeInput';
 
 const TaskID = ({
   task,
@@ -82,9 +83,6 @@ const TaskID = ({
   };
 
   const handleSave = async () => {
-    console.log({ task });
-    console.log({ taskState });
-    console.log(JSON.stringify(task) !== JSON.stringify(taskState));
     if (JSON.stringify(task) !== JSON.stringify(taskState)) {
       if (!user) return;
       console.log('Saving taskID');
@@ -267,7 +265,11 @@ const TaskID = ({
             }}
           />
         </div>
-        <Subtasks task={task} />
+        <div className='subtasks'>
+          <span className='title'>Subtasks</span>
+          <Subtasks task={task} inTaskCompnent={false} />
+          <AddSubtask />
+        </div>
         <div className='attachments-container'>
           <span className='title'>Attachments</span>
           <div className='attachments'></div>
@@ -285,9 +287,10 @@ const TaskID = ({
             max-width: var(--max-width-task);
             overflow: auto;
             padding: 2rem 1.5rem;
-            pointer-events: initial;
             text-align: left;
             width: 95vw;
+            pointer-events: ${task.done ? 'none' : 'initial'};
+            opacity: ${task.done ? '0.4' : '1'};
           }
           div {
             display: flex;

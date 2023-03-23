@@ -1,48 +1,38 @@
-import { db } from '@/utils/firebase.config';
-import { doc, setDoc } from 'firebase/firestore';
+import { filterSubtasks } from '@/hooks/helpers';
+import { filterTasksDone } from '@/hooks/helpers';
 import { selectLabels } from 'store/slices/labelsSlice';
-import { selectTasks, setUpdateTask } from 'store/slices/tasksSlice';
-import { selectUser } from 'store/slices/authSlice';
-import { TasksArray, TaskGroup, Task } from '@/global/types';
-import { useDispatch, useSelector } from 'react-redux';
+import { selectTasks } from 'store/slices/tasksSlice';
+import { TasksArray, TaskGroup, TasksGroup } from '@/global/types';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import AddTask from '@/components/TasksList/Tasks/AddTask';
 import Link from 'next/link';
+import Progressbar from '@/components/Layout/Progressbar/Progressbar';
 import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
 
 const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
-  const dispatch = useDispatch();
   const router = useRouter();
-  const { user } = useSelector(selectUser);
-  const [tasksState, setTasksState] = useState<TaskGroup>(tasksFiltered);
   const { tasks } = useSelector(selectTasks);
   const { labels } = useSelector(selectLabels);
   const { date } = router.query;
 
-  const handleToggleDone = (event: React.MouseEvent) => {
-    event.preventDefault();
-    const id: string = (event.target as HTMLButtonElement).id;
-    const newTasks = { ...tasksState };
-    const taskSelected: Task = { ...tasksState[id] };
-    taskSelected.done = !newTasks[id].done;
-    taskSelected.working_on = false;
-    setTasksState({
-      ...tasksState,
-      [id]: taskSelected,
-    });
-    handleSave(taskSelected);
+  const getPrecentage = () => {
+    const tasksAndSubtasks = { ...tasksFiltered };
+    for (let task in tasksFiltered) {
+      const subtasks: TasksGroup = filterSubtasks(tasks, task);
+      for (let subtask in subtasks) {
+        tasksAndSubtasks[subtask] = subtasks[subtask];
+      }
+    }
+    const tasksCompleted = filterTasksDone(tasksAndSubtasks);
+    let tasksCompletedL = Object.keys(tasksCompleted).length;
+    let tasksL = Object.keys(tasksAndSubtasks).length;
+    const percentageDone = Math.round((tasksCompletedL / tasksL) * 100);
+    return percentageDone;
   };
 
-  const handleSave = async (task: Task) => {
-    if (JSON.stringify(task) !== JSON.stringify(tasksFiltered[task.task_id])) {
-      if (!user) return;
-      console.log('Saving DayTask');
-      const docRef = doc(db, 'users', user.uid, 'tasks', task.task_id);
-      dispatch(setUpdateTask(task));
-      await setDoc(docRef, task);
-    }
-  };
+  const percentageDone = getPrecentage();
 
   const [arrayOfTasksNoTime, setArrayOfTasksNoTime] = useState<TasksArray>([]);
   const [arrayOfTasksWithTime, setArrayOfTasksWithTime] = useState<TasksArray>(
@@ -57,7 +47,6 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     const arrayNoTime = sortedArray.filter((task) => !task.date_set.time_from);
     setArrayOfTasksWithTime(arrayWithTime);
     setArrayOfTasksNoTime(arrayNoTime);
-    setTasksState(tasksFiltered);
   }, [tasksFiltered]);
 
   const getLabelsByTask = (taskID: string) => {
@@ -70,6 +59,11 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   return (
     <section className='table'>
       <div className='tasks'>
+        <Progressbar
+          bgcolor='#99ccff'
+          progress={percentageDone || 0}
+          height={10}
+        />
         {arrayOfTasksWithTime?.map((task) => (
           <Link
             href={`/app/tracker/${date}/task/${task.task_id}`}
@@ -78,7 +72,6 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
             <TaskComponent
               taskID={task.task_id}
               task={task}
-              handleToggleDone={handleToggleDone}
               getLabelsByTask={getLabelsByTask}
             />
           </Link>
@@ -92,7 +85,6 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
               <TaskComponent
                 taskID={task.task_id}
                 task={task}
-                handleToggleDone={handleToggleDone}
                 getLabelsByTask={getLabelsByTask}
               />
             </Link>

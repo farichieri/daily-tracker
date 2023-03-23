@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import AssignLabel from './TaskActionsModals/AssignLabel';
+import AssignList from './TaskActionsModals/AssignList';
 import AssignReminder from './TaskActionsModals/AssignReminder';
 import LabelsButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton';
-import ReminderButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/ReminderButton';
-import WorkingOnButton from './TaskActionsButtons/WorkingOnButton';
 import ListButton from './TaskActionsButtons/ListButton';
-import AssignList from './TaskActionsModals/AssignList';
+import ReminderButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/ReminderButton';
+import ToggleDoneTask from './TaskActionsButtons/ToggleDoneTask';
+import WorkingOnButton from './TaskActionsButtons/WorkingOnButton';
 
 const TaskActions = () => {
   const router = useRouter();
@@ -71,6 +72,7 @@ const TaskActions = () => {
             <WorkingOnButton task={task} />
           </div>
         )}
+        <ToggleDoneTask task={task} />
       </div>
       <div className='task-actions-show'>
         {labelsInTask.map(

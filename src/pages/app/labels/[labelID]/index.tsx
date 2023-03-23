@@ -91,7 +91,6 @@ const LabelID = () => {
               <TaskComponent
                 taskID={task.task_id}
                 task={task}
-                handleToggleDone={handleToggleDone}
                 getLabelsByTask={getLabelsByTask}
               />
             </Link>
@@ -105,7 +104,6 @@ const LabelID = () => {
                 <TaskComponent
                   taskID={task.task_id}
                   task={task}
-                  handleToggleDone={handleToggleDone}
                   getLabelsByTask={getLabelsByTask}
                 />
               </Link>
