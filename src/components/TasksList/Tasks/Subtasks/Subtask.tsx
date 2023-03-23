@@ -1,58 +1,105 @@
 import IconButton from '@/components/Layout/Icon/IconButton';
-import { SubTask } from '@/global/types';
+import { Task } from '@/global/types';
+import { db } from '@/utils/firebase.config';
+import { formatISO } from 'date-fns';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { setDeleteTask, setUpdateTask } from 'store/slices/tasksSlice';
+import { useRouter } from 'next/dist/client/router';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from 'store/slices/authSlice';
 
-const Subtask = ({
-  addSubtask,
-  handleAddSubtask,
-  handleChange,
-  handleDelete,
-  handleDoneSubtask,
-  index,
-  subtaskState,
-  handleSave,
-}: {
-  addSubtask: boolean;
-  handleAddSubtask: any;
-  handleChange: React.ChangeEventHandler;
-  handleDelete: React.MouseEventHandler;
-  handleDoneSubtask: React.MouseEventHandler;
-  index: number;
-  subtaskState: SubTask;
-  handleSave: React.FocusEventHandler;
-}) => {
+const Subtask = ({ subTask }: { subTask: Task }) => {
+  const [subTaskState, setSubTaskState] = useState<Task>(subTask);
+  const { user } = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [isSaveable, setIsSaveable] = useState(false);
+
+  const handleChange = (event: React.ChangeEvent) => {
+    event.preventDefault();
+    const name: string = (event.target as HTMLButtonElement).name;
+    const value: string = (event.target as HTMLButtonElement).value;
+    console.log({ name });
+    setSubTaskState({
+      ...subTaskState,
+      [name]: value,
+    });
+  };
+
+  const handleDelete = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (!user) return;
+    const taskID: string = (event.target as HTMLButtonElement).id;
+    const docRef = doc(db, 'users', user.uid, 'tasks', taskID);
+    dispatch(setDeleteTask(taskID));
+    await deleteDoc(docRef);
+  };
+
+  const handleDoneSubtask = (event: React.MouseEvent) => {
+    event.preventDefault();
+    const taskID: string = (event.target as HTMLButtonElement).id;
+    if (!taskID) return;
+    console.log({ subTaskState });
+    setSubTaskState({
+      ...subTaskState,
+      done: !subTaskState.done,
+      completed_at: subTaskState.completed_at ? '' : formatISO(new Date()),
+      working_on: false,
+    });
+    setIsSaveable(true);
+  };
+
+  const handleSave = async () => {
+    console.log('Saving Task');
+    if (!user) return;
+    const docRef = doc(db, 'users', user.uid, 'tasks', subTaskState.task_id);
+    dispatch(setUpdateTask(subTaskState));
+    await setDoc(docRef, subTaskState);
+  };
+
+  const handleBlur = (event: React.ChangeEvent) => {
+    console.log('blur');
+    event.preventDefault();
+    setIsSaveable(true);
+  };
+
+  useEffect(() => {
+    if (isSaveable) {
+      handleSave();
+      setIsSaveable(false);
+    }
+  }, [isSaveable]);
+
   return (
-    <form onSubmit={handleAddSubtask}>
-      {!addSubtask && (
-        <IconButton
-          onClick={handleDoneSubtask}
-          props={{ name: 'done', id: String(index) }}
-          src={
-            subtaskState.done
-              ? '/icons/checkbox-done.png'
-              : '/icons/checkbox.png'
-          }
-          alt={subtaskState.done ? 'Done-Icon' : 'Checkbox-Icon'}
-          width={24}
-          height={24}
-        />
-      )}
+    <div className='container'>
+      <IconButton
+        onClick={handleDoneSubtask}
+        props={{ name: 'done', id: subTaskState.task_id }}
+        src={
+          subTaskState.done ? '/icons/checkbox-done.png' : '/icons/checkbox.png'
+        }
+        alt={subTaskState.done ? 'Done-Icon' : 'Checkbox-Icon'}
+        width={24}
+        height={24}
+      />
       <input
         type='text'
-        placeholder='Add a subtask'
-        value={subtaskState.content}
-        name={addSubtask ? 'new-subtask' : 'subtask'}
+        placeholder='Add a subTaskState'
+        value={subTaskState.content}
+        name={'content'}
         onChange={handleChange}
-        id={String(index)}
-        className={`${subtaskState.done ? 'done' : ''}`}
-        readOnly={subtaskState.done}
+        id={subTaskState.task_id}
+        className={`${subTaskState.done ? 'done' : ''}`}
+        readOnly={subTaskState.done}
         spellCheck='false'
         autoComplete='off'
-        onBlur={handleSave}
+        onBlur={handleBlur}
       />
-      {subtaskState.done && (
+      {subTaskState.done && (
         <div className='delete'>
           <IconButton
-            props={{ value: index, id: String(index) }}
+            props={{ id: subTaskState.task_id }}
             onClick={handleDelete}
             src={'/icons/delete.png'}
             alt='Delete-Icon'
@@ -61,18 +108,8 @@ const Subtask = ({
           />
         </div>
       )}
-      {addSubtask && (
-        <IconButton
-          props={{ type: 'submit' }}
-          onClick={handleAddSubtask}
-          src={'/icons/add.png'}
-          alt='Add-Icon'
-          width={24}
-          height={24}
-        />
-      )}
       <style jsx>{`
-        form {
+        .container {
           display: flex;
           align-items: center;
           border: 1px solid var(--box-shadow-light);
@@ -96,7 +133,7 @@ const Subtask = ({
           cursor: initial;
         }
       `}</style>
-    </form>
+    </div>
   );
 };
 

@@ -1,9 +1,8 @@
 import { db } from '@/utils/firebase.config';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { format, formatISO, parseISO } from 'date-fns';
-import { NewSubtaskIinitial } from '@/global/initialTypes';
 import { selectUser } from 'store/slices/authSlice';
-import { SubTask, Task } from '@/global/types';
+import { Task } from '@/global/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Modal from '@/components/Modal/Modal';
@@ -33,12 +32,6 @@ const TaskID = ({
   const { user } = useSelector(selectUser);
   const [taskState, setTaskState] = useState<Task>(task);
   const [isSaveable, setIsSaveable] = useState(false);
-  const [subtaskState, setSubtaskState] = useState<SubTask>({
-    ...NewSubtaskIinitial,
-    added_at: formatISO(new Date()),
-    parent_id: String(taskID),
-    project_id: '',
-  });
 
   useEffect(() => {
     setTaskState(task);
@@ -56,12 +49,7 @@ const TaskID = ({
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
     const index: number = Number((event.target as HTMLButtonElement).id);
-    if (name === 'new-subtask') {
-      setSubtaskState({
-        ...subtaskState,
-        content: value,
-      });
-    } else if (name === 'subtask') {
+    if (name === 'subtask') {
       const subtasks = [...taskState.subtasks];
       const subTask = { ...subtasks[index] };
       subTask.content = value;
@@ -118,6 +106,7 @@ const TaskID = ({
     }
   };
 
+  // Should just delete a task.
   const handleDelete = async (event: React.MouseEvent) => {
     event.preventDefault();
     router.push(redirectLink);
@@ -278,15 +267,7 @@ const TaskID = ({
             }}
           />
         </div>
-        <Subtasks
-          setIsSaveable={setIsSaveable}
-          handleSave={handleSave}
-          handleChange={handleChange}
-          setTaskState={setTaskState}
-          taskState={taskState}
-          subtaskState={subtaskState}
-          setSubtaskState={setSubtaskState}
-        />
+        <Subtasks task={task} />
         <div className='attachments-container'>
           <span className='title'>Attachments</span>
           <div className='attachments'></div>

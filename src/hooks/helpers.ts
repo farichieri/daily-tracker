@@ -42,3 +42,15 @@ export const filterTasksByDateSet = (obj: any, date: string) =>
           },
     {}
   );
+
+export const filterSubtasks = (obj: any, taskID: string) =>
+  Object.keys(obj).reduce(
+    (acc, val) =>
+      !(obj[val]['parent_id'] === taskID)
+        ? acc
+        : {
+            ...acc,
+            [val]: obj[val],
+          },
+    {}
+  );

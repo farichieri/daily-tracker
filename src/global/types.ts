@@ -1,10 +1,10 @@
 export interface DayData {
   day_date: string;
   day_goals: string[];
-  day_tasks: DayTasksGroup;
+  day_tasks: TasksGroup;
 }
 
-export interface DayTasksGroup {
+export interface TasksGroup {
   [id: string]: Task;
 }
 export interface DayGoalsGroup {
@@ -47,7 +47,6 @@ export interface Task {
   project_id: string;
   reminder_date: string;
   section_id: string;
-  subtasks: Array<SubTask>;
   task_id: string;
   task_order: number;
   updated_at: string;
@@ -60,28 +59,6 @@ interface DateSet {
   time_from: string;
   time_to: string;
   with_time: boolean;
-}
-
-export interface SubTask {
-  added_at: string;
-  added_by_uid: string;
-  assigned_to: Array<string>;
-  comments: Array<string>;
-  completed_at: string;
-  content: string;
-  date_set: DateSet;
-  description: string;
-  done: boolean;
-  is_archived: boolean;
-  minutes_spent: number;
-  parent_id: string;
-  priority: number;
-  project_id: string;
-  reminder_date: string;
-  section_id: string;
-  task_order: number;
-  updated_at: string;
-  working_on: boolean;
 }
 
 export interface UserSettings {
