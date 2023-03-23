@@ -56,14 +56,27 @@ const Subtask = ({
   };
 
   const handleSave = async () => {
-    console.log('Saving Task');
-    if (!user) return;
-    const docRef = doc(db, 'users', user.uid, 'tasks', subTaskState.task_id);
-    dispatch(setUpdateTask(subTaskState));
-    await setDoc(docRef, subTaskState);
+    if (JSON.stringify(subTask) !== JSON.stringify(subTaskState)) {
+      console.log('Saving Subtask');
+      if (!user) return;
+      const updatedSubtask = {
+        ...subTaskState,
+        completed_at: subTaskState.completed_at ? '' : formatISO(new Date()),
+      };
+      const docRef = doc(
+        db,
+        'users',
+        user.uid,
+        'tasks',
+        updatedSubtask.task_id
+      );
+      dispatch(setUpdateTask(updatedSubtask));
+      await setDoc(docRef, updatedSubtask);
+    }
   };
 
   const handleBlur = (event: React.ChangeEvent) => {
+    console.log('Blur activated');
     event.preventDefault();
     setIsSaveable(true);
   };
@@ -80,7 +93,6 @@ const Subtask = ({
       setSubTaskState({
         ...subTaskState,
         done: true,
-        completed_at: subTaskState.completed_at ? '' : formatISO(new Date()),
       });
       setIsSaveable(true);
     }

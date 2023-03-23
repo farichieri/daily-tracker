@@ -45,8 +45,14 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     );
     const arrayWithTime = sortedArray.filter((task) => task.date_set.time_from);
     const arrayNoTime = sortedArray.filter((task) => !task.date_set.time_from);
+    // Working_on on top
+    const sortedTasksNoTime = Object.values(arrayNoTime)
+      .sort(
+        (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
+      )
+      .sort((a, b) => Number(a.done || false) - Number(b.done || false));
     setArrayOfTasksWithTime(arrayWithTime);
-    setArrayOfTasksNoTime(arrayNoTime);
+    setArrayOfTasksNoTime(sortedTasksNoTime);
   }, [tasksFiltered]);
 
   const getLabelsByTask = (taskID: string) => {

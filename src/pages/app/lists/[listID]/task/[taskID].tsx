@@ -1,9 +1,9 @@
 import { selectTasks } from 'store/slices/tasksSlice';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import Loader from '@/components/Layout/Loader/Loader';
-import TasksLayout from '@/components/Layout/TasksLayout';
 import TaskDetail from '@/components/TasksList/Tasks/Task/TaskDetail';
+import TasksLayout from '@/components/Layout/TasksLayout';
 
 const TaskID = () => {
   const router = useRouter();

@@ -37,7 +37,9 @@ const TaskComponent = ({
         {!router.pathname.includes('tracker') && task.date_set.date_iso && (
           <div className='date_iso'>
             <Link href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}>
-              {dateDisplayed}
+              <span className={`${dateDisplayed === 'Today' ? 'today' : ''}`}>
+                {dateDisplayed}
+              </span>
             </Link>
           </div>
         )}
@@ -65,7 +67,10 @@ const TaskComponent = ({
               {task.content}
             </div>
             {task.description && (
-              <div className='description'>{task.description}</div>
+              <div className='description'>
+                {task.description.slice(0, 300)}{' '}
+                {task.description.length > 300 && '...'}
+              </div>
             )}
           </div>
           <div className='labels'>
@@ -203,19 +208,30 @@ const TaskComponent = ({
           border-radius: 5px;
           margin-top: 0.25rem;
         }
+        .content-description {
+        }
         .description {
-          white-space: nowrap;
+          white-space: wrap;
           font-size: 80%;
           text-align: left;
           opacity: 0.7;
           text-overflow: ellipsis;
           overflow: hidden;
+          width: 100%;
         }
         .working-on {
           margin: auto;
           transform: translate(-50%);
           display: flex;
           align-items: center;
+        }
+        .today {
+          color: red;
+          opacity: 0.7;
+          transition: 0.3s;
+        }
+        .today:hover {
+          opacity: 1;
         }
       `}</style>
     </div>

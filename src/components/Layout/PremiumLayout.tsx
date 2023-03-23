@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import PremiumNav from '../Nav/PremiumNav';
-import { useSelector, useDispatch } from 'react-redux';
 import { setTheme } from 'store/slices/themeSlice';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import PremiumNav from '../Nav/PremiumNav';
 import PremiumSidebar from '../Nav/PremiumSidebar';
 import {
   selectSidebarState,
@@ -14,14 +14,14 @@ import {
   setDaySelected,
   setProjects,
 } from 'store/slices/trackerSlice';
-import { setLists } from 'store/slices/listsSlice';
-import { setTasks } from 'store/slices/tasksSlice';
 import { getProjects, getLists, getLabels, getTasks } from '@/hooks/firebase';
 import { LabelGroup, TaskGroup, ListGroup } from '@/global/types';
-import { setLabels } from 'store/slices/labelsSlice';
 import { selectGlobalState, setIsDataFetched } from 'store/slices/globalSlice';
-import Loader from './Loader/Loader';
+import { setLabels } from 'store/slices/labelsSlice';
+import { setLists } from 'store/slices/listsSlice';
+import { setTasks } from 'store/slices/tasksSlice';
 import { useRouter } from 'next/router';
+import Loader from './Loader/Loader';
 import Login from '../Auth/Login';
 
 export default function PremiumLayout({
@@ -93,13 +93,13 @@ export default function PremiumLayout({
           <>
             <PremiumNav />
             <PremiumSidebar />
+            <div className='container'>{children}</div>
             {sidebarOpen && (
               <span className='modal' onClick={handleToggleSidebar}></span>
             )}
           </>
         )
       )}
-      <div className='container'>{children}</div>
       <style jsx>
         {`
           section {
@@ -123,6 +123,7 @@ export default function PremiumLayout({
             width: 100%;
             display: flex;
             justify-content: center;
+            padding: 0 0.5rem;
           }
           .modal {
             position: fixed;
@@ -135,9 +136,12 @@ export default function PremiumLayout({
             bottom: 0;
             z-index: 7;
           }
-          @media screen and (min-width: 900px) {
+          @media (min-width: 640px) and (max-width: 1300px) {
             .modal {
               display: none;
+            }
+            .container {
+              padding-left: ${sidebarOpen ? '210px' : 'initial'};
             }
           }
         `}

@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router';
-import DarkMode from '../DarkMode/DarkMode';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
-import Image from 'next/image';
 import { selectList } from 'store/slices/listsSlice';
-import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
+import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
+import DarkMode from '../DarkMode/DarkMode';
+import Image from 'next/image';
+import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
 import Settings from '../Settings/Settings';
 
 const PremiumNav = () => {
@@ -28,7 +28,7 @@ const PremiumNav = () => {
   };
 
   const closeModalOnClick = () => {
-    setIsSettingsOpen(false); //
+    setIsSettingsOpen(false);
   };
 
   return (

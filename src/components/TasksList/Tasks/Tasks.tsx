@@ -26,10 +26,17 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
   const [showDoneTasks, setShowDoneTasks] = useState(true);
 
   useEffect(() => {
-    const pendingTasks = filterTasksPending(tasksState);
-    const doneTasks = filterTasksDone(tasksState);
-    setPendingTasks(Object.values(pendingTasks));
-    setDoneTasks(Object.values(doneTasks));
+    const pendingTasks: TaskGroup = filterTasksPending(tasksState);
+    const doneTasks: TaskGroup = filterTasksDone(tasksState);
+    // Working_on on top
+    const sortedPendingTasks = Object.values(pendingTasks).sort(
+      (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
+    );
+    const sortedDoneTasks = Object.values(doneTasks).sort((a, b) =>
+      b.date_set.date_iso?.localeCompare(a.date_set.date_iso)
+    );
+    setPendingTasks(sortedPendingTasks);
+    setDoneTasks(sortedDoneTasks);
   }, [tasksState]);
 
   return (

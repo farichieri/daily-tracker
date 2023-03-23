@@ -18,9 +18,9 @@ const Tracker = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { date } = router.query;
+  const { tasks } = useSelector(selectTasks);
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
-  const { tasks } = useSelector(selectTasks);
   const tasksFiltered = filterTasksByDateSet(tasks, String(date));
 
   const handleDatesSelected = (e: Event) => {
@@ -50,18 +50,18 @@ const Tracker = () => {
       />
       <div className='tasks-goals-container'>
         <DayTasks tasksFiltered={tasksFiltered} />
-        <Goals />
+        {/* <Goals /> */}
       </div>
       <style jsx>{`
         section {
-          padding: 1rem 0.5rem;
+          padding: 1rem 0;
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 100%;
           gap: 1rem;
           min-height: calc(100vh - var(--premium-nav-height));
-          height: 100%:
+          height: 100%;
         }
         .tasks-goals-container {
           position: relative;

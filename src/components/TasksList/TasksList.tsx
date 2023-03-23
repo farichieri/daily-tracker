@@ -1,9 +1,9 @@
 import { filterObject } from '@/hooks/helpers';
 import { selectTasks } from 'store/slices/tasksSlice';
 import { TaskGroup } from '@/global/types';
-import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import AddTask from './Tasks/AddTask';
 import Clock from '../Clock/Clock';
 import Tasks from './Tasks/Tasks';

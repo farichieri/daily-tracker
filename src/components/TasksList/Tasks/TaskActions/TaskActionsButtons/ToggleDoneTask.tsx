@@ -4,32 +4,27 @@ import { selectUser } from 'store/slices/authSlice';
 import { setUpdateTask } from 'store/slices/tasksSlice';
 import { Task } from '@/global/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import IconButton from '@/components/Layout/Icon/IconButton';
 
 const ToggleDoneTask = ({ task }: { task: Task }) => {
   const dispatch = useDispatch();
-  const [taskState, setTaskState] = useState<Task>(task);
   const { user } = useSelector(selectUser);
 
   const handleToggleDone = (event: React.MouseEvent) => {
     event.preventDefault();
-    const taskUpdated: Task = { ...taskState };
-    taskUpdated.done = !taskState.done;
+    const taskUpdated: Task = { ...task };
+    taskUpdated.done = !task.done;
     taskUpdated.working_on = false;
-    setTaskState({
-      ...taskUpdated,
-    });
     handleSave(taskUpdated);
   };
 
-  const handleSave = async (task: Task) => {
-    if (JSON.stringify(task) !== JSON.stringify(taskState)) {
+  const handleSave = async (taskUpdated: Task) => {
+    if (JSON.stringify(taskUpdated) !== JSON.stringify(task)) {
       if (!user) return;
       console.log('Saving DayTask');
-      const docRef = doc(db, 'users', user.uid, 'tasks', task.task_id);
-      dispatch(setUpdateTask(task));
-      await setDoc(docRef, task);
+      const docRef = doc(db, 'users', user.uid, 'tasks', taskUpdated.task_id);
+      dispatch(setUpdateTask(taskUpdated));
+      await setDoc(docRef, taskUpdated);
     }
   };
 
