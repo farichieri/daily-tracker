@@ -61,7 +61,6 @@ const Tracker = () => {
           width: 100%;
           gap: 1rem;
           min-height: calc(100vh - var(--premium-nav-height));
-          height: 100%;
         }
         .tasks-goals-container {
           position: relative;

@@ -4,7 +4,7 @@ const colors = css.global`
   div.dark {
     --text-color: white;
     --text-secondary-color: #989898;
-    --bg-color: #131313;
+    --bg-color: #1e1e1e;
     --bg-color-secondary: #282828;
     --bg-color-tertiary: #576375;
     --bg-color-tertiary-light: #57637557;

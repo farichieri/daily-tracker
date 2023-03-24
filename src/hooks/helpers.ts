@@ -1,4 +1,4 @@
-import { Task, TaskGroup } from '@/global/types';
+import { ListGroup, Task, TaskGroup } from '@/global/types';
 import { dbFormatDate } from '@/utils/formatDate';
 import { parseISO } from 'date-fns';
 
@@ -72,6 +72,18 @@ export const filterTasksPending = (obj: TaskGroup) =>
   Object.keys(obj).reduce(
     (acc, val) =>
       !obj[val]['done'] === false
+        ? acc
+        : {
+            ...acc,
+            [val]: obj[val],
+          },
+    {}
+  );
+
+export const filterListsNotArchived = (obj: ListGroup) =>
+  Object.keys(obj).reduce(
+    (acc, val) =>
+      obj[val]['is_archived'] === true
         ? acc
         : {
             ...acc,

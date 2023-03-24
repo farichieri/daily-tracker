@@ -15,12 +15,12 @@ import ProjectEdit from '../ProjectEdit/ProjectEdit';
 
 const PremiumSidebar = () => {
   const dispatch = useDispatch();
-  const sidebarOpen = useSelector(selectSidebarState);
   const lists = useSelector(selectLists);
   const router = useRouter();
-  const { listID, id } = router.query;
-  const { pathname } = router;
+  const sidebarOpen = useSelector(selectSidebarState);
   const today = useSelector(selectToday);
+  const { listID } = router.query;
+  const { pathname } = router;
 
   const handleEditList = (event: any) => {
     event.preventDefault();
@@ -30,22 +30,22 @@ const PremiumSidebar = () => {
   };
 
   const [createProject, setCreateProject] = useState(false);
+  const [editList, setEditList] = useState(false);
   const [editProject, setEditProject] = useState(false);
   const [listCreate, setListCreate] = useState(false);
-  const [editList, setEditList] = useState(false);
   const closeModalOnClick = () => {
-    setEditProject(false);
     setCreateProject(false);
-    setListCreate(false);
     setEditList(false);
+    setEditProject(false);
+    setListCreate(false);
   };
 
   return (
     <>
-      {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {createProject && <ProjectCreate closeModalOnClick={closeModalOnClick} />}
-      {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
       {editList && <ListEdit closeModalOnClick={closeModalOnClick} />}
+      {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
+      {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className='tracks' onClick={(e) => e.stopPropagation()}>
           <div className='title'>

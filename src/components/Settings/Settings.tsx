@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import Modal from '../Modal/Modal';
 import General from './options/General';
+import Modal from '../Modal/Modal';
 import Plan from './options/Plan';
 import Profile from './options/Profile';
+import React, { useState } from 'react';
+import Support from './options/Support';
+import About from './options/About';
+import Theme from './options/Theme';
 
 const settingOptions = [
   {
@@ -10,12 +13,24 @@ const settingOptions = [
     component: <Profile />,
   },
   {
-    option: 'plan',
+    option: 'subscription',
     component: <Plan />,
   },
   {
     option: 'general',
     component: <General />,
+  },
+  {
+    option: 'Theme',
+    component: <Theme />,
+  },
+  {
+    option: 'support',
+    component: <Support />,
+  },
+  {
+    option: 'about',
+    component: <About />,
   },
 ];
 
@@ -57,7 +72,7 @@ const Settings = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
         .settings {
           width: 80vw;
           max-width: 900px;
-          height: 80vh;
+          height: 50vh;
           display: flex;
         }
         .sidebar {

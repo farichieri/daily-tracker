@@ -29,9 +29,11 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
     const pendingTasks: TaskGroup = filterTasksPending(tasksState);
     const doneTasks: TaskGroup = filterTasksDone(tasksState);
     // Working_on on top
-    const sortedPendingTasks = Object.values(pendingTasks).sort(
-      (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
-    );
+    const sortedPendingTasks = Object.values(pendingTasks)
+      .sort(
+        (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
+      )
+      .sort((a, b) => b.date_set.date_iso?.localeCompare(a.date_set.date_iso));
     const sortedDoneTasks = Object.values(doneTasks).sort((a, b) =>
       b.date_set.date_iso?.localeCompare(a.date_set.date_iso)
     );

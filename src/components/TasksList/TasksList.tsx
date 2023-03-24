@@ -32,7 +32,6 @@ const TasksList = () => {
         .list {
           width: 100%;
           display: flex;
-          max-width: 600px;
           flex-direction: column;
           gap: 0.5rem;
           height: 100%;

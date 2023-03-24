@@ -7,8 +7,9 @@ import { selectUser } from 'store/slices/authSlice';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase.config';
 import { setUpdateTask } from 'store/slices/tasksSlice';
-import { Task } from '@/global/types';
+import { ListGroup, Task } from '@/global/types';
 import { selectLists } from 'store/slices/listsSlice';
+import { filterListsNotArchived, filterObject } from '@/hooks/helpers';
 
 const AssignList = ({
   closeModalOnClick,
@@ -21,12 +22,12 @@ const AssignList = ({
   task: Task;
   handleChangeList: Function;
 }) => {
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
   const { taskID } = router.query;
-  const lists = useSelector(selectLists);
   const { user } = useSelector(selectUser);
-
+  const lists = useSelector(selectLists);
+  const listsNotArchived: ListGroup = filterListsNotArchived(lists);
   const [listSelected, setListSelected] = useState<string>(task.project_id);
 
   const handleToggleList = (event: React.MouseEvent) => {
@@ -55,14 +56,14 @@ const AssignList = ({
       <div className='assign-labels-container'>
         <div className='title'>Asign Label</div>
         <div className='labels-container'>
-          {Object.keys(lists).map((list: string) => (
+          {Object.keys(listsNotArchived).map((list: string) => (
             <span
               key={list}
               id={list}
               className='label'
               onClick={handleToggleList}
             >
-              <span>{lists[list].list_name}</span>
+              <span>{listsNotArchived[list].list_name}</span>
               <span>
                 <IconButton
                   onClick={handleToggleList}

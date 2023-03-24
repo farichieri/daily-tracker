@@ -93,13 +93,13 @@ export default function PremiumLayout({
           <>
             <PremiumNav />
             <PremiumSidebar />
-            <div className='container'>{children}</div>
             {sidebarOpen && (
               <span className='modal' onClick={handleToggleSidebar}></span>
             )}
           </>
         )
       )}
+      <div className='container'>{children}</div>
       <style jsx>
         {`
           section {
@@ -136,10 +136,12 @@ export default function PremiumLayout({
             bottom: 0;
             z-index: 7;
           }
-          @media (min-width: 640px) and (max-width: 1300px) {
+          @media (min-width: 640px) {
             .modal {
               display: none;
             }
+          }
+          @media (min-width: 640px) and (max-width: 1300px) {
             .container {
               padding-left: ${sidebarOpen ? '210px' : 'initial'};
             }
