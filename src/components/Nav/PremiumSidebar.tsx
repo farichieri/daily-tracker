@@ -102,6 +102,19 @@ const PremiumSidebar = () => {
               )
           )}
         </div>
+        <div className='goals'>
+          <div className='title'>
+            <Link href={'/app/goals'}>
+              <span
+                className={`goals ${
+                  pathname === '/app/goals' ? 'selected' : ''
+                }`}
+              >
+                Goals
+              </span>
+            </Link>
+          </div>
+        </div>
         <div className='avatar'>
           <Avatar size={65} changeable={false} />
         </div>
@@ -172,7 +185,8 @@ const PremiumSidebar = () => {
         }
         .tracks,
         .labels,
-        .projects {
+        .projects,
+        .goals {
           width: 100%;
         }
 

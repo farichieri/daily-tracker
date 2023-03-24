@@ -14,8 +14,14 @@ import {
   setDaySelected,
   setProjects,
 } from 'store/slices/trackerSlice';
-import { getProjects, getLists, getLabels, getTasks } from '@/hooks/firebase';
-import { LabelGroup, TaskGroup, ListGroup } from '@/global/types';
+import {
+  getProjects,
+  getLists,
+  getLabels,
+  getTasks,
+  getGoals,
+} from '@/hooks/firebase';
+import { LabelGroup, TaskGroup, ListGroup, GoalGroup } from '@/global/types';
 import { selectGlobalState, setIsDataFetched } from 'store/slices/globalSlice';
 import { setLabels } from 'store/slices/labelsSlice';
 import { setLists } from 'store/slices/listsSlice';
@@ -23,6 +29,7 @@ import { setTasks } from 'store/slices/tasksSlice';
 import { useRouter } from 'next/router';
 import Loader from './Loader/Loader';
 import Login from '../Auth/Login';
+import { setGoals } from 'store/slices/goalsSlice';
 
 export default function PremiumLayout({
   children,
@@ -52,6 +59,7 @@ export default function PremiumLayout({
     const labelsData: LabelGroup = await getLabels(user);
     const listsData: ListGroup = await getLists(user);
     const tasksData: TaskGroup = await getTasks(user);
+    const goalsData: GoalGroup = await getGoals(user);
     const projects = await getProjects(user);
     if (projects.length < 1) {
       dispatch(toggleIsCreatingProject());
@@ -60,6 +68,7 @@ export default function PremiumLayout({
     dispatch(setLabels(labelsData));
     dispatch(setLists(listsData));
     dispatch(setTasks(tasksData));
+    dispatch(setGoals(goalsData));
     dispatch(setProjects(projects));
     dispatch(setIsDataFetched(true));
   };

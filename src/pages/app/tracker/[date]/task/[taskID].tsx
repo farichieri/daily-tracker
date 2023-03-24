@@ -2,8 +2,8 @@ import { selectTasks } from 'store/slices/tasksSlice';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Loader from '@/components/Layout/Loader/Loader';
-import TasksLayout from '@/components/Layout/TasksLayout';
 import TaskDetail from '@/components/TasksList/Tasks/Task/TaskDetail';
+import TrackerLayout from '@/components/Layout/TrackerLayout';
 
 const TaskID = () => {
   const router = useRouter();
@@ -13,13 +13,13 @@ const TaskID = () => {
   const redirectLink = `/app/tracker/${date}`;
 
   return (
-    <TasksLayout>
+    <TrackerLayout>
       {!task ? (
         <Loader fullScreen={true} text={''} />
       ) : (
         <TaskDetail task={task} redirectLink={redirectLink} />
       )}
-    </TasksLayout>
+    </TrackerLayout>
   );
 };
 

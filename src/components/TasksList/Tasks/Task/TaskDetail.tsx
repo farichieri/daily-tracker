@@ -243,7 +243,7 @@ const TaskID = ({
           />
         </div>
         <div className='comments-container'>
-          <span className='title'>Description</span>
+          <span className='title'>Notes</span>
           <ReactTextareaAutosize
             name='description'
             value={taskState.description}

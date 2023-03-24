@@ -1,23 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './slices/authSlice';
-import themeSlice from './slices/themeSlice';
-import trackerSlice from './slices/trackerSlice';
+import globalSlice from './slices/globalSlice';
+import goalsSlice from './slices/goalsSlice';
+import labelsSlice from './slices/labelsSlice';
 import layoutSlice from './slices/layoutSlice';
 import listsSlice from './slices/listsSlice';
-import labelsSlice from './slices/labelsSlice';
-import globalSlice from './slices/globalSlice';
 import tasksSlice from './slices/tasksSlice';
+import themeSlice from './slices/themeSlice';
+import trackerSlice from './slices/trackerSlice';
 
 export const store = configureStore({
   reducer: {
-    theme: themeSlice,
     auth: authSlice,
-    tracker: trackerSlice,
-    layout: layoutSlice,
-    tasks: tasksSlice,
-    list: listsSlice,
-    labels: labelsSlice,
     global: globalSlice,
+    goals: goalsSlice,
+    labels: labelsSlice,
+    layout: layoutSlice,
+    list: listsSlice,
+    tasks: tasksSlice,
+    theme: themeSlice,
+    tracker: trackerSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

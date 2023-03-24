@@ -42,8 +42,8 @@ export const setNewUserData = async (user: User) => {
       date_set: {
         date_iso: formatISO(new Date()),
         is_recurring: false,
-        time_from: 'string',
-        time_to: 'string',
+        time_from: '',
+        time_to: '',
         with_time: false,
       },
       content: 'Plan my week',

@@ -35,7 +35,7 @@ const Footer = () => {
       <div className='container'>
         <div className='first'>
           <span className='logo'>
-            <Link href='/'>DailyTracker</Link>
+            <Link href='/'>Improve.me</Link>
           </span>
           {showPages && (
             <p>

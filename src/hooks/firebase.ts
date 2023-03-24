@@ -1,4 +1,10 @@
-import { Project, ListGroup, LabelGroup, TaskGroup } from '@/global/types';
+import {
+  Project,
+  ListGroup,
+  LabelGroup,
+  TaskGroup,
+  GoalGroup,
+} from '@/global/types';
 import { db } from '@/utils/firebase.config';
 import { User } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
@@ -70,6 +76,17 @@ export const getTasks = async (user: User) => {
   let data: TaskGroup = {};
   const tasksDocRef = collection(db, 'users', user.uid, 'tasks');
   const querySnapshot = await getDocs(tasksDocRef);
+  querySnapshot.forEach((list: any) => {
+    data[list.id] = list.data();
+  });
+  return data;
+};
+
+export const getGoals = async (user: User) => {
+  console.log('Fetching Goals');
+  let data: GoalGroup = {};
+  const goalsDocRef = collection(db, 'users', user.uid, 'goals');
+  const querySnapshot = await getDocs(goalsDocRef);
   querySnapshot.forEach((list: any) => {
     data[list.id] = list.data();
   });

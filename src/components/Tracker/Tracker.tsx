@@ -1,6 +1,6 @@
 import DaysSelector from './DaysSelector';
 import DayTasks from './DayTasks/DayTasks';
-import Goals from '../Goals/Goals';
+import Goals from '../Goals/Goalse';
 import { dbFormatDate } from '@/utils/formatDate';
 import { useDispatch, useSelector } from 'react-redux';
 import {

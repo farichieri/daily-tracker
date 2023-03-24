@@ -37,7 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Head>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <title>Daily Tracker</title>
+        <title>Improve.me</title>
       </Head>
       <div className={`${fonts.raleWay.className} ${theme}`}>
         <main>{children}</main>

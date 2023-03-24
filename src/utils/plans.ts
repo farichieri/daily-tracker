@@ -13,11 +13,11 @@ export const plans = [
     plan: 'medium',
     name: 'Medium',
     description:
-      'Read case studies and get inspired and use our daily tracker for maximum performance',
+      'Read case studies and get inspired and use our improve.me app for maximum performance',
     checkoutDescription:
       'You will be charged a sum of $120 for the first year. Membership will be renewed annually at $120/year.',
     price: '$10/month',
     yearPrice: '$120',
-    checks: ['Unlock all posts', 'Access our daily tracker'],
+    checks: ['Unlock all posts', 'Access our improve.me app'],
   },
 ];

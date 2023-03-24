@@ -24,9 +24,6 @@ export interface UserDoc {
 // If a Task has a date_set, it will be rendered in the tracker.
 // And if a day_task has labels, it will be rendered in the labels
 // And if a day_task has a project_id, it will be rendered in the list of tasks.
-
-export interface TasksArray extends Array<Task> {}
-
 export interface Task {
   [key: string]: any;
   activity: Array<string>;
@@ -118,3 +115,36 @@ export interface Label {
 export interface LabelGroup {
   [id: string]: Label;
 }
+
+export interface Goal {
+  [key: string]: any;
+  activity: Array<string>;
+  added_at: string;
+  added_by_uid: string;
+  assigned_to: Array<string>;
+  attachments: Array<string>;
+  comments: Array<string>;
+  completed_at: string;
+  content: string;
+  date_set: DateSet;
+  description: string;
+  done: boolean;
+  is_archived: boolean;
+  labels: Array<string>;
+  days_spent: number;
+  priority: number;
+  project_id: string;
+  reminder_date: string;
+  section_id: string;
+  goal_id: string;
+  goal_order: number;
+  updated_at: string;
+  working_on: boolean;
+}
+
+export interface GoalGroup {
+  [id: string]: Goal;
+}
+
+export interface TasksArray extends Array<Task> {}
+export interface GoalsArray extends Array<Goal> {}

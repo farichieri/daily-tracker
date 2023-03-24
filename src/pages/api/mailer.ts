@@ -22,11 +22,11 @@ const mailer = async (req: NextApiRequest, res: NextApiResponse) => {
     await transporter.sendMail({
       from: `${process.env.NEXT_PUBLIC_EMAIL_DEV}`,
       to: email,
-      subject: `Welcome to Daily Tracker!`,
+      subject: `Welcome to Improve.me!`,
       html: `
       <div>
         <p>Welcome!</p><br>
-        <p>My name is Fabricio, founder of <b>Daily Tracker</b>. I just wanted to give you a warm welcome and thank you for joining our newsletter. It really means a lot.</p><br>
+        <p>My name is Fabricio, founder of <b>Improve.me</b>. I just wanted to give you a warm welcome and thank you for joining our newsletter. It really means a lot.</p><br>
       </div>
       `,
     });

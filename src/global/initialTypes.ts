@@ -1,4 +1,4 @@
-import { Task } from './types';
+import { Goal, Task } from './types';
 
 export const NewTaskInitial: Task = {
   activity: [],
@@ -28,6 +28,37 @@ export const NewTaskInitial: Task = {
   subtasks: [],
   task_id: '',
   task_order: 0,
+  updated_at: '',
+  working_on: false,
+};
+export const NewGoalInitial: Goal = {
+  activity: [],
+  added_at: '',
+  added_by_uid: '',
+  assigned_to: [],
+  attachments: [],
+  comments: [],
+  completed_at: '',
+  content: '',
+  date_set: {
+    date_iso: '',
+    is_recurring: false,
+    time_from: '',
+    time_to: '',
+    with_time: false,
+  },
+  description: '',
+  done: false,
+  is_archived: false,
+  labels: [],
+  days_spent: 0,
+  priority: 0,
+  project_id: '',
+  reminder_date: '',
+  section_id: '',
+  subtasks: [],
+  goal_id: '',
+  goal_order: 0,
   updated_at: '',
   working_on: false,
 };

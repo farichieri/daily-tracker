@@ -18,7 +18,7 @@ const Logo = (props: Props) => {
         width={props.width}
         priority={props.priority}
       /> */}
-      <p>DailyTracker</p>
+      <p>Improve.me</p>
       <style jsx>{`
         span {
           display: flex;

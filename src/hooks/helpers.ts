@@ -1,4 +1,4 @@
-import { ListGroup, Task, TaskGroup } from '@/global/types';
+import { GoalGroup, ListGroup, Task, TaskGroup } from '@/global/types';
 import { dbFormatDate } from '@/utils/formatDate';
 import { parseISO } from 'date-fns';
 
@@ -17,6 +17,7 @@ export const filterObjectIncludes = (
           },
     {}
   );
+
 export const filterObject = (obj: any, filter: string, filterValue: string) =>
   Object.keys(obj).reduce(
     (acc, val) =>
@@ -56,7 +57,7 @@ export const filterSubtasks = (obj: any, taskID: string) =>
     {}
   );
 
-export const filterTasksDone = (obj: TaskGroup) =>
+export const filterTasksDone = (obj: TaskGroup | GoalGroup) =>
   Object.keys(obj).reduce(
     (acc, val) =>
       !obj[val]['done'] === true
@@ -68,7 +69,7 @@ export const filterTasksDone = (obj: TaskGroup) =>
     {}
   );
 
-export const filterTasksPending = (obj: TaskGroup) =>
+export const filterTasksPending = (obj: TaskGroup | GoalGroup) =>
   Object.keys(obj).reduce(
     (acc, val) =>
       !obj[val]['done'] === false

@@ -39,6 +39,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     []
   );
 
+  console.log({ tasksFiltered });
   useEffect(() => {
     const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
       a.date_set.time_from?.localeCompare(b.date_set.time_from)
