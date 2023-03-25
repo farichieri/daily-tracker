@@ -1,18 +1,17 @@
-import DaysSelector from './DaysSelector';
-import DayTasks from './DayTasks/DayTasks';
-import Goals from '../Goals/Goalse';
-import { dbFormatDate } from '@/utils/formatDate';
-import { useDispatch, useSelector } from 'react-redux';
+import DaysSelector from "./DaysSelector";
+import DayTasks from "./DayTasks/DayTasks";
+import { dbFormatDate } from "@/utils/formatDate";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectDaySelected,
   selectWeekSelected,
   setDaySelected,
-} from 'store/slices/trackerSlice';
-import Header from './Header';
-import { parseISO } from 'date-fns';
-import { useRouter } from 'next/dist/client/router';
-import { selectTasks } from 'store/slices/tasksSlice';
-import { filterTasksByDateSet } from '@/hooks/helpers';
+} from "store/slices/trackerSlice";
+import Header from "./Header";
+import { parseISO } from "date-fns";
+import { useRouter } from "next/dist/client/router";
+import { selectTasks } from "store/slices/tasksSlice";
+import { filterTasksByDateSet } from "@/hooks/helpers";
 
 const Tracker = () => {
   const dispatch = useDispatch();
@@ -27,9 +26,9 @@ const Tracker = () => {
     e.preventDefault();
     const action = (e.target as HTMLButtonElement).id;
     const modifyDateDays = (date: Date, action: string, days: number) => {
-      if (action === 'prev') {
+      if (action === "prev") {
         date.setDate(date.getDate() - days);
-      } else if (action === 'next') {
+      } else if (action === "next") {
         date.setDate(date.getDate() + days);
       }
       return date;
@@ -48,7 +47,7 @@ const Tracker = () => {
         week={weekSelected}
         handleDatesSelected={handleDatesSelected}
       />
-      <div className='tasks-goals-container'>
+      <div className="tasks-goals-container">
         <DayTasks tasksFiltered={tasksFiltered} />
         {/* <Goals /> */}
       </div>

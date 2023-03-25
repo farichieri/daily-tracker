@@ -1,13 +1,13 @@
-import { format, parseISO } from 'date-fns';
-import { Label, Task } from '@/global/types';
-import { selectLists } from 'store/slices/listsSlice';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import IconButton from '@/components/Layout/Icon/IconButton';
-import Link from 'next/link';
-import Image from 'next/image';
-import Subtasks from '../Subtasks/Subtasks';
-import ToggleDoneTask from '../TaskActions/TaskActionsButtons/ToggleDoneTask';
+import { format, parseISO } from "date-fns";
+import { Label, Task } from "@/global/types";
+import { selectLists } from "store/slices/listsSlice";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import IconButton from "@/components/Layout/Icon/IconButton";
+import Link from "next/link";
+import Image from "next/image";
+import Subtasks from "../Subtasks/Subtasks";
+import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
 
 const TaskComponent = ({
   taskID,
@@ -23,38 +23,38 @@ const TaskComponent = ({
   const { listID } = router.query;
 
   const iso = task.date_set.date_iso;
-  const isoDisplay = iso && format(parseISO(iso), 'MM-dd-yyyy');
-  const todayDisplay = format(new Date(), 'MM-dd-yyyy'); // US Format
-  const dateDisplayed = isoDisplay === todayDisplay ? 'Today' : isoDisplay;
+  const isoDisplay = iso && format(parseISO(iso), "MM-dd-yyyy");
+  const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
+  const dateDisplayed = isoDisplay === todayDisplay ? "Today" : isoDisplay;
 
   return (
     <div
-      className={`task-container ${task.done ? 'done' : ''} ${
-        task.working_on ? 'working_on' : ''
+      className={`task-container ${task.done ? "done" : ""} ${
+        task.working_on ? "working_on" : ""
       }`}
     >
-      <div className='task' id={taskID}>
-        {!router.pathname.includes('tracker') && task.date_set.date_iso && (
-          <div className='date_iso'>
+      <div className="task" id={taskID}>
+        {!router.pathname.includes("tracker") && task.date_set.date_iso && (
+          <div className="date_iso">
             <Link href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}>
-              <span className={`${dateDisplayed === 'Today' ? 'today' : ''}`}>
+              <span className={`${dateDisplayed === "Today" ? "today" : ""}`}>
                 {dateDisplayed}
               </span>
             </Link>
           </div>
         )}
-        <div className='times'>
+        <div className="times">
           {task.date_set.time_from && (
-            <div className='time_from'>{task.date_set.time_from}</div>
+            <div className="time_from">{task.date_set.time_from}</div>
           )}
           {task.date_set.time_to && (
             <>
-              -<div className='time_to'>{task.date_set.time_to}</div>
+              -<div className="time_to">{task.date_set.time_to}</div>
             </>
           )}
         </div>
-        <div className='column'>
-          <div className='project'>
+        <div className="column">
+          <div className="project">
             {projects[task.project_id]?.list_name && !listID && (
               <Link href={`/app/lists/${task.project_id}`}>
                 <span>📄 List {projects[task.project_id]?.list_name}</span>
@@ -62,38 +62,38 @@ const TaskComponent = ({
             )}
           </div>
 
-          <div className='content-description'>
-            <div className={`name ${task.done ? 'done' : ''}`}>
+          <div className="content-description ">
+            <div className={`name ${task.done ? "done" : ""}`}>
               {task.content}
             </div>
             {task.description && (
-              <div className='description'>
-                {task.description.slice(0, 300)}{' '}
-                {task.description.length > 300 && '...'}
+              <div className="description">
+                {task.description.slice(0, 300)}{" "}
+                {task.description.length > 300 && "..."}
               </div>
             )}
           </div>
-          <div className='labels'>
+          <div className="labels">
             {getLabelsByTask(taskID)?.map(
               (label: Label) =>
                 label && (
                   <div
                     key={label.label_id}
-                    className='label'
+                    className="label"
                     style={{ background: `${label.label_color}` }}
                   ></div>
                 )
             )}
           </div>
-          <div className='subtasks'>
+          <div className="subtasks">
             <Subtasks task={task} inTaskCompnent={true} />
           </div>
         </div>
-        <div className='working-on'>
+        <div className="working-on">
           {task.working_on && (
             <Image
-              src={'/icons/working.png'}
-              alt='working icon'
+              src={"/icons/working.png"}
+              alt="working icon"
               width={25}
               height={25}
             />
@@ -115,6 +115,7 @@ const TaskComponent = ({
           transition: 0.3s;
           color: var(--text-color);
           background: var(--box-shadow-light);
+          margin: 0.5rem 0;
         }
         .task-container.done {
           background: var(--done);
@@ -158,7 +159,7 @@ const TaskComponent = ({
           display: flex;
           pointer-events: none;
           gap: 0.35rem;
-          align-items: center;
+          align-items: flex-start;
         }
         .name {
           width: 100%;
@@ -192,6 +193,7 @@ const TaskComponent = ({
           display: flex;
           align-items: center;
           gap: 0.2rem;
+          height: 100%;
         }
         .time_from,
         .time_to {

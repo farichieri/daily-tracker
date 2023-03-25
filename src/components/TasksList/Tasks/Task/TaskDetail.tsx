@@ -104,18 +104,13 @@ const TaskID = ({
     }
   };
 
-  // Should just delete a task.
   const handleDelete = async (event: React.MouseEvent) => {
     event.preventDefault();
     router.push(redirectLink);
-
     if (!user) return;
-    const id: string = (event.target as HTMLButtonElement).id;
-    const newTasks: any = { ...tasks };
-    const taskDeleted = newTasks[id];
-    delete newTasks[id];
-    const docRef = doc(db, 'users', user.uid, 'tasks', taskDeleted.task_id);
-    dispatch(setDeleteTask(taskDeleted.task_id));
+    const task_id: string = (event.target as HTMLButtonElement).id;
+    const docRef = doc(db, 'users', user.uid, 'tasks', task_id);
+    dispatch(setDeleteTask(task_id));
     await deleteDoc(docRef);
   };
 

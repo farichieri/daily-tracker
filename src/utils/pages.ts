@@ -21,14 +21,14 @@ export const more_pages = [
 ];
 
 export const learn_pages = [
-  { name: 'Tracker', path: '/app', target: '_self' },
+  { name: 'App', path: '/app', target: '_self' },
   { name: 'Newsletter', path: '/newsletter', target: '_self' },
   { name: 'Blog', path: '/blog', target: '_self' },
 ];
 
 export const nav_pages = [
   { name: 'Home', path: '/' },
-  { name: 'Tracker', path: '/app' },
+  { name: 'App', path: '/app' },
   { name: 'Newsletter', path: '/newsletter' },
   { name: 'Blog', path: '/blog' },
   { name: 'pricing', path: '/pricing' },

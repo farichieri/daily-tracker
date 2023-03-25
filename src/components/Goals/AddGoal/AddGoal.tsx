@@ -41,7 +41,7 @@ const AddGoal = () => {
       const project_id = newGoalState.project_id
         ? newGoalState.project_id
         : 'goals';
-      const date_iso = listID ? newGoalState.date_set.date_iso : '';
+      const date_iso = newGoalState.date_set.date_iso;
       const time_from = newGoalState.date_set.time_from;
       const time_to = newGoalState.date_set.time_to;
 

@@ -1,4 +1,4 @@
-import css from 'styled-jsx/css';
+import css from "styled-jsx/css";
 
 // A Modern CSS Reset
 // https://hankchizljaw.com/wrote/a-modern-css-reset/

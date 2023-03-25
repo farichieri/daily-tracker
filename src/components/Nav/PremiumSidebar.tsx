@@ -1,17 +1,17 @@
-import { selectLists, setListEdit } from 'store/slices/listsSlice';
-import { selectSidebarState } from 'store/slices/layoutSlice';
-import { selectToday } from 'store/slices/trackerSlice';
-import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
-import Avatar from '../Avatar/Avatar';
-import ButtonAction from '../Layout/ButtonAction/ButtonAction';
-import Image from 'next/image';
-import Link from 'next/link';
-import ListCreate from '../ListCreate/ListCreate';
-import ListEdit from '../ListEdit/ListEdit';
-import ProjectCreate from '../ProjectCreate/ProjectCreate';
-import ProjectEdit from '../ProjectEdit/ProjectEdit';
+import { selectLists, setListEdit } from "store/slices/listsSlice";
+import { selectSidebarState } from "store/slices/layoutSlice";
+import { selectToday } from "store/slices/trackerSlice";
+import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import Avatar from "../Avatar/Avatar";
+import ButtonAction from "../Layout/ButtonAction/ButtonAction";
+import Image from "next/image";
+import Link from "next/link";
+import ListCreate from "../ListCreate/ListCreate";
+import ListEdit from "../ListEdit/ListEdit";
+import ProjectCreate from "../ProjectCreate/ProjectCreate";
+import ProjectEdit from "../ProjectEdit/ProjectEdit";
 
 const PremiumSidebar = () => {
   const dispatch = useDispatch();
@@ -46,13 +46,13 @@ const PremiumSidebar = () => {
       {editList && <ListEdit closeModalOnClick={closeModalOnClick} />}
       {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <div className='tracks' onClick={(e) => e.stopPropagation()}>
-          <div className='title'>
-            <Link href={`/app/tracker/${today}`} style={{ width: '100%' }}>
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        <div className="tracks" onClick={(e) => e.stopPropagation()}>
+          <div className="title">
+            <Link href={`/app/tracker/${today}`} style={{ width: "100%" }}>
               <span
                 className={`tracker ${
-                  pathname.includes('/app/tracker') ? 'selected' : ''
+                  pathname.includes("/app/tracker") ? "selected" : ""
                 }`}
               >
                 My Tracker
@@ -60,12 +60,12 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className='labels'>
-          <div className='title'>
-            <Link href={'/app/labels'}>
+        <div className="labels">
+          <div className="title">
+            <Link href={"/app/labels"}>
               <span
                 className={`labels ${
-                  pathname === '/app/labels' ? 'selected' : ''
+                  pathname === "/app/labels" ? "selected" : ""
                 }`}
               >
                 Labels
@@ -73,41 +73,41 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className='to-do'>
-          <div className='title'>
+        <div className="to-do">
+          <div className="title">
             <span>Tasks Lists</span>
-            <ButtonAction text={'+'} onClick={() => setListCreate(true)} />
+            <ButtonAction text={"+"} onClick={() => setListCreate(true)} />
           </div>
           {Object.keys(lists).map(
             (list) =>
               !lists[list].is_archived && (
-                <div key={list} className='project-container'>
-                  <Link href={`/app/lists/${list}`} style={{ width: '100%' }}>
+                <div key={list} className="project-container">
+                  <Link href={`/app/lists/${list}`} style={{ width: "100%" }}>
                     <span
-                      className={`project ${list === listID ? 'selected' : ''}`}
+                      className={`project ${list === listID ? "selected" : ""}`}
                     >
                       {lists[list].list_name}
                     </span>
                   </Link>
-                  <span className='edit' id={list} onClick={handleEditList}>
+                  <span className="edit" id={list} onClick={handleEditList}>
                     <Image
-                      alt='edit-icon'
-                      src={'/icons/edit.png'}
+                      alt="edit-icon"
+                      src={"/icons/edit.png"}
                       width={14}
                       height={14}
-                      style={{ pointerEvents: 'none' }}
+                      style={{ pointerEvents: "none" }}
                     />
                   </span>
                 </div>
               )
           )}
         </div>
-        <div className='goals'>
-          <div className='title'>
-            <Link href={'/app/goals'}>
+        <div className="goals">
+          <div className="title">
+            <Link href={"/app/goals"}>
               <span
                 className={`goals ${
-                  pathname === '/app/goals' ? 'selected' : ''
+                  pathname === "/app/goals" ? "selected" : ""
                 }`}
               >
                 Goals
@@ -115,7 +115,20 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className='avatar'>
+        <div className="goals">
+          <div className="title">
+            <Link href={"/app/test"}>
+              <span
+                className={`goals ${
+                  pathname === "/app/goals" ? "selected" : ""
+                }`}
+              >
+                Test
+              </span>
+            </Link>
+          </div>
+        </div>
+        <div className="avatar">
           <Avatar size={65} changeable={false} />
         </div>
       </div>
@@ -134,7 +147,7 @@ const PremiumSidebar = () => {
           position: fixed;
           transition: all 0.3s;
           user-select: none;
-          width: 200px;
+          width: 12rem;
           z-index: 8;
           background: var(--cool);
           backdrop-filter: blur(12px);

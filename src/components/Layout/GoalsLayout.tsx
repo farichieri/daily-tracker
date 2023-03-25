@@ -1,18 +1,20 @@
-import { ReactNode } from 'react';
-import { selectUser } from 'store/slices/authSlice';
-import { useSelector } from 'react-redux';
-import PremiumLayout from '@/components/Layout/PremiumLayout';
-import Goals from '../Goals/Goals';
-import AddGoal from '../Goals/AddGoal/AddGoal';
+import { ReactNode } from "react";
+import { selectUser } from "store/slices/authSlice";
+import { useSelector } from "react-redux";
+import PremiumLayout from "@/components/Layout/PremiumLayout";
+import Goals from "../Goals/Goals";
+import AddGoal from "../Goals/AddGoal/AddGoal";
 
 const GoalsLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
   return (
     <PremiumLayout withPadding={false}>
-      <div className='container'>
+      <div className="container">
         {user && (
           <>
-            <Goals />
+            <div className="my-5 w-full">
+              <Goals />
+            </div>
             <AddGoal />
           </>
         )}

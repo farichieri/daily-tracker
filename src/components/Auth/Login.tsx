@@ -1,45 +1,48 @@
-import React, { useState } from 'react';
-import { auth, db, provider } from '@/utils/firebase.config';
+import React, { useState } from "react";
+import { auth, provider } from "@/utils/firebase.config";
 import {
   getAdditionalUserInfo,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-} from 'firebase/auth';
-import Button from '../Layout/Button/Button';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { setIsLoading } from 'store/slices/layoutSlice';
-import GoogleLoginButton from '../Layout/GoogleLoginButton/GoogleLoginButton';
-import { setNewUserData } from './newUserData';
+} from "firebase/auth";
+import { setIsLoading } from "store/slices/layoutSlice";
+import { setNewUserData } from "./newUserData";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import Button from "../Layout/Button/Button";
+import GoogleLoginButton from "../Layout/GoogleLoginButton/GoogleLoginButton";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [input, setInput] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [isLoadingForm, setIsLoadingForm] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const router = useRouter();
 
   const handleLogInWithGoogle = async () => {
+    dispatch(setIsLoading(true));
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        dispatch(setIsLoading(true));
+        provider.addScope("https://www.googleapis.com/auth/calendar");
+        provider.addScope("https://www.googleapis.com/auth/calendar.events");
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
+        token && localStorage.setItem("gcl", token);
         // The signed-in user info.
         const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         const additinalInfo = getAdditionalUserInfo(result);
         if (additinalInfo?.isNewUser) {
           await setNewUserData(user);
-          router.push('/app');
+          router.push("/app");
         } else {
-          router.push('/app');
+          router.push("/app");
         }
       })
       .catch((error) => {
@@ -63,7 +66,7 @@ const Login = () => {
     await signInWithEmailAndPassword(auth, input.email, input.password)
       .then((result) => {
         const user = result.user;
-        user && router.push('/app');
+        user && router.push("/app");
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -80,36 +83,36 @@ const Login = () => {
       ...input,
       [event.target.name]: event.target.value,
     });
-    setErrorMessage('');
+    setErrorMessage("");
   };
 
   return (
-    <div className='login'>
+    <div className="login">
       <GoogleLoginButton onClick={handleLogInWithGoogle}>
         Sign in with Google
       </GoogleLoginButton>
       <form onSubmit={handleSubmit}>
-        <div className='inputs-container'>
+        <div className="inputs-container">
           <input
             onChange={handleChange}
-            name='email'
+            name="email"
             value={input.email}
-            placeholder='Email'
-            type='text'
+            placeholder="Email"
+            type="text"
           />
           <input
             onChange={handleChange}
-            name='password'
+            name="password"
             value={input.password}
-            placeholder='Password'
-            type='password'
+            placeholder="Password"
+            type="password"
           />
         </div>
         <Button
           style={null}
           onClick={handleSubmit}
-          loadMessage={'Ingresando...'}
-          content='Sign in'
+          loadMessage={"Ingresando..."}
+          content="Sign in"
           isLoading={isLoadingForm}
           isDisabled={isDisabled}
         />

@@ -82,6 +82,7 @@ const Modal = ({
           }
           .modal-container {
             position: relative;
+            margin: 2rem 0;
           }
           .close {
             position: absolute;

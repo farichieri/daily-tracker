@@ -1,21 +1,21 @@
-import Head from 'next/head';
-import reset from '@/styles/reset';
-import colors from '@/styles/colors';
-import React, { useEffect } from 'react';
-import general from '@/styles/general';
-import typography, { fonts } from '@/styles/typography';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/utils/firebase.config';
-import { useDispatch } from 'react-redux';
+import { auth } from "@/utils/firebase.config";
+import { getUserSettings } from "@/hooks/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { selectTheme } from "store/slices/themeSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   verifyUser,
   userVerified,
   setUserSettings,
-} from 'store/slices/authSlice';
-import { selectTheme } from 'store/slices/themeSlice';
-import { useSelector } from 'react-redux';
-import { getUserSettings } from '@/hooks/firebase';
-import effects from '@/styles/effects';
+} from "store/slices/authSlice";
+import colors from "@/styles/colors";
+import effects from "@/styles/effects";
+import general from "@/styles/general";
+import Head from "next/head";
+import React, { useEffect } from "react";
+import reset from "@/styles/reset";
+import typography, { fonts } from "@/styles/typography";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
@@ -23,8 +23,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     dispatch(verifyUser());
-    console.log('Verifying User');
+    console.log("Verifying User");
     onAuthStateChanged(auth, async (user) => {
+      console.log({ user });
+
       dispatch(userVerified(user));
       if (user) {
         const settings = await getUserSettings(user);
@@ -36,7 +38,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Head>
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Improve.me</title>
       </Head>
       <div className={`${fonts.raleWay.className} ${theme}`}>

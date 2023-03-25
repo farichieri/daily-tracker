@@ -1,12 +1,12 @@
-import { selectList } from 'store/slices/listsSlice';
-import { selectSidebarState, toggleSidebar } from 'store/slices/layoutSlice';
-import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
-import DarkMode from '../DarkMode/DarkMode';
-import Image from 'next/image';
-import ProfileDropDown from '../Layout/DropDown/ProfileDropDown/ProfileDropDown';
-import Settings from '../Settings/Settings';
+import { selectList } from "store/slices/listsSlice";
+import { selectSidebarState, toggleSidebar } from "store/slices/layoutSlice";
+import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import DarkMode from "../DarkMode/DarkMode";
+import Image from "next/image";
+import ProfileDropDown from "../Layout/DropDown/ProfileDropDown/ProfileDropDown";
+import Settings from "../Settings/Settings";
 
 const PremiumNav = () => {
   const dispatch = useDispatch();
@@ -15,11 +15,13 @@ const PremiumNav = () => {
   const sidebarState = useSelector(selectSidebarState);
   const { lists } = useSelector(selectList);
   const listSelected = lists[String(listID)];
-  const selected = router.pathname.includes('lists')
+  const selected = router.pathname.includes("lists")
     ? `Tasks List: ${listSelected?.list_name}`
-    : router.pathname.includes('labels')
-    ? 'Labels'
-    : `Tracker`;
+    : router.pathname.includes("labels")
+    ? "Labels"
+    : router.pathname.includes("goals")
+    ? "Goals"
+    : "Tracker";
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -34,27 +36,27 @@ const PremiumNav = () => {
   return (
     <nav>
       {isSettingsOpen && <Settings closeModalOnClick={closeModalOnClick} />}
-      <span className='toggle-sidebar' onClick={handleToggleSidebar}>
+      <span className="toggle-sidebar" onClick={handleToggleSidebar}>
         {sidebarState ? (
           <Image
-            src={'/icons/close.png'}
-            alt='close-icon'
+            src={"/icons/close.png"}
+            alt="close-icon"
             width={20}
             height={20}
-            style={{ pointerEvents: 'none' }}
+            style={{ pointerEvents: "none" }}
           />
         ) : (
           <Image
-            src={'/icons/open.png'}
-            alt='open-icon'
+            src={"/icons/open.png"}
+            alt="open-icon"
             width={20}
             height={20}
-            style={{ pointerEvents: 'none' }}
+            style={{ pointerEvents: "none" }}
           />
         )}
       </span>
-      <span className='project-selected'>{selected}</span>
-      <div className='user-dark'>
+      <span className="project-selected">{selected}</span>
+      <div className="user-dark">
         <ProfileDropDown setIsSettingsOpen={setIsSettingsOpen} />
         <DarkMode />
       </div>

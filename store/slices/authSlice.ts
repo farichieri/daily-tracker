@@ -1,7 +1,7 @@
-import { UserSettings } from '@/global/types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from 'firebase/auth';
-import type { RootState } from '../store';
+import { UserSettings } from "@/global/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "firebase/auth";
+import type { RootState } from "../store";
 
 // Define a type for the slice state
 interface AuthState {
@@ -15,16 +15,16 @@ const initialState: AuthState = {
   user: null,
   isVerifyingUser: true,
   userSettings: {
-    display_name: '',
-    email: '',
-    photo: '',
+    display_name: "",
+    email: "",
+    photo: "",
     is_premium: false,
-    plan_name: '',
+    plan_name: "",
   },
 };
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {

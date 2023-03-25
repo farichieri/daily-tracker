@@ -1,35 +1,35 @@
-import { setTheme } from 'store/slices/themeSlice';
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import PremiumNav from '../Nav/PremiumNav';
-import PremiumSidebar from '../Nav/PremiumSidebar';
+import { setTheme } from "store/slices/themeSlice";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import PremiumNav from "../Nav/PremiumNav";
+import PremiumSidebar from "../Nav/PremiumSidebar";
 import {
   selectSidebarState,
   toggleIsCreatingProject,
   toggleSidebar,
-} from 'store/slices/layoutSlice';
-import { selectUser } from 'store/slices/authSlice';
+} from "store/slices/layoutSlice";
+import { selectUser } from "store/slices/authSlice";
 import {
   selectToday,
   setDaySelected,
   setProjects,
-} from 'store/slices/trackerSlice';
+} from "store/slices/trackerSlice";
 import {
   getProjects,
   getLists,
   getLabels,
   getTasks,
   getGoals,
-} from '@/hooks/firebase';
-import { LabelGroup, TaskGroup, ListGroup, GoalGroup } from '@/global/types';
-import { selectGlobalState, setIsDataFetched } from 'store/slices/globalSlice';
-import { setLabels } from 'store/slices/labelsSlice';
-import { setLists } from 'store/slices/listsSlice';
-import { setTasks } from 'store/slices/tasksSlice';
-import { useRouter } from 'next/router';
-import Loader from './Loader/Loader';
-import Login from '../Auth/Login';
-import { setGoals } from 'store/slices/goalsSlice';
+} from "@/hooks/firebase";
+import { LabelGroup, TaskGroup, ListGroup, GoalGroup } from "@/global/types";
+import { selectGlobalState, setIsDataFetched } from "store/slices/globalSlice";
+import { setLabels } from "store/slices/labelsSlice";
+import { setLists } from "store/slices/listsSlice";
+import { setTasks } from "store/slices/tasksSlice";
+import { useRouter } from "next/router";
+import Loader from "./Loader/Loader";
+import Login from "../Auth/Login";
+import { setGoals } from "store/slices/goalsSlice";
 
 export default function PremiumLayout({
   children,
@@ -50,9 +50,9 @@ export default function PremiumLayout({
   };
 
   const fetchAllData = async () => {
-    let localTheme = window.localStorage.getItem('theme');
+    let localTheme = window.localStorage.getItem("theme");
     if (!localTheme) {
-      window.localStorage.setItem('theme', 'dark');
+      window.localStorage.setItem("theme", "dark");
     }
     dispatch(setTheme(String(localTheme)));
     if (!user) return;
@@ -81,20 +81,20 @@ export default function PremiumLayout({
 
   useEffect(() => {
     if (!user && !isVerifyingUser) {
-      router.push('/user');
+      router.push("/user");
     }
   }, [user, isVerifyingUser]);
 
   return (
-    <section>
+    <section className="flex items-center justify-center ">
       {isVerifyingUser ? (
-        <Loader fullScreen={false} text={''} />
+        <Loader fullScreen={false} text={""} />
       ) : !user ? (
-        <div className='login-container'>
+        <div className="login-container">
           <Login />
         </div>
       ) : isDataFetched === false ? (
-        <Loader text='' fullScreen={true} />
+        <Loader text="" fullScreen={true} />
       ) : (
         user &&
         userSettings.display_name &&
@@ -103,12 +103,18 @@ export default function PremiumLayout({
             <PremiumNav />
             <PremiumSidebar />
             {sidebarOpen && (
-              <span className='modal' onClick={handleToggleSidebar}></span>
+              <span className="modal" onClick={handleToggleSidebar}></span>
             )}
           </>
         )
       )}
-      <div className='container'>{children}</div>
+      <div
+        className={`flex-colr flex w-full justify-center ${
+          sidebarOpen && "sm:pl-48"
+        } `}
+      >
+        {children}
+      </div>
       <style jsx>
         {`
           section {
@@ -152,7 +158,7 @@ export default function PremiumLayout({
           }
           @media (min-width: 640px) and (max-width: 1300px) {
             .container {
-              padding-left: ${sidebarOpen ? '210px' : 'initial'};
+              padding-left: ${sidebarOpen ? "210px" : "initial"};
             }
           }
         `}

@@ -1,9 +1,9 @@
-import EmailInput from '@/components/LandingPage/EmailInput/EmailInput';
-import MainLayout from '@/components/Layout/MainLayout';
-import Pagination from '@/components/LandingPage/Pagination/Pagination';
-import Posts from '@/components/Posts/Posts';
-import { getSortedPostData } from '@/utils/posts';
-import { useState } from 'react';
+import EmailInput from "@/components/LandingPage/EmailInput/EmailInput";
+import MainLayout from "@/components/Layout/MainLayout";
+import Pagination from "@/components/LandingPage/Pagination/Pagination";
+import Posts from "@/components/Posts/Posts";
+import { getSortedPostData } from "@/utils/posts";
+import { useState } from "react";
 
 export default function Home({
   posts,
@@ -25,16 +25,16 @@ export default function Home({
 
   return (
     <MainLayout withPadding={false}>
-      <div className='home'>
-        <div className='header'>
+      <div className="home">
+        <div className="header">
           <h1>
             Increase your productivity with the best achievement tips in the
             world.
           </h1>
           <p>Receive the best information to achieve your goals weekly</p>
-          <EmailInput textButton={'Join Free'} />
+          <EmailInput textButton={"Join Free"} />
         </div>
-        <div className='content'>
+        <div className="content">
           <Posts posts={currentPaginationData} />
           <Pagination
             currentPage={currentPage}

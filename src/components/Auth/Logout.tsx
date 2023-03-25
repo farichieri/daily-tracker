@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { signOut } from 'firebase/auth';
-import Button from '../Layout/Button/Button';
-import { auth } from '../../utils/firebase.config';
-import { useRouter } from 'next/router';
+import { auth } from "../../utils/firebase.config";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/router";
+import Button from "../Layout/Button/Button";
+import React, { useState } from "react";
 
 const Logout = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,10 +13,9 @@ const Logout = () => {
     event.preventDefault();
     setIsLoading(true);
     setIsDisabled(true);
+    router.push("/user");
     await signOut(auth)
-      .then(() => {
-        router.push('/user');
-      })
+      .then(() => {})
       .catch((error) => {
         console.error(error);
       });
@@ -29,10 +28,10 @@ const Logout = () => {
       <Button
         style={null}
         onClick={handleLogout}
-        content='Logout'
+        content="Logout"
         isLoading={isLoading}
         isDisabled={isDisabled}
-        loadMessage={'Loading...'}
+        loadMessage={"Loading..."}
       />
       <style jsx>{`
         div {

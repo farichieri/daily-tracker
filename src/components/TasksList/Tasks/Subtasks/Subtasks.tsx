@@ -1,9 +1,9 @@
-import { TasksGroup, Task, TasksArray } from '@/global/types';
-import { filterSubtasks } from '@/hooks/helpers';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectTasks } from 'store/slices/tasksSlice';
-import Subtask from './Subtask';
+import { TasksGroup, Task, TasksArray } from "@/global/types";
+import { filterSubtasks } from "@/hooks/helpers";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectTasks } from "store/slices/tasksSlice";
+import Subtask from "./Subtask";
 
 const Subtasks = ({
   task,
@@ -16,6 +16,8 @@ const Subtasks = ({
   const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
   const [subtasksState, setSubtasksState] = useState<TasksArray>([]);
 
+  console.log({ subTasks });
+
   useEffect(() => {
     const sortedArray = Object.values(subTasks).sort((a, b) =>
       a.date_set.time_from.localeCompare(b.date_set.time_from)
@@ -24,7 +26,7 @@ const Subtasks = ({
   }, [tasks]);
 
   return (
-    <div className='subtasks-container'>
+    <div className="subtasks-container">
       {subtasksState.map((subtask) => (
         <Subtask
           parentTask={task}

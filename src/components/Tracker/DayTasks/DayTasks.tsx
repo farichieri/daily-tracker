@@ -1,15 +1,15 @@
-import { filterSubtasks } from '@/hooks/helpers';
-import { filterTasksDone } from '@/hooks/helpers';
-import { selectLabels } from 'store/slices/labelsSlice';
-import { selectTasks } from 'store/slices/tasksSlice';
-import { TasksArray, TaskGroup, TasksGroup } from '@/global/types';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import AddTask from '@/components/TasksList/Tasks/AddTask';
-import Link from 'next/link';
-import Progressbar from '@/components/Layout/Progressbar/Progressbar';
-import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
+import { filterSubtasks } from "@/hooks/helpers";
+import { filterTasksDone } from "@/hooks/helpers";
+import { selectLabels } from "store/slices/labelsSlice";
+import { selectTasks } from "store/slices/tasksSlice";
+import { TasksArray, TaskGroup, TasksGroup } from "@/global/types";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import AddTask from "@/components/TasksList/Tasks/AddTask";
+import Link from "next/link";
+import Progressbar from "@/components/Layout/Progressbar/Progressbar";
+import TaskComponent from "@/components/TasksList/Tasks/Task/TaskComponent";
 
 const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   const router = useRouter();
@@ -39,7 +39,6 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
     []
   );
 
-  console.log({ tasksFiltered });
   useEffect(() => {
     const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
       a.date_set.time_from?.localeCompare(b.date_set.time_from)
@@ -64,10 +63,10 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   };
 
   return (
-    <section className='table'>
-      <div className='tasks'>
+    <section className="table">
+      <div className="tasks">
         <Progressbar
-          bgcolor='#99ccff'
+          bgcolor="#99ccff"
           progress={percentageDone || 0}
           height={10}
         />
@@ -83,7 +82,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
             />
           </Link>
         ))}
-        <div className='tasks-no-time'>
+        <div className="tasks-no-time">
           {arrayOfTasksNoTime?.map((task) => (
             <Link
               href={`/app/tracker/${date}/task/${task.task_id}`}
