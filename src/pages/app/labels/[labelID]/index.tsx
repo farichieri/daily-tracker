@@ -1,14 +1,14 @@
-import { filterObjectIncludes } from '@/hooks/helpers';
-import { selectLabels } from 'store/slices/labelsSlice';
-import { selectTasks } from 'store/slices/tasksSlice';
-import { TaskGroup, TasksArray } from '@/global/types';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import LabelsLayout from '@/components/Layout/LabelsLayout';
-import Link from 'next/link';
-import Modal from '@/components/Modal/Modal';
-import TaskComponent from '@/components/TasksList/Tasks/Task/TaskComponent';
+import { filterObjectIncludes } from "@/hooks/helpers";
+import { selectLabels } from "store/slices/labelsSlice";
+import { selectTasks } from "store/slices/tasksSlice";
+import { TaskGroup, TasksArray } from "@/global/types";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import LabelsLayout from "@/components/Layout/LabelsLayout";
+import Link from "next/link";
+import Modal from "@/components/Modal/Modal";
+import TaskComponent from "@/components/TasksList/Tasks/Task/TaskComponent";
 
 const LabelID = () => {
   const router = useRouter();
@@ -18,7 +18,7 @@ const LabelID = () => {
   const { labels } = useSelector(selectLabels);
   const tasksFiltered: TaskGroup = filterObjectIncludes(
     tasks,
-    'labels',
+    "labels",
     String(labelID)
   );
 
@@ -40,7 +40,7 @@ const LabelID = () => {
   }, [tasks]);
 
   const closeModalOnClick = () => {
-    router.push('/app/labels');
+    router.push("/app/labels");
   };
 
   const getLabelsByTask = (taskID: string) => {
@@ -53,7 +53,7 @@ const LabelID = () => {
   return (
     <LabelsLayout>
       <Modal closeModalOnClick={closeModalOnClick} onCloseRedirect={linkID}>
-        <div className='tasks'>
+        <div className="tasks">
           {arrayOfTasksWithTime?.map((task) => (
             <Link
               href={`/app/labels/${labelID}/task/${task.task_id}`}
@@ -66,7 +66,7 @@ const LabelID = () => {
               />
             </Link>
           ))}
-          <div className='tasks-no-time'>
+          <div className="tasks-no-time">
             {arrayOfTasksNoTime?.map((task) => (
               <Link
                 href={`/app/labels/${labelID}/task/${task.task_id}`}
@@ -84,14 +84,13 @@ const LabelID = () => {
       </Modal>
       <style jsx>{`
         .tasks {
-          padding: 2rem 1.5rem;
+          padding: 2.5rem 0.5rem 0 0.5rem;
           width: 95vw;
           height: 90vh;
           max-width: var(--max-width-task);
           text-align: left;
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
           color: var(--text-secondary-color);
           overflow: auto;
           pointer-events: initial;

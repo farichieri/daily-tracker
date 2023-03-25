@@ -1,9 +1,9 @@
-import { selectTasks } from 'store/slices/tasksSlice';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import Loader from '@/components/Layout/Loader/Loader';
-import TasksLayout from '@/components/Layout/TasksLayout';
-import TaskDetail from '@/components/TasksList/Tasks/Task/TaskDetail';
+import { selectTasks } from "store/slices/tasksSlice";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import Loader from "@/components/Layout/Loader/Loader";
+import TaskDetail from "@/components/TasksList/Tasks/Task/TaskDetail";
+import LabelsLayout from "@/components/Layout/LabelsLayout";
 
 const TaskID = () => {
   const router = useRouter();
@@ -12,14 +12,16 @@ const TaskID = () => {
   const task = tasks[String(taskID)];
   const redirectLink = `/app/labels/${labelID}`;
 
+  console.log({ task });
+
   return (
-    <TasksLayout>
+    <LabelsLayout>
       {!task ? (
-        <Loader fullScreen={true} text={''} />
+        <Loader fullScreen={true} text={""} />
       ) : (
         <TaskDetail task={task} redirectLink={redirectLink} />
       )}
-    </TasksLayout>
+    </LabelsLayout>
   );
 };
 

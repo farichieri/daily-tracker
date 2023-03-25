@@ -34,24 +34,25 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
 
   const percentageDone = getPrecentage();
 
-  const [arrayOfTasksNoTime, setArrayOfTasksNoTime] = useState<TasksArray>([]);
-  const [arrayOfTasksWithTime, setArrayOfTasksWithTime] = useState<TasksArray>(
-    []
+  const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
+    a.date_set.time_from?.localeCompare(b.date_set.time_from)
   );
+  const tasksWTime = sortedArray.filter((task) => task.date_set.time_from);
+  const tasksNoTime = sortedArray.filter((task) => !task.date_set.time_from);
+  // Working_on on top
+  const sortedTasksNoTime = Object.values(tasksNoTime)
+    .sort(
+      (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
+    )
+    .sort((a, b) => Number(a.done || false) - Number(b.done || false));
+
+  const [tasksArrTimeState, setTasksArrTimeState] =
+    useState<TasksArray>(tasksWTime);
+  const [arrayOfTasksNoTime, setArrayOfTasksNoTime] =
+    useState<TasksArray>(sortedTasksNoTime);
 
   useEffect(() => {
-    const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
-      a.date_set.time_from?.localeCompare(b.date_set.time_from)
-    );
-    const arrayWithTime = sortedArray.filter((task) => task.date_set.time_from);
-    const arrayNoTime = sortedArray.filter((task) => !task.date_set.time_from);
-    // Working_on on top
-    const sortedTasksNoTime = Object.values(arrayNoTime)
-      .sort(
-        (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
-      )
-      .sort((a, b) => Number(a.done || false) - Number(b.done || false));
-    setArrayOfTasksWithTime(arrayWithTime);
+    setTasksArrTimeState(tasksWTime);
     setArrayOfTasksNoTime(sortedTasksNoTime);
   }, [tasksFiltered]);
 
@@ -63,14 +64,14 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   };
 
   return (
-    <section className="table">
-      <div className="tasks">
-        <Progressbar
-          bgcolor="#99ccff"
-          progress={percentageDone || 0}
-          height={10}
-        />
-        {arrayOfTasksWithTime?.map((task) => (
+    <section className="flex w-full flex-col gap-0">
+      <Progressbar
+        bgcolor="#99ccff"
+        progress={percentageDone || 0}
+        height={10}
+      />
+      <div className="">
+        {tasksArrTimeState?.map((task) => (
           <Link
             href={`/app/tracker/${date}/task/${task.task_id}`}
             key={task.task_id}
@@ -82,46 +83,24 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
             />
           </Link>
         ))}
-        <div className="tasks-no-time">
-          {arrayOfTasksNoTime?.map((task) => (
-            <Link
-              href={`/app/tracker/${date}/task/${task.task_id}`}
-              key={task.task_id}
-            >
-              <TaskComponent
-                taskID={task.task_id}
-                task={task}
-                getLabelsByTask={getLabelsByTask}
-              />
-            </Link>
-          ))}
-        </div>
       </div>
-      <AddTask />
-      <style jsx>{`
-        section {
-          width: 100%;
-          background: transparent;
-        }
-        .table {
-          width: 100%;
-          height: 100%;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          border-collapse: collapse;
-          gap: 1rem;
-        }
-        .tasks {
-          display: flex;
-          flex-direction: column;
-        }
-        .tasks-no-time {
-          margin-top: 1rem;
-          display: flex;
-          flex-direction: column;
-        }
-      `}</style>
+      <div className="mt-2 flex flex-col gap-0">
+        {arrayOfTasksNoTime?.map((task) => (
+          <Link
+            href={`/app/tracker/${date}/task/${task.task_id}`}
+            key={task.task_id}
+          >
+            <TaskComponent
+              taskID={task.task_id}
+              task={task}
+              getLabelsByTask={getLabelsByTask}
+            />
+          </Link>
+        ))}
+      </div>
+      <div className="my-4">
+        <AddTask />
+      </div>
     </section>
   );
 };

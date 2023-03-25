@@ -48,7 +48,6 @@ const TestPaget = () => {
         return data.json();
       })
       .then((data) => {
-        console.log(data);
         if (!data.error) {
           alert("Event created, check your Google Calendar!");
         } else {

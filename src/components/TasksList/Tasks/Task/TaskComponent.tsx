@@ -3,7 +3,6 @@ import { Label, Task } from "@/global/types";
 import { selectLists } from "store/slices/listsSlice";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import IconButton from "@/components/Layout/Icon/IconButton";
 import Link from "next/link";
 import Image from "next/image";
 import Subtasks from "../Subtasks/Subtasks";

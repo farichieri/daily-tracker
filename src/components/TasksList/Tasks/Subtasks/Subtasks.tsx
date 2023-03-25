@@ -14,14 +14,12 @@ const Subtasks = ({
 }) => {
   const { tasks } = useSelector(selectTasks);
   const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
-  const [subtasksState, setSubtasksState] = useState<TasksArray>([]);
-
-  console.log({ subTasks });
+  const sortedArray = Object.values(subTasks).sort((a, b) =>
+    a.date_set.time_from.localeCompare(b.date_set.time_from)
+  );
+  const [subtasksState, setSubtasksState] = useState<TasksArray>(sortedArray);
 
   useEffect(() => {
-    const sortedArray = Object.values(subTasks).sort((a, b) =>
-      a.date_set.time_from.localeCompare(b.date_set.time_from)
-    );
     setSubtasksState(sortedArray);
   }, [tasks]);
 

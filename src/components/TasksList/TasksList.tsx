@@ -1,18 +1,18 @@
-import { filterObject } from '@/hooks/helpers';
-import { selectTasks } from 'store/slices/tasksSlice';
-import { TaskGroup } from '@/global/types';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import AddTask from './Tasks/AddTask';
-import Clock from '../Clock/Clock';
-import Tasks from './Tasks/Tasks';
+import { filterObject } from "@/hooks/helpers";
+import { selectTasks } from "store/slices/tasksSlice";
+import { TaskGroup } from "@/global/types";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import AddTask from "./Tasks/AddTask";
+import Clock from "../Clock/Clock";
+import Tasks from "./Tasks/Tasks";
 
 const TasksList = () => {
   const router = useRouter();
   const { listID } = router.query;
   const { tasks } = useSelector(selectTasks);
-  const tasksByListID = filterObject(tasks, 'project_id', String(listID));
+  const tasksByListID = filterObject(tasks, "project_id", String(listID));
   const [tasksState, setTasksState] = useState<TaskGroup>(tasksByListID);
 
   useEffect(() => {
@@ -20,11 +20,11 @@ const TasksList = () => {
   }, [tasks, listID]);
 
   return (
-    <div className='list'>
-      <div className='header'>
+    <div className="list">
+      <div className="header">
         <Clock />
       </div>
-      <div className='tasks-container'>
+      <div className="tasks-container">
         <Tasks tasksState={tasksState} />
         <AddTask />
       </div>

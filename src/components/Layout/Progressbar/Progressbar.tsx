@@ -20,7 +20,6 @@ const Progressbar = ({
             border-radius: 1rem;
             height: ${height}px;
             box-shadow: 0 0 6px 1px var(--box-shadow-light);
-            margin-bottom: 0.25rem;
             min-width: 100%;
           }
           .fill {

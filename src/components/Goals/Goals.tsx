@@ -8,15 +8,17 @@ import GoalComponent from "./Goal/GoalComponent";
 import Link from "next/link";
 
 const Goals = () => {
-  const [doneGoals, setDoneGoals] = useState<GoalsArray>([]);
-  const [pendingGoals, setPendingGoals] = useState<any>({
-    thisWeekGoals: [],
-    thisMonthGoals: [],
-    thisYearGoals: [],
-    restGoals: [],
-  });
-  const [showDoneGoals, setShowDoneGoals] = useState(true);
   const { goals } = useSelector(selectGoals);
+  const pending: GoalGroup = filterTasksPending(goals);
+  const done: GoalGroup = filterTasksDone(goals);
+  const sortedPendingTasks = Object.values(pending)
+    .sort(
+      (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
+    )
+    .sort((a, b) => b.date_set.date_iso?.localeCompare(a.date_set.date_iso));
+  const sortedDoneTasks = Object.values(done).sort((a, b) =>
+    b.date_set.date_iso?.localeCompare(a.date_set.date_iso)
+  );
 
   const sortPendingGoals = (goals: GoalsArray) => {
     const thisWeekGoals: GoalsArray = [];
@@ -44,19 +46,19 @@ const Goals = () => {
     };
   };
 
+  const { thisWeekGoals, thisMonthGoals, thisYearGoals, restGoals } =
+    sortPendingGoals(sortedPendingTasks);
+
+  const [doneGoals, setDoneGoals] = useState<GoalsArray>([]);
+  const [pendingGoals, setPendingGoals] = useState<any>({
+    thisWeekGoals: thisWeekGoals,
+    thisMonthGoals: thisMonthGoals,
+    thisYearGoals: thisYearGoals,
+    restGoals: restGoals,
+  });
+  const [showDoneGoals, setShowDoneGoals] = useState(true);
+
   useEffect(() => {
-    const pendingGoals: GoalGroup = filterTasksPending(goals);
-    const doneTasks: GoalGroup = filterTasksDone(goals);
-    const sortedPendingTasks = Object.values(pendingGoals)
-      .sort(
-        (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
-      )
-      .sort((a, b) => b.date_set.date_iso?.localeCompare(a.date_set.date_iso));
-    const sortedDoneTasks = Object.values(doneTasks).sort((a, b) =>
-      b.date_set.date_iso?.localeCompare(a.date_set.date_iso)
-    );
-    const { thisWeekGoals, thisMonthGoals, thisYearGoals, restGoals } =
-      sortPendingGoals(sortedPendingTasks);
     setPendingGoals({
       thisWeekGoals,
       thisMonthGoals,

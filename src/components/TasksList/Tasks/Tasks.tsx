@@ -26,6 +26,8 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
   const [showDoneTasks, setShowDoneTasks] = useState(true);
 
   useEffect(() => {
+    console.log("executing");
+
     const pendingTasks: TaskGroup = filterTasksPending(tasksState);
     const doneTasks: TaskGroup = filterTasksDone(tasksState);
     // Working_on on top

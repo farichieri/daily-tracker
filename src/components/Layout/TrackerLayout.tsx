@@ -1,14 +1,14 @@
-import PremiumLayout from '@/components/Layout/PremiumLayout';
-import { ReactNode } from 'react';
-import Tracker from '../Tracker/Tracker';
-import { useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
+import PremiumLayout from "@/components/Layout/PremiumLayout";
+import { ReactNode } from "react";
+import Tracker from "../Tracker/Tracker";
+import { useSelector } from "react-redux";
+import { selectUser } from "store/slices/authSlice";
 
 const TrackerLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
   return (
     <PremiumLayout withPadding={false}>
-      <div className='container'>
+      <div className="container">
         {user && <Tracker />}
         {children}
       </div>

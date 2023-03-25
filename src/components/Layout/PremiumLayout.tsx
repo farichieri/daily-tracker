@@ -38,13 +38,14 @@ export default function PremiumLayout({
   children: React.ReactNode;
   withPadding: boolean;
 }) {
+  const dispatch = useDispatch();
   const padding = withPadding ? 1.5 : 0;
   const router = useRouter();
-  const dispatch = useDispatch();
-  const sidebarOpen = useSelector(selectSidebarState);
-  const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
-  const today = useSelector(selectToday);
   const { isDataFetched } = useSelector(selectGlobalState);
+  const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
+  const sidebarOpen = useSelector(selectSidebarState);
+  const today = useSelector(selectToday);
+
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };

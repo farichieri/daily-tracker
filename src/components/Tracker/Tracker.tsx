@@ -7,11 +7,13 @@ import {
   selectWeekSelected,
   setDaySelected,
 } from "store/slices/trackerSlice";
-import Header from "./Header";
-import { parseISO } from "date-fns";
-import { useRouter } from "next/dist/client/router";
-import { selectTasks } from "store/slices/tasksSlice";
 import { filterTasksByDateSet } from "@/hooks/helpers";
+import { parseISO } from "date-fns";
+import { selectTasks } from "store/slices/tasksSlice";
+import { TaskGroup } from "@/global/types";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/dist/client/router";
+import Header from "./Header";
 
 const Tracker = () => {
   const dispatch = useDispatch();
@@ -20,7 +22,9 @@ const Tracker = () => {
   const { tasks } = useSelector(selectTasks);
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
-  const tasksFiltered = filterTasksByDateSet(tasks, String(date));
+  const [tasksFiltered, setTasksFiltered] = useState<TaskGroup>(
+    filterTasksByDateSet(tasks, String(date))
+  );
 
   const handleDatesSelected = (e: Event) => {
     e.preventDefault();
@@ -40,6 +44,11 @@ const Tracker = () => {
     dispatch(setDaySelected(newSelectedDay));
   };
 
+  useEffect(() => {
+    const filtered = filterTasksByDateSet(tasks, String(date));
+    setTasksFiltered(filtered);
+  }, [tasks, date]);
+
   return (
     <section>
       <Header />
@@ -47,10 +56,12 @@ const Tracker = () => {
         week={weekSelected}
         handleDatesSelected={handleDatesSelected}
       />
-      <div className="tasks-goals-container">
-        <DayTasks tasksFiltered={tasksFiltered} />
-        {/* <Goals /> */}
-      </div>
+      {tasksFiltered && (
+        <div className="tasks-goals-container">
+          <DayTasks tasksFiltered={tasksFiltered} />
+          {/* <Goals /> */}
+        </div>
+      )}
       <style jsx>{`
         section {
           padding: 1rem 0;

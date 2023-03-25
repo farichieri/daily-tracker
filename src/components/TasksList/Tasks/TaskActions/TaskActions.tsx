@@ -1,17 +1,17 @@
-import { Label } from '@/global/types';
-import { selectLabels } from 'store/slices/labelsSlice';
-import { selectTasks } from 'store/slices/tasksSlice';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import AssignLabel from './TaskActionsModals/AssignLabel';
-import AssignList from './TaskActionsModals/AssignList';
-import AssignReminder from './TaskActionsModals/AssignReminder';
-import LabelsButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton';
-import ListButton from './TaskActionsButtons/ListButton';
-import ReminderButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/ReminderButton';
-import ToggleDoneTask from './TaskActionsButtons/ToggleDoneTask';
-import WorkingOnButton from './TaskActionsButtons/WorkingOnButton';
+import { Label } from "@/global/types";
+import { selectLabels } from "store/slices/labelsSlice";
+import { selectTasks } from "store/slices/tasksSlice";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import AssignLabel from "./TaskActionsModals/AssignLabel";
+import AssignList from "./TaskActionsModals/AssignList";
+import AssignReminder from "./TaskActionsModals/AssignReminder";
+import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
+import ListButton from "./TaskActionsButtons/ListButton";
+import ReminderButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/ReminderButton";
+import ToggleDoneTask from "./TaskActionsButtons/ToggleDoneTask";
+import WorkingOnButton from "./TaskActionsButtons/WorkingOnButton";
 
 const TaskActions = () => {
   const router = useRouter();
@@ -23,10 +23,10 @@ const TaskActions = () => {
   const task = { ...tasks[String(taskID)] };
   const labelsSelected = task?.labels;
   const { labels } = useSelector(selectLabels);
-  const [labelsInTask, setLabelsInTask] = useState<Label[]>([]);
+  const labelsFiltered = labelsSelected?.map((label) => labels[label]);
+  const [labelsInTask, setLabelsInTask] = useState<Label[]>(labelsFiltered);
 
   useEffect(() => {
-    const labelsFiltered = labelsSelected?.map((label) => labels[label]);
     setLabelsInTask(labelsFiltered);
   }, [labelsSelected]);
 
@@ -37,8 +37,8 @@ const TaskActions = () => {
   };
 
   return (
-    <div className='container'>
-      <div className='task-actions'>
+    <div className="container">
+      <div className="task-actions">
         {openAssignLabel && (
           <AssignLabel
             closeModalOnClick={closeModalOnClick}
@@ -58,28 +58,28 @@ const TaskActions = () => {
         {openAssignReminder && (
           <AssignReminder closeModalOnClick={closeModalOnClick} />
         )}
-        <div className='labels'>
+        <div className="labels">
           <LabelsButton onClick={() => setOpenAssignLabel(true)} />
         </div>
-        <div className='reminder'>
+        <div className="reminder">
           <ReminderButton onClick={() => setOpenAssignReminder(true)} />
         </div>
-        <div className='lists'>
+        <div className="lists">
           <ListButton onClick={() => setOpenAssignList(true)} task={task} />
         </div>
         {!task.done && (
-          <div className='working-on'>
+          <div className="working-on">
             <WorkingOnButton task={task} />
           </div>
         )}
         <ToggleDoneTask task={task} />
       </div>
-      <div className='task-actions-show'>
+      <div className="task-actions-show">
         {labelsInTask.map(
           (label) =>
             label && (
               <span
-                className='label'
+                className="label"
                 key={label.label_id}
                 style={{ background: `${label.label_color}` }}
                 onClick={() => setOpenAssignLabel(true)}
