@@ -109,9 +109,9 @@ export default function PremiumLayout({
         )
       )}
       <div
-        className={`flex-colr flex w-full justify-center ${
-          sidebarOpen && "sm:pl-48"
-        } `}
+        className={`flex-colr flex w-full justify-center px-2 ${
+          sidebarOpen && "sm:pl-48 "
+        } xl:pl-0`}
       >
         {children}
       </div>

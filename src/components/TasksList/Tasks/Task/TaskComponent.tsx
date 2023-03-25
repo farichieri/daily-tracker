@@ -115,7 +115,7 @@ const TaskComponent = ({
           transition: 0.3s;
           color: var(--text-color);
           background: var(--box-shadow-light);
-          margin: 0.5rem 0;
+          margin: 0.25rem 0;
         }
         .task-container.done {
           background: var(--done);

@@ -1,15 +1,15 @@
-import { ReactNode } from 'react';
-import { selectUser } from 'store/slices/authSlice';
-import { useSelector } from 'react-redux';
-import PremiumLayout from '@/components/Layout/PremiumLayout';
-import TasksList from '@/components/TasksList/TasksList';
+import { ReactNode } from "react";
+import { selectUser } from "store/slices/authSlice";
+import { useSelector } from "react-redux";
+import PremiumLayout from "@/components/Layout/PremiumLayout";
+import TasksList from "@/components/TasksList/TasksList";
 
 const TasksLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
 
   return (
     <PremiumLayout withPadding={false}>
-      <div className='list'>{user && <TasksList />}</div>
+      <div className="list">{user && <TasksList />}</div>
       {children}
       <style jsx>{`
         .list {
@@ -20,7 +20,6 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
           width: 100%;
           align-items: center;
           padding-top: calc(var(--premium-nav-height) + 1rem);
-          margin: 0 1rem;
         }
       `}</style>
     </PremiumLayout>

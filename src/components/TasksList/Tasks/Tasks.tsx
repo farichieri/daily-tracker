@@ -80,7 +80,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
             data-te-collapse-show
             aria-labelledby="headingOne5"
           >
-            <div className="py-4 px-5">
+            <div className="py-2 px-2">
               {pendingTasks?.map((task) => (
                 <Link
                   href={`/app/lists/${listID}/task/${task.task_id}`}
@@ -132,7 +132,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
             data-te-collapse-item
             aria-labelledby="headingTwo5"
           >
-            <div className="py-4 px-5">
+            <div className="py-2 px-2">
               {showDoneTasks &&
                 doneTasks?.map((task) => (
                   <Link

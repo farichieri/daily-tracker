@@ -147,7 +147,7 @@ const PremiumSidebar = () => {
           position: fixed;
           transition: all 0.3s;
           user-select: none;
-          width: 12rem;
+          width: 11.5rem;
           z-index: 8;
           background: var(--cool);
           backdrop-filter: blur(12px);

@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import PremiumLayout from "@/components/Layout/PremiumLayout";
 import React, { useState } from "react";
 
-const TestPage = () => {
+const TestPaget = () => {
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
 
@@ -108,4 +108,4 @@ const TestPage = () => {
   );
 };
 
-export default TestPage;
+export default TestPaget;

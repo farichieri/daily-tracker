@@ -28,7 +28,7 @@ const GoalsLayout = ({ children }: { children: ReactNode }) => {
           justify-content: center;
           width: 100%;
           align-items: center;
-          padding: calc(var(--premium-nav-height)) 0.5rem 1rem 0.5rem;
+          padding: calc(var(--premium-nav-height)) 0 1rem 0;
         }
       `}</style>
     </PremiumLayout>

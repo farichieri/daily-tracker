@@ -125,7 +125,7 @@ const GoalDetail = ({
 
   return (
     <Modal onCloseRedirect={redirectLink} closeModalOnClick={closeModalOnClick}>
-      <div className="flex h-screen w-screen max-w-screen-md flex-col justify-between gap-2 p-5 text-left md:max-h-75vh">
+      <div className="flex h-screen max-h-75vh w-screen max-w-screen-md flex-col justify-between gap-2 p-5 text-left md:max-h-75vh">
         <button
           className="flex w-max rounded-lg border py-1 px-2"
           onClick={handleDelete}

@@ -8,9 +8,9 @@ const Progressbar = ({
   height: number;
 }) => {
   return (
-    <div className='container'>
-      <div className='fill'>
-        <span className='text'>{`${progress}%`}</span>
+    <div className="container">
+      <div className="fill">
+        <span className="text">{`${progress}%`}</span>
       </div>
       <style jsx>
         {`
@@ -20,6 +20,8 @@ const Progressbar = ({
             border-radius: 1rem;
             height: ${height}px;
             box-shadow: 0 0 6px 1px var(--box-shadow-light);
+            margin-bottom: 0.25rem;
+            min-width: 100%;
           }
           .fill {
             height: 100%;
@@ -35,7 +37,7 @@ const Progressbar = ({
             padding: 10px;
             color: black;
             font-size: 0.5rem;
-            transform: ${progress < 5 ? 'translate(+25%)' : ''};
+            transform: ${progress < 5 ? "translate(+25%)" : ""};
             font-weight: bold;
           }
         `}

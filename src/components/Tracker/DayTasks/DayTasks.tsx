@@ -113,13 +113,11 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
           gap: 1rem;
         }
         .tasks {
-          gap: 0.5rem;
           display: flex;
           flex-direction: column;
         }
         .tasks-no-time {
           margin-top: 1rem;
-          gap: 0.5rem;
           display: flex;
           flex-direction: column;
         }
