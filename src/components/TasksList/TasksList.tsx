@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import AddTask from "./Tasks/AddTask";
-import Clock from "../Clock/Clock";
 import Tasks from "./Tasks/Tasks";
 
 const TasksList = () => {
@@ -21,9 +20,6 @@ const TasksList = () => {
 
   return (
     <div className="list">
-      <div className="header">
-        <Clock />
-      </div>
       <div className="tasks-container">
         <Tasks tasksState={tasksState} />
         <AddTask />

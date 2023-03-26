@@ -94,6 +94,7 @@ const LabelID = () => {
           color: var(--text-secondary-color);
           overflow: auto;
           pointer-events: initial;
+          gap: 0.5rem;
         }
         .tasks-no-time {
           display: flex;

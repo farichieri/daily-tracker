@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 type Props = {
   name: string;
@@ -14,24 +14,24 @@ const TimeInput = (props: Props) => {
   return (
     <div>
       {!timeTo && (
-        <button className='open' onClick={() => setTimeTo(true)}>
-          {props.name === 'time_from' ? 'from' : 'to'}
+        <button className="open" onClick={() => setTimeTo(true)}>
+          {props.name === "time_from" ? "from" : "to"}
         </button>
       )}
       {timeTo && (
         <>
           <input
-            type='time'
+            type="time"
             name={props.name}
             value={props.value}
             onChange={props.onChange}
             onBlur={props.onBlur}
-            spellCheck='false'
-            autoComplete='off'
-            min={'18:00'}
+            spellCheck="false"
+            autoComplete="off"
+            min={"18:00"}
           />
           <button
-            className='close_time_to'
+            className="close_time_to"
             name={props.name}
             onClick={(e) => {
               props.removeTime(e);
@@ -69,7 +69,7 @@ const TimeInput = (props: Props) => {
           background: transparent;
           color: var(--text-color);
         }
-        input[type='time']::-webkit-calendar-picker-indicator {
+        input[type="time"]::-webkit-calendar-picker-indicator {
           background-color: var(--box-shadow);
           cursor: pointer;
           border-radius: 50%;
@@ -81,6 +81,7 @@ const TimeInput = (props: Props) => {
           color: var(--box-shadow);
           background: transparent;
           border: none;
+          margin: 0 0.3rem 0 0.25rem;
         }
       `}</style>
     </div>

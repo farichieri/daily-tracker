@@ -1,12 +1,12 @@
-import { db } from '@/utils/firebase.config';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { formatISO } from 'date-fns';
-import { selectUser } from 'store/slices/authSlice';
-import { setDeleteTask, setUpdateTask } from 'store/slices/tasksSlice';
-import { Task } from '@/global/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import IconButton from '@/components/Layout/Icon/IconButton';
+import { db } from "@/utils/firebase.config";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { formatISO } from "date-fns";
+import { selectUser } from "store/slices/authSlice";
+import { setDeleteTask, setUpdateTask } from "store/slices/tasksSlice";
+import { Task } from "@/global/types";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import IconButton from "@/components/Layout/Icon/IconButton";
 
 const Subtask = ({
   subTask,
@@ -37,7 +37,7 @@ const Subtask = ({
     event.preventDefault();
     if (!user) return;
     const taskID: string = (event.target as HTMLButtonElement).id;
-    const docRef = doc(db, 'users', user.uid, 'tasks', taskID);
+    const docRef = doc(db, "users", user.uid, "tasks", taskID);
     dispatch(setDeleteTask(taskID));
     await deleteDoc(docRef);
   };
@@ -50,24 +50,24 @@ const Subtask = ({
     setSubTaskState({
       ...subTaskState,
       done: !subTaskState.done,
-      completed_at: subTaskState.completed_at ? '' : formatISO(new Date()),
+      completed_at: subTaskState.completed_at ? "" : formatISO(new Date()),
     });
     setIsSaveable(true);
   };
 
   const handleSave = async () => {
     if (JSON.stringify(subTask) !== JSON.stringify(subTaskState)) {
-      console.log('Saving Subtask');
+      console.log("Saving Subtask");
       if (!user) return;
       const updatedSubtask = {
         ...subTaskState,
-        completed_at: subTaskState.completed_at ? '' : formatISO(new Date()),
+        completed_at: subTaskState.completed_at ? "" : formatISO(new Date()),
       };
       const docRef = doc(
         db,
-        'users',
+        "users",
         user.uid,
-        'tasks',
+        "tasks",
         updatedSubtask.task_id
       );
       dispatch(setUpdateTask(updatedSubtask));
@@ -76,7 +76,7 @@ const Subtask = ({
   };
 
   const handleBlur = (event: React.ChangeEvent) => {
-    console.log('Blur activated');
+    console.log("Blur activated");
     event.preventDefault();
     setIsSaveable(true);
   };
@@ -99,37 +99,37 @@ const Subtask = ({
   }, [parentTask]);
 
   return (
-    <div className='container'>
+    <div className="container">
       <IconButton
         onClick={handleDoneSubtask}
-        props={{ name: 'done', id: subTaskState.task_id }}
+        props={{ name: "done", id: subTaskState.task_id }}
         src={
-          subTaskState.done ? '/icons/checkbox-done.png' : '/icons/checkbox.png'
+          subTaskState.done ? "/icons/checkbox-done.png" : "/icons/checkbox.png"
         }
-        alt={subTaskState.done ? 'Done-Icon' : 'Checkbox-Icon'}
+        alt={subTaskState.done ? "Done-Icon" : "Checkbox-Icon"}
         width={18}
         height={18}
       />
       <input
-        type='text'
-        placeholder='Add a subTaskState'
+        type="text"
+        placeholder="Add a subTaskState"
         value={subTaskState.content}
-        name={'content'}
+        name={"content"}
         onChange={handleChange}
         id={subTaskState.task_id}
-        className={`${subTaskState.done ? 'done' : ''}`}
+        className={`${subTaskState.done ? "done" : ""}`}
         readOnly={subTaskState.done}
-        spellCheck='false'
-        autoComplete='off'
+        spellCheck="false"
+        autoComplete="off"
         onBlur={handleBlur}
       />
       {subTaskState.done && !inTaskCompnent && (
-        <div className='delete'>
+        <div className="delete">
           <IconButton
             props={{ id: subTaskState.task_id }}
             onClick={handleDelete}
-            src={'/icons/delete.png'}
-            alt='Delete-Icon'
+            src={"/icons/delete.png"}
+            alt="Delete-Icon"
             width={18}
             height={18}
           />
@@ -139,8 +139,10 @@ const Subtask = ({
         .container {
           display: flex;
           align-items: center;
+          width: 100%;
+          min-width: 100%;
           gap: 0.25rem;
-          font-size: ${inTaskCompnent ? '80%' : '100%'};
+          font-size: ${inTaskCompnent ? "80%" : "100%"};
         }
         input {
           width: 100%;
@@ -148,8 +150,8 @@ const Subtask = ({
           border: transparent;
           outline: none;
           color: var(--text-color);
-          cursor: ${inTaskCompnent ? 'pointer' : 'text'};
-          pointer-events: ${inTaskCompnent ? 'none' : 'auto'};
+          cursor: ${inTaskCompnent ? "pointer" : "text"};
+          pointer-events: ${inTaskCompnent ? "none" : "auto"};
         }
         input:focus & form {
           border: 1px solid var(--text-shadow);
@@ -157,7 +159,7 @@ const Subtask = ({
         }
         input.done {
           text-decoration: line-through;
-          cursor: ${inTaskCompnent ? 'pointer' : 'text'};
+          cursor: ${inTaskCompnent ? "pointer" : "text"};
         }
       `}</style>
     </div>

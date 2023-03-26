@@ -50,36 +50,13 @@ const Tracker = () => {
   }, [tasks, date]);
 
   return (
-    <section>
+    <section className="flex min-h-screen w-full flex-col gap-2 py-2">
       <Header />
       <DaysSelector
         week={weekSelected}
         handleDatesSelected={handleDatesSelected}
       />
-      {tasksFiltered && (
-        <div className="tasks-goals-container">
-          <DayTasks tasksFiltered={tasksFiltered} />
-          {/* <Goals /> */}
-        </div>
-      )}
-      <style jsx>{`
-        section {
-          padding: 1rem 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-          gap: 1rem;
-          min-height: calc(100vh - var(--premium-nav-height));
-        }
-        .tasks-goals-container {
-          position: relative;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: start;
-        }
-      `}</style>
+      <DayTasks tasksFiltered={tasksFiltered} />
     </section>
   );
 };

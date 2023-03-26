@@ -123,9 +123,10 @@ export default function PremiumLayout({
             display: flex;
             height: 100%;
             margin: auto;
-            min-height: calc(100vh - var(--premium-nav-height));
+            max-height: 100vh;
             padding: ${padding}rem;
             width: 100vw;
+            overflow: hidden;
           }
           .login-container {
             display: flex;

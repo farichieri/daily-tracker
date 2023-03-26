@@ -33,24 +33,28 @@ const TaskComponent = ({
       }`}
     >
       <div className="task" id={taskID}>
-        {!router.pathname.includes("tracker") && task.date_set.date_iso && (
-          <div className="date_iso">
-            <Link href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}>
-              <span className={`${dateDisplayed === "Today" ? "today" : ""}`}>
-                {dateDisplayed}
-              </span>
-            </Link>
+        <div className="flex min-w-fit flex-col">
+          {!router.pathname.includes("tracker") && task.date_set.date_iso && (
+            <div className="date_iso">
+              <Link
+                href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}
+              >
+                <span className={`${dateDisplayed === "Today" ? "today" : ""}`}>
+                  {dateDisplayed}
+                </span>
+              </Link>
+            </div>
+          )}
+          <div className="times">
+            {task.date_set.time_from && (
+              <div className="time_from">{task.date_set.time_from}</div>
+            )}
+            {task.date_set.time_to && (
+              <>
+                -<div className="time_to">{task.date_set.time_to}</div>
+              </>
+            )}
           </div>
-        )}
-        <div className="times">
-          {task.date_set.time_from && (
-            <div className="time_from">{task.date_set.time_from}</div>
-          )}
-          {task.date_set.time_to && (
-            <>
-              -<div className="time_to">{task.date_set.time_to}</div>
-            </>
-          )}
         </div>
         <div className="column">
           <div className="project">
@@ -114,7 +118,6 @@ const TaskComponent = ({
           transition: 0.3s;
           color: var(--text-color);
           background: var(--box-shadow-light);
-          margin: 0.25rem 0;
         }
         .task-container.done {
           background: var(--done);

@@ -64,43 +64,46 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   };
 
   return (
-    <section className="flex w-full flex-col gap-0">
+    <section className="relative flex h-full max-h-[82vh] w-full flex-col gap-2">
       <Progressbar
         bgcolor="#99ccff"
         progress={percentageDone || 0}
         height={10}
       />
-      <div className="">
-        {tasksArrTimeState?.map((task) => (
-          <Link
-            href={`/app/tracker/${date}/task/${task.task_id}`}
-            key={task.task_id}
-          >
-            <TaskComponent
-              taskID={task.task_id}
-              task={task}
-              getLabelsByTask={getLabelsByTask}
-            />
-          </Link>
-        ))}
+      <div className="h-[80vh] gap-2 overflow-hidden rounded-[0.5rem]">
+        <div className="flex h-full flex-col gap-4 overflow-auto px-1">
+          <div className="flex flex-col gap-2">
+            {tasksArrTimeState?.map((task) => (
+              <Link
+                href={`/app/tracker/${date}/task/${task.task_id}`}
+                key={task.task_id}
+              >
+                <TaskComponent
+                  taskID={task.task_id}
+                  task={task}
+                  getLabelsByTask={getLabelsByTask}
+                />
+              </Link>
+            ))}
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2">
+            {arrayOfTasksNoTime?.map((task) => (
+              <Link
+                href={`/app/tracker/${date}/task/${task.task_id}`}
+                key={task.task_id}
+              >
+                <TaskComponent
+                  taskID={task.task_id}
+                  task={task}
+                  getLabelsByTask={getLabelsByTask}
+                />
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="mt-2 flex flex-col gap-0">
-        {arrayOfTasksNoTime?.map((task) => (
-          <Link
-            href={`/app/tracker/${date}/task/${task.task_id}`}
-            key={task.task_id}
-          >
-            <TaskComponent
-              taskID={task.task_id}
-              task={task}
-              getLabelsByTask={getLabelsByTask}
-            />
-          </Link>
-        ))}
-      </div>
-      <div className="my-4">
-        <AddTask />
-      </div>
+      <AddTask />
     </section>
   );
 };

@@ -37,8 +37,8 @@ const TaskActions = () => {
   };
 
   return (
-    <div className="container">
-      <div className="task-actions">
+    <div className="flex flex-col gap-2">
+      <div className="flex w-full min-w-full items-center justify-between gap-2">
         {openAssignLabel && (
           <AssignLabel
             closeModalOnClick={closeModalOnClick}
@@ -74,12 +74,12 @@ const TaskActions = () => {
         )}
         <ToggleDoneTask task={task} />
       </div>
-      <div className="task-actions-show">
+      <div className="flex gap-2">
         {labelsInTask.map(
           (label) =>
             label && (
               <span
-                className="label"
+                className="cursor-pointer rounded-md py-1 px-2"
                 key={label.label_id}
                 style={{ background: `${label.label_color}` }}
                 onClick={() => setOpenAssignLabel(true)}
@@ -89,35 +89,6 @@ const TaskActions = () => {
             )
         )}
       </div>
-      <style jsx>{`
-        .container {
-          border: 1px solid var(--box-shadow-light);
-          padding: 0.5rem 1rem;
-          margin-top: 1rem;
-          border-radius: 6px;
-          width: 100%;
-          display: flex;
-          gap: 1rem;
-          flex-direction: column;
-        }
-        .task-actions {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-        }
-        .task-actions-show {
-          display: flex;
-          gap: 1rem;
-        }
-        .label {
-          border-radius: 6px;
-          padding: 0.25rem 0.5rem;
-          cursor: pointer;
-        }
-        button {
-          cursor: pointer;
-        }
-      `}</style>
     </div>
   );
 };

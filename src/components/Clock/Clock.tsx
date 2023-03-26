@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 const Clock = () => {
   const [date, setDate] = useState(new Date());
 
@@ -12,22 +12,10 @@ const Clock = () => {
     };
   }, []);
   return (
-    <span>
-      {date?.toLocaleTimeString('en-US', {
+    <span className="border-1 flex items-center rounded-lg border border-gray-500 py-1 px-2 text-xs opacity-60">
+      {date?.toLocaleTimeString("en-US", {
         hour12: false,
       })}
-      <style jsx>{`
-        span {
-          border: 1px solid var(--box-shadow);
-          padding: 0.2rem 0.5rem;
-          border-radius: 5px;
-          font-size: 0.8rem;
-          display: flex;
-          align-items: center;
-          color: var(--box-shadow);
-          font-weight: 400;
-        }
-      `}</style>
     </span>
   );
 };

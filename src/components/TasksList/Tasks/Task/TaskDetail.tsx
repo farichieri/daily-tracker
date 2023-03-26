@@ -1,23 +1,23 @@
-import { db } from '@/utils/firebase.config';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { format, formatISO, parseISO } from 'date-fns';
-import { selectUser } from 'store/slices/authSlice';
-import { Task } from '@/global/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import { db } from "@/utils/firebase.config";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { format, formatISO, parseISO } from "date-fns";
+import { selectUser } from "store/slices/authSlice";
+import { Task } from "@/global/types";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import {
   selectTasks,
   setDeleteTask,
   setUpdateTask,
-} from 'store/slices/tasksSlice';
-import AddSubtask from '../Subtasks/AddSubtask';
-import DayPickerC from '@/components/DayPickerC/DayPickerC';
-import Modal from '@/components/Modal/Modal';
-import React, { useEffect, useState } from 'react';
-import ReactTextareaAutosize from 'react-textarea-autosize';
-import Subtasks from '@/components/TasksList/Tasks/Subtasks/Subtasks';
-import TaskActions from '@/components/TasksList/Tasks/TaskActions/TaskActions';
-import TimeInput from '@/components/Layout/Input/TimeInput';
+} from "store/slices/tasksSlice";
+import AddSubtask from "../Subtasks/AddSubtask";
+import DayPickerC from "@/components/DayPickerC/DayPickerC";
+import Modal from "@/components/Modal/Modal";
+import React, { useEffect, useState } from "react";
+import ReactTextareaAutosize from "react-textarea-autosize";
+import Subtasks from "@/components/TasksList/Tasks/Subtasks/Subtasks";
+import TaskActions from "@/components/TasksList/Tasks/TaskActions/TaskActions";
+import TimeInput from "@/components/Layout/Input/TimeInput";
 
 const TaskID = ({
   task,
@@ -50,7 +50,7 @@ const TaskID = ({
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
     const index: number = Number((event.target as HTMLButtonElement).id);
-    if (name === 'subtask') {
+    if (name === "subtask") {
       const subtasks = [...taskState.subtasks];
       const subTask = { ...subtasks[index] };
       subTask.content = value;
@@ -77,7 +77,7 @@ const TaskID = ({
     };
     setTaskState({
       ...taskState,
-      ['date_set']: newDateSet,
+      ["date_set"]: newDateSet,
     });
     setIsSaveable(true);
   };
@@ -85,8 +85,8 @@ const TaskID = ({
   const handleSave = async () => {
     if (JSON.stringify(task) !== JSON.stringify(taskState)) {
       if (!user) return;
-      console.log('Saving taskID');
-      const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
+      console.log("Saving taskID");
+      const docRef = doc(db, "users", user.uid, "tasks", String(taskID));
       const time_from = taskState.date_set.time_from;
       const time_to = taskState.date_set.time_to;
       const taskUpdated = {
@@ -94,8 +94,8 @@ const TaskID = ({
         date_set: {
           date_iso: taskState.date_set.date_iso,
           is_recurring: false,
-          time_from: time_from || '',
-          time_to: (time_from && time_to) || '',
+          time_from: time_from || "",
+          time_to: (time_from && time_to) || "",
           with_time: false,
         },
       };
@@ -109,7 +109,7 @@ const TaskID = ({
     router.push(redirectLink);
     if (!user) return;
     const task_id: string = (event.target as HTMLButtonElement).id;
-    const docRef = doc(db, 'users', user.uid, 'tasks', task_id);
+    const docRef = doc(db, "users", user.uid, "tasks", task_id);
     dispatch(setDeleteTask(task_id));
     await deleteDoc(docRef);
   };
@@ -120,11 +120,11 @@ const TaskID = ({
     const name: string = (event.target as HTMLButtonElement).name;
     const newDateSet = {
       ...taskState.date_set,
-      [name]: '',
+      [name]: "",
     };
     setTaskState({
       ...taskState,
-      ['date_set']: newDateSet,
+      ["date_set"]: newDateSet,
     });
     setIsSaveable(true);
   };
@@ -133,11 +133,11 @@ const TaskID = ({
     const name: string = (event.target as HTMLButtonElement).name;
     const newDateSet = {
       ...taskState.date_set,
-      [name]: '',
+      [name]: "",
     };
     setTaskState({
       ...taskState,
-      ['date_set']: newDateSet,
+      ["date_set"]: newDateSet,
     });
     setIsSaveable(true);
   };
@@ -151,9 +151,9 @@ const TaskID = ({
   const [wantToAddDate, setWantToAddDate] = useState(false);
 
   const iso = task.date_set.date_iso;
-  const isoDisplay = iso && format(parseISO(iso), 'MM-dd-yyyy');
+  const isoDisplay = iso && format(parseISO(iso), "MM-dd-yyyy");
   const dateDisplayed =
-    isoDisplay === format(new Date(), 'MM-dd-yyyy') ? 'Today' : isoDisplay;
+    isoDisplay === format(new Date(), "MM-dd-yyyy") ? "Today" : isoDisplay;
 
   const handleDateSelected = (day: Date) => {
     if (day) {
@@ -164,7 +164,7 @@ const TaskID = ({
       };
       setTaskState({
         ...taskState,
-        ['date_set']: newDateSet,
+        ["date_set"]: newDateSet,
       });
     }
     setIsSaveable(true);
@@ -172,14 +172,14 @@ const TaskID = ({
 
   return (
     <Modal onCloseRedirect={redirectLink} closeModalOnClick={closeModalOnClick}>
-      <div className='task-container'>
-        <button className='delete' onClick={handleDelete} id={String(taskID)}>
+      <div className="task-container">
+        <button className="delete" onClick={handleDelete} id={String(taskID)}>
           Delete task
         </button>
         <TaskActions />
-        <div className='times'>
+        <div className="times">
           {
-            <div className='day-picker'>
+            <div className="day-picker">
               {!wantToAddDate && !taskState.date_set.date_iso ? (
                 <button
                   onClick={() => {
@@ -205,10 +205,10 @@ const TaskID = ({
           }
           {(taskState.date_set.date_iso || !listID) && (
             <>
-              <div className='time_from'>
+              <div className="time_from">
                 <TimeInput
                   onBlur={() => {}}
-                  name='time_from'
+                  name="time_from"
                   value={taskState.date_set.time_from}
                   onChange={handleChangeDates}
                   removeTime={removeDate}
@@ -217,7 +217,7 @@ const TaskID = ({
               {taskState.date_set.time_from && (
                 <TimeInput
                   onBlur={() => {}}
-                  name='time_to'
+                  name="time_to"
                   value={taskState.date_set.time_to}
                   onChange={handleChangeDates}
                   removeTime={removeTime}
@@ -226,48 +226,49 @@ const TaskID = ({
             </>
           )}
         </div>
-        <div className='task-content'>
+        <div className="task-content">
           <input
-            type='text'
-            name='content'
+            type="text"
+            name="content"
             value={taskState.content}
             onChange={handleChange}
-            spellCheck='false'
-            autoComplete='off'
+            spellCheck="false"
+            autoComplete="off"
             onBlur={handleSave}
           />
         </div>
-        <div className='comments-container'>
-          <span className='title'>Notes</span>
+        <div className="comments-container">
+          <span className="title">Notes</span>
           <ReactTextareaAutosize
-            name='description'
+            minRows={2}
+            name="description"
             value={taskState.description}
-            placeholder='Add a description'
+            placeholder="Add a description"
             onChange={handleChange}
-            spellCheck='false'
-            autoComplete='off'
+            spellCheck="false"
+            autoComplete="off"
             onBlur={handleSave}
-            className='textarea'
+            className="textarea"
             style={{
-              boxSizing: 'border-box',
-              display: 'flex',
-              background: 'transparent',
-              color: 'var(--text-color)',
-              border: 'none',
-              width: '100%',
-              resize: 'none',
-              userSelect: 'all',
+              boxSizing: "border-box",
+              display: "flex",
+              background: "transparent",
+              color: "var(--text-color)",
+              border: "none",
+              width: "100%",
+              resize: "none",
+              userSelect: "all",
             }}
           />
         </div>
-        <div className='subtasks'>
-          <span className='title'>Subtasks</span>
+        <div className="subtasks">
+          <span className="title">Subtasks</span>
           <Subtasks task={task} inTaskCompnent={false} />
           <AddSubtask />
         </div>
-        <div className='attachments-container'>
-          <span className='title'>Attachments</span>
-          <div className='attachments'></div>
+        <div className="attachments-container">
+          <span className="title">Attachments</span>
+          <div className="attachments"></div>
         </div>
       </div>
       <style jsx>
@@ -284,8 +285,8 @@ const TaskID = ({
             padding: 2rem 1.5rem;
             text-align: left;
             width: 95vw;
-            pointer-events: ${task.done ? 'none' : 'initial'};
-            opacity: ${task.done ? '0.4' : '1'};
+            pointer-events: ${task.done ? "none" : "initial"};
+            opacity: ${task.done ? "0.4" : "1"};
           }
           div {
             display: flex;

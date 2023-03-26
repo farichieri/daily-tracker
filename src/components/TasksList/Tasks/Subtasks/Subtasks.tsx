@@ -24,7 +24,7 @@ const Subtasks = ({
   }, [tasks]);
 
   return (
-    <div className="subtasks-container">
+    <div>
       {subtasksState.map((subtask) => (
         <Subtask
           parentTask={task}
@@ -33,12 +33,6 @@ const Subtasks = ({
           inTaskCompnent={inTaskCompnent}
         />
       ))}
-      <style jsx>{`
-        div {
-          display: flex;
-          flex-direction: column;
-        }
-      `}</style>
     </div>
   );
 };

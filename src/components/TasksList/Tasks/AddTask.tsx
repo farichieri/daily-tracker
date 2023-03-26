@@ -1,21 +1,21 @@
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { db } from '@/utils/firebase.config';
-import { format, formatISO, parseISO } from 'date-fns';
-import { Label, Task } from '@/global/types';
-import { NewTaskInitial } from '@/global/initialTypes';
-import { selectLabels } from 'store/slices/labelsSlice';
-import { selectUser } from 'store/slices/authSlice';
-import { setAddNewTask } from 'store/slices/tasksSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/dist/client/router';
-import AssignLabel from './TaskActions/TaskActionsModals/AssignLabel';
-import AssignList from './TaskActions/TaskActionsModals/AssignList';
-import DayPickerC from '@/components/DayPickerC/DayPickerC';
-import IconButton from '@/components/Layout/Icon/IconButton';
-import LabelsButton from '@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton';
-import ListButton from './TaskActions/TaskActionsButtons/ListButton';
-import TimeInput from '@/components/Layout/Input/TimeInput';
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "@/utils/firebase.config";
+import { format, formatISO, parseISO } from "date-fns";
+import { Label, Task } from "@/global/types";
+import { NewTaskInitial } from "@/global/initialTypes";
+import { selectLabels } from "store/slices/labelsSlice";
+import { selectUser } from "store/slices/authSlice";
+import { setAddNewTask } from "store/slices/tasksSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/dist/client/router";
+import AssignLabel from "./TaskActions/TaskActionsModals/AssignLabel";
+import AssignList from "./TaskActions/TaskActionsModals/AssignList";
+import DayPickerC from "@/components/DayPickerC/DayPickerC";
+import IconButton from "@/components/Layout/Icon/IconButton";
+import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
+import ListButton from "./TaskActions/TaskActionsButtons/ListButton";
+import TimeInput from "@/components/Layout/Input/TimeInput";
 
 const AddTask = () => {
   const router = useRouter();
@@ -26,6 +26,7 @@ const AddTask = () => {
   const [newTaskState, setNewTaskState] = useState<Task>(NewTaskInitial);
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignList, setOpenAssignList] = useState(false);
+  const [openAddTask, setOpenAddTask] = useState(false);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -61,14 +62,14 @@ const AddTask = () => {
     if (newTaskState.content) {
       const project_id = newTaskState.project_id
         ? newTaskState.project_id
-        : 'tracker';
+        : "tracker";
       const date_iso = listID
         ? newTaskState.date_set.date_iso
         : formatISO(parseISO(String(date)));
       const time_from = newTaskState.date_set.time_from;
       const time_to = newTaskState.date_set.time_to;
 
-      const newDocRef = doc(collection(db, 'users', user.uid, 'tasks'));
+      const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
       const newTask: Task = {
         ...newTaskState,
         added_at: formatISO(new Date()),
@@ -79,8 +80,8 @@ const AddTask = () => {
         date_set: {
           date_iso: date_iso,
           is_recurring: false,
-          time_from: time_from || '',
-          time_to: (time_from && time_to) || '',
+          time_from: time_from || "",
+          time_to: (time_from && time_to) || "",
           with_time: false,
         },
       };
@@ -107,7 +108,7 @@ const AddTask = () => {
     };
     setNewTaskState({
       ...newTaskState,
-      ['date_set']: newDateSet,
+      ["date_set"]: newDateSet,
     });
   };
 
@@ -115,18 +116,18 @@ const AddTask = () => {
     const name: string = (event.target as HTMLButtonElement).name;
     const newDateSet = {
       ...newTaskState.date_set,
-      [name]: '',
+      [name]: "",
     };
     setNewTaskState({
       ...newTaskState,
-      ['date_set']: newDateSet,
+      ["date_set"]: newDateSet,
     });
   };
 
   // Date
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [openDateSelector, setOpenDateSelector] = useState(false);
-  const dateToShow = dateSelected && format(dateSelected, 'MM-dd-yyyy'); // April 2023
+  const dateToShow = dateSelected && format(dateSelected, "MM-dd-yyyy"); // April 2023
   const [wantToAddDate, setWantToAddDate] = useState(false);
 
   const handleDateSelected = (day: Date | undefined) => {
@@ -138,13 +139,13 @@ const AddTask = () => {
       };
       setNewTaskState({
         ...newTaskState,
-        ['date_set']: newDateSet,
+        ["date_set"]: newDateSet,
       });
     }
   };
 
-  const todayDisplay = format(new Date(), 'MM-dd-yyyy'); // US Format
-  const dateDisplayed = dateToShow === todayDisplay ? 'Today' : dateToShow;
+  const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
+  const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
 
   useEffect(() => {
     listID &&
@@ -155,139 +156,160 @@ const AddTask = () => {
   }, [listID]);
 
   return (
-    <form className='new-task' onSubmit={handleAdd}>
-      {openAssignLabel && (
-        <AssignLabel
-          closeModalOnClick={closeModalOnClick}
-          isNewTask={true}
-          task={newTaskState}
-          handleChangeLabels={handleChangeLabels}
-        />
-      )}
-      {openAssignList && (
-        <AssignList
-          closeModalOnClick={closeModalOnClick}
-          isNewTask={true}
-          task={newTaskState}
-          handleChangeList={handleChangeList}
-        />
-      )}
-      <div className='content-container'>
-        <div className='row'>
-          <input
-            type='text'
-            name='content'
-            placeholder='Add Task'
-            value={newTaskState.content}
-            onChange={handleChange}
-            spellCheck='false'
-            autoComplete='off'
-          />
+    <div className="container">
+      {!openAddTask ? (
+        <div>
+          <button onClick={(e) => setOpenAddTask(true)}>Add Task</button>
         </div>
-        <div className='row'>
-          <input
-            type='text'
-            name='description'
-            placeholder='Description'
-            value={newTaskState.description}
-            onChange={handleChange}
-            spellCheck='false'
-            autoComplete='off'
-          />
-        </div>
-        <div className='row'>
-          <div className='labels'>
-            {getLabelsSelected().map(
-              (label: Label) =>
-                label && (
-                  <div
-                    key={label.label_id}
-                    className='label'
-                    style={{ background: `${label.label_color}` }}
-                  ></div>
-                )
-            )}
-          </div>
-        </div>
-        <div className='row'>
-          {listID && (
-            <div className='day-picker'>
-              {!wantToAddDate ? (
-                <button
-                  onClick={() => {
-                    setWantToAddDate(true);
-                    handleDateSelected(dateSelected);
-                  }}
-                >
-                  Set Due Date
-                </button>
-              ) : (
-                <DayPickerC
-                  open={openDateSelector}
-                  setOpen={setOpenDateSelector}
-                  withModal={true}
-                  dateSelected={dateSelected}
-                  handleDateSelected={handleDateSelected}
-                  dateToShow={dateDisplayed}
-                  removeDate={removeDate}
-                  setWantToAddDate={setWantToAddDate}
-                />
-              )}
-            </div>
+      ) : (
+        <form className="new-task" onSubmit={handleAdd}>
+          <button
+            className="absolute top-0 right-0 m-1 "
+            onClick={(e) => setOpenAddTask(false)}
+          >
+            x
+          </button>
+          {openAssignLabel && (
+            <AssignLabel
+              closeModalOnClick={closeModalOnClick}
+              isNewTask={true}
+              task={newTaskState}
+              handleChangeLabels={handleChangeLabels}
+            />
           )}
-          {(newTaskState.date_set.date_iso || !listID) && (
-            <>
-              <div className='time_from'>
-                <TimeInput
-                  onBlur={() => {}}
-                  name='time_from'
-                  value={newTaskState.date_set.time_from}
-                  onChange={handleChangeDates}
-                  removeTime={removeDate}
+          {openAssignList && (
+            <AssignList
+              closeModalOnClick={closeModalOnClick}
+              isNewTask={true}
+              task={newTaskState}
+              handleChangeList={handleChangeList}
+            />
+          )}
+          <div className="content-container">
+            <div className="row">
+              <input
+                type="text"
+                name="content"
+                placeholder="Add Task"
+                value={newTaskState.content}
+                onChange={handleChange}
+                spellCheck="false"
+                autoComplete="off"
+              />
+            </div>
+            <div className="row">
+              <input
+                type="text"
+                name="description"
+                placeholder="Description"
+                value={newTaskState.description}
+                onChange={handleChange}
+                spellCheck="false"
+                autoComplete="off"
+              />
+            </div>
+            <div className="row">
+              <div className="labels">
+                {getLabelsSelected().map(
+                  (label: Label) =>
+                    label && (
+                      <div
+                        key={label.label_id}
+                        className="label"
+                        style={{ background: `${label.label_color}` }}
+                      ></div>
+                    )
+                )}
+              </div>
+            </div>
+            <div className="row">
+              {listID && (
+                <div className="day-picker">
+                  {!wantToAddDate ? (
+                    <button
+                      onClick={() => {
+                        setWantToAddDate(true);
+                        handleDateSelected(dateSelected);
+                      }}
+                    >
+                      Set Due Date
+                    </button>
+                  ) : (
+                    <DayPickerC
+                      open={openDateSelector}
+                      setOpen={setOpenDateSelector}
+                      withModal={true}
+                      dateSelected={dateSelected}
+                      handleDateSelected={handleDateSelected}
+                      dateToShow={dateDisplayed}
+                      removeDate={removeDate}
+                      setWantToAddDate={setWantToAddDate}
+                    />
+                  )}
+                </div>
+              )}
+              {(newTaskState.date_set.date_iso || !listID) && (
+                <>
+                  <div className="time_from">
+                    <TimeInput
+                      onBlur={() => {}}
+                      name="time_from"
+                      value={newTaskState.date_set.time_from}
+                      onChange={handleChangeDates}
+                      removeTime={removeDate}
+                    />
+                  </div>
+                  {newTaskState.date_set.time_from && (
+                    <TimeInput
+                      onBlur={() => {}}
+                      name="time_to"
+                      value={newTaskState.date_set.time_to}
+                      onChange={handleChangeDates}
+                      removeTime={removeDate}
+                    />
+                  )}
+                </>
+              )}
+
+              <div className="labels">
+                <LabelsButton
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setOpenAssignLabel(true);
+                  }}
                 />
               </div>
-              {newTaskState.date_set.time_from && (
-                <TimeInput
-                  onBlur={() => {}}
-                  name='time_to'
-                  value={newTaskState.date_set.time_to}
-                  onChange={handleChangeDates}
-                  removeTime={removeDate}
+              <div className="labels">
+                <ListButton
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setOpenAssignList(true);
+                  }}
+                  task={newTaskState}
                 />
-              )}
-            </>
-          )}
+              </div>
+              <div className="add-button">
+                <IconButton
+                  props={null}
+                  onClick={handleAdd}
+                  src={"/icons/add.png"}
+                  alt="Add-Icon"
+                  width={24}
+                  height={24}
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      )}
 
-          <div className='labels'>
-            <LabelsButton
-              onClick={(event) => {
-                event.preventDefault();
-                setOpenAssignLabel(true);
-              }}
-            />
-          </div>
-          <div className='labels'>
-            <ListButton
-              onClick={(event) => {
-                event.preventDefault();
-                setOpenAssignList(true);
-              }}
-              task={newTaskState}
-            />
-          </div>
-          <div className='add-button'>
-            <IconButton
-              props={null}
-              onClick={handleAdd}
-              src={'/icons/add.png'}
-              alt='Add-Icon'
-              width={24}
-              height={24}
-            />
-          </div>
-        </div>
-      </div>
       <style jsx>{`
+        .container {
+          display: flex;
+          width: 100%;
+          min-width: 100%;
+          margin: auto;
+        }
         .new-task {
           border: 1px solid var(--box-shadow-light);
           border-radius: 1rem;
@@ -300,6 +322,7 @@ const AddTask = () => {
           min-height: 5rem;
           transition: 0.3s;
           background: var(--box-shadow-light);
+          position: relative;
         }
         .new-task:hover,
         .new-task:focus-within {
@@ -330,7 +353,7 @@ const AddTask = () => {
           background: transparent;
           color: var(--text-color);
         }
-        input[name='description'] {
+        input[name="description"] {
           font-size: 80%;
         }
         .add-time_to {
@@ -361,7 +384,7 @@ const AddTask = () => {
           border-radius: 5px;
         }
       `}</style>
-    </form>
+    </div>
   );
 };
 
