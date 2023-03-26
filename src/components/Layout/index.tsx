@@ -55,6 +55,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           text-align: center;
           color: var(--text-color);
           background: var(--bg-color);
+          position: absolute;
+          inset: 0;
         }
       `}</style>
       <style jsx global>
