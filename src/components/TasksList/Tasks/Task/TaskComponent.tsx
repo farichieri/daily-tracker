@@ -118,6 +118,7 @@ const TaskComponent = ({
           transition: 0.3s;
           color: var(--text-color);
           background: var(--box-shadow-light);
+          z-index: 7;
         }
         .task-container.done {
           background: var(--done);

@@ -25,7 +25,7 @@ const initialState: TrackerSlice = {
     day_tasks: {},
   },
   isLoadingData: true,
-  daySelected: '',
+  daySelected: dbFormatDate(new Date()),
   weekSelected: [],
   projects: [],
   projectSelected: {

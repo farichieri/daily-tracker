@@ -85,7 +85,15 @@ const style = css.global`
   *::-webkit-scrollbar-thumb {
     background-color: rgb(61, 61, 61);
   }
-
+  body {
+    min-height: 100vh;
+    min-height: fill-available;
+    min-height: -webkit-fill-available;
+  }
+  html {
+    height: fill-available;
+    height: -webkit-fill-available;
+  }
   /* Remove all animations and transitions for people that prefer not to see them */
   @media (prefers-reduced-motion: reduce) {
     * {

@@ -1,53 +1,72 @@
-import { useSelector } from 'react-redux';
-import { selectTrackerSlice } from 'store/slices/trackerSlice';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import {
+  selectDaySelected,
+  selectTrackerSlice,
+  selectWeekSelected,
+} from "store/slices/trackerSlice";
+import { dbFormatDate } from "@/utils/formatDate";
+import { parseISO } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import Link from "next/link";
 
-const DaysSelector = ({
-  week,
-  handleDatesSelected,
-}: {
-  week: any;
-  handleDatesSelected: any;
-}) => {
+const DaysSelector = () => {
   const { today } = useSelector(selectTrackerSlice);
   const router = useRouter();
   const { date } = router.query;
+  const daySelected = useSelector(selectDaySelected);
+  const weekSelected = useSelector(selectWeekSelected);
+
+  const handleDatesSelected = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const action = (e.target as HTMLButtonElement).id;
+    const modifyDateDays = (date: Date, action: string, days: number) => {
+      if (action === "prev") {
+        date.setDate(date.getDate() - days);
+      } else if (action === "next") {
+        date.setDate(date.getDate() + days);
+      }
+      return date;
+    };
+    const newSelectedDay = dbFormatDate(
+      modifyDateDays(parseISO(daySelected), action, 1)
+    );
+    router.push(newSelectedDay);
+  };
 
   return (
-    <div className='selector-container'>
-      <div className='dates-and-changes'>
-        <button onClick={handleDatesSelected} id={'prev'} className='change'>
+    <div className="selector-container">
+      <div className="dates-and-changes">
+        <button onClick={handleDatesSelected} id={"prev"} className="change">
           <Image
-            src={'/icons/back.png'}
-            alt='back-icon'
+            src={"/icons/back.png"}
+            alt="back-icon"
             width={12}
             height={12}
-            style={{ pointerEvents: 'none' }}
+            style={{ pointerEvents: "none" }}
           />
         </button>
-        <div className='dates-container'>
-          {week.map((day: any) => (
+        <div className="dates-container">
+          {weekSelected.map((day: any) => (
             <Link href={`/app/tracker/${day.date}`} key={day.date}>
               <div
                 className={`date-button ${
-                  day.date === date ? 'selected' : ''
-                } ${day.date === today ? 'today' : ''}`}
+                  day.date === date ? "selected" : ""
+                } ${day.date === today ? "today" : ""}`}
               >
-                <span className='weekday'>{day.weekDay}</span>
-                <span className='date'>{day.numberOfMonth}</span>
+                <span className="weekday">{day.weekDay}</span>
+                <span className="date">{day.numberOfMonth}</span>
               </div>
             </Link>
           ))}
         </div>
-        <button onClick={handleDatesSelected} id={'next'} className='change'>
+        <button onClick={handleDatesSelected} id={"next"} className="change">
           <Image
-            src={'/icons/forward.png'}
-            alt='forward-icon'
+            src={"/icons/forward.png"}
+            alt="forward-icon"
             width={12}
             height={12}
-            style={{ pointerEvents: 'none' }}
+            style={{ pointerEvents: "none" }}
           />
         </button>
       </div>

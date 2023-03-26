@@ -1,39 +1,40 @@
-'use client';
-import Image from 'next/image';
-import { selectTheme, setTheme } from 'store/slices/themeSlice';
-import { useSelector, useDispatch } from 'react-redux';
+"use client";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function DarkMode({}) {
-  const theme = useSelector(selectTheme);
-  const dispatch = useDispatch();
+  const [theme, setTheme] = useState("");
 
   const switchTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    window.localStorage.setItem('theme', newTheme);
-    dispatch(setTheme(newTheme));
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.remove("dark");
+      localStorage.theme = "light";
+      setTheme("light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.theme = "dark";
+      setTheme("dark");
+    }
   };
 
+  useEffect(() => {
+    setTheme(localStorage.theme);
+  }, []);
+
   return (
-    <span onClick={switchTheme}>
-      {theme === 'dark' ? (
-        <Image alt='dark' src={'/images/dark.png'} width={20} height={20} />
+    <span
+      className="flex cursor-pointer items-center justify-center"
+      onClick={switchTheme}
+    >
+      {theme === "dark" ? (
+        <Image alt="dark" src={"/images/dark.png"} width={20} height={20} />
       ) : (
-        <Image alt='light' src={'/images/light.png'} width={20} height={20} />
+        <Image alt="light" src={"/images/light.png"} width={20} height={20} />
       )}
-      <style jsx>
-        {`
-          span {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-            transition: 0.3s;
-          }
-          span:hover {
-          }
-        `}
-      </style>
     </span>
   );
 }

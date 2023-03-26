@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import Footer from '../LandingPage/Footer/Footer';
-import Nav from '../Nav/Nav';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectTheme, setTheme } from 'store/slices/themeSlice';
-import { selectIsLoading } from 'store/slices/layoutSlice';
-import Loader from './Loader/Loader';
-import { selectUser } from 'store/slices/authSlice';
-import { useRouter } from 'next/router';
+import React, { useEffect } from "react";
+import Footer from "../LandingPage/Footer/Footer";
+import Nav from "../Nav/Nav";
+import { useSelector, useDispatch } from "react-redux";
+import { selectTheme, setTheme } from "store/slices/themeSlice";
+import { selectIsLoading } from "store/slices/layoutSlice";
+import Loader from "./Loader/Loader";
+import { selectUser } from "store/slices/authSlice";
+import { useRouter } from "next/router";
 
 export default function MainLayout({
   children,
@@ -23,17 +23,22 @@ export default function MainLayout({
   const theme = useSelector(selectTheme);
 
   useEffect(() => {
-    let localTheme = window.localStorage.getItem('theme');
-    if (!localTheme) {
-      window.localStorage.setItem('theme', 'dark');
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-    dispatch(setTheme(String(localTheme)));
   }, [theme]);
 
   return (
     <section>
       <Nav />
-      <div className='container'>{children}</div>
+      <div className="container">{children}</div>
       <Footer />
       <style jsx>
         {`

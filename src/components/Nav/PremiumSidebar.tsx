@@ -46,13 +46,19 @@ const PremiumSidebar = () => {
       {editList && <ListEdit closeModalOnClick={closeModalOnClick} />}
       {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
-      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="tracks" onClick={(e) => e.stopPropagation()}>
-          <div className="title">
+      <div
+        className={`duratin-300 fixed left-0 z-20 flex h-full w-[11.5rem] flex-col items-center gap-2 bg-[var(--cool)] p-4 pt-[var(--premium-nav-height)] backdrop-blur-sm transition-all ease-linear ${
+          !sidebarOpen && "left-[-200px]"
+        }`}
+      >
+        <div className="w-full pt-2" onClick={(e) => e.stopPropagation()}>
+          <div className="my-1 flex">
             <Link href={`/app/tracker/${today}`} style={{ width: "100%" }}>
               <span
-                className={`tracker ${
-                  pathname.includes("/app/tracker") ? "selected" : ""
+                className={`${
+                  pathname.includes("/app/tracker")
+                    ? "text-[var(--text-color)] opacity-100"
+                    : ""
                 }`}
               >
                 My Tracker
@@ -60,12 +66,14 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className="labels">
-          <div className="title">
+        <div className="w-full">
+          <div className="my-1 flex">
             <Link href={"/app/labels"}>
               <span
                 className={`labels ${
-                  pathname === "/app/labels" ? "selected" : ""
+                  pathname === "/app/labels"
+                    ? "text-[var(--text-color)] opacity-100"
+                    : ""
                 }`}
               >
                 Labels
@@ -73,23 +81,31 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className="to-do">
-          <div className="title">
+        <div className="flex w-full flex-col gap-1">
+          <div className="flex w-full items-center justify-between">
             <span>Tasks Lists</span>
             <ButtonAction text={"+"} onClick={() => setListCreate(true)} />
           </div>
           {Object.keys(lists).map(
             (list) =>
               !lists[list].is_archived && (
-                <div key={list} className="project-container">
+                <div key={list} className="flex w-full items-center">
                   <Link href={`/app/lists/${list}`} style={{ width: "100%" }}>
                     <span
-                      className={`project ${list === listID ? "selected" : ""}`}
+                      className={`flex w-full cursor-pointer pl-2 opacity-50 ${
+                        list === listID
+                          ? "text-[var(--text-color)] opacity-100"
+                          : ""
+                      }`}
                     >
                       {lists[list].list_name}
                     </span>
                   </Link>
-                  <span className="edit" id={list} onClick={handleEditList}>
+                  <span
+                    className="cursor-pointer"
+                    id={list}
+                    onClick={handleEditList}
+                  >
                     <Image
                       alt="edit-icon"
                       src={"/icons/edit.png"}
@@ -102,8 +118,8 @@ const PremiumSidebar = () => {
               )
           )}
         </div>
-        <div className="goals">
-          <div className="title">
+        <div className="w-full">
+          <div className="my-1 flex">
             <Link href={"/app/goals"}>
               <span
                 className={`goals ${
@@ -115,8 +131,8 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className="goals">
-          <div className="title">
+        <div className="w-full">
+          <div className="my-1 flex">
             <Link href={"/app/test"}>
               <span
                 className={`goals ${
@@ -128,96 +144,10 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className="avatar">
+        <div className="mt-auto">
           <Avatar size={65} changeable={false} />
         </div>
       </div>
-      <style jsx>{`
-        .sidebar {
-          -moz-user-select: none;
-          -ms-user-select: none;
-          -webkit-user-select: none;
-          background: var(--gray-color);
-          border-right: 1px solid var(--box-shadow-light);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          left: -200px;
-          padding: 1rem 1rem;
-          position: fixed;
-          transition: all 0.3s;
-          user-select: none;
-          width: 11.5rem;
-          z-index: 8;
-          background: var(--cool);
-          backdrop-filter: blur(12px);
-          padding-top: var(--premium-nav-height);
-          overflow: auto;
-          height: 100%;
-          gap: 1.5rem;
-        }
-        .project-container {
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
-        }
-        .project {
-          cursor: pointer;
-          opacity: 0.5;
-          transition: 0.3s;
-          width: 100%;
-          display: flex;
-          padding-left: 0.5rem;
-        }
-        .project:hover {
-          opacity: 1;
-        }
-        .sidebar.open {
-          left: 0;
-          transition: all 0.3s;
-        }
-        .projects,
-        .track,
-        .to-do,
-        .labels {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          align-items: start;
-          width: 100%;
-        }
-        .title {
-          display: flex;
-          gap: 0.5em;
-          align-items: center;
-          width: 100%;
-        }
-        .title span {
-          display: flex;
-          width: 100%;
-        }
-        .tracks,
-        .labels,
-        .projects,
-        .goals {
-          width: 100%;
-        }
-
-        .selected {
-          opacity: 1;
-          color: var(--text-color);
-        }
-        .tracker {
-          margin-top: 1rem;
-          width: 100%;
-        }
-        .edit {
-          cursor: pointer;
-        }
-        .avatar {
-          margin-top: auto;
-        }
-      `}</style>
     </>
   );
 };

@@ -1,28 +1,17 @@
-import PremiumLayout from "@/components/Layout/PremiumLayout";
 import { ReactNode } from "react";
-import Tracker from "../Tracker/Tracker";
-import { useSelector } from "react-redux";
 import { selectUser } from "store/slices/authSlice";
+import { useSelector } from "react-redux";
+import PremiumLayout from "@/components/Layout/PremiumLayout";
+import Tracker from "../Tracker/Tracker";
 
 const TrackerLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
   return (
     <PremiumLayout withPadding={false}>
-      <div className="container">
+      <div className="flex h-full w-full max-w-[var(--max-width-content)] flex-col items-center justify-center pt-[var(--premium-nav-height)]">
         {user && <Tracker />}
         {children}
       </div>
-      <style jsx>{`
-        .container {
-          max-width: var(--max-width-content);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          width: 100%;
-          align-items: center;
-          padding-top: calc(var(--premium-nav-height));
-        }
-      `}</style>
     </PremiumLayout>
   );
 };
