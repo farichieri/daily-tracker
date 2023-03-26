@@ -4,17 +4,9 @@ import FilterSelect from "./FilterSelect/FilterSelect";
 
 const Header = () => {
   return (
-    <div className="header">
+    <div className="flex w-full items-center justify-between">
       <FilterSelect />
       <Clock />
-      <style jsx>{`
-        .header {
-          display: flex;
-          width: 100%;
-          align-items: center;
-          justify-content: space-between;
-        }
-      `}</style>
     </div>
   );
 };

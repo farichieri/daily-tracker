@@ -45,7 +45,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
 
   return (
     <div className="flex flex-col text-left">
-      <div id="accordionExample5" className="flex flex-col">
+      <div id="accordionExample5" className="flex flex-col overflow-auto">
         <div className="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
           <h2 className="mb-0 mt-0 " id="headingOne5">
             <button

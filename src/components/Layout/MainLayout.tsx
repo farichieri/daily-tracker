@@ -36,30 +36,14 @@ export default function MainLayout({
   }, [theme]);
 
   return (
-    <section>
+    <section className="flex h-full min-h-screen flex-col pt-[var(--nav-height)]">
       <Nav />
-      <div className="container">{children}</div>
+      <div className="flex h-full w-full items-center justify-center">
+        {children}
+      </div>
       <Footer />
       <style jsx>
         {`
-          section {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            margin: auto;
-            min-height: calc(100vh);
-            padding: ${padding}rem;
-            padding-top: calc(var(--nav-height));
-            width: 100%;
-          }
-          .container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: start;
-          }
           @media and only screen (max-width: 500px) {
             section {
               padding: ${Number(padding) / 1}rem;

@@ -112,7 +112,7 @@ export default function PremiumLayout({
         )
       )}
       <div
-        className={` duratin-300 flex h-full w-full flex-col items-center justify-center px-2 transition-all ease-linear ${
+        className={`duratin-300 flex h-full w-full flex-col items-center px-2 transition-all ease-linear ${
           sidebarOpen && "sm:pl-48 "
         } xl:pl-0`}
       >

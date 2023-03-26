@@ -308,6 +308,7 @@ const AddTask = () => {
           display: flex;
           width: 100%;
           min-width: 100%;
+          justify-content: center;
           margin: auto;
         }
         .new-task {

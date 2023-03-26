@@ -64,7 +64,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   };
 
   return (
-    <section className="relative flex h-full w-full flex-col gap-2">
+    <section className="relative flex h-full w-full flex-col gap-2 overflow-auto">
       <Progressbar
         bgcolor="#99ccff"
         progress={percentageDone || 0}
