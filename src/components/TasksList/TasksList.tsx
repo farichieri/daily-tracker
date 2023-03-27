@@ -36,7 +36,7 @@ const TasksList = () => {
           justify-content: space-between;
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 0.5rem;
           margin-bottom: 10rem;
         }
         .header {

@@ -72,7 +72,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
       />
       <div className="h-full gap-2 overflow-hidden rounded-[0.5rem]">
         <div className="flex h-full flex-col gap-4 overflow-auto px-1">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             {tasksArrTimeState?.map((task) => (
               <Link
                 href={`/app/tracker/${date}/task/${task.task_id}`}
@@ -87,7 +87,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
             ))}
           </div>
           <hr />
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             {arrayOfTasksNoTime?.map((task) => (
               <Link
                 href={`/app/tracker/${date}/task/${task.task_id}`}

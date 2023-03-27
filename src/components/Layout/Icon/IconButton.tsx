@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import { MouseEventHandler } from 'react';
+import Image from "next/image";
+import { MouseEventHandler } from "react";
 
 const IconButton = ({
   src,
@@ -23,7 +23,7 @@ const IconButton = ({
         alt={alt}
         width={width}
         height={height}
-        style={{ pointerEvents: 'none' }}
+        style={{ pointerEvents: "none" }}
       />
       <style jsx>
         {`
@@ -34,8 +34,8 @@ const IconButton = ({
             margin: auto;
             background: none;
             border: none;
-            height: 24px;
-            width: 24px;
+            height: fit-content;
+            width: fit-content;
             align-items: center;
             justify-content: center;
           }

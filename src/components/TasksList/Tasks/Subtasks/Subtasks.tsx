@@ -24,16 +24,17 @@ const Subtasks = ({
   }, [tasks]);
 
   return (
-    <div>
+    <>
       {subtasksState.map((subtask) => (
-        <Subtask
-          parentTask={task}
-          key={subtask.task_id}
-          subTask={subtask}
-          inTaskCompnent={inTaskCompnent}
-        />
+        <div className="my-1 flex flex-col gap-0.5" key={subtask.task_id}>
+          <Subtask
+            parentTask={task}
+            subTask={subtask}
+            inTaskCompnent={inTaskCompnent}
+          />
+        </div>
       ))}
-    </div>
+    </>
   );
 };
 

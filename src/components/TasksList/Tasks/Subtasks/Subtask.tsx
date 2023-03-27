@@ -107,8 +107,8 @@ const Subtask = ({
           subTaskState.done ? "/icons/checkbox-done.png" : "/icons/checkbox.png"
         }
         alt={subTaskState.done ? "Done-Icon" : "Checkbox-Icon"}
-        width={18}
-        height={18}
+        width={14}
+        height={14}
       />
       <input
         type="text"
@@ -130,8 +130,8 @@ const Subtask = ({
             onClick={handleDelete}
             src={"/icons/delete.png"}
             alt="Delete-Icon"
-            width={18}
-            height={18}
+            width={16}
+            height={16}
           />
         </div>
       )}
@@ -139,10 +139,12 @@ const Subtask = ({
         .container {
           display: flex;
           align-items: center;
+          justify-content: center;
           width: 100%;
           min-width: 100%;
-          gap: 0.25rem;
           font-size: ${inTaskCompnent ? "80%" : "100%"};
+          font-weight: 500;
+          gap: 0.2rem;
         }
         input {
           width: 100%;
@@ -152,6 +154,8 @@ const Subtask = ({
           color: var(--text-color);
           cursor: ${inTaskCompnent ? "pointer" : "text"};
           pointer-events: ${inTaskCompnent ? "none" : "auto"};
+          display: flex;
+          line-height: 1;
         }
         input:focus & form {
           border: 1px solid var(--text-shadow);
@@ -160,6 +164,7 @@ const Subtask = ({
         input.done {
           text-decoration: line-through;
           cursor: ${inTaskCompnent ? "pointer" : "text"};
+          color: var(--box-shadow);
         }
       `}</style>
     </div>

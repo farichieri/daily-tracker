@@ -8,20 +8,12 @@ const Progressbar = ({
   height: number;
 }) => {
   return (
-    <div className="container">
+    <div className={`h-2 w-full min-w-full rounded-2xl bg-gray-200 `}>
       <div className="fill">
         <span className="text">{`${progress}%`}</span>
       </div>
       <style jsx>
         {`
-          .container {
-            width: 100%;
-            background-color: whitesmoke;
-            border-radius: 1rem;
-            height: ${height}px;
-            box-shadow: 0 0 6px 1px var(--box-shadow-light);
-            min-width: 100%;
-          }
           .fill {
             height: 100%;
             width: ${progress}%;

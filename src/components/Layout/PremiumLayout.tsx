@@ -104,7 +104,7 @@ export default function PremiumLayout({
             <PremiumSidebar />
             {sidebarOpen && (
               <span
-                className="fixed inset-0 z-10"
+                className="fixed inset-0 z-10 sm:hidden"
                 onClick={handleToggleSidebar}
               ></span>
             )}

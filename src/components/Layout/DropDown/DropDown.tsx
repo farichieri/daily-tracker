@@ -1,5 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
-import Image from 'next/image';
+import { ReactNode, useEffect, useState } from "react";
 
 const DropDown = ({
   children,
@@ -22,40 +21,20 @@ const DropDown = ({
   }, [closeDrop, open]);
 
   return (
-    <div className='container'>
-      <div className='content' onClick={() => setOpen(!open)}>
+    <div className="container">
+      <div className="content" onClick={() => setOpen(!open)}>
         {btnText}
-        <div className='icon-container'>
-          {open ? (
-            <Image
-              src={'/icons/collapse.png'}
-              alt='collapse-icon'
-              width={12}
-              height={12}
-              style={{ pointerEvents: 'none' }}
-            />
-          ) : (
-            <Image
-              src={'/icons/expand.png'}
-              alt='expand-icon'
-              width={12}
-              height={12}
-              style={{ pointerEvents: 'none' }}
-            />
-          )}
-        </div>
       </div>
       {open && (
         <>
-          <div className='drop-menu' onClick={(e) => e.stopPropagation()}>
-            <div className='menu'>{children}</div>
+          <div className="drop-menu" onClick={(e) => e.stopPropagation()}>
+            <div className="menu">{children}</div>
           </div>
-          <div className='modal' onClick={() => setOpen(!open)}></div>
+          <div className="modal" onClick={() => setOpen(!open)}></div>
         </>
       )}
       <style jsx>{`
         .container {
-          border: 1px solid var(--box-shadow-light);
           padding: 0.25rem 0.5rem;
           border-radius: 5px;
           position: relative;
@@ -70,11 +49,13 @@ const DropDown = ({
           gap: 0.3rem;
           justify-content: center;
           align-items: center;
+          height: fit-content;
+          width: fit-content;
+          transition: 0.3s;
+          border-radius: 50%;
         }
-        .icon-container {
-          display: flex;
-          pointer-events: none;
-          margin-bottom: 4px;
+        .content:hover {
+          box-shadow: 0 0 6px var(--box-shadow);
         }
         .modal {
           position: fixed;

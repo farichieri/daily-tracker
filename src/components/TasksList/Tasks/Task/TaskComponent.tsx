@@ -32,20 +32,27 @@ const TaskComponent = ({
         task.working_on ? "working_on" : ""
       }`}
     >
-      <div className="task" id={taskID}>
-        <div className="flex min-w-fit flex-col">
+      <div
+        className="pointer-events-auto flex w-full items-center gap-1 p-1"
+        id={taskID}
+      >
+        <div className="flex h-full min-w-fit flex-col items-start gap-2">
           {!router.pathname.includes("tracker") && task.date_set.date_iso && (
-            <div className="date_iso">
+            <div className="pointer-events-auto min-w-fit rounded-sm border-[var(--box-shadow)] text-xs ">
               <Link
                 href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}
               >
-                <span className={`${dateDisplayed === "Today" ? "today" : ""}`}>
+                <span
+                  className={`rounded-md border border-[var(--box-shadow)] py-0.5 px-1 opacity-70 transition-all duration-300 hover:opacity-100 ${
+                    dateDisplayed === "Today" ? "text-red-500" : ""
+                  }`}
+                >
                   {dateDisplayed}
                 </span>
               </Link>
             </div>
           )}
-          <div className="times">
+          <div className="flex w-full items-center gap-1 ">
             {task.date_set.time_from && (
               <div className="time_from">{task.date_set.time_from}</div>
             )}
@@ -56,8 +63,8 @@ const TaskComponent = ({
             )}
           </div>
         </div>
-        <div className="column">
-          <div className="project">
+        <div className="leading-2 flex w-full flex-col items-start justify-center overflow-hidden text-xs">
+          <div className="font pointer-events-auto m-0 flex items-center p-0">
             {projects[task.project_id]?.list_name && !listID && (
               <Link href={`/app/lists/${task.project_id}`}>
                 <span>📄 List {projects[task.project_id]?.list_name}</span>
@@ -65,34 +72,38 @@ const TaskComponent = ({
             )}
           </div>
 
-          <div className="content-description ">
-            <div className={`name ${task.done ? "done" : ""}`}>
+          <div className="flex h-full w-full">
+            <div
+              className={`my-auto flex font-medium  ${
+                task.done ? " text-[var(--box-shadow)] line-through" : ""
+              }`}
+            >
               {task.content}
             </div>
             {task.description && (
-              <div className="description">
+              <div className="w-full overflow-hidden text-ellipsis text-left opacity-70 ">
                 {task.description.slice(0, 300)}{" "}
                 {task.description.length > 300 && "..."}
               </div>
             )}
           </div>
-          <div className="labels">
+          <div className="flex items-center gap-2">
             {getLabelsByTask(taskID)?.map(
               (label: Label) =>
                 label && (
                   <div
                     key={label.label_id}
-                    className="label"
+                    className="mt-1 h-1 w-4 rounded-sm"
                     style={{ background: `${label.label_color}` }}
                   ></div>
                 )
             )}
           </div>
-          <div className="subtasks">
+          <div className="pointer-events-auto">
             <Subtasks task={task} inTaskCompnent={true} />
           </div>
         </div>
-        <div className="working-on">
+        <div className="translate m-auto mr-2 flex items-center">
           {task.working_on && (
             <Image
               src={"/icons/working.png"}
@@ -102,18 +113,18 @@ const TaskComponent = ({
             />
           )}
         </div>
-        <ToggleDoneTask task={task} />
+        <div className="pr-1">
+          <ToggleDoneTask task={task} />
+        </div>
       </div>
       <style jsx>{`
         .task-container {
-          border: 1px solid var(--box-shadow);
+          border: 1px solid var(--box-shadow-light);
           border-radius: 10px;
           width: 100%;
-          padding: 0.5rem;
           align-items: center;
           gap: 0.5rem;
           justify-content: space-between;
-          min-height: 2.5rem;
           cursor: pointer;
           transition: 0.3s;
           color: var(--text-color);
@@ -136,68 +147,6 @@ const TaskComponent = ({
         .task-container.done:hover {
           background: var(--done);
         }
-        .project {
-          font-size: 80%;
-          display: flex;
-          margin: 0;
-          padding: 0;
-          line-height: 1;
-          pointer-events: initial;
-          align-items: center;
-        }
-
-        .subtasks {
-          pointer-events: initial;
-        }
-        .date_iso {
-          min-width: fit-content;
-          font-size: 70%;
-          border: 1px solid var(--box-shadow);
-          padding: 0.25rem;
-          border-radius: 6px;
-          pointer-events: initial;
-        }
-        .task {
-          width: 100%;
-          display: flex;
-          pointer-events: none;
-          gap: 0.35rem;
-          align-items: flex-start;
-        }
-        .name {
-          width: 100%;
-          text-align: left;
-          text-decoration: initial;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          word-break: normal;
-          height: auto;
-        }
-        .name.done {
-          text-decoration: line-through;
-          color: var(--box-shadow);
-        }
-        .checkbox,
-        .delete {
-          pointer-events: initial;
-        }
-        .column {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-        }
-        .labels {
-          display: flex;
-          gap: 0.2rem;
-          align-items: center;
-        }
-        .times {
-          display: flex;
-          align-items: center;
-          gap: 0.2rem;
-          height: 100%;
-        }
         .time_from,
         .time_to {
           border: 1px solid var(--box-shadow-light);
@@ -206,37 +155,6 @@ const TaskComponent = ({
           border-radius: 6px;
           font-size: 80%;
           opacity: 0.6;
-        }
-        .label {
-          width: 1rem;
-          height: 0.2rem;
-          border-radius: 5px;
-          margin-top: 0.25rem;
-        }
-        .content-description {
-        }
-        .description {
-          white-space: wrap;
-          font-size: 80%;
-          text-align: left;
-          opacity: 0.7;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          width: 100%;
-        }
-        .working-on {
-          margin: auto;
-          transform: translate(-50%);
-          display: flex;
-          align-items: center;
-        }
-        .today {
-          color: red;
-          opacity: 0.7;
-          transition: 0.3s;
-        }
-        .today:hover {
-          opacity: 1;
         }
       `}</style>
     </div>

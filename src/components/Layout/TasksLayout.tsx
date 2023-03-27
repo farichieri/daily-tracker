@@ -9,19 +9,10 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <PremiumLayout withPadding={false}>
-      <div className="list">{user && <TasksList />}</div>
+      <div className="mt-4 flex w-full max-w-[var(--max-width-content)] flex-col pt-[var(--premium-nav-height)]">
+        {user && <TasksList />}
+      </div>
       {children}
-      <style jsx>{`
-        .list {
-          max-width: var(--max-width-content);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          width: 100%;
-          align-items: center;
-          padding-top: calc(var(--premium-nav-height) + 1rem);
-        }
-      `}</style>
     </PremiumLayout>
   );
 };

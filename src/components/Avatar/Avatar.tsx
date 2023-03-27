@@ -1,10 +1,10 @@
-import { getUserSettings } from '@/hooks/firebase';
-import { db, storage } from '@/utils/firebase.config';
-import { doc, setDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser, setUserSettings } from 'store/slices/authSlice';
-import Image from 'next/image';
+import { getUserSettings } from "@/hooks/firebase";
+import { db, storage } from "@/utils/firebase.config";
+import { doc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUserSettings } from "store/slices/authSlice";
+import Image from "next/image";
 
 const Avatar = ({
   size,
@@ -27,7 +27,7 @@ const Avatar = ({
         .then(() => {
           getDownloadURL(imageRef)
             .then(async (newImageUrl) => {
-              await setDoc(doc(db, 'users', user.uid), {
+              await setDoc(doc(db, "users", user.uid), {
                 email: userSettings.email,
                 display_name: userSettings.display_name,
                 is_premium: userSettings.is_premium,
@@ -48,34 +48,34 @@ const Avatar = ({
   };
 
   return (
-    <div className='image-container'>
+    <div className="image-container">
       {photo ? (
-        <div className='image'>
+        <div className="image">
           {changeable && (
             <input
-              title='Upload a new photo'
-              type='file'
+              title="Upload a new photo"
+              type="file"
               onChange={handleChange}
-              accept='image/*'
+              accept="image/*"
             />
           )}
           <Image
             src={photo}
-            alt='Profile Photo'
+            alt="Profile Photo"
             width={size}
             height={size}
-            style={{ pointerEvents: 'none', objectFit: 'cover' }}
+            style={{ pointerEvents: "none", objectFit: "cover" }}
           />
         </div>
       ) : (
-        <div className='no-photo'>
+        <div className="no-photo">
           <span>{userSettings?.display_name[0]?.toLowerCase()}</span>
           {changeable && (
             <input
-              title='Upload a new photo'
-              type='file'
+              title="Upload a new photo"
+              type="file"
               onChange={handleChange}
-              accept='image/*'
+              accept="image/*"
             />
           )}
         </div>
@@ -95,7 +95,7 @@ const Avatar = ({
             justify-content: center;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 0 10px 1px var(--box-shadow-dark);
+            box-shadow: 0 0 10px 1px var(--box-shadow-light);
             height: ${size}px;
             width: ${size}px;
             vertical-align: middle;
@@ -117,7 +117,7 @@ const Avatar = ({
             color: var(--bg-color-tertiary);
             border: 2px solid var(--bg-color-tertiary);
           }
-          input[type='file'] {
+          input[type="file"] {
             cursor: pointer;
             width: 100%;
             height: 100%;
@@ -125,7 +125,7 @@ const Avatar = ({
             position: absolute;
             transition: 0.3s;
             background: #00000080;
-            background-image: url('/icons/add-image.png');
+            background-image: url("/icons/add-image.png");
             background-repeat: no-repeat;
             background-position: center center;
             opacity: 0;
@@ -133,8 +133,8 @@ const Avatar = ({
           input:hover {
             opacity: 1;
           }
-          input[type='file']::after {
-            content: 'Attach Your CV: ';
+          input[type="file"]::after {
+            content: "Attach Your CV: ";
           }
         `}
       </style>

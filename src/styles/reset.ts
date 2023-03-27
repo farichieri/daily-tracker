@@ -1,6 +1,13 @@
 import css from "styled-jsx/css";
 
 const style = css.global`
+  *,
+  *::before,
+  *::after,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   * {
     scrollbar-width: thin;
     scrollbar-color: rgb(61, 61, 61) rgba(164, 164, 164, 0.402);
