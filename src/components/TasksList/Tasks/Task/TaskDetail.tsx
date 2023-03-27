@@ -2,8 +2,12 @@ import { db } from "@/utils/firebase.config";
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { format, formatISO, parseISO } from "date-fns";
 import { selectUser } from "store/slices/authSlice";
-import { setDeleteTask, setUpdateTask } from "store/slices/tasksSlice";
-import { Task } from "@/global/types";
+import {
+  selectTasks,
+  setDeleteTask,
+  setUpdateTask,
+} from "store/slices/tasksSlice";
+import { Task, TasksArray, TasksGroup } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import AddSubtask from "../Subtasks/AddSubtask";
@@ -16,6 +20,7 @@ import TaskActions from "@/components/TasksList/Tasks/TaskActions/TaskActions";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import PlannedSpentButton from "../TaskActions/TaskActionsButtons/PlannedSpentButton";
 import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
+import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
 
 const TaskID = ({
   task,
@@ -30,9 +35,18 @@ const TaskID = ({
   const { user } = useSelector(selectUser);
   const [taskState, setTaskState] = useState<Task>(task);
   const [isSaveable, setIsSaveable] = useState(false);
-  const [openPlanned, setOpenPlanned] = useState(false);
-  const [openSpent, setOpenSpent] = useState(false);
+  const { tasks } = useSelector(selectTasks);
+  const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
+  const sortedArray = Object.values(subTasks).sort((a, b) =>
+    a.date_set.time_from.localeCompare(b.date_set.time_from)
+  );
+  const [subtasksState, setSubtasksState] = useState<TasksArray>(sortedArray);
 
+  const secondsSpent = getParentTaskSeconds(subTasks, task);
+
+  useEffect(() => {
+    setSubtasksState(sortedArray);
+  }, [tasks]);
   useEffect(() => {
     setTaskState(task);
   }, [task, date, task]);
@@ -177,8 +191,6 @@ const TaskID = ({
       [name]: seconds,
     });
     setIsSaveable(true);
-    setOpenPlanned(false);
-    setOpenSpent(false);
   };
 
   return (
@@ -237,10 +249,18 @@ const TaskID = ({
             </>
           )}
           <div className="ml-auto flex">
-            <PlannedSpentButton
-              handleSeconds={handleSeconds}
-              task={taskState}
-            />
+            {subtasksState.length > 0 ? (
+              <SpentAndPlanned
+                secondsSpent={secondsSpent.seconds_spent}
+                secondsPlanned={secondsSpent.seconds_planned}
+              />
+            ) : (
+              <PlannedSpentButton
+                inTaskCompnent={false}
+                handleSeconds={handleSeconds}
+                task={taskState}
+              />
+            )}
           </div>
         </div>
         <div className="task-content">
@@ -280,7 +300,11 @@ const TaskID = ({
         </div>
         <div className="subtasks">
           <span className="title">Subtasks</span>
-          <Subtasks task={task} inTaskCompnent={false} />
+          <Subtasks
+            task={task}
+            inTaskCompnent={false}
+            subtasks={subtasksState}
+          />
           <AddSubtask />
         </div>
         <div className="attachments-container">

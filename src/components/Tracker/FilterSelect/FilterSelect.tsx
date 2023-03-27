@@ -1,21 +1,16 @@
-import DayPickerC from '@/components/DayPickerC/DayPickerC';
-import { dbFormatDate } from '@/utils/formatDate';
-import { format, formatISO, parse, parseISO } from 'date-fns';
-import { useRouter } from 'next/dist/client/router';
-import Link from 'next/link';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectTrackerSlice } from 'store/slices/trackerSlice';
+import { dbFormatDate } from "@/utils/formatDate";
+import { format, formatISO, parse, parseISO } from "date-fns";
+import { selectTrackerSlice } from "store/slices/trackerSlice";
+import { useRouter } from "next/dist/client/router";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import DayPickerC from "@/components/DayPickerC/DayPickerC";
+import Link from "next/link";
 
 const FilterSelect = () => {
   const { today } = useSelector(selectTrackerSlice);
   const router = useRouter();
   const { date } = router.query;
-
-  // console.log({ date });
-  // let d = new Date(String(date));
-  // console.log({ d });
-  // const iso = formatISO(d);
 
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
 
@@ -26,7 +21,7 @@ const FilterSelect = () => {
     }
   };
 
-  const dateToShow = format(parseISO(String(date)), 'LLLL u'); // April 2023
+  const dateToShow = format(parseISO(String(date)), "LLLL u"); // April 2023
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (
@@ -48,6 +43,7 @@ const FilterSelect = () => {
         div {
           display: flex;
           gap: 0.5rem;
+          z-index: 50;
         }
         .img {
           pointer-events: none;

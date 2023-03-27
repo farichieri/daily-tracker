@@ -34,7 +34,7 @@ const PremiumNav = () => {
   };
 
   return (
-    <nav className="fixed z-40 flex h-[var(--premium-nav-height)] w-full select-none items-center gap-2 bg-[var(--cool)] px-4  ">
+    <nav className="fixed z-40 flex h-[var(--premium-nav-height)] w-full select-none items-center gap-2 bg-none px-1 sm:px-4  ">
       {isSettingsOpen && <Settings closeModalOnClick={closeModalOnClick} />}
       <span className="cursor-pointer" onClick={handleToggleSidebar}>
         {sidebarState ? (
@@ -58,7 +58,6 @@ const PremiumNav = () => {
       <span className="font-bold">{selected}</span>
       <div className="ml-auto flex items-center gap-2">
         <ProfileDropDown setIsSettingsOpen={setIsSettingsOpen} />
-        <DarkMode />
       </div>
     </nav>
   );

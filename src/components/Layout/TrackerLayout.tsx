@@ -8,7 +8,7 @@ const TrackerLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
   return (
     <PremiumLayout withPadding={false}>
-      <div className="flex h-full w-full max-w-[var(--max-width-content)] flex-col items-center justify-center pt-[var(--premium-nav-height)]">
+      <div className="flex h-full w-full max-w-[var(--max-width-content)] flex-col items-center justify-center ">
         {user && <Tracker />}
         {children}
       </div>

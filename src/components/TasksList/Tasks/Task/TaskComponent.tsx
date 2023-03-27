@@ -1,14 +1,18 @@
+import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
 import { format, parseISO } from "date-fns";
 import { formatTime } from "@/utils/formatDate";
-import { Label, Task } from "@/global/types";
+import { Label, Task, TasksArray, TasksGroup } from "@/global/types";
 import { selectLists } from "store/slices/listsSlice";
+import { selectTasks } from "store/slices/tasksSlice";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
+import PlannedSpentButton from "../TaskActions/TaskActionsButtons/PlannedSpentButton";
+import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
 import Subtasks from "../Subtasks/Subtasks";
 import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
-import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
 
 const TaskComponent = ({
   taskID,
@@ -27,6 +31,19 @@ const TaskComponent = ({
   const isoDisplay = iso && format(parseISO(iso), "MM-dd-yyyy");
   const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
   const dateDisplayed = isoDisplay === todayDisplay ? "Today" : isoDisplay;
+
+  const { tasks } = useSelector(selectTasks);
+  const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
+  const sortedArray = Object.values(subTasks).sort((a, b) =>
+    a.date_set.time_from.localeCompare(b.date_set.time_from)
+  );
+  const [subtasks, setSubtasks] = useState<TasksArray>(sortedArray);
+
+  const secondsSpent = getParentTaskSeconds(subTasks, task);
+
+  useEffect(() => {
+    setSubtasks(sortedArray);
+  }, [tasks]);
 
   return (
     <div
@@ -55,18 +72,16 @@ const TaskComponent = ({
             </div>
           )}
           {(task.date_set.time_from || task.date_set.time_to) && (
-            <>
-              <div className="flex w-full items-center gap-1">
-                {task.date_set.time_from && (
-                  <div className="time_from">{task.date_set.time_from}</div>
-                )}
-                {task.date_set.time_to && (
-                  <>
-                    -<div className="time_to">{task.date_set.time_to}</div>
-                  </>
-                )}
-              </div>
-            </>
+            <div className="flex w-full items-center justify-center gap-0">
+              {task.date_set.time_from && (
+                <div className="time_from">{task.date_set.time_from}</div>
+              )}
+              {task.date_set.time_to && (
+                <>
+                  -<div className="time_to">{task.date_set.time_to}</div>
+                </>
+              )}
+            </div>
           )}
         </div>
         <div className="leading-2 flex w-full flex-col items-start justify-center overflow-hidden text-xs">
@@ -79,12 +94,30 @@ const TaskComponent = ({
           </div>
 
           <div className="flex h-full w-full flex-col">
-            <div
-              className={`my-auto flex font-medium  ${
-                task.done ? " text-[var(--box-shadow)] line-through" : ""
-              }`}
-            >
-              {task.content}
+            <div className="flex">
+              <span
+                className={`my-auto flex font-medium  ${
+                  task.done ? " text-[var(--box-shadow)] line-through" : ""
+                }`}
+              >
+                {task.content}
+              </span>
+              <div className="translate ml-2 mr-2 flex items-center">
+                {task.working_on && (
+                  <Image
+                    src={"/icons/working.png"}
+                    alt="working icon"
+                    width={18}
+                    height={18}
+                  />
+                )}
+              </div>
+              <div className="ml-auto flex cursor-pointer">
+                <SpentAndPlanned
+                  secondsSpent={secondsSpent.seconds_spent}
+                  secondsPlanned={secondsSpent.seconds_planned}
+                />
+              </div>
             </div>
             {task.description && (
               <div className="w-full overflow-hidden text-ellipsis text-left opacity-70 ">
@@ -106,22 +139,8 @@ const TaskComponent = ({
             )}
           </div>
           <div className="pointer-events-auto w-full">
-            <Subtasks task={task} inTaskCompnent={true} />
+            <Subtasks subtasks={subtasks} task={task} inTaskCompnent={true} />
           </div>
-        </div>
-        <SpentAndPlanned
-          secondsPlanned={task.seconds_planned}
-          secondsSpent={task.seconds_spent}
-        />
-        <div className="translate m-auto mr-2 flex items-center">
-          {task.working_on && (
-            <Image
-              src={"/icons/working.png"}
-              alt="working icon"
-              width={25}
-              height={25}
-            />
-          )}
         </div>
         <div className="pr-1">
           <ToggleDoneTask task={task} />
@@ -152,7 +171,6 @@ const TaskComponent = ({
           box-shadow: inset 1px 0 0 rgb(255 255 255 / 1%),
             inset -1px 0 0 rgb(255 255 255 / 1%), 0 0 4px 0 rgb(95 99 104 / 25%),
             0 0 6px 2px rgb(95 99 104 / 25%);
-          background: var(--cool);
         }
         .task-container.done:hover {
           background: var(--done);
@@ -161,9 +179,9 @@ const TaskComponent = ({
         .time_to {
           border: 1px solid var(--box-shadow-light);
           display: flex;
-          padding: 0.25rem 0.5rem;
+          padding: 0.1rem 0.25rem;
           border-radius: 6px;
-          font-size: 80%;
+          font-size: 0.6rem;
           opacity: 0.6;
         }
       `}</style>

@@ -115,7 +115,7 @@ const DaysSelector = () => {
           border: 1px solid var(--bg-color-tertiary-light);
         }
         .weekday {
-          font-size: 0.7rem;
+          font-size: 0.5rem;
           color: gray;
         }
         .selected {
@@ -125,7 +125,7 @@ const DaysSelector = () => {
           pointer-events: none;
         }
         span.date {
-          font-size: 1rem;
+          font-size: 0.8rem;
         }
         button:hover {
           background: var(--bg-color-tertiary);

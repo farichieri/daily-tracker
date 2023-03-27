@@ -6,9 +6,11 @@ import IconButton from "@/components/Layout/Icon/IconButton";
 const PlannedSpentButton = ({
   handleSeconds,
   task,
+  inTaskCompnent,
 }: {
   handleSeconds: React.MouseEventHandler;
   task: Task;
+  inTaskCompnent: boolean;
 }) => {
   const timePlanned = formatTime(task.seconds_planned);
   const timeSpent = formatTime(task.seconds_spent);
@@ -16,7 +18,7 @@ const PlannedSpentButton = ({
   const [openSpent, setOpenSpent] = useState(false);
 
   return (
-    <div className="relative">
+    <div className={`relative ${inTaskCompnent && "pointer-events-none"}`}>
       {openSpent && (
         <TimeModal
           handleSeconds={handleSeconds}
@@ -33,31 +35,44 @@ const PlannedSpentButton = ({
           setOpen={setOpenPlanned}
         />
       )}
-      {task.seconds_planned < 1 && task.seconds_spent < 1 ? (
+      {Number(task.seconds_planned) < 1 &&
+      Number(task.seconds_spent) < 1 &&
+      !inTaskCompnent ? (
         <IconButton
-          onClick={() => setOpenPlanned(!openPlanned)}
+          onClick={(e) => {
+            setOpenPlanned(!openPlanned);
+          }}
           alt="clock"
           src={"/icons/clock2.png"}
-          width={20}
-          height={20}
+          width={14}
+          height={14}
           props={{}}
         />
       ) : (
-        <div className="flex w-fit min-w-fit items-center gap-0.5 rounded-md border border-gray-500 px-1 py-[0.05rem] text-[10px] text-gray-400">
-          <div
-            className="flex min-w-fit cursor-pointer"
-            onClick={() => setOpenSpent(!openSpent)}
-          >
-            {task.seconds_spent > 0 ? timeSpent : "--:--"}
+        (Number(task.seconds_planned) > 0 ||
+          Number(task.seconds_spent) > 0) && (
+          <div className="flex w-fit min-w-fit items-center gap-0.5 rounded-md bg-gray-800 px-1 text-[8px] text-gray-400">
+            <div
+              className="flex min-w-fit cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenSpent(!openSpent);
+              }}
+            >
+              {task.seconds_spent > 0 ? timeSpent : "--:--"}
+            </div>
+            <span className="">/</span>
+            <div
+              className="flex min-w-fit cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenPlanned(!openPlanned);
+              }}
+            >
+              {task.seconds_planned > 0 ? timePlanned : "--:--"}
+            </div>
           </div>
-          <span className="">/</span>
-          <div
-            className="flex min-w-fit cursor-pointer"
-            onClick={() => setOpenPlanned(!openPlanned)}
-          >
-            {task.seconds_planned > 0 ? timePlanned : "--:--"}
-          </div>
-        </div>
+        )
       )}
     </div>
   );
@@ -81,6 +96,7 @@ const TimeModal = ({
   const OPTIONS = [
     { seconds: 300, display: "5 min" },
     { seconds: 600, display: "10 min" },
+    { seconds: 900, display: "15 min" },
     { seconds: 1800, display: "30 min" },
     { seconds: 2700, display: "45 min" },
     { seconds: 3600, display: "1 hour" },
@@ -99,7 +115,7 @@ const TimeModal = ({
         className="pointer-events-auto fixed inset-0 h-screen w-screen"
         onClick={() => setOpen(false)}
       ></div>
-      <div className="absolute -top-32 flex h-32 w-full min-w-max flex-row rounded-md bg-gray-800 px-0 py-0.5 text-sm opacity-100">
+      <div className="absolute -top-32 right-1 flex h-32 w-full min-w-max flex-row rounded-md bg-gray-800 px-0 py-0.5 text-sm opacity-100">
         <div className=" flex w-full min-w-fit flex-col items-center">
           <span>{displayName}</span>
           <div className="flex w-full flex-col overflow-auto py-1 px-2">

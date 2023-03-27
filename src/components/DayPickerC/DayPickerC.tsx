@@ -1,8 +1,8 @@
-import 'react-day-picker/dist/style.css';
-import { DayPicker } from 'react-day-picker';
-import Image from 'next/image';
-import Modal from '../Modal/Modal';
-import { formatISO, parseISO } from 'date-fns';
+import "react-day-picker/dist/style.css";
+import { DayPicker } from "react-day-picker";
+import Image from "next/image";
+import Modal from "../Modal/Modal";
+import { formatISO, parseISO } from "date-fns";
 
 const DayPickerC = ({
   dateSelected,
@@ -26,32 +26,32 @@ const DayPickerC = ({
   const closeModalOnClick = () => {};
 
   return (
-    <div className='container'>
-      <div className='content' onClick={() => setOpen(!open)}>
+    <div className="container">
+      <div className="content" onClick={() => setOpen(!open)}>
         <span>{dateToShow}</span>
-        <div className='icon-container'>
+        <div className="icon-container">
           {open ? (
             <Image
-              src={'/icons/collapse.png'}
-              alt='collapse-icon'
+              src={"/icons/collapse.png"}
+              alt="collapse-icon"
               width={12}
               height={12}
-              style={{ pointerEvents: 'none' }}
+              style={{ pointerEvents: "none" }}
             />
           ) : (
             <Image
-              src={'/icons/expand.png'}
-              alt='expand-icon'
+              src={"/icons/expand.png"}
+              alt="expand-icon"
               width={12}
               height={12}
-              style={{ pointerEvents: 'none' }}
+              style={{ pointerEvents: "none" }}
             />
           )}
         </div>
         {withModal && (
           <button
-            className='close_time_to'
-            name='date_iso'
+            className="close_time_to"
+            name="date_iso"
             onClick={(e) => {
               e.stopPropagation();
               removeDate(e);
@@ -63,42 +63,42 @@ const DayPickerC = ({
         )}
       </div>
       {withModal && open ? (
-        <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
-          <div className='calendar-modal' onClick={(e) => e.stopPropagation()}>
+        <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
+          <div className="calendar-modal" onClick={(e) => e.stopPropagation()}>
             <DayPicker
-              mode='single'
+              mode="single"
               selected={dateSelected || new Date()}
               onSelect={(day) => {
                 setOpen(!open);
                 handleDateSelected(day);
               }}
               modifiersClassNames={{
-                selected: 'my-selected',
-                today: 'my-today',
+                selected: "my-selected",
+                today: "my-today",
               }}
             />
           </div>
-          <div className='modal' onClick={() => setOpen(!open)}></div>
+          <div className="modal" onClick={() => setOpen(!open)}></div>
         </Modal>
       ) : (
         open &&
         !withModal && (
           <>
-            <div className='calendar' onClick={(e) => e.stopPropagation()}>
+            <div className="calendar" onClick={(e) => e.stopPropagation()}>
               <DayPicker
-                mode='single'
+                mode="single"
                 selected={dateSelected || new Date()}
                 onSelect={(day) => {
                   setOpen(!open);
                   handleDateSelected(day);
                 }}
                 modifiersClassNames={{
-                  selected: 'my-selected',
-                  today: 'my-today',
+                  selected: "my-selected",
+                  today: "my-today",
                 }}
               />
             </div>
-            <div className='modal' onClick={() => setOpen(!open)}></div>
+            <div className="modal" onClick={() => setOpen(!open)}></div>
           </>
         )
       )}
@@ -138,7 +138,7 @@ const DayPickerC = ({
         .calendar {
           position: absolute;
           background: var(--bg-color);
-          box-shadow: 0 0 10px 1px var(--box-shadow-light);
+          box-shadow: 0 0 3px 1px var(--box-shadow-light);
           border-radius: 6px;
           top: 2.5rem;
           z-index: 998;

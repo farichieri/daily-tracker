@@ -4,9 +4,8 @@ import FilterSelect from "./FilterSelect/FilterSelect";
 
 const Header = () => {
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex w-full items-center justify-center">
       <FilterSelect />
-      <Clock />
     </div>
   );
 };

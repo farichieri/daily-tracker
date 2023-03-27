@@ -39,7 +39,6 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   );
   const tasksWTime = sortedArray.filter((task) => task.date_set.time_from);
   const tasksNoTime = sortedArray.filter((task) => !task.date_set.time_from);
-  // Working_on on top
   const sortedTasksNoTime = Object.values(tasksNoTime)
     .sort(
       (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
@@ -64,14 +63,14 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   };
 
   return (
-    <section className="relative flex h-full w-full flex-col gap-2 overflow-y-auto  overflow-x-hidden">
+    <section className="relative flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden">
       <Progressbar
         bgcolor="#99ccff"
         progress={percentageDone || 0}
         height={10}
       />
       <div className="h-full gap-2 overflow-hidden rounded-[0.5rem]">
-        <div className="flex h-full flex-col gap-4 overflow-y-auto px-1">
+        <div className="flex h-full flex-col gap-4 overflow-y-auto p-1">
           <div className="flex flex-col gap-1">
             {tasksArrTimeState?.map((task) => (
               <Link
@@ -86,7 +85,6 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
               </Link>
             ))}
           </div>
-          <hr />
           <div className="flex flex-col gap-1">
             {arrayOfTasksNoTime?.map((task) => (
               <Link

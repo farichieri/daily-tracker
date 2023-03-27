@@ -81,7 +81,8 @@ const DropDown = ({
           z-index: 12;
           font-size: 80%;
           height: auto;
-          width: 12rem;
+          min-width: fit-content;
+          width: 6rem;
           padding: 0.5rem 0rem;
           display: flex;
           align-items: center;

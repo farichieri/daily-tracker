@@ -22,14 +22,11 @@ const Subtask = ({
   const [subTaskState, setSubTaskState] = useState<Task>(subTask);
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
-  const [openPlanned, setOpenPlanned] = useState(false);
-  const [openSpent, setOpenSpent] = useState(false);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
-    console.log({ name });
     setSubTaskState({
       ...subTaskState,
       [name]: value,
@@ -109,8 +106,6 @@ const Subtask = ({
       [name]: seconds,
     });
     setIsSaveable(true);
-    setOpenPlanned(false);
-    setOpenSpent(false);
   };
 
   return (
@@ -139,7 +134,11 @@ const Subtask = ({
         onBlur={handleBlur}
       />
       <div className="ml-auto flex min-w-fit">
-        <PlannedSpentButton handleSeconds={handleSeconds} task={subTaskState} />
+        <PlannedSpentButton
+          handleSeconds={handleSeconds}
+          task={subTaskState}
+          inTaskCompnent={inTaskCompnent}
+        />
       </div>
       {subTaskState.done && !inTaskCompnent && (
         <div className="delete">
@@ -160,7 +159,7 @@ const Subtask = ({
           justify-content: center;
           width: 100%;
           min-width: 100%;
-          font-size: ${inTaskCompnent ? "80%" : "100%"};
+          font-size: ${inTaskCompnent ? "80%" : "80%"};
           font-weight: 500;
           gap: 0.2rem;
         }

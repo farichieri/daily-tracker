@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Avatar from "@/components/Avatar/Avatar";
 import DropDown from "../DropDown";
+import DarkMode from "@/components/DarkMode/DarkMode";
 
 const ProfileDropDown = ({
   setIsSettingsOpen,
@@ -34,16 +35,17 @@ const ProfileDropDown = ({
       setCloseDrop={setCloseDrop}
       btnText={<Avatar size={24} changeable={false} />}
     >
-      <span>Account</span>
-      <div className="section" onClick={handleOpenProfile}>
+      <div className="flex border-b py-1 px-2" onClick={handleOpenProfile}>
         <button>Profile</button>
       </div>
-      <button onClick={handleLogout}>Logout </button>
+      <div className="flex w-full gap-2 border-b px-2 py-1">
+        <span>Theme</span>
+        <DarkMode />
+      </div>
+      <div className="flex py-1 px-2">
+        <button onClick={handleLogout}>Logout </button>
+      </div>
       <style jsx>{`
-        .section {
-          border-top: 1px solid var(--box-shadow-light);
-          border-bottom: 1px solid var(--box-shadow-light);
-        }
         button {
           background: transparent;
           width: 100%;
@@ -53,7 +55,6 @@ const ProfileDropDown = ({
           border: none;
           color: var(--text-color);
           font-weight: 500;
-          padding: 0.25rem 1rem;
         }
         button:hover {
           background: var(--box-shadow-light);

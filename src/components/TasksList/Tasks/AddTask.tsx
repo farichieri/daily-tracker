@@ -224,6 +224,7 @@ const AddTask = () => {
               </div>
               <div className="flex w-fit min-w-fit flex-col pr-10">
                 <PlannedSpentButton
+                  inTaskCompnent={false}
                   handleSeconds={handleSeconds}
                   task={newTaskState}
                 />

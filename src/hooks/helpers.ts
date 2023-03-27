@@ -92,3 +92,22 @@ export const filterListsNotArchived = (obj: ListGroup) =>
           },
     {}
   );
+
+export const getParentTaskSeconds = (subTasks: TaskGroup, task: Task) => {
+  const calculateTaskSeconds = (key: string) => {
+    let seconds = 0;
+    Object.values(subTasks).map((s) => {
+      seconds += Number(s[key]);
+    });
+    return seconds;
+  };
+  const subtasksSpent = calculateTaskSeconds("seconds_spent");
+  const subtasksPlanned = calculateTaskSeconds("seconds_planned");
+  const secondsSpent = subtasksSpent || task.seconds_spent;
+  const secondsPlanned = subtasksPlanned || task.seconds_planned;
+
+  return {
+    seconds_spent: secondsSpent,
+    seconds_planned: secondsPlanned,
+  };
+};
