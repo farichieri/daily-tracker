@@ -1,9 +1,12 @@
-import { format, formatISO } from 'date-fns';
+import { formatISO, intervalToDuration } from "date-fns";
 
 export const dbFormatDate = (date: string | Date) => {
-  return formatISO(new Date(date), { representation: 'date' });
+  return formatISO(new Date(date), { representation: "date" });
 };
 
-export const formatTime = (date: string) => {
-  return date && format(new Date(date), 'kk:mm');
+export const formatTime = (seconds: number) => {
+  if (!seconds) return null;
+  const dur = intervalToDuration({ start: 0, end: seconds * 1000 });
+  const timeFormatted = `${dur.hours}:${String(dur.minutes).padStart(2, "0")}`;
+  return timeFormatted;
 };

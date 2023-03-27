@@ -72,7 +72,9 @@ const TaskActions = () => {
             <WorkingOnButton task={task} />
           </div>
         )}
-        <ToggleDoneTask task={task} />
+        <div className="ml-auto">
+          <ToggleDoneTask task={task} />
+        </div>
       </div>
       <div className="flex gap-2">
         {labelsInTask.map(

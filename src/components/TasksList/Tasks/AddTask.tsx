@@ -16,6 +16,8 @@ import IconButton from "@/components/Layout/Icon/IconButton";
 import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
 import ListButton from "./TaskActions/TaskActionsButtons/ListButton";
 import TimeInput from "@/components/Layout/Input/TimeInput";
+import PlannedSpentButton from "./TaskActions/TaskActionsButtons/PlannedSpentButton";
+import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
 
 const AddTask = () => {
   const router = useRouter();
@@ -147,6 +149,15 @@ const AddTask = () => {
   const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
   const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
 
+  const handleSeconds = (event: React.MouseEvent) => {
+    const seconds = (event.target as HTMLButtonElement).value;
+    const name = (event.target as HTMLButtonElement).name;
+    setNewTaskState({
+      ...newTaskState,
+      [name]: seconds,
+    });
+  };
+
   useEffect(() => {
     listID &&
       setNewTaskState({
@@ -186,27 +197,37 @@ const AddTask = () => {
             />
           )}
           <div className="content-container">
-            <div className="row">
-              <input
-                type="text"
-                name="content"
-                placeholder="Add Task"
-                value={newTaskState.content}
-                onChange={handleChange}
-                spellCheck="false"
-                autoComplete="off"
-              />
-            </div>
-            <div className="row">
-              <input
-                type="text"
-                name="description"
-                placeholder="Description"
-                value={newTaskState.description}
-                onChange={handleChange}
-                spellCheck="false"
-                autoComplete="off"
-              />
+            <div className="flex w-full">
+              <div className="flex w-full flex-col">
+                <div className="row">
+                  <input
+                    type="text"
+                    name="content"
+                    placeholder="Add Task"
+                    value={newTaskState.content}
+                    onChange={handleChange}
+                    spellCheck="false"
+                    autoComplete="off"
+                  />
+                </div>
+                <div className="row">
+                  <input
+                    type="text"
+                    name="description"
+                    placeholder="Description"
+                    value={newTaskState.description}
+                    onChange={handleChange}
+                    spellCheck="false"
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              <div className="flex w-fit min-w-fit flex-col pr-10">
+                <PlannedSpentButton
+                  handleSeconds={handleSeconds}
+                  task={newTaskState}
+                />
+              </div>
             </div>
             <div className="row">
               <div className="labels">

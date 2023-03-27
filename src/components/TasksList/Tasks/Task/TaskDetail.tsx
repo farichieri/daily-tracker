@@ -2,14 +2,10 @@ import { db } from "@/utils/firebase.config";
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { format, formatISO, parseISO } from "date-fns";
 import { selectUser } from "store/slices/authSlice";
+import { setDeleteTask, setUpdateTask } from "store/slices/tasksSlice";
 import { Task } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import {
-  selectTasks,
-  setDeleteTask,
-  setUpdateTask,
-} from "store/slices/tasksSlice";
 import AddSubtask from "../Subtasks/AddSubtask";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import Modal from "@/components/Modal/Modal";
@@ -18,6 +14,8 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import Subtasks from "@/components/TasksList/Tasks/Subtasks/Subtasks";
 import TaskActions from "@/components/TasksList/Tasks/TaskActions/TaskActions";
 import TimeInput from "@/components/Layout/Input/TimeInput";
+import PlannedSpentButton from "../TaskActions/TaskActionsButtons/PlannedSpentButton";
+import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
 
 const TaskID = ({
   task,
@@ -29,10 +27,11 @@ const TaskID = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const { taskID, date, listID } = router.query;
-  const { tasks } = useSelector(selectTasks);
   const { user } = useSelector(selectUser);
   const [taskState, setTaskState] = useState<Task>(task);
   const [isSaveable, setIsSaveable] = useState(false);
+  const [openPlanned, setOpenPlanned] = useState(false);
+  const [openSpent, setOpenSpent] = useState(false);
 
   useEffect(() => {
     setTaskState(task);
@@ -170,6 +169,18 @@ const TaskID = ({
     setIsSaveable(true);
   };
 
+  const handleSeconds = (event: React.MouseEvent) => {
+    const seconds = (event.target as HTMLButtonElement).value;
+    const name = (event.target as HTMLButtonElement).name;
+    setTaskState({
+      ...taskState,
+      [name]: seconds,
+    });
+    setIsSaveable(true);
+    setOpenPlanned(false);
+    setOpenSpent(false);
+  };
+
   return (
     <Modal onCloseRedirect={redirectLink} closeModalOnClick={closeModalOnClick}>
       <div className="task-container">
@@ -225,6 +236,12 @@ const TaskID = ({
               )}
             </>
           )}
+          <div className="ml-auto flex">
+            <PlannedSpentButton
+              handleSeconds={handleSeconds}
+              task={taskState}
+            />
+          </div>
         </div>
         <div className="task-content">
           <input
@@ -278,10 +295,10 @@ const TaskID = ({
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            height: 70vh;
+            height: 85vh;
             max-height: 90vh;
             max-width: var(--max-width-task);
-            overflow: auto;
+            overflow-y: auto;
             padding: 2rem 1.5rem;
             text-align: left;
             width: 95vw;
@@ -316,6 +333,7 @@ const TaskID = ({
             display: flex;
             flex-direction: row;
             align-items: center;
+            width: 100%;
           }
           button {
             cursor: pointer;

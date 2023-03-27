@@ -7,6 +7,7 @@ import { Task } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import IconButton from "@/components/Layout/Icon/IconButton";
+import PlannedSpentButton from "../TaskActions/TaskActionsButtons/PlannedSpentButton";
 
 const Subtask = ({
   subTask,
@@ -21,6 +22,8 @@ const Subtask = ({
   const [subTaskState, setSubTaskState] = useState<Task>(subTask);
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
+  const [openPlanned, setOpenPlanned] = useState(false);
+  const [openSpent, setOpenSpent] = useState(false);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -98,6 +101,18 @@ const Subtask = ({
     }
   }, [parentTask]);
 
+  const handleSeconds = (event: React.MouseEvent) => {
+    const seconds = (event.target as HTMLButtonElement).value;
+    const name = (event.target as HTMLButtonElement).name;
+    setSubTaskState({
+      ...subTaskState,
+      [name]: seconds,
+    });
+    setIsSaveable(true);
+    setOpenPlanned(false);
+    setOpenSpent(false);
+  };
+
   return (
     <div className="container">
       <IconButton
@@ -123,6 +138,9 @@ const Subtask = ({
         autoComplete="off"
         onBlur={handleBlur}
       />
+      <div className="ml-auto flex min-w-fit">
+        <PlannedSpentButton handleSeconds={handleSeconds} task={subTaskState} />
+      </div>
       {subTaskState.done && !inTaskCompnent && (
         <div className="delete">
           <IconButton

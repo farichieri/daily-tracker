@@ -64,14 +64,14 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   };
 
   return (
-    <section className="relative flex h-full w-full flex-col gap-2 overflow-auto">
+    <section className="relative flex h-full w-full flex-col gap-2 overflow-y-auto  overflow-x-hidden">
       <Progressbar
         bgcolor="#99ccff"
         progress={percentageDone || 0}
         height={10}
       />
       <div className="h-full gap-2 overflow-hidden rounded-[0.5rem]">
-        <div className="flex h-full flex-col gap-4 overflow-auto px-1">
+        <div className="flex h-full flex-col gap-4 overflow-y-auto px-1">
           <div className="flex flex-col gap-1">
             {tasksArrTimeState?.map((task) => (
               <Link

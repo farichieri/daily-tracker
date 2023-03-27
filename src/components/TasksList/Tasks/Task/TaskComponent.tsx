@@ -1,12 +1,14 @@
 import { format, parseISO } from "date-fns";
+import { formatTime } from "@/utils/formatDate";
 import { Label, Task } from "@/global/types";
 import { selectLists } from "store/slices/listsSlice";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import Subtasks from "../Subtasks/Subtasks";
 import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
+import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
 
 const TaskComponent = ({
   taskID,
@@ -52,16 +54,20 @@ const TaskComponent = ({
               </Link>
             </div>
           )}
-          <div className="flex w-full items-center gap-1 ">
-            {task.date_set.time_from && (
-              <div className="time_from">{task.date_set.time_from}</div>
-            )}
-            {task.date_set.time_to && (
-              <>
-                -<div className="time_to">{task.date_set.time_to}</div>
-              </>
-            )}
-          </div>
+          {(task.date_set.time_from || task.date_set.time_to) && (
+            <>
+              <div className="flex w-full items-center gap-1">
+                {task.date_set.time_from && (
+                  <div className="time_from">{task.date_set.time_from}</div>
+                )}
+                {task.date_set.time_to && (
+                  <>
+                    -<div className="time_to">{task.date_set.time_to}</div>
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </div>
         <div className="leading-2 flex w-full flex-col items-start justify-center overflow-hidden text-xs">
           <div className="font pointer-events-auto m-0 flex items-center p-0">
@@ -72,7 +78,7 @@ const TaskComponent = ({
             )}
           </div>
 
-          <div className="flex h-full w-full">
+          <div className="flex h-full w-full flex-col">
             <div
               className={`my-auto flex font-medium  ${
                 task.done ? " text-[var(--box-shadow)] line-through" : ""
@@ -99,10 +105,14 @@ const TaskComponent = ({
                 )
             )}
           </div>
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto w-full">
             <Subtasks task={task} inTaskCompnent={true} />
           </div>
         </div>
+        <SpentAndPlanned
+          secondsPlanned={task.seconds_planned}
+          secondsSpent={task.seconds_spent}
+        />
         <div className="translate m-auto mr-2 flex items-center">
           {task.working_on && (
             <Image

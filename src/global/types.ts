@@ -39,7 +39,8 @@ export interface Task {
   done: boolean;
   is_archived: boolean;
   labels: Array<string>;
-  minutes_spent: number;
+  seconds_planned: number;
+  seconds_spent: number;
   priority: number;
   project_id: string;
   reminder_date: string;
