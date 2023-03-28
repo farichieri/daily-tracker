@@ -2,7 +2,6 @@ import "react-day-picker/dist/style.css";
 import { DayPicker } from "react-day-picker";
 import Image from "next/image";
 import Modal from "../Modal/Modal";
-import { formatISO, parseISO } from "date-fns";
 
 const DayPickerC = ({
   dateSelected,
@@ -13,6 +12,7 @@ const DayPickerC = ({
   setOpen,
   removeDate,
   setWantToAddDate,
+  addTask,
 }: {
   dateSelected: Date;
   handleDateSelected: Function;
@@ -22,6 +22,7 @@ const DayPickerC = ({
   setOpen: Function;
   removeDate: Function;
   setWantToAddDate: Function;
+  addTask: boolean;
 }) => {
   const closeModalOnClick = () => {};
 
@@ -48,7 +49,7 @@ const DayPickerC = ({
             />
           )}
         </div>
-        {withModal && (
+        {addTask && (
           <button
             className="close_time_to"
             name="date_iso"
@@ -106,9 +107,13 @@ const DayPickerC = ({
       <style jsx>{`
         .container {
           border: 1px solid var(--box-shadow-light);
-          padding: 0.25rem 0.5rem;
+          padding: 0.125rem 0.25rem;
           border-radius: 5px;
           position: relative;
+          transition: 0.3s;
+        }
+        .container:hover {
+          background: var(--bg-color-tertiary-light);
         }
         .content {
           -moz-user-select: none;

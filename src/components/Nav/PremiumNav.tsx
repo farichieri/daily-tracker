@@ -3,7 +3,6 @@ import { selectSidebarState, toggleSidebar } from "store/slices/layoutSlice";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import DarkMode from "../DarkMode/DarkMode";
 import Image from "next/image";
 import ProfileDropDown from "../Layout/DropDown/ProfileDropDown/ProfileDropDown";
 import Settings from "../Settings/Settings";
@@ -16,12 +15,12 @@ const PremiumNav = () => {
   const { lists } = useSelector(selectList);
   const listSelected = lists[String(listID)];
   const selected = router.pathname.includes("lists")
-    ? `Tasks List: ${listSelected?.list_name}`
+    ? `List: ${listSelected?.list_name}`
     : router.pathname.includes("labels")
     ? "Labels"
     : router.pathname.includes("goals")
     ? "Goals"
-    : "Tracker";
+    : "Planner";
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -34,7 +33,7 @@ const PremiumNav = () => {
   };
 
   return (
-    <nav className="fixed z-40 flex h-[var(--premium-nav-height)] w-full select-none items-center gap-2 bg-none px-1 sm:px-4  ">
+    <nav className="absolute top-0 left-0 z-50 flex h-[var(--premium-nav-height)] select-none items-center gap-2 bg-none px-1 sm:px-4 ">
       {isSettingsOpen && <Settings closeModalOnClick={closeModalOnClick} />}
       <span className="cursor-pointer" onClick={handleToggleSidebar}>
         {sidebarState ? (
@@ -56,7 +55,7 @@ const PremiumNav = () => {
         )}
       </span>
       <span className="font-bold">{selected}</span>
-      <div className="ml-auto flex items-center gap-2">
+      <div className="fixed top-0 right-0 flex h-[var(--premium-nav-height)] items-center gap-2 px-1 sm:px-4">
         <ProfileDropDown setIsSettingsOpen={setIsSettingsOpen} />
       </div>
     </nav>

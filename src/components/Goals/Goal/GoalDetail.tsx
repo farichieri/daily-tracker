@@ -157,6 +157,7 @@ const GoalDetail = ({
                   dateToShow={dateDisplayed}
                   removeDate={removeDate}
                   setWantToAddDate={setWantToAddDate}
+                  addTask={false}
                 />
               )}
             </div>

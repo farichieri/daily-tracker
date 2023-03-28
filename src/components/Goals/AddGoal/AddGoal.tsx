@@ -1,16 +1,16 @@
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { db } from '@/utils/firebase.config';
-import { format, formatISO, parseISO } from 'date-fns';
-import { Goal, Label } from '@/global/types';
-import { NewGoalInitial } from '@/global/initialTypes';
-import { selectLabels } from 'store/slices/labelsSlice';
-import { selectUser } from 'store/slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/dist/client/router';
-import DayPickerC from '@/components/DayPickerC/DayPickerC';
-import IconButton from '@/components/Layout/Icon/IconButton';
-import { setAddnewGoal } from 'store/slices/goalsSlice';
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "@/utils/firebase.config";
+import { format, formatISO, parseISO } from "date-fns";
+import { Goal, Label } from "@/global/types";
+import { NewGoalInitial } from "@/global/initialTypes";
+import { selectLabels } from "store/slices/labelsSlice";
+import { selectUser } from "store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/dist/client/router";
+import DayPickerC from "@/components/DayPickerC/DayPickerC";
+import IconButton from "@/components/Layout/Icon/IconButton";
+import { setAddnewGoal } from "store/slices/goalsSlice";
 
 const AddGoal = () => {
   const router = useRouter();
@@ -40,12 +40,12 @@ const AddGoal = () => {
     if (newGoalState.content) {
       const project_id = newGoalState.project_id
         ? newGoalState.project_id
-        : 'goals';
+        : "goals";
       const date_iso = newGoalState.date_set.date_iso;
       const time_from = newGoalState.date_set.time_from;
       const time_to = newGoalState.date_set.time_to;
 
-      const newDocRef = doc(collection(db, 'users', user.uid, 'goals'));
+      const newDocRef = doc(collection(db, "users", user.uid, "goals"));
       const newGoal: Goal = {
         ...newGoalState,
         added_at: formatISO(new Date()),
@@ -56,8 +56,8 @@ const AddGoal = () => {
         date_set: {
           date_iso: date_iso,
           is_recurring: false,
-          time_from: time_from || '',
-          time_to: (time_from && time_to) || '',
+          time_from: time_from || "",
+          time_to: (time_from && time_to) || "",
           with_time: false,
         },
       };
@@ -73,18 +73,18 @@ const AddGoal = () => {
     const name: string = (event.target as HTMLButtonElement).name;
     const newDateSet = {
       ...newGoalState.date_set,
-      [name]: '',
+      [name]: "",
     };
     setNewGoalState({
       ...newGoalState,
-      ['date_set']: newDateSet,
+      ["date_set"]: newDateSet,
     });
   };
 
   // Date
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [openDateSelector, setOpenDateSelector] = useState(false);
-  const dateToShow = dateSelected && format(dateSelected, 'MM-dd-yyyy'); // April 2023
+  const dateToShow = dateSelected && format(dateSelected, "MM-dd-yyyy"); // April 2023
   const [wantToAddDate, setWantToAddDate] = useState(false);
 
   const handleDateSelected = (day: Date | undefined) => {
@@ -96,13 +96,13 @@ const AddGoal = () => {
       };
       setNewGoalState({
         ...newGoalState,
-        ['date_set']: newDateSet,
+        ["date_set"]: newDateSet,
       });
     }
   };
 
-  const todayDisplay = format(new Date(), 'MM-dd-yyyy'); // US Format
-  const dateDisplayed = dateToShow === todayDisplay ? 'Today' : dateToShow;
+  const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
+  const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
 
   useEffect(() => {
     listID &&
@@ -113,28 +113,28 @@ const AddGoal = () => {
   }, [listID]);
 
   return (
-    <form className='new-goal' onSubmit={handleAdd}>
-      <div className='content-container'>
-        <div className='row'>
+    <form className="new-goal" onSubmit={handleAdd}>
+      <div className="content-container">
+        <div className="row">
           <input
-            type='text'
-            name='content'
-            placeholder='Add Goal'
+            type="text"
+            name="content"
+            placeholder="Add Goal"
             value={newGoalState.content}
             onChange={handleChange}
-            spellCheck='false'
-            autoComplete='off'
+            spellCheck="false"
+            autoComplete="off"
           />
         </div>
-        <div className='row'>
+        <div className="row">
           <input
-            type='text'
-            name='description'
-            placeholder='Description'
+            type="text"
+            name="description"
+            placeholder="Description"
             value={newGoalState.description}
             onChange={handleChange}
-            spellCheck='false'
-            autoComplete='off'
+            spellCheck="false"
+            autoComplete="off"
           />
         </div>
         {/* <div className='row'>
@@ -151,8 +151,8 @@ const AddGoal = () => {
             )}
           </div>
         </div> */}
-        <div className='row'>
-          <div className='day-picker'>
+        <div className="row">
+          <div className="day-picker">
             {!wantToAddDate ? (
               <button
                 onClick={() => {
@@ -172,15 +172,16 @@ const AddGoal = () => {
                 dateToShow={dateDisplayed}
                 removeDate={removeDate}
                 setWantToAddDate={setWantToAddDate}
+                addTask={true}
               />
             )}
           </div>
-          <div className='add-button'>
+          <div className="add-button">
             <IconButton
               props={null}
               onClick={handleAdd}
-              src={'/icons/add.png'}
-              alt='Add-Icon'
+              src={"/icons/add.png"}
+              alt="Add-Icon"
               width={24}
               height={24}
             />
@@ -230,7 +231,7 @@ const AddGoal = () => {
           background: transparent;
           color: var(--text-color);
         }
-        input[name='description'] {
+        input[name="description"] {
           font-size: 80%;
         }
         .add-time_to {

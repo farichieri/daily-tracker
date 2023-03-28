@@ -184,6 +184,8 @@ const TaskID = ({
   };
 
   const handleSeconds = (event: React.MouseEvent) => {
+    event.preventDefault();
+    console.log("epsa");
     const seconds = (event.target as HTMLButtonElement).value;
     const name = (event.target as HTMLButtonElement).name;
     setTaskState({
@@ -222,6 +224,7 @@ const TaskID = ({
                   dateToShow={dateDisplayed}
                   removeDate={removeDate}
                   setWantToAddDate={setWantToAddDate}
+                  addTask={false}
                 />
               )}
             </div>

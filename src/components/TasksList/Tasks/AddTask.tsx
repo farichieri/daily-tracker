@@ -150,6 +150,7 @@ const AddTask = () => {
   const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
 
   const handleSeconds = (event: React.MouseEvent) => {
+    event.preventDefault();
     const seconds = (event.target as HTMLButtonElement).value;
     const name = (event.target as HTMLButtonElement).name;
     setNewTaskState({
@@ -266,6 +267,7 @@ const AddTask = () => {
                       dateToShow={dateDisplayed}
                       removeDate={removeDate}
                       setWantToAddDate={setWantToAddDate}
+                      addTask={true}
                     />
                   )}
                 </div>

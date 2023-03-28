@@ -1,18 +1,18 @@
-import { nav_pages } from '@/utils/pages';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { selectUser } from 'store/slices/authSlice';
-import DarkMode from '../DarkMode/DarkMode';
-import Logo from '../Logo/Logo';
-import { useSelector } from 'react-redux';
+import { nav_pages } from "@/utils/pages";
+import { selectUser } from "store/slices/authSlice";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import DarkMode from "../DarkMode/DarkMode";
+import Link from "next/link";
+import Logo from "../Logo/Logo";
 
 const Nav = () => {
   const router = useRouter();
   const [hamburgerActive, setHamburgerActive] = useState(false);
   const { user } = useSelector(selectUser);
   const [userName, setUserName] = useState(
-    user?.email?.slice(0, user.email.indexOf('@')) || 'Sign in'
+    user?.email?.slice(0, user.email.indexOf("@")) || "Sign in"
   );
 
   const handleMenu = () => {
@@ -20,39 +20,39 @@ const Nav = () => {
   };
 
   const showPages =
-    router.route !== '/checkout' &&
-    router.route !== '/subscribe' &&
-    router.route !== '/checkout/[plan]';
+    router.route !== "/checkout" &&
+    router.route !== "/subscribe" &&
+    router.route !== "/checkout/[plan]";
 
   useEffect(() => {
     if (user && user.email) {
-      setUserName(user.email.slice(0, user.email.indexOf('@')));
+      setUserName(user.email.slice(0, user.email.indexOf("@")));
     } else {
-      setUserName('Sign in');
+      setUserName("Sign in");
     }
   }, [user]);
 
   const pages = user
-    ? nav_pages.filter((page) => page.name !== 'subscribe')
+    ? nav_pages.filter((page) => page.name !== "subscribe")
     : nav_pages;
 
   return (
     <nav>
-      <div className='nav-content'>
-        <div style={{ gap: '.5rem' }}>
+      <div className="nav-content">
+        <div style={{ gap: ".5rem" }}>
           {showPages && (
             <div
               onClick={handleMenu}
-              className={`hamburger ${hamburgerActive ? 'active' : ''}`}
+              className={`hamburger ${hamburgerActive ? "active" : ""}`}
             >
-              <div className='bar'></div>
+              <div className="bar"></div>
             </div>
           )}
-          <Link href={'/'}>
+          <Link href={"/"}>
             <Logo width={100} height={50} name={false} priority={false} />
           </Link>
         </div>
-        <div className={`pages ${hamburgerActive ? 'active' : ''}`}>
+        <div className={`pages ${hamburgerActive ? "active" : ""}`}>
           {showPages &&
             pages.map((page) => (
               <Link
@@ -62,7 +62,7 @@ const Nav = () => {
               >
                 <span
                   className={`${page.name} ${
-                    router.asPath === page.path ? 'selected' : ''
+                    router.asPath === page.path ? "selected" : ""
                   }`}
                 >
                   {page.name}
@@ -70,10 +70,10 @@ const Nav = () => {
               </Link>
             ))}
         </div>
-        <div className='login-dark'>
-          <Link href={'/user'} onClick={handleMenu}>
+        <div className="login-dark">
+          <Link href={"/user"} onClick={handleMenu}>
             <span
-              className={`user ${router.asPath === '/user' ? 'selected' : ''}`}
+              className={`user ${router.asPath === "/user" ? "selected" : ""}`}
             >
               {userName}
             </span>
@@ -163,7 +163,7 @@ const Nav = () => {
 
         .hamburger::after {
           position: absolute;
-          content: '';
+          content: "";
           height: 100%;
           width: 100%;
         }
@@ -178,7 +178,7 @@ const Nav = () => {
 
         .hamburger .bar::after,
         .hamburger .bar::before {
-          content: '';
+          content: "";
           position: absolute;
           height: 100%;
           width: 100%;

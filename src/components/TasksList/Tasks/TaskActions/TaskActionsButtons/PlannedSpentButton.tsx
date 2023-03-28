@@ -40,6 +40,7 @@ const PlannedSpentButton = ({
       !inTaskCompnent ? (
         <IconButton
           onClick={(e) => {
+            e.preventDefault();
             setOpenPlanned(!openPlanned);
           }}
           alt="clock"
@@ -101,6 +102,7 @@ const TimeModal = ({
     { seconds: 2700, display: "45 min" },
     { seconds: 3600, display: "1 hour" },
     { seconds: 5400, display: "1.5 hour" },
+    { seconds: 7200, display: "2 hour" },
     { seconds: 9000, display: "2.5 hour" },
     { seconds: 10800, display: "3 hour" },
     { seconds: 14400, display: "4 hour" },

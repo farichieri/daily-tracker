@@ -1,5 +1,5 @@
 import { dbFormatDate } from "@/utils/formatDate";
-import { format, formatISO, parse, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { selectTrackerSlice } from "store/slices/trackerSlice";
 import { useRouter } from "next/dist/client/router";
 import { useSelector } from "react-redux";
@@ -8,10 +8,9 @@ import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import Link from "next/link";
 
 const FilterSelect = () => {
-  const { today } = useSelector(selectTrackerSlice);
   const router = useRouter();
   const { date } = router.query;
-
+  const { today } = useSelector(selectTrackerSlice);
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
 
   const handleDateSelected = (day: Date | undefined) => {
@@ -25,51 +24,23 @@ const FilterSelect = () => {
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (
-    <div>
+    <div className="z-20 flex items-center gap-2">
       <DayPickerC
         setWantToAddDate={() => {}}
         removeDate={() => {}}
         open={openDateSelector}
         setOpen={setOpenDateSelector}
-        withModal={false}
+        withModal={true}
         dateSelected={dateSelected}
         handleDateSelected={handleDateSelected}
         dateToShow={dateToShow}
+        addTask={false}
       />
       <Link href={`/app/tracker/${today}`}>
-        <span>Today</span>
+        <span className="flex items-center justify-center rounded-md border border-[var(--box-shadow-light)] px-1 py-0.5 hover:bg-[var(--bg-color-tertiary-light)] active:shadow-sm active:shadow-gray-500/25">
+          Today
+        </span>
       </Link>
-      <style jsx>{`
-        div {
-          display: flex;
-          gap: 0.5rem;
-          z-index: 50;
-        }
-        .img {
-          pointer-events: none;
-        }
-        span {
-          padding: 0.25rem 0.5rem;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: none;
-          color: var(--text-color);
-          background: transparent;
-          border: 1px solid var(--box-shadow-light);
-          border-radius: 5px;
-        }
-        span:hover {
-          background: var(--bg-color-tertiary-light);
-        }
-        span:active {
-          box-shadow: 0 0 10px 1px var(--box-shadow);
-        }
-        .selected {
-          color: red;
-        }
-      `}</style>
     </div>
   );
 };

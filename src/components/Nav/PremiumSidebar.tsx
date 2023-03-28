@@ -47,7 +47,7 @@ const PremiumSidebar = () => {
       {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
       <div
-        className={`duratin-300 fixed left-0 z-20 flex h-full w-[11.5rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] p-4 pt-[var(--premium-nav-height)] backdrop-blur-sm transition-all ease-linear ${
+        className={`duratin-300 fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] p-4 pt-[var(--premium-nav-height)] shadow shadow-gray-600/40 backdrop-blur-sm transition-all ease-linear ${
           !sidebarOpen && "left-[-200px]"
         }`}
       >
@@ -61,7 +61,7 @@ const PremiumSidebar = () => {
                     : ""
                 }`}
               >
-                My Tracker
+                Planner
               </span>
             </Link>
           </div>
@@ -83,8 +83,13 @@ const PremiumSidebar = () => {
         </div>
         <div className="flex w-full flex-col gap-1">
           <div className="flex w-full items-center justify-between">
-            <span>Tasks Lists</span>
-            <ButtonAction text={"+"} onClick={() => setListCreate(true)} />
+            <span>Lists</span>
+            <span
+              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md border p-1"
+              onClick={() => setListCreate(true)}
+            >
+              +
+            </span>
           </div>
           {Object.keys(lists).map(
             (list) =>
@@ -102,15 +107,15 @@ const PremiumSidebar = () => {
                     </span>
                   </Link>
                   <span
-                    className="cursor-pointer"
+                    className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md border p-1"
                     id={list}
                     onClick={handleEditList}
                   >
                     <Image
                       alt="edit-icon"
                       src={"/icons/edit.png"}
-                      width={14}
-                      height={14}
+                      width={18}
+                      height={18}
                       style={{ pointerEvents: "none" }}
                     />
                   </span>

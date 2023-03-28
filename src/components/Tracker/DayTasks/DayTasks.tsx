@@ -70,7 +70,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
         height={10}
       />
       <div className="h-full gap-2 overflow-hidden rounded-[0.5rem]">
-        <div className="flex h-full flex-col gap-4 overflow-y-auto p-1">
+        <div className="flex h-full flex-col gap-4 overflow-y-auto px-1">
           <div className="flex flex-col gap-1">
             {tasksArrTimeState?.map((task) => (
               <Link
