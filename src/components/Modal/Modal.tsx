@@ -1,5 +1,5 @@
-import Link from 'next/dist/client/link';
-import { ReactNode } from 'react';
+import Link from "next/dist/client/link";
+import { ReactNode } from "react";
 
 const Modal = ({
   children,
@@ -19,21 +19,21 @@ const Modal = ({
   return (
     <>
       {onCloseRedirect ? (
-        <div className='container'>
-          <Link href={onCloseRedirect} style={{ cursor: 'initial' }}>
-            <div className='full-screen'></div>
+        <div className="container">
+          <Link href={onCloseRedirect} style={{ cursor: "initial" }}>
+            <div className="full-screen"></div>
           </Link>
-          <div className='modal-container'>
-            <Link href={onCloseRedirect} style={{ cursor: 'initial' }}>
-              <span className='close'>X</span>
+          <div className="modal-container">
+            <Link href={onCloseRedirect} style={{ cursor: "initial" }}>
+              <span className="close">X</span>
             </Link>
-            <div className='modal'>{children}</div>
+            <div className="modal">{children}</div>
           </div>
         </div>
       ) : (
-        <div className='container'>
-          <div className='full-screen' onClick={handleCloseModal}></div>
-          <div className='modal'>{children}</div>
+        <div className="container">
+          <div className="full-screen" onClick={handleCloseModal}></div>
+          <div className="modal">{children}</div>
         </div>
       )}
 
@@ -57,7 +57,6 @@ const Modal = ({
             position: fixed;
             min-height: 100vh;
             min-width: 100vw;
-            background: var(--bg-modal);
             top: 0;
             left: 0;
             right: 0;
@@ -75,8 +74,8 @@ const Modal = ({
             justify-content: center;
             border-radius: 1rem;
             box-shadow: 0 0 6px 1px var(--cool);
-            position: relative;
             background: var(--modal);
+            position: relative;
             z-index: 998;
             overflow: auto;
           }

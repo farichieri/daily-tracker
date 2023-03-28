@@ -225,8 +225,8 @@ const AddTask = () => {
               </div>
               <div className="flex w-fit min-w-fit flex-col pr-10">
                 <PlannedSpentButton
-                  inTaskCompnent={false}
                   handleSeconds={handleSeconds}
+                  inTaskCompnent={false}
                   task={newTaskState}
                 />
               </div>
@@ -351,9 +351,8 @@ const AddTask = () => {
         }
         .new-task:hover,
         .new-task:focus-within {
-          box-shadow: inset 1px 0 0 rgb(255 255 255 / 1%),
-            inset -1px 0 0 rgb(255 255 255 / 1%), 0 0 4px 0 rgb(95 99 104 / 25%),
-            0 0 6px 2px rgb(95 99 104 / 25%);
+          outline: white;
+          border: 1px solid var(--box-shadow);
         }
         .content-container {
           width: 100%;

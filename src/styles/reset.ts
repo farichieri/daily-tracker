@@ -19,11 +19,12 @@ const style = css.global`
   }
 
   *::-webkit-scrollbar-track {
-    background: #000000;
+    background: rgb(95, 95, 95);
   }
 
   *::-webkit-scrollbar-thumb {
     background-color: rgb(61, 61, 61);
+    border-radius: 5px;
   }
 `;
 

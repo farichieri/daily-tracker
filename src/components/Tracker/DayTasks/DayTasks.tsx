@@ -70,7 +70,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
         progress={percentageDone || 0}
         height={10}
       />
-      <div className="flex h-full gap-2 overflow-hidden rounded-[0.5rem]">
+      <div className="flex h-full gap-2 overflow-hidden rounded-[1rem]">
         <div className="flex h-full w-full flex-col gap-4 overflow-y-auto px-1">
           <div className="flex w-full">
             <div className="flex h-full w-full flex-col">

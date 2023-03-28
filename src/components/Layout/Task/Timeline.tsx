@@ -26,11 +26,11 @@ const Timeline = ({
         } else if (date < today) {
           return "bg-black";
         } else if (date > today) {
-          return "bg-stone-500";
+          return "bg-stone-300";
         } else if (currentTime > time_from) {
           return "bg-black";
         } else {
-          return "bg-stone-500";
+          return "bg-stone-300";
         }
       case "bottom":
         if (index === lastIndex) {
@@ -38,11 +38,11 @@ const Timeline = ({
         } else if (date < today) {
           return "bg-black";
         } else if (date > today) {
-          return "bg-stone-500";
+          return "bg-stone-300";
         } else if (currentTime > time_from && currentTime > time_to) {
           return "bg-black";
         } else {
-          return "bg-stone-500";
+          return "bg-stone-300";
         }
       default:
         break;
@@ -53,18 +53,17 @@ const Timeline = ({
     if (date < today) {
       return <div className="h-full w-full rounded-full bg-black"></div>;
     } else if (date > today) {
-      return <div className="h-full w-full rounded-full bg-stone-500"></div>;
+      return <div className="h-full w-full rounded-full bg-stone-300"></div>;
     } else if (currentTime > time_from && currentTime > time_to) {
       return <div className="h-full w-full rounded-full bg-black"></div>;
     } else if (currentTime > time_from && currentTime < time_to) {
       return (
         <>
-          <div className="h-[50%] w-full rounded-tl-full rounded-tr-full bg-black"></div>
-          <div className="h-[50%] w-full rounded-bl-full rounded-br-full bg-stone-500"></div>
+          <div className="h-full w-full rounded-full bg-gradient-to-b from-black via-black to-stone-300"></div>
         </>
       );
     } else {
-      return <div className="h-full w-full rounded-full bg-stone-500"></div>;
+      return <div className="h-full w-full rounded-full bg-stone-300"></div>;
     }
   };
   return (

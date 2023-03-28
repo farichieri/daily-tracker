@@ -111,6 +111,7 @@ const TimeModal = ({
     { seconds: 25200, display: "7 hour" },
     { seconds: 28800, display: "8 hour" },
   ];
+
   return (
     <>
       <div
@@ -120,6 +121,10 @@ const TimeModal = ({
       <div className="absolute -top-32 right-1 flex h-32 w-full min-w-max flex-row rounded-md bg-gray-800 px-0 py-0.5 text-sm opacity-100">
         <div className=" flex w-full min-w-fit flex-col items-center">
           <span>{displayName}</span>
+          <input
+            type="time"
+            className="flex h-full w-full bg-transparent px-2"
+          />
           <div className="flex w-full flex-col overflow-auto py-1 px-2">
             {OPTIONS.map((opt) => (
               <button
