@@ -54,7 +54,7 @@ const LabelID = () => {
     <LabelsLayout>
       <Modal closeModalOnClick={closeModalOnClick} onCloseRedirect={linkID}>
         <div className="tasks">
-          {arrayOfTasksWithTime?.map((task) => (
+          {arrayOfTasksWithTime?.map((task, index) => (
             <Link
               href={`/app/labels/${labelID}/task/${task.task_id}`}
               key={task.task_id}
@@ -63,11 +63,13 @@ const LabelID = () => {
                 taskID={task.task_id}
                 task={task}
                 getLabelsByTask={getLabelsByTask}
+                index={index}
+                lastIndex={arrayOfTasksWithTime.length - 1}
               />
             </Link>
           ))}
           <div className="tasks-no-time">
-            {arrayOfTasksNoTime?.map((task) => (
+            {arrayOfTasksNoTime?.map((task, index) => (
               <Link
                 href={`/app/labels/${labelID}/task/${task.task_id}`}
                 key={task.task_id}
@@ -76,6 +78,8 @@ const LabelID = () => {
                   taskID={task.task_id}
                   task={task}
                   getLabelsByTask={getLabelsByTask}
+                  index={index}
+                  lastIndex={arrayOfTasksNoTime.length - 1}
                 />
               </Link>
             ))}

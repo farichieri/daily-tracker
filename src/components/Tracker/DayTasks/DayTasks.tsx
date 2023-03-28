@@ -10,6 +10,7 @@ import AddTask from "@/components/TasksList/Tasks/AddTask";
 import Link from "next/link";
 import Progressbar from "@/components/Layout/Progressbar/Progressbar";
 import TaskComponent from "@/components/TasksList/Tasks/Task/TaskComponent";
+import { differenceInHours } from "date-fns";
 
 const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   const router = useRouter();
@@ -69,32 +70,38 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
         progress={percentageDone || 0}
         height={10}
       />
-      <div className="h-full gap-2 overflow-hidden rounded-[0.5rem]">
-        <div className="flex h-full flex-col gap-4 overflow-y-auto px-1">
-          <div className="flex flex-col gap-1">
-            {tasksArrTimeState?.map((task) => (
-              <Link
-                href={`/app/tracker/${date}/task/${task.task_id}`}
-                key={task.task_id}
-              >
-                <TaskComponent
-                  taskID={task.task_id}
-                  task={task}
-                  getLabelsByTask={getLabelsByTask}
-                />
-              </Link>
-            ))}
+      <div className="flex h-full gap-2 overflow-hidden rounded-[0.5rem]">
+        <div className="flex h-full w-full flex-col gap-4 overflow-y-auto px-1">
+          <div className="flex w-full">
+            <div className="flex h-full w-full flex-col">
+              {tasksArrTimeState?.map((task, index) => (
+                <Link
+                  href={`/app/tracker/${date}/task/${task.task_id}`}
+                  key={task.task_id}
+                >
+                  <TaskComponent
+                    index={index}
+                    taskID={task.task_id}
+                    task={task}
+                    getLabelsByTask={getLabelsByTask}
+                    lastIndex={tasksArrTimeState.length - 1}
+                  />
+                </Link>
+              ))}
+            </div>
           </div>
           <div className="flex flex-col gap-1">
-            {arrayOfTasksNoTime?.map((task) => (
+            {arrayOfTasksNoTime?.map((task, index) => (
               <Link
                 href={`/app/tracker/${date}/task/${task.task_id}`}
                 key={task.task_id}
               >
                 <TaskComponent
+                  index={index}
                   taskID={task.task_id}
                   task={task}
                   getLabelsByTask={getLabelsByTask}
+                  lastIndex={arrayOfTasksNoTime.length - 1}
                 />
               </Link>
             ))}

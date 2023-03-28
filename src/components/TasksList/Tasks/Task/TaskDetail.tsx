@@ -283,7 +283,7 @@ const TaskID = ({
             minRows={2}
             name="description"
             value={taskState.description}
-            placeholder="Add a description"
+            placeholder="Add a note"
             onChange={handleChange}
             spellCheck="false"
             autoComplete="off"
@@ -294,10 +294,12 @@ const TaskID = ({
               display: "flex",
               background: "transparent",
               color: "var(--text-color)",
-              border: "none",
               width: "100%",
               resize: "none",
               userSelect: "all",
+              border: "1px solid gray",
+              borderRadius: "6px",
+              padding: ".25rem",
             }}
           />
         </div>

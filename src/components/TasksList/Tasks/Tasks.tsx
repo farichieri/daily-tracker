@@ -83,7 +83,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
             aria-labelledby="headingOne5"
           >
             <div className="flex flex-col gap-2 py-2 px-2">
-              {pendingTasks?.map((task) => (
+              {pendingTasks?.map((task, index) => (
                 <Link
                   href={`/app/lists/${listID}/task/${task.task_id}`}
                   key={task.task_id}
@@ -92,6 +92,8 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
                     taskID={task.task_id}
                     task={task}
                     getLabelsByTask={getLabelsByTask}
+                    index={index}
+                    lastIndex={pendingTasks.length - 1}
                   />
                 </Link>
               ))}
@@ -136,7 +138,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
           >
             <div className="flex flex-col gap-2 py-2 px-2">
               {showDoneTasks &&
-                doneTasks?.map((task) => (
+                doneTasks?.map((task, index) => (
                   <Link
                     href={`/app/lists/${listID}/task/${task.task_id}`}
                     key={task.task_id}
@@ -145,6 +147,8 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
                       taskID={task.task_id}
                       task={task}
                       getLabelsByTask={getLabelsByTask}
+                      index={index}
+                      lastIndex={doneTasks.length - 1}
                     />
                   </Link>
                 ))}

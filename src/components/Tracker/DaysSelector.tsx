@@ -3,17 +3,17 @@ import {
   selectTrackerSlice,
   selectWeekSelected,
 } from "store/slices/trackerSlice";
+import { useSelector } from "react-redux";
 import { dbFormatDate } from "@/utils/formatDate";
 import { parseISO } from "date-fns";
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 
 const DaysSelector = () => {
-  const { today } = useSelector(selectTrackerSlice);
   const router = useRouter();
   const { date } = router.query;
+  const { today } = useSelector(selectTrackerSlice);
   const daySelected = useSelector(selectDaySelected);
   const weekSelected = useSelector(selectWeekSelected);
 
