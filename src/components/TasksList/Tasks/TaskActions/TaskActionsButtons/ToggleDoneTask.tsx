@@ -19,6 +19,7 @@ const ToggleDoneTask = ({ task }: { task: Task }) => {
   };
 
   const handleSave = async (taskUpdated: Task) => {
+    console.log({ taskUpdated });
     if (JSON.stringify(taskUpdated) !== JSON.stringify(task)) {
       if (!user) return;
       console.log("Saving DayTask");

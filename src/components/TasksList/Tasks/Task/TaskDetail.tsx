@@ -21,7 +21,7 @@ import TimeInput from "@/components/Layout/Input/TimeInput";
 import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
 
-const TaskID = ({
+const TaskDetail = ({
   task,
   redirectLink,
 }: {
@@ -36,6 +36,7 @@ const TaskID = ({
   const [isSaveable, setIsSaveable] = useState(false);
   const { tasks } = useSelector(selectTasks);
   const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
+  console.log({ subTasks });
   const sortedArray = Object.values(subTasks).sort((a, b) =>
     a.date_set.time_from.localeCompare(b.date_set.time_from)
   );
@@ -47,7 +48,7 @@ const TaskID = ({
   }, [tasks]);
   useEffect(() => {
     setTaskState(task);
-  }, [task, date, task]);
+  }, [task, date]);
 
   useEffect(() => {
     if (isSaveable) {
@@ -367,4 +368,4 @@ const TaskID = ({
   );
 };
 
-export default TaskID;
+export default TaskDetail;

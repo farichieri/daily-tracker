@@ -23,6 +23,10 @@ const Subtask = ({
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setSubTaskState(subTask);
+  }, [subTask]);
+
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
@@ -86,7 +90,7 @@ const Subtask = ({
       handleSave();
       setIsSaveable(false);
     }
-  }, [isSaveable]);
+  }, [isSaveable, subTask]);
 
   useEffect(() => {
     if (parentTask.done) {

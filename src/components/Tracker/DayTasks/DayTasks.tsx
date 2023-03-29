@@ -90,7 +90,7 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col">
             {arrayOfTasksNoTime?.map((task, index) => (
               <Link
                 href={`/app/tracker/${date}/task/${task.task_id}`}

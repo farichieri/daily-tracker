@@ -15,8 +15,9 @@ import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import IconButton from "@/components/Layout/Icon/IconButton";
 import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
 import ListButton from "./TaskActions/TaskActionsButtons/ListButton";
-import TimeInput from "@/components/Layout/Input/TimeInput";
 import PlannedSpentButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
+import TimeInput from "@/components/Layout/Input/TimeInput";
+import MakeRecurrent from "./TaskActions/TaskActionsButtons/MakeRecurrent";
 
 const AddTask = () => {
   const router = useRouter();
@@ -296,7 +297,6 @@ const AddTask = () => {
                   )}
                 </>
               )}
-
               <div className="labels">
                 <LabelsButton
                   onClick={(event) => {
@@ -313,6 +313,9 @@ const AddTask = () => {
                   }}
                   task={newTaskState}
                 />
+              </div>
+              <div className="recurring">
+                <MakeRecurrent />
               </div>
               <div className="add-button">
                 <IconButton

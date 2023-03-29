@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import Avatar from "../Avatar/Avatar";
-import ButtonAction from "../Layout/ButtonAction/ButtonAction";
 import Image from "next/image";
 import Link from "next/link";
 import ListCreate from "../ListCreate/ListCreate";
@@ -149,7 +148,17 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className="mt-auto">
+        <button className="mt-auto flex items-center gap-1 rounded-3xl border border-stone-500 bg-stone-900 py-1 px-2 text-sm text-white shadow shadow-stone-600 duration-300 hover:bg-stone-800 active:scale-105">
+          <Image
+            alt="edit-icon"
+            src={"/icons/star.png"}
+            width={18}
+            height={18}
+            style={{ pointerEvents: "none" }}
+          />
+          <span>Get Premium</span>
+        </button>
+        <div>
           <Avatar size={65} changeable={false} />
         </div>
       </div>
