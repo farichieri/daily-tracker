@@ -7,7 +7,6 @@ import { Task } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import IconButton from "@/components/Layout/Icon/IconButton";
-import PlannedSpentButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 
 const Subtask = ({
@@ -99,9 +98,7 @@ const Subtask = ({
     }
   }, [parentTask]);
 
-  const handleSeconds = (event: React.MouseEvent) => {
-    const seconds = (event.target as HTMLButtonElement).value;
-    const name = (event.target as HTMLButtonElement).name;
+  const handleSeconds = (name: string, seconds: number) => {
     setSubTaskState({
       ...subTaskState,
       [name]: seconds,
@@ -138,7 +135,7 @@ const Subtask = ({
         <TimeTrackingButton
           sumOfSpent={0}
           sumOfPlanned={0}
-          inTaskCompnent={true}
+          inTaskCompnent={inTaskCompnent}
           handleSeconds={handleSeconds}
           task={subTaskState}
         />

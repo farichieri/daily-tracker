@@ -182,8 +182,6 @@ const TaskID = ({
   };
 
   const handleSeconds = (name: string, seconds: number) => {
-    console.log({ name });
-    console.log({ seconds });
     setTaskState({
       ...taskState,
       [name]: seconds,

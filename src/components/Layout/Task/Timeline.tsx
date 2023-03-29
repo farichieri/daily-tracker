@@ -1,5 +1,6 @@
 import { Task } from "@/global/types";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectToday } from "store/slices/trackerSlice";
 
@@ -14,11 +15,23 @@ const Timeline = ({
 }) => {
   const time_from = task.date_set.time_from;
   const time_to = task.date_set.time_to;
-  const date = task.date_set.date_iso.slice(0, 10);
-  const today = useSelector(selectToday);
-  const currentTime = format(new Date(), "HH:MM");
   const completed = "bg-black";
   const incompleted = "bg-stone-300";
+  const date = task.date_set.date_iso.slice(0, 10);
+  const today = useSelector(selectToday);
+  const [time, setTime] = useState(new Date());
+
+  const refreshClock = () => {
+    setTime(new Date());
+  };
+  useEffect(() => {
+    const timerId = setInterval(refreshClock, 1000);
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+  const currentTime = format(time, "HH:mm");
 
   const getColor = (item: string) => {
     switch (item) {

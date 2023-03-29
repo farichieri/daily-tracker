@@ -16,7 +16,7 @@ const Loader = ({ fullScreen }: { text: string; fullScreen: boolean }) => {
           left: 0;
           bottom: 0;
           right: 0;
-          background: var(--bg-color);
+          background: black;
         }
         .loader {
           position: relative;

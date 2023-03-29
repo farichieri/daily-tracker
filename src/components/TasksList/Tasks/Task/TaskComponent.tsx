@@ -52,12 +52,12 @@ const TaskComponent = ({
     <div className="flex">
       <Timeline index={index} lastIndex={lastIndex} task={task} />
       <div
-        className={`my-0.5 w-full rounded-md border border-[var(--box-shadow-light)] hover:shadow-sm hover:shadow-zinc-800 ${
+        className={`my-0.5 w-full rounded-md border border-[var(--box-shadow-light)] text-black shadow-sm transition-all duration-300 hover:opacity-100 hover:shadow-sm hover:shadow-zinc-800 dark:text-zinc-300 dark:hover:shadow-stone-400 ${
           task.done
-            ? "bg-[var(--done)] hover:shadow-sm"
+            ? "bg-green-200 hover:shadow-sm dark:bg-green-900"
             : task.working_on
-            ? "bg-[#57571f] hover:border-[#a0a027]"
-            : "bg-stone-800"
+            ? "border-[#a0a027] bg-[#ffff0038]"
+            : "bg-stone-200 dark:bg-stone-700"
         } `}
       >
         <div
@@ -90,11 +90,11 @@ const TaskComponent = ({
               )}
             </div>
 
-            <div className="flex h-full w-full flex-col">
+            <div className="flex h-full w-full flex-col ">
               <div className="flex">
                 <span
                   className={`my-auto flex font-medium  ${
-                    task.done ? " text-[var(--box-shadow)] line-through" : ""
+                    task.done ? "line-through opacity-50" : ""
                   }`}
                 >
                   {task.content}

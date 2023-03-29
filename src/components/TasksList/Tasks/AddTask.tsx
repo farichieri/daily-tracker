@@ -148,10 +148,7 @@ const AddTask = () => {
   const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
   const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
 
-  const handleSeconds = (event: React.MouseEvent) => {
-    event.preventDefault();
-    const seconds = (event.target as HTMLButtonElement).value;
-    const name = (event.target as HTMLButtonElement).name;
+  const handleSeconds = (name: string, seconds: number) => {
     setNewTaskState({
       ...newTaskState,
       [name]: seconds,
@@ -174,12 +171,16 @@ const AddTask = () => {
         </div>
       ) : (
         <form className="new-task" onSubmit={handleAdd}>
-          <button
-            className="absolute top-0 right-0 m-1 "
-            onClick={(e) => setOpenAddTask(false)}
-          >
-            x
-          </button>
+          <div className="absolute top-1 right-1 m-1 scale-90 rounded-full duration-300 hover:scale-100">
+            <IconButton
+              props={{}}
+              onClick={(e) => setOpenAddTask(false)}
+              src={"/icons/delete.png"}
+              alt="Delete-Icon"
+              width={20}
+              height={20}
+            />
+          </div>
           {openAssignLabel && (
             <AssignLabel
               closeModalOnClick={closeModalOnClick}

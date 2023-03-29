@@ -24,7 +24,6 @@ const style = css.global`
 
   *::-webkit-scrollbar-thumb {
     background-color: rgb(61, 61, 61);
-    border-radius: 5px;
   }
 `;
 

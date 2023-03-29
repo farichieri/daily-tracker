@@ -3,6 +3,7 @@ import { Task } from "@/global/types";
 import { useState } from "react";
 import IconButton from "@/components/Layout/Icon/IconButton";
 import { TIMES_OPTIONS } from "@/utils/constants";
+import TimeField from "react-simple-timefield";
 
 const TimeTrackingButton = ({
   handleSeconds,
@@ -22,7 +23,7 @@ const TimeTrackingButton = ({
 
   if (sumOfPlanned > 0 || sumOfSpent > 0) {
     return (
-      <div className="flex w-14 min-w-min items-center gap-0.5 rounded-md bg-gray-800  px-0.5 py-0 text-[8px] text-gray-400">
+      <div className="flex w-16 min-w-min items-center justify-center gap-0.5 rounded-md bg-gray-800  px-1 py-0 text-[8px] text-gray-400">
         <div className="flex min-w-fit">
           {sumOfSpent > 0 ? formatTime(sumOfSpent) : "--:--"}
         </div>
@@ -57,7 +58,7 @@ const TimeTrackingButton = ({
         Number(task.seconds_spent) < 1 &&
         !inTaskCompnent ? (
           <IconButton
-            onClick={(e) => {
+            onClick={(e: any) => {
               e.preventDefault();
               setOpenPlanned(!openPlanned);
             }}
@@ -70,7 +71,7 @@ const TimeTrackingButton = ({
         ) : (
           (Number(task.seconds_planned) > 0 ||
             Number(task.seconds_spent) > 0) && (
-            <div className="flex w-fit min-w-fit items-center gap-0.5 rounded-md border border-gray-800 px-0.5 text-[8px] text-gray-400">
+            <div className="flex w-16 min-w-min items-center justify-center gap-0.5 rounded-md bg-gray-600 px-1 py-0 text-[8px] text-gray-400">
               <div
                 className="flex min-w-fit cursor-pointer"
                 onClick={(e) => {
@@ -120,8 +121,6 @@ const TimeModal = ({
   const inputFormatted = formatTime(Number(timeState)) || "00:00";
   const [showOptions, setShowOptions] = useState(true);
 
-  console.log({ timeState });
-
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
     const value = (event.target as HTMLButtonElement).value;
@@ -141,14 +140,24 @@ const TimeModal = ({
         className="pointer-events-auto fixed inset-0 h-screen w-screen"
         onClick={handleSave}
       ></div>
-      <div className="h-fit absolute -top-32 right-1 flex max-h-40 w-full min-w-max flex-row rounded-md bg-gray-800 px-0 py-0.5 text-sm opacity-100">
+      <div className="h-fit absolute -top-36 right-1 flex max-h-36 w-full min-w-max flex-row rounded-md bg-gray-800 px-0 py-0.5 text-sm opacity-100">
         <div className=" flex w-full min-w-fit flex-col items-center">
-          <span>{displayName}</span>
-          <input
-            type="time"
-            className="h-fit flex min-h-6 w-full border-y border-stone-600 bg-transparent px-2"
+          <span className="">{displayName}</span>
+          <TimeField
             value={inputFormatted}
             onChange={handleChange}
+            style={{
+              fontSize: 12,
+              padding: "2px 4px",
+              background: "transparent",
+              borderTop: "1px solid var(--box-shadow)",
+              borderBottom: "1px solid var(--box-shadow)",
+              minWidth: "-webkit-fill-available",
+              margin: "5px 0",
+              justifyContent: "center",
+              dispaly: "flex",
+              textAlign: "center",
+            }}
           />
           {showOptions && (
             <div className="flex w-full flex-col overflow-auto py-1 px-2">
@@ -169,7 +178,7 @@ const TimeModal = ({
               ))}
             </div>
           )}
-          <div className="flex border-t border-t-stone-500">
+          <div className="flex w-full justify-center border-t border-t-stone-500">
             {timeState > 0 && (
               <button
                 className="flex justify-center p-1"
