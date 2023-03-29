@@ -103,8 +103,8 @@ export const getParentTaskSeconds = (subTasks: TaskGroup, task: Task) => {
   };
   const subtasksSpent = calculateTaskSeconds("seconds_spent");
   const subtasksPlanned = calculateTaskSeconds("seconds_planned");
-  const secondsSpent = subtasksSpent || task.seconds_spent;
-  const secondsPlanned = subtasksPlanned || task.seconds_planned;
+  const secondsSpent = subtasksSpent || 0;
+  const secondsPlanned = subtasksPlanned || 0;
 
   return {
     seconds_spent: secondsSpent,

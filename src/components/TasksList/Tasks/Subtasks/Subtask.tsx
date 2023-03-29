@@ -7,7 +7,8 @@ import { Task } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import IconButton from "@/components/Layout/Icon/IconButton";
-import PlannedSpentButton from "../TaskActions/TaskActionsButtons/PlannedSpentButton";
+import PlannedSpentButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
+import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 
 const Subtask = ({
   subTask,
@@ -134,10 +135,12 @@ const Subtask = ({
         onBlur={handleBlur}
       />
       <div className="ml-auto flex min-w-fit">
-        <PlannedSpentButton
+        <TimeTrackingButton
+          sumOfSpent={0}
+          sumOfPlanned={0}
+          inTaskCompnent={true}
           handleSeconds={handleSeconds}
           task={subTaskState}
-          inTaskCompnent={inTaskCompnent}
         />
       </div>
       {subTaskState.done && !inTaskCompnent && (

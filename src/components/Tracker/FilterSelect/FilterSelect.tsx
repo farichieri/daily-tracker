@@ -20,7 +20,7 @@ const FilterSelect = () => {
     }
   };
 
-  const dateToShow = format(parseISO(String(date)), "LLLL u"); // April 2023
+  const dateToShow = date ? format(parseISO(String(date)), "LLLL u") : ""; // April 2023
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (

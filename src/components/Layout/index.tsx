@@ -37,7 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <title>Improve.me</title>
       </Head>
       <div
-        className={`${fonts.raleWay.className} flex flex-col bg-gradient-to-b from-slate-100 via-slate-50 to-white text-black dark:from-stone-800 dark:via-stone-800 dark:to-black dark:text-white`}
+        className={`${fonts.raleWay.className} flex flex-col bg-gradient-to-b from-slate-100 via-slate-50 to-white text-black dark:from-stone-800 dark:via-stone-900 dark:to-stone-900 dark:text-white`}
       >
         <main className="">{children}</main>
       </div>

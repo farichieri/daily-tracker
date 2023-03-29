@@ -16,8 +16,7 @@ import IconButton from "@/components/Layout/Icon/IconButton";
 import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
 import ListButton from "./TaskActions/TaskActionsButtons/ListButton";
 import TimeInput from "@/components/Layout/Input/TimeInput";
-import PlannedSpentButton from "./TaskActions/TaskActionsButtons/PlannedSpentButton";
-import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
+import PlannedSpentButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
 
 const AddTask = () => {
   const router = useRouter();
@@ -228,6 +227,8 @@ const AddTask = () => {
                   handleSeconds={handleSeconds}
                   inTaskCompnent={false}
                   task={newTaskState}
+                  sumOfPlanned={0}
+                  sumOfSpent={0}
                 />
               </div>
             </div>

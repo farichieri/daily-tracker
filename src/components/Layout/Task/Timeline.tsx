@@ -17,6 +17,8 @@ const Timeline = ({
   const date = task.date_set.date_iso.slice(0, 10);
   const today = useSelector(selectToday);
   const currentTime = format(new Date(), "HH:MM");
+  const completed = "bg-black";
+  const incompleted = "bg-stone-300";
 
   const getColor = (item: string) => {
     switch (item) {
@@ -24,25 +26,25 @@ const Timeline = ({
         if (index === 0) {
           return "bg-transparent";
         } else if (date < today) {
-          return "bg-black";
+          return completed;
         } else if (date > today) {
-          return "bg-stone-300";
+          return incompleted;
         } else if (currentTime > time_from) {
-          return "bg-black";
+          return completed;
         } else {
-          return "bg-stone-300";
+          return incompleted;
         }
       case "bottom":
         if (index === lastIndex) {
           return "bg-transparent";
         } else if (date < today) {
-          return "bg-black";
+          return completed;
         } else if (date > today) {
-          return "bg-stone-300";
+          return incompleted;
         } else if (currentTime > time_from && currentTime > time_to) {
-          return "bg-black";
+          return completed;
         } else {
-          return "bg-stone-300";
+          return incompleted;
         }
       default:
         break;
@@ -81,7 +83,7 @@ const Timeline = ({
           <div className="ml-1 flex h-full w-full flex-col items-center justify-center">
             <div className={`flex h-full w-0.5 ${getColor("top")}`}></div>
             <div
-              className={`flex h-3 min-h-3 w-3 flex-col rounded-full bg-transparent`}
+              className={`flex h-3.5 min-h-3.5 w-3.5 flex-col rounded-full bg-transparent`}
             >
               {getCircle()}
             </div>

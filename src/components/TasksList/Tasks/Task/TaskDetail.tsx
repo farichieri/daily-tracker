@@ -18,8 +18,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import Subtasks from "@/components/TasksList/Tasks/Subtasks/Subtasks";
 import TaskActions from "@/components/TasksList/Tasks/TaskActions/TaskActions";
 import TimeInput from "@/components/Layout/Input/TimeInput";
-import PlannedSpentButton from "../TaskActions/TaskActionsButtons/PlannedSpentButton";
-import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
+import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
 
 const TaskID = ({
@@ -182,10 +181,9 @@ const TaskID = ({
     setIsSaveable(true);
   };
 
-  const handleSeconds = (event: React.MouseEvent) => {
-    event.preventDefault();
-    const seconds = (event.target as HTMLButtonElement).value;
-    const name = (event.target as HTMLButtonElement).name;
+  const handleSeconds = (name: string, seconds: number) => {
+    console.log({ name });
+    console.log({ seconds });
     setTaskState({
       ...taskState,
       [name]: seconds,
@@ -250,18 +248,13 @@ const TaskID = ({
             </>
           )}
           <div className="ml-auto flex">
-            {subtasksState.length > 0 ? (
-              <SpentAndPlanned
-                secondsSpent={secondsSpent.seconds_spent}
-                secondsPlanned={secondsSpent.seconds_planned}
-              />
-            ) : (
-              <PlannedSpentButton
-                inTaskCompnent={false}
-                handleSeconds={handleSeconds}
-                task={taskState}
-              />
-            )}
+            <TimeTrackingButton
+              sumOfSpent={secondsSpent.seconds_spent}
+              sumOfPlanned={secondsSpent.seconds_planned}
+              inTaskCompnent={false}
+              handleSeconds={handleSeconds}
+              task={taskState}
+            />
           </div>
         </div>
         <div className="task-content">

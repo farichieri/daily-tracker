@@ -8,10 +8,10 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
-import SpentAndPlanned from "@/components/Layout/Task/SpentAndPlanned";
 import Subtasks from "../Subtasks/Subtasks";
-import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
 import Timeline from "@/components/Layout/Task/Timeline";
+import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
+import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 
 const TaskComponent = ({
   taskID,
@@ -110,9 +110,12 @@ const TaskComponent = ({
                   )}
                 </div>
                 <div className="ml-auto flex cursor-pointer">
-                  <SpentAndPlanned
-                    secondsSpent={secondsSpent.seconds_spent}
-                    secondsPlanned={secondsSpent.seconds_planned}
+                  <TimeTrackingButton
+                    inTaskCompnent={true}
+                    sumOfSpent={secondsSpent.seconds_spent}
+                    sumOfPlanned={secondsSpent.seconds_planned}
+                    task={task}
+                    handleSeconds={() => {}}
                   />
                 </div>
               </div>

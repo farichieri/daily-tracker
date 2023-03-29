@@ -30,7 +30,7 @@
     /* Tooltip */
     --tooltip-text-color: gray;
     --tooltip-background-color: #00000080;
-    --progress-done: #01bf01;
+    --progress-done: #008c00;
   }
   :root {
     --text-color: black;
