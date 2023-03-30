@@ -2,7 +2,7 @@ import { Task } from "@/global/types";
 import { format, parseISO } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectToday } from "store/slices/trackerSlice";
+import { selectToday, selectTrackerView } from "store/slices/trackerSlice";
 
 const Timeline = ({
   index,
@@ -20,6 +20,7 @@ const Timeline = ({
   const date = task.date_set.date_iso.slice(0, 10);
   const today = useSelector(selectToday);
   const [time, setTime] = useState(new Date());
+  const trackerView = useSelector(selectTrackerView);
 
   const refreshClock = () => {
     setTime(new Date());
@@ -84,7 +85,11 @@ const Timeline = ({
   return (
     <>
       {(time_from || time_to) && (
-        <div className="mr-4 flex w-16 gap-1 text-[8px] sm:text-[10px]">
+        <div
+          className={`mr-4 ${
+            trackerView === "week" && "mr-1.5 text-[6px] sm:text-[8px]"
+          } flex w-16 gap-1 text-[8px] sm:text-[10px]`}
+        >
           <div className="flex w-[2rem] min-w-[2rem] max-w-[2rem] flex-col items-center justify-center gap-0 leading-[0.7]">
             {time_from && <div className="time_from">{time_from}</div>}
             {time_to && (

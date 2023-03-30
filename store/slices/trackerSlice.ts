@@ -1,9 +1,9 @@
-import { DayData, Project, Task } from '@/global/types';
-import { getDaysInAWeek } from '@/hooks/dates';
-import { dbFormatDate } from '@/utils/formatDate';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { parseISO } from 'date-fns';
-import type { RootState } from '../store';
+import { DayData, Project, Task } from "@/global/types";
+import { getDaysInAWeek } from "@/hooks/dates";
+import { dbFormatDate } from "@/utils/formatDate";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { parseISO } from "date-fns";
+import type { RootState } from "../store";
 
 // Define a type for the slice state
 interface TrackerSlice {
@@ -15,12 +15,14 @@ interface TrackerSlice {
   projectSelected: Project;
   projectEdit: Project;
   today: string;
+  trackerView: string;
+  showNoTimeTasks: boolean;
 }
 
 // Define the initial state using that type
 const initialState: TrackerSlice = {
   dayData: {
-    day_date: '',
+    day_date: "",
     day_goals: [],
     day_tasks: {},
   },
@@ -34,8 +36,8 @@ const initialState: TrackerSlice = {
     is_favorite: false,
     is_private: false,
     labels: [],
-    project_id: '',
-    project_name: '',
+    project_id: "",
+    project_name: "",
     members: [],
   },
   projectEdit: {
@@ -44,15 +46,17 @@ const initialState: TrackerSlice = {
     is_favorite: false,
     is_private: false,
     labels: [],
-    project_id: '',
-    project_name: '',
+    project_id: "",
+    project_name: "",
     members: [],
   },
   today: dbFormatDate(new Date()),
+  trackerView: "day",
+  showNoTimeTasks: true,
 };
 
 export const trackerSlice = createSlice({
-  name: 'tracker',
+  name: "tracker",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
@@ -62,7 +66,7 @@ export const trackerSlice = createSlice({
     },
     setCleanDayData: (state) => {
       state.dayData = {
-        day_date: '',
+        day_date: "",
         day_goals: [],
         day_tasks: {},
       };
@@ -111,6 +115,12 @@ export const trackerSlice = createSlice({
     setDeleteDayTask: (state, action: PayloadAction<string>) => {
       delete state.dayData.day_tasks[action.payload];
     },
+    setTrackerView: (state, action: PayloadAction<string>) => {
+      state.trackerView = action.payload;
+    },
+    setShowNoTimeTasks: (state, action: PayloadAction<boolean>) => {
+      state.showNoTimeTasks = action.payload;
+    },
   },
 });
 
@@ -126,6 +136,8 @@ export const {
   setCleanDayData,
   setUpdateDayTask,
   setDeleteDayTask,
+  setTrackerView,
+  setShowNoTimeTasks,
 } = trackerSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -141,5 +153,9 @@ export const selectProjectSelected = (state: RootState) =>
 export const selectProjectEdit = (state: RootState) =>
   state.tracker.projectEdit;
 export const selectToday = (state: RootState) => state.tracker.today;
+export const selectTrackerView = (state: RootState) =>
+  state.tracker.trackerView;
+export const selectShowNoTimeTasks = (state: RootState) =>
+  state.tracker.showNoTimeTasks;
 
 export default trackerSlice.reducer;

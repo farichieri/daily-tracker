@@ -10,13 +10,14 @@ import AddTask from "@/components/TasksList/Tasks/AddTask";
 import Link from "next/link";
 import Progressbar from "@/components/Layout/Progressbar/Progressbar";
 import TaskComponent from "@/components/TasksList/Tasks/Task/TaskComponent";
-import { differenceInHours } from "date-fns";
+import { selectShowNoTimeTasks } from "store/slices/trackerSlice";
 
 const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   const router = useRouter();
   const { tasks } = useSelector(selectTasks);
   const { labels } = useSelector(selectLabels);
   const { date } = router.query;
+  const showNoTimeTasks = useSelector(selectShowNoTimeTasks);
 
   const getPrecentage = () => {
     const tasksAndSubtasks = { ...tasksFiltered };
@@ -64,14 +65,16 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
   };
 
   return (
-    <section className="relative flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden">
-      <Progressbar
-        bgcolor="#99ccff"
-        progress={percentageDone || 0}
-        height={10}
-      />
-      <div className="shadowmd flex h-full gap-2 overflow-hidden rounded-[1rem] ">
-        <div className="flex h-full w-full flex-col gap-4 overflow-y-auto px-1">
+    <section className="relative m-auto flex h-full w-full min-w-min max-w-[var(--max-width-content)] flex-col gap-2 overflow-y-auto overflow-x-hidden">
+      <div className="m-x-auto flex px-1">
+        <Progressbar
+          bgcolor="#99ccff"
+          progress={percentageDone || 0}
+          height={10}
+        />
+      </div>
+      <div className="flex h-full w-full gap-2 overflow-hidden rounded-[1rem] ">
+        <div className="flex h-full w-full flex-col gap-4 overflow-y-auto px-1 ">
           <div className="flex w-full">
             <div className="flex h-full w-full flex-col">
               {tasksArrTimeState?.map((task, index) => (
@@ -90,25 +93,27 @@ const DayTasks = ({ tasksFiltered }: { tasksFiltered: TaskGroup }) => {
               ))}
             </div>
           </div>
-          <div className="flex flex-col">
-            {arrayOfTasksNoTime?.map((task, index) => (
-              <Link
-                href={`/app/tracker/${date}/task/${task.task_id}`}
-                key={task.task_id}
-              >
-                <TaskComponent
-                  index={index}
-                  taskID={task.task_id}
-                  task={task}
-                  getLabelsByTask={getLabelsByTask}
-                  lastIndex={arrayOfTasksNoTime.length - 1}
-                />
-              </Link>
-            ))}
-          </div>
+          {showNoTimeTasks && (
+            <div className="flex w-full flex-col">
+              {arrayOfTasksNoTime?.map((task, index) => (
+                <Link
+                  href={`/app/tracker/${date}/task/${task.task_id}`}
+                  key={task.task_id}
+                >
+                  <TaskComponent
+                    index={index}
+                    taskID={task.task_id}
+                    task={task}
+                    getLabelsByTask={getLabelsByTask}
+                    lastIndex={arrayOfTasksNoTime.length - 1}
+                  />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-      <AddTask />
+      {/* <AddTask /> */}
     </section>
   );
 };

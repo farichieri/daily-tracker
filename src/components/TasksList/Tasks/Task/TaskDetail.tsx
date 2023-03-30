@@ -213,13 +213,13 @@ const TaskDetail = ({
                 <DayPickerC
                   open={openDateSelector}
                   setOpen={setOpenDateSelector}
-                  withModal={true}
+                  withModal={false}
                   dateSelected={dateSelected}
                   handleDateSelected={handleDateSelected}
                   dateToShow={dateDisplayed}
                   removeDate={removeDate}
                   setWantToAddDate={setWantToAddDate}
-                  addTask={false}
+                  addTask={true}
                 />
               )}
             </div>

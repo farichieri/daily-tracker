@@ -15,7 +15,7 @@ import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import IconButton from "@/components/Layout/Icon/IconButton";
 import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
 import ListButton from "./TaskActions/TaskActionsButtons/ListButton";
-import PlannedSpentButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
+import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import MakeRecurrent from "./TaskActions/TaskActionsButtons/MakeRecurrent";
 
@@ -29,6 +29,7 @@ const AddTask = () => {
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignList, setOpenAssignList] = useState(false);
   const [openAddTask, setOpenAddTask] = useState(false);
+  const [openRecurrent, setOpenRecurrent] = useState(false);
 
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -165,7 +166,7 @@ const AddTask = () => {
   }, [listID]);
 
   return (
-    <div className="container">
+    <div className="flex w-full justify-center">
       {!openAddTask ? (
         <div>
           <button onClick={(e) => setOpenAddTask(true)}>Add Task</button>
@@ -174,8 +175,11 @@ const AddTask = () => {
         <form className="new-task" onSubmit={handleAdd}>
           <div className="absolute top-1 right-1 m-1 scale-90 rounded-full duration-300 hover:scale-100">
             <IconButton
-              props={{}}
-              onClick={(e) => setOpenAddTask(false)}
+              props={{ type: "button" }}
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenAddTask(false);
+              }}
               src={"/icons/delete.png"}
               alt="Delete-Icon"
               width={20}
@@ -210,6 +214,12 @@ const AddTask = () => {
                     onChange={handleChange}
                     spellCheck="false"
                     autoComplete="off"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAdd(e);
+                      }
+                    }}
                   />
                 </div>
                 <div className="row">
@@ -221,11 +231,17 @@ const AddTask = () => {
                     onChange={handleChange}
                     spellCheck="false"
                     autoComplete="off"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAdd(e);
+                      }
+                    }}
                   />
                 </div>
               </div>
               <div className="flex w-fit min-w-fit flex-col pr-10">
-                <PlannedSpentButton
+                <TimeTrackingButton
                   handleSeconds={handleSeconds}
                   inTaskCompnent={false}
                   task={newTaskState}
@@ -319,7 +335,7 @@ const AddTask = () => {
               </div>
               <div className="add-button">
                 <IconButton
-                  props={null}
+                  props={{ type: "submit" }}
                   onClick={handleAdd}
                   src={"/icons/add.png"}
                   alt="Add-Icon"
@@ -333,13 +349,6 @@ const AddTask = () => {
       )}
 
       <style jsx>{`
-        .container {
-          display: flex;
-          width: 100%;
-          min-width: 100%;
-          justify-content: center;
-          margin: auto;
-        }
         .new-task {
           border: 1px solid var(--box-shadow-light);
           border-radius: 1rem;

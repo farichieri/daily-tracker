@@ -12,6 +12,7 @@ import Subtasks from "../Subtasks/Subtasks";
 import Timeline from "@/components/Layout/Task/Timeline";
 import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
 import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
+import { selectToday, selectTrackerView } from "store/slices/trackerSlice";
 
 const TaskComponent = ({
   taskID,
@@ -29,11 +30,13 @@ const TaskComponent = ({
   const router = useRouter();
   const projects = useSelector(selectLists);
   const { listID } = router.query;
+  const today = useSelector(selectToday);
 
   const iso = task.date_set.date_iso;
   const isoDisplay = iso && format(parseISO(iso), "MM-dd-yyyy");
   const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
   const dateDisplayed = isoDisplay === todayDisplay ? "Today" : isoDisplay;
+  const trackerView = useSelector(selectTrackerView);
 
   const { tasks } = useSelector(selectTasks);
   const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
@@ -41,6 +44,8 @@ const TaskComponent = ({
     a.date_set.time_from.localeCompare(b.date_set.time_from)
   );
   const [subtasks, setSubtasks] = useState<TasksArray>(sortedArray);
+  const dateFormatted = task.date_set.date_iso.slice(0, 10);
+  const failedTask = dateFormatted < today && !task.done;
 
   const secondsSpent = getParentTaskSeconds(subTasks, task);
 
@@ -49,7 +54,11 @@ const TaskComponent = ({
   }, [tasks]);
 
   return (
-    <div className="flex">
+    <div
+      className={`flex ${
+        trackerView === "week" && "min-w-[70vw] md:min-w-full"
+      }`}
+    >
       <Timeline index={index} lastIndex={lastIndex} task={task} />
       <div
         className={`my-0.5 w-full rounded-md border border-[var(--box-shadow-light)] text-black shadow-sm transition-all duration-300 hover:opacity-100 hover:shadow-sm hover:shadow-zinc-800 dark:text-zinc-300 dark:hover:shadow-stone-400 ${
@@ -57,6 +66,8 @@ const TaskComponent = ({
             ? "bg-green-200 hover:shadow-sm dark:bg-green-900"
             : task.working_on
             ? "border-[#a0a027] bg-[#ffff0038]"
+            : failedTask
+            ? "bg-red-900"
             : "bg-stone-200 dark:bg-stone-700"
         } `}
       >
@@ -67,9 +78,7 @@ const TaskComponent = ({
           <div className="flex h-full min-w-fit flex-col items-start gap-2">
             {!router.pathname.includes("tracker") && task.date_set.date_iso && (
               <div className="pointer-events-auto min-w-fit rounded-sm border-[var(--box-shadow)] text-xs ">
-                <Link
-                  href={`/app/tracker/${task.date_set.date_iso.slice(0, 10)}`}
-                >
+                <Link href={`/app/tracker/${dateFormatted}`}>
                   <span
                     className={`rounded-md border border-[var(--box-shadow)] py-0.5 px-1 opacity-70 transition-all duration-300 hover:opacity-100 ${
                       dateDisplayed === "Today" ? "text-red-500" : ""
@@ -93,23 +102,23 @@ const TaskComponent = ({
             <div className="flex h-full w-full flex-col ">
               <div className="flex">
                 <span
-                  className={`my-auto flex font-medium  ${
+                  className={`my-auto flex font-medium ${
                     task.done ? "line-through opacity-50" : ""
                   }`}
                 >
                   {task.content}
                 </span>
-                <div className="translate ml-2 mr-2 flex items-center">
-                  {task.working_on && (
+                {task.working_on && (
+                  <div className="translate ml-2 mr-2 flex items-center">
                     <Image
                       src={"/icons/working.png"}
                       alt="working icon"
                       width={18}
                       height={18}
                     />
-                  )}
-                </div>
-                <div className="ml-auto flex cursor-pointer">
+                  </div>
+                )}
+                <div className="cursor-pointe ml-auto flex items-start ">
                   <TimeTrackingButton
                     inTaskCompnent={true}
                     sumOfSpent={secondsSpent.seconds_spent}
@@ -126,7 +135,7 @@ const TaskComponent = ({
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ">
               {getLabelsByTask(taskID)?.map(
                 (label: Label) =>
                   label && (
