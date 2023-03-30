@@ -9,7 +9,6 @@ import { setAddNewTask } from "store/slices/tasksSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/dist/client/router";
-import AssignLabel from "./TaskActions/TaskActionsModals/AssignLabel";
 import AssignList from "./TaskActions/TaskActionsModals/AssignList";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import IconButton from "@/components/Layout/Icon/IconButton";
@@ -18,6 +17,8 @@ import ListButton from "./TaskActions/TaskActionsButtons/ListButton";
 import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import MakeRecurrent from "./TaskActions/TaskActionsButtons/MakeRecurrent";
+import SelectEmoji from "./TaskActions/TaskActionsModals/SelectEmoji";
+import AssignLabel from "./TaskActions/TaskActionsModals/AssignLabel";
 
 const AddTask = ({ date }: { date: string }) => {
   const router = useRouter();
@@ -30,11 +31,24 @@ const AddTask = ({ date }: { date: string }) => {
   const [openAssignList, setOpenAssignList] = useState(false);
   const [openAddTask, setOpenAddTask] = useState(false);
   const [openRecurrent, setOpenRecurrent] = useState(false);
+  const [openEmojis, setOpenEmojis] = useState(false);
+  const [inputFocus, setInputFocus] = useState("content");
+
+  const addEmoji = (event: any) => {
+    const value = newTaskState[inputFocus] + " " + event.native;
+    setNewTaskState({
+      ...newTaskState,
+      [inputFocus]: value,
+    });
+  };
 
   const handleChange = (event: React.ChangeEvent) => {
-    event.preventDefault();
+    console.log({ event });
+    // event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
+    console.log(value);
+    console.log(name);
     setNewTaskState({
       ...newTaskState,
       [name]: value,
@@ -99,6 +113,7 @@ const AddTask = ({ date }: { date: string }) => {
   const closeModalOnClick = () => {
     setOpenAssignLabel(false);
     setOpenAssignList(false);
+    setOpenEmojis(false);
   };
 
   const handleChangeDates = (event: React.ChangeEvent) => {
@@ -166,7 +181,7 @@ const AddTask = ({ date }: { date: string }) => {
   }, [listID]);
 
   return (
-    <div className="flex w-full min-w-min justify-center text-xs">
+    <div className="flex w-full min-w-fit max-w-min justify-center text-xs">
       {!openAddTask ? (
         <div>
           <IconButton
@@ -209,15 +224,31 @@ const AddTask = ({ date }: { date: string }) => {
               handleChangeList={handleChangeList}
             />
           )}
+          {openEmojis && (
+            <SelectEmoji
+              closeModalOnClick={closeModalOnClick}
+              handleChange={addEmoji}
+            />
+          )}
           <div className="content-container">
             <div className="flex w-full">
               <div className="flex w-full flex-col">
                 <div className="row">
+                  <button
+                    className="cursor-pointer"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setOpenEmojis(true);
+                    }}
+                  >
+                    😃
+                  </button>
                   <input
                     type="text"
                     name="content"
                     placeholder="Add Task"
                     value={newTaskState.content}
+                    onFocus={() => setInputFocus("content")}
                     onChange={handleChange}
                     spellCheck="false"
                     autoComplete="off"
@@ -234,6 +265,7 @@ const AddTask = ({ date }: { date: string }) => {
                     type="text"
                     name="description"
                     placeholder="Description"
+                    onFocus={() => setInputFocus("description")}
                     value={newTaskState.description}
                     onChange={handleChange}
                     spellCheck="false"
@@ -271,7 +303,7 @@ const AddTask = ({ date }: { date: string }) => {
                 )}
               </div>
             </div>
-            <div className="row flex-wrap">
+            <div className="row max-w-fit flex-wrap ">
               {listID && (
                 <div className="day-picker">
                   {!wantToAddDate ? (
@@ -352,7 +384,6 @@ const AddTask = ({ date }: { date: string }) => {
           </div>
         </form>
       )}
-
       <style jsx>{`
         .new-task {
           border: 1px solid var(--box-shadow-light);

@@ -20,6 +20,7 @@ import TaskActions from "@/components/TasksList/Tasks/TaskActions/TaskActions";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
+import SelectEmoji from "../TaskActions/TaskActionsModals/SelectEmoji";
 
 const TaskDetail = ({
   task,
@@ -36,12 +37,13 @@ const TaskDetail = ({
   const [isSaveable, setIsSaveable] = useState(false);
   const { tasks } = useSelector(selectTasks);
   const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
-  console.log({ subTasks });
   const sortedArray = Object.values(subTasks).sort((a, b) =>
     a.date_set.time_from.localeCompare(b.date_set.time_from)
   );
   const [subtasksState, setSubtasksState] = useState<TasksArray>(sortedArray);
   const secondsSpent = getParentTaskSeconds(subTasks, task);
+  const [openEmojis, setOpenEmojis] = useState(false);
+  const [inputFocus, setInputFocus] = useState("content");
 
   useEffect(() => {
     setSubtasksState(sortedArray);
@@ -57,26 +59,22 @@ const TaskDetail = ({
     }
   }, [isSaveable]);
 
+  const addEmoji = (event: any) => {
+    const value = taskState[inputFocus] + " " + event.native;
+    setTaskState({
+      ...taskState,
+      [inputFocus]: value,
+    });
+  };
+
   const handleChange = (event: React.ChangeEvent) => {
     event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
-    const index: number = Number((event.target as HTMLButtonElement).id);
-    if (name === "subtask") {
-      const subtasks = [...taskState.subtasks];
-      const subTask = { ...subtasks[index] };
-      subTask.content = value;
-      subtasks[index] = subTask;
-      setTaskState({
-        ...taskState,
-        subtasks,
-      });
-    } else {
-      setTaskState({
-        ...taskState,
-        [name]: value,
-      });
-    }
+    setTaskState({
+      ...taskState,
+      [name]: value,
+    });
   };
 
   const handleChangeDates = (event: React.ChangeEvent) => {
@@ -126,7 +124,10 @@ const TaskDetail = ({
     await deleteDoc(docRef);
   };
 
-  const closeModalOnClick = () => {};
+  const closeModalOnClick = () => {
+    setOpenEmojis(false);
+    handleSave();
+  };
 
   const removeTime = (event: React.MouseEvent) => {
     const name: string = (event.target as HTMLButtonElement).name;
@@ -198,32 +199,31 @@ const TaskDetail = ({
         </button>
         <TaskActions />
         <div className="times">
-          {
-            <div className="day-picker">
-              {!wantToAddDate && !taskState.date_set.date_iso ? (
-                <button
-                  onClick={() => {
-                    setWantToAddDate(true);
-                    handleDateSelected(dateSelected);
-                  }}
-                >
-                  Set Due Date
-                </button>
-              ) : (
-                <DayPickerC
-                  open={openDateSelector}
-                  setOpen={setOpenDateSelector}
-                  withModal={false}
-                  dateSelected={dateSelected}
-                  handleDateSelected={handleDateSelected}
-                  dateToShow={dateDisplayed}
-                  removeDate={removeDate}
-                  setWantToAddDate={setWantToAddDate}
-                  addTask={true}
-                />
-              )}
-            </div>
-          }
+          <div className="day-picker">
+            {!wantToAddDate && !taskState.date_set.date_iso ? (
+              <button
+                onClick={() => {
+                  setWantToAddDate(true);
+                  handleDateSelected(dateSelected);
+                }}
+              >
+                Set Due Date
+              </button>
+            ) : (
+              <DayPickerC
+                open={openDateSelector}
+                setOpen={setOpenDateSelector}
+                withModal={false}
+                dateSelected={dateSelected}
+                handleDateSelected={handleDateSelected}
+                dateToShow={dateDisplayed}
+                removeDate={removeDate}
+                setWantToAddDate={setWantToAddDate}
+                addTask={true}
+              />
+            )}
+          </div>
+
           {(taskState.date_set.date_iso || !listID) && (
             <>
               <div className="time_from">
@@ -256,12 +256,28 @@ const TaskDetail = ({
             />
           </div>
         </div>
+        {openEmojis && (
+          <SelectEmoji
+            closeModalOnClick={closeModalOnClick}
+            handleChange={addEmoji}
+          />
+        )}
         <div className="task-content">
+          <button
+            className="flex w-min cursor-pointer"
+            onClick={(event) => {
+              event.preventDefault();
+              setOpenEmojis(true);
+            }}
+          >
+            😃
+          </button>
           <input
             type="text"
             name="content"
             value={taskState.content}
             onChange={handleChange}
+            onFocus={() => setInputFocus("content")}
             spellCheck="false"
             autoComplete="off"
             onBlur={handleSave}
@@ -273,6 +289,7 @@ const TaskDetail = ({
             minRows={2}
             name="description"
             value={taskState.description}
+            onFocus={() => setInputFocus("description")}
             placeholder="Add a note"
             onChange={handleChange}
             spellCheck="false"

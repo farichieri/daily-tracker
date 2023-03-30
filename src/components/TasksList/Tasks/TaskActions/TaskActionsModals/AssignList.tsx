@@ -1,15 +1,15 @@
-import Modal from '@/components/Modal/Modal';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import IconButton from '@/components/Layout/Icon/IconButton';
-import { selectUser } from 'store/slices/authSlice';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/utils/firebase.config';
-import { setUpdateTask } from 'store/slices/tasksSlice';
-import { ListGroup, Task } from '@/global/types';
-import { selectLists } from 'store/slices/listsSlice';
-import { filterListsNotArchived, filterObject } from '@/hooks/helpers';
+import { db } from "@/utils/firebase.config";
+import { doc, setDoc } from "firebase/firestore";
+import { filterListsNotArchived } from "@/hooks/helpers";
+import { ListGroup, Task } from "@/global/types";
+import { selectLists } from "store/slices/listsSlice";
+import { selectUser } from "store/slices/authSlice";
+import { setUpdateTask } from "store/slices/tasksSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import IconButton from "@/components/Layout/Icon/IconButton";
+import Modal from "@/components/Modal/Modal";
 
 const AssignList = ({
   closeModalOnClick,
@@ -42,9 +42,9 @@ const AssignList = ({
       closeModalOnClick();
     } else {
       if (!user) return;
-      console.log('Saving Lists in taskID');
+      console.log("Saving Lists in taskID");
       task.project_id = listSelected;
-      const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
+      const docRef = doc(db, "users", user.uid, "tasks", String(taskID));
       await setDoc(docRef, task);
       dispatch(setUpdateTask(task));
       closeModalOnClick();
@@ -52,15 +52,15 @@ const AssignList = ({
   };
 
   return (
-    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
-      <div className='assign-labels-container'>
-        <div className='title'>Asign Label</div>
-        <div className='labels-container'>
+    <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
+      <div className="assign-labels-container">
+        <div className="title">Asign Label</div>
+        <div className="labels-container">
           {Object.keys(listsNotArchived).map((list: string) => (
             <span
               key={list}
               id={list}
-              className='label'
+              className="label"
               onClick={handleToggleList}
             >
               <span>{listsNotArchived[list].list_name}</span>
@@ -70,11 +70,11 @@ const AssignList = ({
                   props={{ id: list }}
                   src={
                     listSelected.includes(list)
-                      ? '/icons/checkbox-done.png'
-                      : '/icons/checkbox.png'
+                      ? "/icons/checkbox-done.png"
+                      : "/icons/checkbox.png"
                   }
                   alt={
-                    listSelected.includes(list) ? 'Done-Icon' : 'Checkbox-Icon'
+                    listSelected.includes(list) ? "Done-Icon" : "Checkbox-Icon"
                   }
                   width={24}
                   height={24}
@@ -83,7 +83,7 @@ const AssignList = ({
             </span>
           ))}
         </div>
-        <div className='action-buttons'>
+        <div className="action-buttons">
           <button onClick={() => closeModalOnClick()}>Cancel</button>
           <button onClick={handleSave}>Accept</button>
         </div>

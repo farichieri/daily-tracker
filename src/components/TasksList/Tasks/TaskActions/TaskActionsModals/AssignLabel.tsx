@@ -1,14 +1,14 @@
-import Modal from '@/components/Modal/Modal';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectLabels } from 'store/slices/labelsSlice';
-import { useRouter } from 'next/router';
-import IconButton from '@/components/Layout/Icon/IconButton';
-import { selectUser } from 'store/slices/authSlice';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/utils/firebase.config';
-import { setUpdateTask } from 'store/slices/tasksSlice';
-import { Task } from '@/global/types';
+import { db } from "@/utils/firebase.config";
+import { doc, setDoc } from "firebase/firestore";
+import { selectLabels } from "store/slices/labelsSlice";
+import { selectUser } from "store/slices/authSlice";
+import { setUpdateTask } from "store/slices/tasksSlice";
+import { Task } from "@/global/types";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import IconButton from "@/components/Layout/Icon/IconButton";
+import Modal from "@/components/Modal/Modal";
 
 const AssignLabel = ({
   closeModalOnClick,
@@ -45,9 +45,9 @@ const AssignLabel = ({
       closeModalOnClick();
     } else {
       if (!user) return;
-      console.log('Saving Labels in taskID');
+      console.log("Saving Labels in taskID");
       task.labels = labelsSelected;
-      const docRef = doc(db, 'users', user.uid, 'tasks', String(taskID));
+      const docRef = doc(db, "users", user.uid, "tasks", String(taskID));
       await setDoc(docRef, task);
       dispatch(setUpdateTask(task));
       closeModalOnClick();
@@ -55,15 +55,15 @@ const AssignLabel = ({
   };
 
   return (
-    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
-      <div className='assign-labels-container'>
-        <div className='title'>Asign Label</div>
-        <div className='labels-container'>
+    <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
+      <div className="assign-labels-container">
+        <div className="title">Asign Label</div>
+        <div className="labels-container">
           {Object.keys(labels).map((label) => (
             <span
               key={label}
               id={label}
-              className='label'
+              className="label"
               style={{ background: `${labels[label].label_color}` }}
               onClick={handleToggleLabel}
             >
@@ -74,13 +74,13 @@ const AssignLabel = ({
                   props={{ id: label }}
                   src={
                     labelsSelected.includes(label)
-                      ? '/icons/checkbox-done.png'
-                      : '/icons/checkbox.png'
+                      ? "/icons/checkbox-done.png"
+                      : "/icons/checkbox.png"
                   }
                   alt={
                     labelsSelected.includes(label)
-                      ? 'Done-Icon'
-                      : 'Checkbox-Icon'
+                      ? "Done-Icon"
+                      : "Checkbox-Icon"
                   }
                   width={24}
                   height={24}
@@ -89,7 +89,7 @@ const AssignLabel = ({
             </span>
           ))}
         </div>
-        <div className='action-buttons'>
+        <div className="action-buttons">
           <button onClick={() => closeModalOnClick()}>Cancel</button>
           <button onClick={handleSave}>Accept</button>
         </div>

@@ -1,7 +1,6 @@
 import { selectTasks } from "store/slices/tasksSlice";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import Loader from "@/components/Layout/Loader/Loader";
 import TaskDetail from "@/components/TasksList/Tasks/Task/TaskDetail";
 import TasksLayout from "@/components/Layout/TasksLayout";
 
@@ -15,11 +14,7 @@ const TaskID = () => {
 
   return (
     <TasksLayout>
-      {!task ? (
-        <Loader fullScreen={true} text={""} />
-      ) : (
-        <TaskDetail task={task} redirectLink={redirectLink} />
-      )}
+      <TaskDetail task={task} redirectLink={redirectLink} />
     </TasksLayout>
   );
 };
