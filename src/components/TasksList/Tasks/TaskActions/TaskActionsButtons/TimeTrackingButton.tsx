@@ -1,8 +1,8 @@
 import { formatTime, hhmmToSeconds } from "@/utils/formatDate";
 import { Task } from "@/global/types";
+import { TIMES_OPTIONS } from "@/utils/constants";
 import { useState } from "react";
 import IconButton from "@/components/Layout/Icon/IconButton";
-import { TIMES_OPTIONS } from "@/utils/constants";
 import TimeField from "react-simple-timefield";
 
 const TimeTrackingButton = ({
@@ -23,7 +23,7 @@ const TimeTrackingButton = ({
 
   if (sumOfPlanned > 0 || sumOfSpent > 0) {
     return (
-      <div className="flex w-16 min-w-min items-center justify-center gap-0.5 rounded-md bg-gray-800  px-1 py-0 text-[8px] text-gray-400">
+      <div className="flex w-12 min-w-min items-center justify-center gap-0.5 rounded-md bg-gray-800 px-1 py-0 text-[8px] text-gray-400">
         <div className="flex min-w-fit">
           {sumOfSpent > 0 ? formatTime(sumOfSpent) : "--:--"}
         </div>
@@ -71,7 +71,7 @@ const TimeTrackingButton = ({
         ) : (
           (Number(task.seconds_planned) > 0 ||
             Number(task.seconds_spent) > 0) && (
-            <div className="flex w-16 min-w-min items-center justify-center gap-0.5 rounded-md bg-gray-600 px-1 py-0 text-[8px] text-gray-400">
+            <div className="flex w-12 min-w-min items-center justify-center gap-0.5 rounded-md bg-gray-700 px-1 py-0 text-[8px] text-gray-400">
               <div
                 className="flex min-w-fit cursor-pointer"
                 onClick={(e) => {

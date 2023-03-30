@@ -149,3 +149,13 @@ export interface GoalGroup {
 
 export interface TasksArray extends Array<Task> {}
 export interface GoalsArray extends Array<Goal> {}
+
+export interface Day {
+  date: string;
+  numberOfMonth: string;
+  weekDay: string;
+}
+
+export interface Week extends Array<Day> {
+  [index: number]: Day;
+}

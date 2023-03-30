@@ -9,7 +9,7 @@ import {
   toggleSidebar,
 } from "store/slices/layoutSlice";
 import { selectUser } from "store/slices/authSlice";
-import { setProjects } from "store/slices/trackerSlice";
+import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
 import {
   getProjects,
   getLists,
@@ -40,6 +40,7 @@ export default function PremiumLayout({
   const { isDataFetched } = useSelector(selectGlobalState);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
   const sidebarOpen = useSelector(selectSidebarState);
+  const trackerView = useSelector(selectTrackerView);
 
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
@@ -113,8 +114,12 @@ export default function PremiumLayout({
       )}
       <div
         className={`duratin-300 flex h-full w-full flex-col items-center px-2 transition-all ease-linear ${
-          sidebarOpen && "sm:pl-48 "
-        } xl:pl-0`}
+          sidebarOpen && "sm:pl-[10.5rem] "
+        } ${
+          router.pathname.includes("tracker") && trackerView === "week"
+            ? "3xl:pl-0"
+            : "xl:pl-0"
+        }`}
       >
         {children}
       </div>

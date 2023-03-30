@@ -1,5 +1,5 @@
 const MakeRecurrent = () => {
-  return <div>Make Recurrent</div>;
+  return <div>Recurrent</div>;
 };
 
 export default MakeRecurrent;

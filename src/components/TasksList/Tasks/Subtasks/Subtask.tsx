@@ -135,7 +135,7 @@ const Subtask = ({
         autoComplete="off"
         onBlur={handleBlur}
       />
-      <div className="ml-auto ">
+      <div className="ml-auto">
         <TimeTrackingButton
           sumOfSpent={0}
           sumOfPlanned={0}

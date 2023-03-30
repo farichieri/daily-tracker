@@ -1,4 +1,4 @@
-import { DayData, Project, Task } from "@/global/types";
+import { DayData, Project, Task, Week } from "@/global/types";
 import { getDaysInAWeek } from "@/hooks/dates";
 import { dbFormatDate } from "@/utils/formatDate";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -10,7 +10,7 @@ interface TrackerSlice {
   dayData: DayData;
   isLoadingData: boolean;
   daySelected: string;
-  weekSelected: any[];
+  weekSelected: Week;
   projects: Project[];
   projectSelected: Project;
   projectEdit: Project;

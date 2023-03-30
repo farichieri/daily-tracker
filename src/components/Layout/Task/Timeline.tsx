@@ -87,7 +87,7 @@ const Timeline = ({
       {(time_from || time_to) && (
         <div
           className={`mr-4 ${
-            trackerView === "week" && "mr-1.5 text-[6px] sm:text-[8px]"
+            trackerView === "week" && "mr-1 text-[6px] sm:text-[8px]"
           } flex w-16 gap-1 text-[8px] sm:text-[10px]`}
         >
           <div className="flex w-[2rem] min-w-[2rem] max-w-[2rem] flex-col items-center justify-center gap-0 leading-[0.7]">

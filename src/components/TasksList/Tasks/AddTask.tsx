@@ -19,11 +19,11 @@ import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingBut
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import MakeRecurrent from "./TaskActions/TaskActionsButtons/MakeRecurrent";
 
-const AddTask = () => {
+const AddTask = ({ date }: { date: string }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
-  const { listID, date } = router.query;
+  const { listID } = router.query;
   const { labels } = useSelector(selectLabels);
   const [newTaskState, setNewTaskState] = useState<Task>(NewTaskInitial);
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
@@ -166,10 +166,17 @@ const AddTask = () => {
   }, [listID]);
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full min-w-min justify-center text-xs">
       {!openAddTask ? (
         <div>
-          <button onClick={(e) => setOpenAddTask(true)}>Add Task</button>
+          <IconButton
+            props={{}}
+            onClick={() => setOpenAddTask(true)}
+            src={"/icons/add.png"}
+            alt="Add-Icon"
+            width={24}
+            height={24}
+          />
         </div>
       ) : (
         <form className="new-task" onSubmit={handleAdd}>
@@ -264,7 +271,7 @@ const AddTask = () => {
                 )}
               </div>
             </div>
-            <div className="row">
+            <div className="row flex-wrap">
               {listID && (
                 <div className="day-picker">
                   {!wantToAddDate ? (
@@ -333,15 +340,13 @@ const AddTask = () => {
               <div className="recurring">
                 <MakeRecurrent />
               </div>
-              <div className="add-button">
-                <IconButton
-                  props={{ type: "submit" }}
+              <div className="w-full">
+                <button
+                  className="ml-auto flex w-16 justify-center"
                   onClick={handleAdd}
-                  src={"/icons/add.png"}
-                  alt="Add-Icon"
-                  width={24}
-                  height={24}
-                />
+                >
+                  Add
+                </button>
               </div>
             </div>
           </div>
@@ -399,9 +404,6 @@ const AddTask = () => {
           border-radius: 6px;
           color: var(--text-color);
           border: 1px solid var(--box-shadow);
-        }
-        .add-button {
-          margin-left: auto;
         }
         button {
           cursor: pointer;

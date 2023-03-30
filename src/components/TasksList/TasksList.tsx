@@ -22,7 +22,7 @@ const TasksList = () => {
     <div className="list">
       <div className="tasks-container">
         <Tasks tasksState={tasksState} />
-        <AddTask />
+        <AddTask date={""} />
       </div>
       <style jsx>{`
         .list {

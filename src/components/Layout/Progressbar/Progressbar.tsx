@@ -8,9 +8,11 @@ const Progressbar = ({
   height: number;
 }) => {
   return (
-    <div className={`h-2 w-full min-w-full rounded-2xl bg-gray-200 `}>
+    <div
+      className={`h-1 w-full min-w-full overflow-auto rounded-3xl border-none bg-gray-200`}
+    >
       <div className="fill">
-        <span className="text">{`${progress}%`}</span>
+        {/* <span className="text">{`${progress}%`}</span> */}
       </div>
       <style jsx>
         {`
@@ -19,10 +21,10 @@ const Progressbar = ({
             width: ${progress}%;
             background-color: ${bgcolor};
             background-color: var(--progress-done);
-            border-radius: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: none;
           }
           .text {
             padding: 10px;

@@ -13,7 +13,7 @@ const Subtasks = ({
   return (
     <>
       {subtasks.map((subtask) => (
-        <div className="my-1 flex flex-col gap-0.5" key={subtask.task_id}>
+        <div className="flex flex-col gap-0.5 py-0.5" key={subtask.task_id}>
           <Subtask
             parentTask={task}
             subTask={subtask}

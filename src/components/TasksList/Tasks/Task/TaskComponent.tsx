@@ -45,7 +45,9 @@ const TaskComponent = ({
   );
   const [subtasks, setSubtasks] = useState<TasksArray>(sortedArray);
   const dateFormatted = task.date_set.date_iso.slice(0, 10);
-  const failedTask = dateFormatted < today && !task.done;
+  const failedTask =
+    dateFormatted < today && !task.done && task.date_set.date_iso;
+  const oldDay = dateFormatted < today && task.date_set.date_iso;
 
   const secondsSpent = getParentTaskSeconds(subTasks, task);
 
@@ -55,7 +57,7 @@ const TaskComponent = ({
 
   return (
     <div
-      className={`flex ${
+      className={`flex  ${
         trackerView === "week" && "min-w-[70vw] md:min-w-full"
       }`}
     >
@@ -69,7 +71,7 @@ const TaskComponent = ({
             : failedTask
             ? "bg-red-900"
             : "bg-stone-200 dark:bg-stone-700"
-        } `}
+        } ${oldDay && "opacity-70"}`}
       >
         <div
           className="pointer-events-auto flex w-full items-center gap-1 p-1"

@@ -36,8 +36,8 @@ const ToggleDoneTask = ({ task }: { task: Task }) => {
         props={{ id: task.task_id }}
         src={task.done ? "/icons/checkbox-done.png" : "/icons/checkbox.png"}
         alt={task.done ? "Done-Icon" : "Checkbox-Icon"}
-        width={20}
-        height={20}
+        width={16}
+        height={16}
       />
     </div>
   );

@@ -1,6 +1,6 @@
-import { Task } from '@/global/types';
-import { useSelector } from 'react-redux';
-import { selectLists } from 'store/slices/listsSlice';
+import { Task } from "@/global/types";
+import { useSelector } from "react-redux";
+import { selectLists } from "store/slices/listsSlice";
 
 const ListButton = ({
   onClick,
@@ -14,7 +14,7 @@ const ListButton = ({
 
   return (
     <button onClick={onClick}>
-      {taskProject ? taskProject.list_name : 'Add to a List'}
+      {taskProject ? taskProject.list_name : "List"}
       <style jsx>{`
         button {
           cursor: pointer;

@@ -8,8 +8,6 @@ import { TaskGroup } from "@/global/types";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { useSelector } from "react-redux";
-import AddTask from "../TasksList/Tasks/AddTask";
-import DaysSelector from "./DaysSelector";
 import DayTasks from "./DayTasks/DayTasks";
 import FilterSelect from "./FilterSelect/FilterSelect";
 
@@ -35,21 +33,38 @@ const Tracker = () => {
       } ${trackerView === "week" && "m-x-auto min-w-full"}`}
     >
       <FilterSelect />
-      <DaysSelector />
-      <div className="mx-auto flex h-full w-full overflow-y-auto">
+      <div className="mx-auto flex h-full w-full gap-1 overflow-x-auto overflow-y-auto">
         {trackerView === "day" ? (
-          <DayTasks tasksFiltered={tasksFiltered} />
+          <DayTasks
+            tasksFiltered={tasksFiltered}
+            date={String(date)}
+            index={0}
+            lastIndex={0}
+          />
         ) : (
-          weekSelected.map((day) => (
+          weekSelected.map((day, index) => (
             <DayTasks
               key={day.date}
               tasksFiltered={filterTasksByDateSet(tasks, day.date)}
+              date={day.date}
+              index={index}
+              lastIndex={weekSelected.length - 1}
             />
           ))
         )}
       </div>
+      <style jsx>{`
+        @media screen and (max-width: 640px) {
+          div::-webkit-scrollbar {
+            display: none;
+          }
 
-      {/* <AddTask /> */}
+          div {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        }
+      `}</style>
     </section>
   );
 };
