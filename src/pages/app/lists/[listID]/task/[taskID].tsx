@@ -10,11 +10,10 @@ const TaskID = () => {
   const { taskID, listID } = router.query;
   const task = tasks[String(taskID)];
   const redirectLink = `/app/lists/${listID}`;
-  console.log({ task });
 
   return (
     <TasksLayout>
-      <TaskDetail task={task} redirectLink={redirectLink} />
+      {task && <TaskDetail task={task} redirectLink={redirectLink} />}
     </TasksLayout>
   );
 };

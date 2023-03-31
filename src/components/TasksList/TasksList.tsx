@@ -38,6 +38,7 @@ const TasksList = () => {
           flex-direction: column;
           gap: 0.5rem;
           margin-bottom: 10rem;
+          align-items: center;
         }
         .header {
           display: flex;

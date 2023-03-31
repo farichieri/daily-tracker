@@ -4,25 +4,25 @@ import Image from "next/image";
 import Modal from "../Modal/Modal";
 
 const DayPickerC = ({
-  dateSelected,
-  handleDateSelected,
-  dateToShow,
-  withModal,
-  open,
-  setOpen,
-  removeDate,
-  setWantToAddDate,
   addTask,
+  dateSelected,
+  dateToShow,
+  handleDateSelected,
+  open,
+  removeDate,
+  setOpen,
+  setWantToAddDate,
+  withModal,
 }: {
-  dateSelected: Date;
-  handleDateSelected: Function;
-  dateToShow: string;
-  withModal: boolean;
-  open: boolean;
-  setOpen: Function;
-  removeDate: Function;
-  setWantToAddDate: Function;
   addTask: boolean;
+  dateSelected: Date | null;
+  dateToShow: string;
+  handleDateSelected: Function;
+  open: boolean;
+  removeDate: Function;
+  setOpen: Function;
+  setWantToAddDate: Function;
+  withModal: boolean;
 }) => {
   const closeModalOnClick = () => {};
 

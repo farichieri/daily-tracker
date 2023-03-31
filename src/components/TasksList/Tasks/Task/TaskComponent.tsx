@@ -3,6 +3,7 @@ import { format, parseISO } from "date-fns";
 import { Label, Task, TasksArray, TasksGroup } from "@/global/types";
 import { selectLists } from "store/slices/listsSlice";
 import { selectTasks } from "store/slices/tasksSlice";
+import { selectToday, selectTrackerView } from "store/slices/trackerSlice";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -10,9 +11,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Subtasks from "../Subtasks/Subtasks";
 import Timeline from "@/components/Layout/Task/Timeline";
-import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
 import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
-import { selectToday, selectTrackerView } from "store/slices/trackerSlice";
+import ToggleDoneTask from "../TaskActions/TaskActionsButtons/ToggleDoneTask";
 
 const TaskComponent = ({
   taskID,

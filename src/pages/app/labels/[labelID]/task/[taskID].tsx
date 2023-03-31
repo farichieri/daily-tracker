@@ -13,7 +13,7 @@ const TaskID = () => {
 
   return (
     <LabelsLayout>
-      <TaskDetail task={task} redirectLink={redirectLink} />
+      {task && <TaskDetail task={task} redirectLink={redirectLink} />}
     </LabelsLayout>
   );
 };

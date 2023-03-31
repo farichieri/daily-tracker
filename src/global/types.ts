@@ -20,10 +20,6 @@ export interface UserDoc {
   user_id: string;
 }
 
-// The idea is:
-// If a Task has a date_set, it will be rendered in the tracker.
-// And if a day_task has labels, it will be rendered in the labels
-// And if a day_task has a project_id, it will be rendered in the list of tasks.
 export interface Task {
   [key: string]: any;
   activity: Array<string>;

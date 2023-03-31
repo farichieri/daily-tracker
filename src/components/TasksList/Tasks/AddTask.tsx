@@ -9,16 +9,16 @@ import { setAddNewTask } from "store/slices/tasksSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/dist/client/router";
+import AssignLabel from "./TaskActions/TaskActionsModals/AssignLabel";
 import AssignList from "./TaskActions/TaskActionsModals/AssignList";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import IconButton from "@/components/Layout/Icon/IconButton";
 import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
 import ListButton from "./TaskActions/TaskActionsButtons/ListButton";
-import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
-import TimeInput from "@/components/Layout/Input/TimeInput";
-import MakeRecurrent from "./TaskActions/TaskActionsButtons/MakeRecurrent";
+import MakeRecurrent from "./TaskActions/TaskActionsModals/MakeRecurrent";
 import SelectEmoji from "./TaskActions/TaskActionsModals/SelectEmoji";
-import AssignLabel from "./TaskActions/TaskActionsModals/AssignLabel";
+import TimeInput from "@/components/Layout/Input/TimeInput";
+import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
 
 const AddTask = ({ date }: { date: string }) => {
   const router = useRouter();
@@ -43,8 +43,7 @@ const AddTask = ({ date }: { date: string }) => {
   };
 
   const handleChange = (event: React.ChangeEvent) => {
-    console.log({ event });
-    // event.preventDefault();
+    event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
     console.log(value);
@@ -114,6 +113,7 @@ const AddTask = ({ date }: { date: string }) => {
     setOpenAssignLabel(false);
     setOpenAssignList(false);
     setOpenEmojis(false);
+    setOpenRecurrent(false);
   };
 
   const handleChangeDates = (event: React.ChangeEvent) => {
@@ -145,8 +145,10 @@ const AddTask = ({ date }: { date: string }) => {
   // Date
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [openDateSelector, setOpenDateSelector] = useState(false);
-  const dateToShow = dateSelected && format(dateSelected, "MM-dd-yyyy"); // April 2023
   const [wantToAddDate, setWantToAddDate] = useState(false);
+  const dateToShow = dateSelected && format(dateSelected, "MM-dd-yyyy"); // April 2023
+  const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
+  const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
 
   const handleDateSelected = (day: Date | undefined) => {
     if (day) {
@@ -161,9 +163,6 @@ const AddTask = ({ date }: { date: string }) => {
       });
     }
   };
-
-  const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
-  const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
 
   const handleSeconds = (name: string, seconds: number) => {
     setNewTaskState({
@@ -182,6 +181,29 @@ const AddTask = ({ date }: { date: string }) => {
 
   return (
     <div className="flex w-full min-w-fit max-w-min justify-center text-xs">
+      {openAssignLabel && (
+        <AssignLabel
+          closeModalOnClick={closeModalOnClick}
+          isNewTask={true}
+          task={newTaskState}
+          handleChangeLabels={handleChangeLabels}
+        />
+      )}
+      {openAssignList && (
+        <AssignList
+          closeModalOnClick={closeModalOnClick}
+          isNewTask={true}
+          task={newTaskState}
+          handleChangeList={handleChangeList}
+        />
+      )}
+      {openEmojis && (
+        <SelectEmoji
+          closeModalOnClick={closeModalOnClick}
+          handleChange={addEmoji}
+        />
+      )}
+      {openRecurrent && <MakeRecurrent closeModalOnClick={closeModalOnClick} />}
       {!openAddTask ? (
         <div>
           <IconButton
@@ -208,28 +230,6 @@ const AddTask = ({ date }: { date: string }) => {
               height={20}
             />
           </div>
-          {openAssignLabel && (
-            <AssignLabel
-              closeModalOnClick={closeModalOnClick}
-              isNewTask={true}
-              task={newTaskState}
-              handleChangeLabels={handleChangeLabels}
-            />
-          )}
-          {openAssignList && (
-            <AssignList
-              closeModalOnClick={closeModalOnClick}
-              isNewTask={true}
-              task={newTaskState}
-              handleChangeList={handleChangeList}
-            />
-          )}
-          {openEmojis && (
-            <SelectEmoji
-              closeModalOnClick={closeModalOnClick}
-              handleChange={addEmoji}
-            />
-          )}
           <div className="content-container">
             <div className="flex w-full">
               <div className="flex w-full flex-col">
@@ -317,15 +317,15 @@ const AddTask = ({ date }: { date: string }) => {
                     </button>
                   ) : (
                     <DayPickerC
-                      open={openDateSelector}
-                      setOpen={setOpenDateSelector}
-                      withModal={true}
-                      dateSelected={dateSelected}
-                      handleDateSelected={handleDateSelected}
-                      dateToShow={dateDisplayed}
-                      removeDate={removeDate}
-                      setWantToAddDate={setWantToAddDate}
                       addTask={true}
+                      dateSelected={dateSelected}
+                      dateToShow={dateDisplayed}
+                      handleDateSelected={handleDateSelected}
+                      open={openDateSelector}
+                      removeDate={removeDate}
+                      setOpen={setOpenDateSelector}
+                      setWantToAddDate={setWantToAddDate}
+                      withModal={true}
                     />
                   )}
                 </div>
@@ -370,7 +370,14 @@ const AddTask = ({ date }: { date: string }) => {
                 />
               </div>
               <div className="recurring">
-                <MakeRecurrent />
+                <button
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setOpenRecurrent(true);
+                  }}
+                >
+                  Make it recurrent
+                </button>
               </div>
               <div className="w-full">
                 <button
