@@ -8,7 +8,7 @@ import AddGoal from "../Goals/AddGoal/AddGoal";
 const GoalsLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
   return (
-    <PremiumLayout withPadding={false}>
+    <PremiumLayout>
       <div className="container">
         {user && (
           <>

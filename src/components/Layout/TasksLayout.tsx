@@ -8,7 +8,7 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
 
   return (
-    <PremiumLayout withPadding={false}>
+    <PremiumLayout>
       <div className="mt-4 flex w-full max-w-[var(--max-width-content)] flex-col pt-[var(--premium-nav-height)]">
         {user && <TasksList />}
       </div>

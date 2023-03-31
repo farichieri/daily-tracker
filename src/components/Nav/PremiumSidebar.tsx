@@ -1,5 +1,4 @@
 import { selectLists, setListEdit } from "store/slices/listsSlice";
-import { selectSidebarState } from "store/slices/layoutSlice";
 import { selectToday } from "store/slices/trackerSlice";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,14 +11,13 @@ import ListEdit from "../ListEdit/ListEdit";
 import ProjectCreate from "../ProjectCreate/ProjectCreate";
 import ProjectEdit from "../ProjectEdit/ProjectEdit";
 
-const PremiumSidebar = () => {
+const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
   const dispatch = useDispatch();
-  const lists = useSelector(selectLists);
   const router = useRouter();
-  const sidebarOpen = useSelector(selectSidebarState);
-  const today = useSelector(selectToday);
-  const { listID } = router.query;
   const { pathname } = router;
+  const { listID } = router.query;
+  const lists = useSelector(selectLists);
+  const today = useSelector(selectToday);
 
   const handleEditList = (event: any) => {
     event.preventDefault();
@@ -47,7 +45,7 @@ const PremiumSidebar = () => {
       {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
       <div
         className={`duratin-300 fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] p-4 pt-[var(--premium-nav-height)] shadow shadow-gray-600/40 backdrop-blur-sm transition-all ease-linear ${
-          !sidebarOpen && "left-[-200px]"
+          !sidebarState && "left-[-200px]"
         }`}
       >
         <div className="w-full pt-2" onClick={(e) => e.stopPropagation()}>
@@ -135,7 +133,7 @@ const PremiumSidebar = () => {
             </Link>
           </div>
         </div>
-        <div className="w-full">
+        {/* <div className="w-full">
           <div className="my-1 flex">
             <Link href={"/app/test"}>
               <span
@@ -147,7 +145,7 @@ const PremiumSidebar = () => {
               </span>
             </Link>
           </div>
-        </div>
+        </div> */}
         <button className="mt-auto flex items-center gap-1 rounded-3xl border border-stone-500 bg-stone-900 py-1 px-2 text-sm text-white shadow shadow-stone-600 duration-300 hover:bg-stone-800 active:scale-105">
           <Image
             alt="edit-icon"

@@ -1,19 +1,27 @@
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import Modal from "@/components/Modal/Modal";
-import { format } from "date-fns";
+import { Recurring } from "@/global/types";
+import { uuidv4 } from "@firebase/util";
+import { add, format, formatISO, startOfDay } from "date-fns";
 import { useState } from "react";
 
 const MakeRecurrent = ({
   closeModalOnClick,
+  handleRecurring,
 }: {
   closeModalOnClick: Function;
+  handleRecurring: Function;
 }) => {
   const REPEAT_NUMBERS = Array.from(Array(10).keys());
-  const REPEAT_OPTIONS = ["day", "week", "month", "year"];
-  const [repeatNumber, setRepeatNumber] = useState(REPEAT_NUMBERS[0]);
-  const [repeatOptions, setRepeatOptions] = useState(REPEAT_OPTIONS[0]);
-  const [startDay, setStartDay] = useState<Date>(new Date());
-  const [endDay, setEndDay] = useState<Date>(new Date());
+  const REPEAT_OPTIONS = ["days", "weeks", "months"];
+  const [input, setInput] = useState({
+    repeat_number: REPEAT_NUMBERS[1],
+    repeat_option: REPEAT_OPTIONS[0],
+  });
+  const [startDay, setStartDay] = useState<Date>(startOfDay(new Date()));
+  const [endDay, setEndDay] = useState<Date>(
+    add(startOfDay(new Date()), { days: 7 })
+  );
 
   const [openStartPicker, setOpenStartPicker] = useState(false);
   const startShow = startDay && format(startDay, "MM-dd-yyyy"); // April 2023
@@ -31,6 +39,7 @@ const MakeRecurrent = ({
   };
   const handleSelectEnd = (day: Date | undefined) => {
     if (day) {
+      console.log({ day });
       setEndDay(day);
     }
   };
@@ -41,7 +50,17 @@ const MakeRecurrent = ({
   };
 
   const handleApply = (event: React.MouseEvent) => {
+    const uuid = uuidv4();
     event.preventDefault();
+    const recurringData: Recurring = {
+      recurring_end: formatISO(endDay),
+      recurring_id: uuid,
+      recurring_number: input.repeat_number,
+      recurring_option: input.repeat_option,
+      recurring_start: formatISO(startDay),
+    };
+    handleRecurring(recurringData);
+    closeModalOnClick();
   };
 
   const handleCancel = (event: React.MouseEvent) => {
@@ -53,8 +72,10 @@ const MakeRecurrent = ({
     event.preventDefault();
     const name = (event.target as HTMLSelectElement).name;
     const value = (event.target as HTMLSelectElement).value;
-    console.log({ name });
-    console.log({ value });
+    setInput({
+      ...input,
+      [name]: value,
+    });
   };
 
   return (
@@ -64,10 +85,11 @@ const MakeRecurrent = ({
         <div className="flex gap-2">
           <div className="">Every</div>
           <select
-            name=""
+            name="repeat_number"
+            value={input.repeat_number}
             id=""
             className="bg-transparent"
-            onSelect={handleSelect}
+            onChange={handleSelect}
           >
             {REPEAT_NUMBERS.map((n) => (
               <option
@@ -79,7 +101,13 @@ const MakeRecurrent = ({
               </option>
             ))}
           </select>
-          <select name="" id="" className="bg-transparent">
+          <select
+            name="repeat_option"
+            value={input.repeat_option}
+            id=""
+            className="bg-transparent"
+            onChange={handleSelect}
+          >
             {REPEAT_OPTIONS.map((o) => (
               <option className="bg-transparent text-black" key={o} value={o}>
                 {o}

@@ -26,10 +26,12 @@ const Timeline = ({
     setTime(new Date());
   };
   useEffect(() => {
-    const timerId = setInterval(refreshClock, 1000);
-    return () => {
-      clearInterval(timerId);
-    };
+    if (today === date) {
+      const timerId = setInterval(refreshClock, 1000);
+      return () => {
+        clearInterval(timerId);
+      };
+    }
   }, []);
 
   const currentTime = format(time, "HH:mm");

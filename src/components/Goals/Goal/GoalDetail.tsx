@@ -59,7 +59,6 @@ const GoalDetail = ({
         ...goalState,
         date_set: {
           date_iso: goalState.date_set.date_iso,
-          is_recurring: false,
           time_from: time_from || "",
           time_to: (time_from && time_to) || "",
           with_time: false,

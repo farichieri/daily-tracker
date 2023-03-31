@@ -7,7 +7,7 @@ import Tracker from "../Tracker/Tracker";
 const TrackerLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useSelector(selectUser);
   return (
-    <PremiumLayout withPadding={false}>
+    <PremiumLayout>
       <div className=" flex h-full w-full flex-col items-center overflow-x-auto">
         {user && <Tracker />}
         {children}

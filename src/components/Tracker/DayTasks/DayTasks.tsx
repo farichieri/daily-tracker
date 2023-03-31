@@ -40,6 +40,8 @@ const DayTasks = ({
   const weekView = trackerView === "week";
   const weekSelected = useSelector(selectWeekSelected);
 
+  console.log("asd");
+
   const getPrecentage = () => {
     const tasksAndSubtasks = { ...tasksFiltered };
     for (let task in tasksFiltered) {

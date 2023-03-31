@@ -1,7 +1,15 @@
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "@/utils/firebase.config";
-import { format, formatISO, parseISO } from "date-fns";
-import { Label, Task } from "@/global/types";
+import {
+  add,
+  differenceInDays,
+  differenceInMonths,
+  differenceInWeeks,
+  format,
+  formatISO,
+  parseISO,
+} from "date-fns";
+import { Label, Recurring, Task } from "@/global/types";
 import { NewTaskInitial } from "@/global/initialTypes";
 import { selectLabels } from "store/slices/labelsSlice";
 import { selectUser } from "store/slices/authSlice";
@@ -26,7 +34,7 @@ const AddTask = ({ date }: { date: string }) => {
   const { user } = useSelector(selectUser);
   const { listID } = router.query;
   const { labels } = useSelector(selectLabels);
-  const [newTaskState, setNewTaskState] = useState<Task>(NewTaskInitial);
+  const [input, setInput] = useState<Task>(NewTaskInitial);
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignList, setOpenAssignList] = useState(false);
   const [openAddTask, setOpenAddTask] = useState(false);
@@ -35,9 +43,9 @@ const AddTask = ({ date }: { date: string }) => {
   const [inputFocus, setInputFocus] = useState("content");
 
   const addEmoji = (event: any) => {
-    const value = newTaskState[inputFocus] + " " + event.native;
-    setNewTaskState({
-      ...newTaskState,
+    const value = input[inputFocus] + " " + event.native;
+    setInput({
+      ...input,
       [inputFocus]: value,
     });
   };
@@ -48,64 +56,85 @@ const AddTask = ({ date }: { date: string }) => {
     const value: string = (event.target as HTMLButtonElement).value;
     console.log(value);
     console.log(name);
-    setNewTaskState({
-      ...newTaskState,
+    setInput({
+      ...input,
       [name]: value,
     });
   };
 
   const handleChangeLabels = (labelsSelected: []) => {
-    setNewTaskState({
-      ...newTaskState,
+    setInput({
+      ...input,
       labels: labelsSelected,
     });
   };
 
   const handleChangeList = (listSelected: string) => {
-    setNewTaskState({
-      ...newTaskState,
+    setInput({
+      ...input,
       project_id: listSelected,
     });
   };
 
   const getLabelsSelected = () => {
-    return newTaskState.labels?.map((label) => labels[label]);
+    return input.labels?.map((label) => labels[label]);
   };
 
   const handleAdd = async (e: any) => {
+    console.log({ input });
     e.preventDefault();
     if (!user) return;
-    if (newTaskState.content) {
-      const project_id = newTaskState.project_id
-        ? newTaskState.project_id
-        : "tracker";
-      const date_iso = listID
-        ? newTaskState.date_set.date_iso
-        : formatISO(parseISO(String(date)));
-      const time_from = newTaskState.date_set.time_from;
-      const time_to = newTaskState.date_set.time_to;
+    if (input.content) {
+      const createDocAndSave = async (date_iso: string) => {
+        const project_id = input.project_id ? input.project_id : "tracker";
+        const time_from = input.date_set.time_from;
+        const time_to = input.date_set.time_to;
 
-      const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
-      const newTask: Task = {
-        ...newTaskState,
-        added_at: formatISO(new Date()),
-        added_by_uid: user.uid,
-        task_id: newDocRef.id,
-        content: newTaskState.content,
-        project_id: project_id,
-        date_set: {
-          date_iso: date_iso,
-          is_recurring: false,
-          time_from: time_from || "",
-          time_to: (time_from && time_to) || "",
-          with_time: false,
-        },
+        const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
+        const newTaskDoc: Task = {
+          ...input,
+          added_at: formatISO(new Date()),
+          added_by_uid: user.uid,
+          task_id: newDocRef.id,
+          content: input.content,
+          project_id: project_id,
+          date_set: {
+            date_iso: date_iso,
+            time_from: time_from || "",
+            time_to: (time_from && time_to) || "",
+            with_time: false,
+          },
+        };
+        console.log({ newTaskDoc });
+        setInput(NewTaskInitial);
+        dispatch(setAddNewTask(newTaskDoc));
+        await setDoc(newDocRef, newTaskDoc);
       };
-      console.log({ newTask });
-      setNewTaskState(NewTaskInitial);
-      dispatch(setAddNewTask(newTask));
-      // Verify if there is an error with firebase.
-      await setDoc(newDocRef, newTask);
+
+      if (input.is_recurring) {
+        let start = parseISO(input.recurring.recurring_start);
+        let end = parseISO(input.recurring.recurring_end);
+        const everyNumber = Number(input.recurring.recurring_number);
+        const everyOption = input.recurring.recurring_option;
+        const dif =
+          everyOption === "days"
+            ? differenceInDays(end, start)
+            : everyOption === "weeks"
+            ? differenceInWeeks(end, start)
+            : everyOption === "months"
+            ? differenceInMonths(end, start)
+            : "";
+        console.log({ dif });
+        for (let index = 0; index <= dif; index += everyNumber) {
+          createDocAndSave(formatISO(start));
+          start = add(start, { [everyOption]: everyNumber });
+        }
+      } else {
+        const date_iso = listID
+          ? input.date_set.date_iso
+          : formatISO(parseISO(String(date)));
+        createDocAndSave(date_iso);
+      }
     }
   };
 
@@ -121,11 +150,11 @@ const AddTask = ({ date }: { date: string }) => {
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
     const newDateSet = {
-      ...newTaskState.date_set,
+      ...input.date_set,
       [name]: value,
     };
-    setNewTaskState({
-      ...newTaskState,
+    setInput({
+      ...input,
       ["date_set"]: newDateSet,
     });
   };
@@ -133,11 +162,11 @@ const AddTask = ({ date }: { date: string }) => {
   const removeDate = (event: React.MouseEvent) => {
     const name: string = (event.target as HTMLButtonElement).name;
     const newDateSet = {
-      ...newTaskState.date_set,
+      ...input.date_set,
       [name]: "",
     };
-    setNewTaskState({
-      ...newTaskState,
+    setInput({
+      ...input,
       ["date_set"]: newDateSet,
     });
   };
@@ -149,35 +178,46 @@ const AddTask = ({ date }: { date: string }) => {
   const dateToShow = dateSelected && format(dateSelected, "MM-dd-yyyy"); // April 2023
   const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
   const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
+  const isoToDisplay = (isoDate: string) => {
+    return format(parseISO(isoDate), "MM-dd-yyyy");
+  };
 
   const handleDateSelected = (day: Date | undefined) => {
     if (day) {
       setDateSelected(day);
       const newDateSet = {
-        ...newTaskState.date_set,
+        ...input.date_set,
         date_iso: formatISO(day),
       };
-      setNewTaskState({
-        ...newTaskState,
+      setInput({
+        ...input,
         ["date_set"]: newDateSet,
       });
     }
   };
 
   const handleSeconds = (name: string, seconds: number) => {
-    setNewTaskState({
-      ...newTaskState,
+    setInput({
+      ...input,
       [name]: seconds,
     });
   };
 
   useEffect(() => {
     listID &&
-      setNewTaskState({
-        ...newTaskState,
+      setInput({
+        ...input,
         project_id: String(listID),
       });
   }, [listID]);
+
+  const handleRecurring = (recurringData: Recurring) => {
+    setInput({
+      ...input,
+      is_recurring: true,
+      recurring: recurringData,
+    });
+  };
 
   return (
     <div className="flex w-full min-w-fit max-w-min justify-center text-xs">
@@ -185,7 +225,7 @@ const AddTask = ({ date }: { date: string }) => {
         <AssignLabel
           closeModalOnClick={closeModalOnClick}
           isNewTask={true}
-          task={newTaskState}
+          task={input}
           handleChangeLabels={handleChangeLabels}
         />
       )}
@@ -193,7 +233,7 @@ const AddTask = ({ date }: { date: string }) => {
         <AssignList
           closeModalOnClick={closeModalOnClick}
           isNewTask={true}
-          task={newTaskState}
+          task={input}
           handleChangeList={handleChangeList}
         />
       )}
@@ -203,7 +243,12 @@ const AddTask = ({ date }: { date: string }) => {
           handleChange={addEmoji}
         />
       )}
-      {openRecurrent && <MakeRecurrent closeModalOnClick={closeModalOnClick} />}
+      {openRecurrent && (
+        <MakeRecurrent
+          closeModalOnClick={closeModalOnClick}
+          handleRecurring={handleRecurring}
+        />
+      )}
       {!openAddTask ? (
         <div>
           <IconButton
@@ -223,6 +268,7 @@ const AddTask = ({ date }: { date: string }) => {
               onClick={(e) => {
                 e.preventDefault();
                 setOpenAddTask(false);
+                setInput(NewTaskInitial);
               }}
               src={"/icons/delete.png"}
               alt="Delete-Icon"
@@ -247,7 +293,7 @@ const AddTask = ({ date }: { date: string }) => {
                     type="text"
                     name="content"
                     placeholder="Add Task"
-                    value={newTaskState.content}
+                    value={input.content}
                     onFocus={() => setInputFocus("content")}
                     onChange={handleChange}
                     spellCheck="false"
@@ -266,7 +312,7 @@ const AddTask = ({ date }: { date: string }) => {
                     name="description"
                     placeholder="Description"
                     onFocus={() => setInputFocus("description")}
-                    value={newTaskState.description}
+                    value={input.description}
                     onChange={handleChange}
                     spellCheck="false"
                     autoComplete="off"
@@ -283,7 +329,7 @@ const AddTask = ({ date }: { date: string }) => {
                 <TimeTrackingButton
                   handleSeconds={handleSeconds}
                   inTaskCompnent={false}
-                  task={newTaskState}
+                  task={input}
                   sumOfPlanned={0}
                   sumOfSpent={0}
                 />
@@ -330,22 +376,22 @@ const AddTask = ({ date }: { date: string }) => {
                   )}
                 </div>
               )}
-              {(newTaskState.date_set.date_iso || !listID) && (
+              {(input.date_set.date_iso || !listID) && (
                 <>
                   <div className="time_from">
                     <TimeInput
                       onBlur={() => {}}
                       name="time_from"
-                      value={newTaskState.date_set.time_from}
+                      value={input.date_set.time_from}
                       onChange={handleChangeDates}
                       removeTime={removeDate}
                     />
                   </div>
-                  {newTaskState.date_set.time_from && (
+                  {input.date_set.time_from && (
                     <TimeInput
                       onBlur={() => {}}
                       name="time_to"
-                      value={newTaskState.date_set.time_to}
+                      value={input.date_set.time_to}
                       onChange={handleChangeDates}
                       removeTime={removeDate}
                     />
@@ -366,18 +412,40 @@ const AddTask = ({ date }: { date: string }) => {
                     event.preventDefault();
                     setOpenAssignList(true);
                   }}
-                  task={newTaskState}
+                  task={input}
                 />
               </div>
               <div className="recurring">
-                <button
-                  onClick={(event) => {
-                    event.preventDefault();
-                    setOpenRecurrent(true);
-                  }}
-                >
-                  Make it recurrent
-                </button>
+                {!input.is_recurring ? (
+                  <button
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setOpenRecurrent(true);
+                    }}
+                  >
+                    Make it recurrent
+                  </button>
+                ) : (
+                  <div className="">
+                    <span>
+                      Repeat every{" "}
+                      <span className="text-red-500">
+                        {input.recurring.recurring_number}
+                      </span>{" "}
+                      <span className="text-red-500">
+                        {input.recurring.recurring_option}
+                      </span>{" "}
+                      will start{" "}
+                      <span className="text-red-500">
+                        {isoToDisplay(input.recurring.recurring_start)}
+                      </span>{" "}
+                      and end{" "}
+                      <span className="text-red-500">
+                        {isoToDisplay(input.recurring.recurring_end)}
+                      </span>
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="w-full">
                 <button

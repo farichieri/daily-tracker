@@ -100,9 +100,18 @@ const TaskComponent = ({
                 </Link>
               )}
             </div>
-
             <div className="flex h-full w-full flex-col ">
               <div className="flex">
+                {task.is_recurring && (
+                  <div className="mr-1 border-r border-gray-800 pr-1">
+                    <Image
+                      src={"/icons/repeat.png"}
+                      alt="Repeat icon"
+                      width={14}
+                      height={14}
+                    />
+                  </div>
+                )}
                 <span
                   className={`my-auto flex font-medium ${
                     task.done ? "line-through opacity-50" : ""

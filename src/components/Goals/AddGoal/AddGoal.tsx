@@ -55,7 +55,6 @@ const AddGoal = () => {
         project_id: project_id,
         date_set: {
           date_iso: date_iso,
-          is_recurring: false,
           time_from: time_from || "",
           time_to: (time_from && time_to) || "",
           with_time: false,

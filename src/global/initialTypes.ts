@@ -11,7 +11,6 @@ export const NewTaskInitial: Task = {
   content: "",
   date_set: {
     date_iso: "",
-    is_recurring: false,
     time_from: "",
     time_to: "",
     with_time: false,
@@ -31,7 +30,16 @@ export const NewTaskInitial: Task = {
   task_order: 0,
   updated_at: "",
   working_on: false,
+  is_recurring: false,
+  recurring: {
+    recurring_end: "",
+    recurring_id: "",
+    recurring_number: 1,
+    recurring_option: "",
+    recurring_start: "",
+  },
 };
+
 export const NewGoalInitial: Goal = {
   activity: [],
   added_at: "",
@@ -43,7 +51,6 @@ export const NewGoalInitial: Goal = {
   content: "",
   date_set: {
     date_iso: "",
-    is_recurring: false,
     time_from: "",
     time_to: "",
     with_time: false,

@@ -34,12 +34,14 @@ export interface Task {
   description: string;
   done: boolean;
   is_archived: boolean;
+  is_recurring: Boolean;
   labels: Array<string>;
-  seconds_planned: number;
-  seconds_spent: number;
   priority: number;
   project_id: string;
+  recurring: Recurring;
   reminder_date: string;
+  seconds_planned: number;
+  seconds_spent: number;
   section_id: string;
   task_id: string;
   task_order: number;
@@ -47,9 +49,16 @@ export interface Task {
   working_on: boolean;
 }
 
+export interface Recurring {
+  recurring_end: string;
+  recurring_id: string;
+  recurring_number: number;
+  recurring_option: string;
+  recurring_start: string;
+}
+
 interface DateSet {
   date_iso: string;
-  is_recurring: boolean;
   time_from: string;
   time_to: string;
   with_time: boolean;

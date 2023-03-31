@@ -35,7 +35,7 @@ const FilterSelect = () => {
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (
-    <div className="z-20 m-auto flex w-fit min-w-fit items-center gap-2">
+    <div className="z-20 m-auto flex w-fit min-w-fit items-center  gap-2">
       <div className="min-w-fit">
         <DayPickerC
           setWantToAddDate={() => {}}

@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 
 // Define a type for the slice state
 interface LayoutSlice {
@@ -20,17 +20,14 @@ const initialState: LayoutSlice = {
   isEditingProject: false,
   isEditingList: false,
   isLoading: false,
-  page: '',
+  page: "",
 };
 
 export const layoutSlice = createSlice({
-  name: 'layout',
+  name: "layout",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    toggleSidebar: (state) => {
-      state.isSidebarOpen = !state.isSidebarOpen;
-    },
     toggleIsCreatingProject: (state) => {
       state.isCreatingProject = !state.isCreatingProject;
     },
@@ -56,7 +53,6 @@ export const layoutSlice = createSlice({
 });
 
 export const {
-  toggleSidebar,
   toggleIsCreatingProject,
   toggleIsEditingProject,
   toggleIsCreatingList,
@@ -66,8 +62,6 @@ export const {
 } = layoutSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectSidebarState = (state: RootState) =>
-  state.layout.isSidebarOpen;
 export const selectIsCreatingProject = (state: RootState) =>
   state.layout.isCreatingProject;
 export const selectIsEditingProject = (state: RootState) =>

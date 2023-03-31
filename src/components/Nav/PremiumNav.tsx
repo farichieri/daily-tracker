@@ -1,17 +1,20 @@
 import { selectList } from "store/slices/listsSlice";
-import { selectSidebarState, toggleSidebar } from "store/slices/layoutSlice";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import Image from "next/image";
 import ProfileDropDown from "../Layout/DropDown/ProfileDropDown/ProfileDropDown";
 import Settings from "../Settings/Settings";
 
-const PremiumNav = () => {
-  const dispatch = useDispatch();
+const PremiumNav = ({
+  sidebarState,
+  handleToggleSidebar,
+}: {
+  sidebarState: boolean;
+  handleToggleSidebar: React.MouseEventHandler;
+}) => {
   const router = useRouter();
   const { listID } = router.query;
-  const sidebarState = useSelector(selectSidebarState);
   const { lists } = useSelector(selectList);
   const listSelected = lists[String(listID)];
   const selected = router.pathname.includes("lists")
@@ -23,10 +26,6 @@ const PremiumNav = () => {
     : "Planner";
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  const handleToggleSidebar = () => {
-    dispatch(toggleSidebar());
-  };
 
   const closeModalOnClick = () => {
     setIsSettingsOpen(false);

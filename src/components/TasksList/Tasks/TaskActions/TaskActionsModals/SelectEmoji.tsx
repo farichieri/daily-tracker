@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import Modal from "@/components/Modal/Modal";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";

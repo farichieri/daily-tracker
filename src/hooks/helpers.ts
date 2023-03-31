@@ -93,6 +93,18 @@ export const filterListsNotArchived = (obj: ListGroup) =>
     {}
   );
 
+export const filterRecurringTasks = (obj: TaskGroup) =>
+  Object.keys(obj).reduce(
+    (acc, val) =>
+      !(obj[val]["is_recurring"] && obj[val]["is_recurring"] === true)
+        ? acc
+        : {
+            ...acc,
+            [val]: obj[val],
+          },
+    {}
+  );
+
 export const getParentTaskSeconds = (subTasks: TaskGroup, task: Task) => {
   const calculateTaskSeconds = (key: string) => {
     let seconds = 0;

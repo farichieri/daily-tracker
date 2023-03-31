@@ -1,13 +1,8 @@
-import { setTheme } from "store/slices/themeSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PremiumNav from "../Nav/PremiumNav";
 import PremiumSidebar from "../Nav/PremiumSidebar";
-import {
-  selectSidebarState,
-  toggleIsCreatingProject,
-  toggleSidebar,
-} from "store/slices/layoutSlice";
+import { toggleIsCreatingProject } from "store/slices/layoutSlice";
 import { selectUser } from "store/slices/authSlice";
 import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
 import {
@@ -29,21 +24,18 @@ import { setGoals } from "store/slices/goalsSlice";
 
 export default function PremiumLayout({
   children,
-  withPadding,
 }: {
   children: React.ReactNode;
-  withPadding: boolean;
 }) {
   const dispatch = useDispatch();
-  const padding = withPadding ? 1.5 : 0;
   const router = useRouter();
   const { isDataFetched } = useSelector(selectGlobalState);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
-  const sidebarOpen = useSelector(selectSidebarState);
   const trackerView = useSelector(selectTrackerView);
+  const [sidebarState, setSidebarState] = useState(true);
 
   const handleToggleSidebar = () => {
-    dispatch(toggleSidebar());
+    setSidebarState(!sidebarState);
   };
 
   const fetchAllData = async () => {
@@ -101,9 +93,12 @@ export default function PremiumLayout({
         userSettings.display_name &&
         !isVerifyingUser && (
           <>
-            <PremiumNav />
-            <PremiumSidebar />
-            {sidebarOpen && (
+            <PremiumNav
+              sidebarState={sidebarState}
+              handleToggleSidebar={handleToggleSidebar}
+            />
+            <PremiumSidebar sidebarState={sidebarState} />
+            {sidebarState && (
               <span
                 className="fixed inset-0 z-10 sm:hidden"
                 onClick={handleToggleSidebar}
@@ -114,7 +109,7 @@ export default function PremiumLayout({
       )}
       <div
         className={`duratin-300 flex h-full w-full flex-col items-center px-2 transition-all ease-linear ${
-          sidebarOpen && "sm:pl-[10.5rem] "
+          sidebarState && "sm:pl-[10.5rem] "
         } ${
           router.pathname.includes("tracker") && trackerView === "week"
             ? "3xl:pl-0"
