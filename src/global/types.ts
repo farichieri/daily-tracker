@@ -50,6 +50,7 @@ export interface Task {
 }
 
 export interface Recurring {
+  recurring_days: number[];
   recurring_end: string;
   recurring_id: string;
   recurring_number: number;

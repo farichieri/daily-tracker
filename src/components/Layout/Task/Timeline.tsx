@@ -1,8 +1,8 @@
+import { format } from "date-fns";
+import { selectToday, selectTrackerView } from "store/slices/trackerSlice";
 import { Task } from "@/global/types";
-import { format, parseISO } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectToday, selectTrackerView } from "store/slices/trackerSlice";
 
 const Timeline = ({
   index,
@@ -21,6 +21,7 @@ const Timeline = ({
   const today = useSelector(selectToday);
   const [time, setTime] = useState(new Date());
   const trackerView = useSelector(selectTrackerView);
+  const weekView = trackerView === "week";
 
   const refreshClock = () => {
     setTime(new Date());
@@ -89,7 +90,7 @@ const Timeline = ({
       {(time_from || time_to) && (
         <div
           className={`mr-4 ${
-            trackerView === "week" && "mr-1 text-[6px] sm:text-[8px]"
+            weekView && "mr-1 text-[6px] sm:text-[8px]"
           } flex w-16 gap-1 text-[8px] sm:text-[10px]`}
         >
           <div className="flex w-[2rem] min-w-[2rem] max-w-[2rem] flex-col items-center justify-center gap-0 leading-[0.7]">
@@ -103,7 +104,9 @@ const Timeline = ({
           <div className="ml-1 flex h-full w-full flex-col items-center justify-center">
             <div className={`flex h-full w-0.5 ${getColor("top")}`}></div>
             <div
-              className={`flex h-3.5 min-h-3.5 w-3.5 flex-col rounded-full bg-transparent`}
+              className={`flex ${
+                weekView ? "h-3 min-h-3 w-3" : " h-3.5 min-h-3.5 w-3.5"
+              } flex-col rounded-full bg-transparent`}
             >
               {getCircle()}
             </div>

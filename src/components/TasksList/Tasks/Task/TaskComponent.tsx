@@ -65,12 +65,12 @@ const TaskComponent = ({
       <div
         className={`my-0.5 w-full rounded-md border border-[var(--box-shadow-light)] text-black shadow-sm transition-all duration-300 hover:opacity-100 hover:shadow-sm hover:shadow-zinc-800 dark:text-zinc-300 dark:hover:shadow-stone-400 ${
           task.done
-            ? "bg-green-200 hover:shadow-sm dark:bg-green-900"
+            ? "border-[#5bff6ea4] bg-[#22c93559] hover:shadow-sm dark:bg-[#5bff6e34]"
             : task.working_on
-            ? "border-[#a0a027] bg-[#ffff0038]"
+            ? "border-[#c1c13199] bg-[#bebe367b] dark:bg-[#77772152]"
             : failedTask
-            ? "bg-red-900"
-            : "bg-stone-200 dark:bg-stone-700"
+            ? "border-[#ed2929e0] bg-[#ed292960]"
+            : "bg-stone-200 dark:bg-neutral-800"
         } ${oldDay && "opacity-70"}`}
       >
         <div
@@ -166,17 +166,6 @@ const TaskComponent = ({
             <ToggleDoneTask task={task} />
           </div>
         </div>
-        <style jsx>{`
-          .time_from,
-          .time_to {
-            border: 1px solid var(--box-shadow-light);
-            display: flex;
-            padding: 0.1rem 0.25rem;
-            border-radius: 6px;
-            font-size: 0.6rem;
-            opacity: 0.6;
-          }
-        `}</style>
       </div>
     </div>
   );

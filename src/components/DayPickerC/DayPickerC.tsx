@@ -150,7 +150,6 @@ const DayPickerC = ({
           font-size: 80%;
         }
         .calendar-modal {
-          background: var(--bg-color);
           box-shadow: 0 0 10px 1px var(--box-shadow-light);
           border-radius: 6px;
           top: 2.5rem;

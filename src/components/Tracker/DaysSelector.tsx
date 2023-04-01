@@ -1,14 +1,16 @@
 import {
   selectTrackerSlice,
   selectTrackerView,
+  setTrackerView,
 } from "store/slices/trackerSlice";
-import { Day, Week } from "@/global/types";
+import { Week } from "@/global/types";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 
 const DaysSelector = ({ daysToDisplay }: { daysToDisplay: Week }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { date } = router.query;
   const { today } = useSelector(selectTrackerSlice);
   const trackerview = useSelector(selectTrackerView);
@@ -19,7 +21,11 @@ const DaysSelector = ({ daysToDisplay }: { daysToDisplay: Week }) => {
       <div className="flex w-full gap-1">
         <div className="dates-container">
           {daysToDisplay.map((day: any) => (
-            <Link href={`/app/tracker/${day.date}`} key={day.date}>
+            <Link
+              href={`/app/tracker/${day.date}`}
+              key={day.date}
+              onClick={() => dispatch(setTrackerView("day"))}
+            >
               <div
                 className={`flex flex-col items-center justify-center rounded-md border border-transparent px-1 py-0.5 text-[var(--text-color)] duration-300 hover:bg-[var(--bg-color-tertiary-light)] ${
                   day.date === date && !weekView

@@ -105,6 +105,21 @@ export const filterRecurringTasks = (obj: TaskGroup) =>
     {}
   );
 
+export const filterTasksPerRecurringGroup = (
+  obj: TaskGroup,
+  recurring_id: string
+) =>
+  Object.keys(obj).reduce(
+    (acc, val) =>
+      !(obj[val]["recurring"]["recurring_id"] === recurring_id)
+        ? acc
+        : {
+            ...acc,
+            [val]: obj[val],
+          },
+    {}
+  );
+
 export const getParentTaskSeconds = (subTasks: TaskGroup, task: Task) => {
   const calculateTaskSeconds = (key: string) => {
     let seconds = 0;

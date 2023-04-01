@@ -5,9 +5,12 @@ import {
   differenceInDays,
   differenceInMonths,
   differenceInWeeks,
+  endOfWeek,
   format,
   formatISO,
+  getDay,
   parseISO,
+  startOfWeek,
 } from "date-fns";
 import { Label, Recurring, Task } from "@/global/types";
 import { NewTaskInitial } from "@/global/initialTypes";
@@ -27,6 +30,7 @@ import MakeRecurrent from "./TaskActions/TaskActionsModals/MakeRecurrent";
 import SelectEmoji from "./TaskActions/TaskActionsModals/SelectEmoji";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
+import { maxRecurringTasks } from "@/global/importantVars";
 
 const AddTask = ({ date }: { date: string }) => {
   const router = useRouter();
@@ -54,8 +58,6 @@ const AddTask = ({ date }: { date: string }) => {
     event.preventDefault();
     const name: string = (event.target as HTMLButtonElement).name;
     const value: string = (event.target as HTMLButtonElement).value;
-    console.log(value);
-    console.log(name);
     setInput({
       ...input,
       [name]: value,
@@ -78,64 +80,6 @@ const AddTask = ({ date }: { date: string }) => {
 
   const getLabelsSelected = () => {
     return input.labels?.map((label) => labels[label]);
-  };
-
-  const handleAdd = async (e: any) => {
-    console.log({ input });
-    e.preventDefault();
-    if (!user) return;
-    if (input.content) {
-      const createDocAndSave = async (date_iso: string) => {
-        const project_id = input.project_id ? input.project_id : "tracker";
-        const time_from = input.date_set.time_from;
-        const time_to = input.date_set.time_to;
-
-        const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
-        const newTaskDoc: Task = {
-          ...input,
-          added_at: formatISO(new Date()),
-          added_by_uid: user.uid,
-          task_id: newDocRef.id,
-          content: input.content,
-          project_id: project_id,
-          date_set: {
-            date_iso: date_iso,
-            time_from: time_from || "",
-            time_to: (time_from && time_to) || "",
-            with_time: false,
-          },
-        };
-        console.log({ newTaskDoc });
-        setInput(NewTaskInitial);
-        dispatch(setAddNewTask(newTaskDoc));
-        await setDoc(newDocRef, newTaskDoc);
-      };
-
-      if (input.is_recurring) {
-        let start = parseISO(input.recurring.recurring_start);
-        let end = parseISO(input.recurring.recurring_end);
-        const everyNumber = Number(input.recurring.recurring_number);
-        const everyOption = input.recurring.recurring_option;
-        const dif =
-          everyOption === "days"
-            ? differenceInDays(end, start)
-            : everyOption === "weeks"
-            ? differenceInWeeks(end, start)
-            : everyOption === "months"
-            ? differenceInMonths(end, start)
-            : "";
-        console.log({ dif });
-        for (let index = 0; index <= dif; index += everyNumber) {
-          createDocAndSave(formatISO(start));
-          start = add(start, { [everyOption]: everyNumber });
-        }
-      } else {
-        const date_iso = listID
-          ? input.date_set.date_iso
-          : formatISO(parseISO(String(date)));
-        createDocAndSave(date_iso);
-      }
-    }
   };
 
   const closeModalOnClick = () => {
@@ -211,12 +155,100 @@ const AddTask = ({ date }: { date: string }) => {
       });
   }, [listID]);
 
-  const handleRecurring = (recurringData: Recurring) => {
+  const handleRecurring = (recurringData: Recurring, is_recurring: boolean) => {
     setInput({
       ...input,
-      is_recurring: true,
+      is_recurring: is_recurring,
       recurring: recurringData,
     });
+  };
+
+  const handleAdd = async (e: any) => {
+    console.log({ input });
+    e.preventDefault();
+    if (!user) return;
+    if (input.content) {
+      const createDocAndSave = async (date_iso: string) => {
+        const project_id = input.project_id ? input.project_id : "tracker";
+        const time_from = input.date_set.time_from;
+        const time_to = input.date_set.time_to;
+
+        const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
+        const newTaskDoc: Task = {
+          ...input,
+          added_at: formatISO(new Date()),
+          added_by_uid: user.uid,
+          task_id: newDocRef.id,
+          content: input.content,
+          project_id: project_id,
+          date_set: {
+            date_iso: date_iso,
+            time_from: time_from || "",
+            time_to: (time_from && time_to) || "",
+            with_time: false,
+          },
+        };
+        console.log({ newTaskDoc });
+        setInput(NewTaskInitial);
+        dispatch(setAddNewTask(newTaskDoc));
+        await setDoc(newDocRef, newTaskDoc);
+      };
+
+      if (input.is_recurring) {
+        const start = parseISO(input.recurring.recurring_start);
+        const end = parseISO(input.recurring.recurring_end);
+
+        const recurring_number = input.recurring.recurring_number;
+        const recurring_option = input.recurring.recurring_option;
+        const recurring_days = input.recurring.recurring_days;
+        const dif =
+          recurring_option === "days"
+            ? differenceInDays(end, start)
+            : recurring_option === "weeks"
+            ? differenceInWeeks(end, start)
+            : maxRecurringTasks;
+
+        const verifyStartEnd = (start: Date, end: Date, current: Date) => {
+          return current >= start && current <= end;
+        };
+
+        let current = start;
+        console.log({ dif });
+        for (
+          let i = 0;
+          i <= dif && i <= maxRecurringTasks;
+          i += recurring_number
+        ) {
+          console.log({ i });
+          if (recurring_option === "days") {
+            if (verifyStartEnd(start, end, current)) {
+              await createDocAndSave(formatISO(current));
+            }
+            current = add(current, { days: recurring_number });
+          } else if (recurring_option === "weeks") {
+            let endWeek = endOfWeek(current, { weekStartsOn: 0 });
+            for (let j = getDay(current); j <= getDay(endWeek); j++) {
+              if (recurring_days.includes(getDay(current))) {
+                if (verifyStartEnd(start, end, current)) {
+                  await createDocAndSave(formatISO(current));
+                }
+              }
+              if (getDay(current) < getDay(endWeek)) {
+                current = add(current, { days: 1 });
+              }
+            }
+            current = startOfWeek(add(current, { weeks: recurring_number }), {
+              weekStartsOn: 0,
+            });
+          }
+        }
+      } else {
+        const date_iso = listID
+          ? input.date_set.date_iso
+          : formatISO(parseISO(String(date)));
+        await createDocAndSave(date_iso);
+      }
+    }
   };
 
   return (
@@ -426,23 +458,27 @@ const AddTask = ({ date }: { date: string }) => {
                     Make it recurrent
                   </button>
                 ) : (
-                  <div className="">
-                    <span>
-                      Repeat every{" "}
-                      <span className="text-red-500">
-                        {input.recurring.recurring_number}
-                      </span>{" "}
-                      <span className="text-red-500">
-                        {input.recurring.recurring_option}
-                      </span>{" "}
-                      will start{" "}
-                      <span className="text-red-500">
-                        {isoToDisplay(input.recurring.recurring_start)}
-                      </span>{" "}
-                      and end{" "}
-                      <span className="text-red-500">
-                        {isoToDisplay(input.recurring.recurring_end)}
-                      </span>
+                  <div
+                    className="cursor-pointer rounded-md border border-red-400 p-1"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setOpenRecurrent(true);
+                    }}
+                  >
+                    Repeat every{" "}
+                    <span className="text-red-400">
+                      {input.recurring.recurring_number}
+                    </span>{" "}
+                    <span className="text-red-400">
+                      {input.recurring.recurring_option}
+                    </span>{" "}
+                    will start{" "}
+                    <span className="text-red-400">
+                      {isoToDisplay(input.recurring.recurring_start)}
+                    </span>{" "}
+                    and end{" "}
+                    <span className="text-red-400">
+                      {isoToDisplay(input.recurring.recurring_end)}
                     </span>
                   </div>
                 )}

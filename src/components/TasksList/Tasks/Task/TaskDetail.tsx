@@ -7,20 +7,21 @@ import {
   setDeleteTask,
   setUpdateTask,
 } from "store/slices/tasksSlice";
+import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
 import { Task, TasksArray, TasksGroup } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import AddSubtask from "../Subtasks/AddSubtask";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
+import Image from "next/image";
 import Modal from "@/components/Modal/Modal";
 import React, { useEffect, useState } from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
+import SelectEmoji from "../TaskActions/TaskActionsModals/SelectEmoji";
 import Subtasks from "@/components/TasksList/Tasks/Subtasks/Subtasks";
 import TaskActions from "@/components/TasksList/Tasks/TaskActions/TaskActions";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
-import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
-import SelectEmoji from "../TaskActions/TaskActionsModals/SelectEmoji";
 
 const TaskDetail = ({
   task,
@@ -255,6 +256,16 @@ const TaskDetail = ({
             />
           </div>
         </div>
+        {task.is_recurring && (
+          <div className="mr-1 border-r border-gray-800 pr-1">
+            <Image
+              src={"/icons/repeat.png"}
+              alt="Repeat icon"
+              width={14}
+              height={14}
+            />
+          </div>
+        )}
         {openEmojis && (
           <SelectEmoji
             closeModalOnClick={closeModalOnClick}

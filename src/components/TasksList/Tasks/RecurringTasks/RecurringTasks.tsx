@@ -1,6 +1,9 @@
 import { db } from "@/utils/firebase.config";
 import { deleteDoc, doc } from "firebase/firestore";
-import { filterRecurringTasks } from "@/hooks/helpers";
+import {
+  filterRecurringTasks,
+  filterTasksPerRecurringGroup,
+} from "@/hooks/helpers";
 import { selectTasks, setDeleteTask } from "store/slices/tasksSlice";
 import { selectUser } from "store/slices/authSlice";
 import { TaskGroup } from "@/global/types";
@@ -15,6 +18,7 @@ const RecurringTasks = () => {
     filterRecurringTasks(tasks)
   );
   const [recurringGroups, setRecurringGroups] = useState<TaskGroup>({});
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const recurrings = filterRecurringTasks(tasks);
@@ -39,7 +43,9 @@ const RecurringTasks = () => {
 
   const deleteAll = async (recurring_id: string) => {
     if (!user) return;
+    if (isDeleting) return;
     const executeDel = async () => {
+      setIsDeleting(true);
       for (let task in recurringTasks) {
         if (recurringTasks[task].recurring.recurring_id === recurring_id) {
           const task_id = recurringTasks[task].task_id;
@@ -49,8 +55,14 @@ const RecurringTasks = () => {
           console.log("deleted: ", task_id);
         }
       }
+      setIsDeleting(false);
     };
     await executeDel();
+  };
+
+  const allGroupTasks = (recurring_id: string) => {
+    const tasks = filterTasksPerRecurringGroup(recurringTasks, recurring_id);
+    return tasks;
   };
 
   return (
@@ -59,8 +71,22 @@ const RecurringTasks = () => {
       <div className="flex w-full flex-col gap-2">
         {recurringGroups &&
           Object.keys(recurringGroups).map((task) => (
-            <div key={task} className="flex items-center">
-              <span>{recurringGroups[task].content}</span>
+            <div key={task} className="flex items-center rounded-md border p-2">
+              <div className="flex flex-col">
+                <span>{recurringGroups[task].content}</span>
+                <div className="flex gap-2 text-xs text-gray-400">
+                  <span> # of tasks:</span>
+                  <span>
+                    {
+                      Object.keys(
+                        allGroupTasks(
+                          recurringGroups[task].recurring.recurring_id
+                        )
+                      ).length
+                    }
+                  </span>
+                </div>
+              </div>
               <button
                 className="ml-auto rounded-md border p-1"
                 onClick={() => deleteAll(task)}

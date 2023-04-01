@@ -44,7 +44,7 @@ const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
       {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
       <div
-        className={`duratin-300 fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] p-4 pt-[var(--premium-nav-height)] shadow shadow-gray-600/40 backdrop-blur-sm transition-all ease-linear ${
+        className={`duratin-300 fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] py-4 pl-3 pr-3 pt-[var(--premium-nav-height)] shadow-md shadow-gray-300/20 backdrop-blur-sm transition-all ease-linear ${
           !sidebarState && "left-[-200px]"
         }`}
       >
@@ -82,7 +82,7 @@ const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
           <div className="flex w-full items-center justify-between">
             <span>Lists</span>
             <span
-              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md border p-1"
+              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md"
               onClick={() => setListCreate(true)}
             >
               +
@@ -104,15 +104,15 @@ const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
                     </span>
                   </Link>
                   <span
-                    className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md border p-1"
+                    className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md"
                     id={list}
                     onClick={handleEditList}
                   >
                     <Image
                       alt="edit-icon"
                       src={"/icons/edit.png"}
-                      width={18}
-                      height={18}
+                      width={14}
+                      height={14}
                       style={{ pointerEvents: "none" }}
                     />
                   </span>

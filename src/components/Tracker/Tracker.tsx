@@ -28,7 +28,7 @@ const Tracker = () => {
 
   return (
     <section
-      className={`flex h-full w-full max-w-[var(--max-width-content)] flex-col gap-2 py-2 ${
+      className={`flex h-full w-full max-w-[var(--max-width-content)] flex-col gap-2 ${
         trackerView === "day" && "max-w-[var(--max-width-content)]"
       } ${trackerView === "week" && "m-x-auto min-w-full"}`}
     >

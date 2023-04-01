@@ -100,7 +100,7 @@ export default function PremiumLayout({
             <PremiumSidebar sidebarState={sidebarState} />
             {sidebarState && (
               <span
-                className="fixed inset-0 z-10 sm:hidden"
+                className="fixed inset-0 z-10 bg-[var(--bg-modal)] sm:hidden"
                 onClick={handleToggleSidebar}
               ></span>
             )}

@@ -32,6 +32,7 @@ export const NewTaskInitial: Task = {
   working_on: false,
   is_recurring: false,
   recurring: {
+    recurring_days: [],
     recurring_end: "",
     recurring_id: "",
     recurring_number: 1,

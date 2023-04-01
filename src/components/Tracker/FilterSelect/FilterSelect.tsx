@@ -35,8 +35,8 @@ const FilterSelect = () => {
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (
-    <div className="z-20 m-auto flex w-fit min-w-fit items-center  gap-2">
-      <div className="min-w-fit">
+    <div className="z-20 m-auto flex h-[var(--premium-nav-height)] w-fit min-w-fit items-start ">
+      {/* <div className="min-w-fit">
         <DayPickerC
           setWantToAddDate={() => {}}
           removeDate={() => {}}
@@ -48,24 +48,26 @@ const FilterSelect = () => {
           dateToShow={dateToShow}
           addTask={false}
         />
-      </div>
-      <Link href={`/app/tracker/${today}`}>
+      </div> */}
+      <div className="flex">
+        <Link href={`/app/tracker/${today}`} className="flex h-full">
+          <button
+            onClick={() => setNewTrackerView("day")}
+            className="min-h-max flex h-full min-h-full items-center justify-center rounded-bl-3xl bg-black py-0.5 pr-2 pl-4 shadow-md shadow-gray-300/20 hover:bg-[var(--bg-color-tertiary-light)] active:shadow-sm active:shadow-gray-500/25"
+          >
+            Today
+          </button>
+        </Link>
         <button
-          onClick={() => setNewTrackerView("day")}
-          className="flex items-center justify-center rounded-md border border-[var(--box-shadow-light)] px-1 py-0.5 hover:bg-[var(--bg-color-tertiary-light)] active:shadow-sm active:shadow-gray-500/25"
+          onClick={() => setNewTrackerView("week")}
+          className="min-h-max flex h-full min-h-full items-center justify-center rounded-br-3xl bg-black py-0.5 pl-2 pr-4 shadow-md shadow-gray-300/20 hover:bg-[var(--bg-color-tertiary-light)] active:shadow-sm active:shadow-gray-500/25"
         >
-          Today
+          Week
         </button>
-      </Link>
-      <button
-        onClick={() => setNewTrackerView("week")}
-        className="flex w-full items-center justify-center rounded-md border border-[var(--box-shadow-light)] px-1 py-0.5 hover:bg-[var(--bg-color-tertiary-light)] active:shadow-sm active:shadow-gray-500/25"
-      >
-        Week
-      </button>
-      <button onClick={() => dispatch(setShowNoTimeTasks(!showNoTimeTasks))}>
+      </div>
+      {/* <button onClick={() => dispatch(setShowNoTimeTasks(!showNoTimeTasks))}>
         Toggle
-      </button>
+      </button> */}
     </div>
   );
 };
