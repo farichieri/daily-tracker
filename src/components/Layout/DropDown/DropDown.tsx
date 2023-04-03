@@ -22,7 +22,13 @@ const DropDown = ({
 
   return (
     <div className="container">
-      <div className="content" onClick={() => setOpen(!open)}>
+      <div
+        className="content"
+        onClick={(event) => {
+          event.preventDefault();
+          setOpen(!open);
+        }}
+      >
         {btnText}
       </div>
       {open && (
@@ -30,7 +36,13 @@ const DropDown = ({
           <div className="drop-menu" onClick={(e) => e.stopPropagation()}>
             <div className="menu">{children}</div>
           </div>
-          <div className="modal" onClick={() => setOpen(!open)}></div>
+          <div
+            className="modal"
+            onClick={(event) => {
+              event.preventDefault();
+              setOpen(!open);
+            }}
+          ></div>
         </>
       )}
       <style jsx>{`

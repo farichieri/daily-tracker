@@ -24,7 +24,8 @@ const ProfileDropDown = ({
       });
   };
 
-  const handleOpenProfile = () => {
+  const handleOpenProfile = (event: React.MouseEvent) => {
+    event.preventDefault();
     setIsSettingsOpen(true);
     setCloseDrop(true);
   };
@@ -35,31 +36,25 @@ const ProfileDropDown = ({
       setCloseDrop={setCloseDrop}
       btnText={<Avatar size={24} changeable={false} />}
     >
-      <div className="flex border-b py-1 px-2" onClick={handleOpenProfile}>
-        <button>Profile</button>
+      <div className="flex border-b" onClick={handleOpenProfile}>
+        <button
+          className={`flex w-full cursor-pointer items-center border-none bg-transparent py-1 px-2 text-[var(--text-color)] hover:bg-[var(--box-shadow-light)]`}
+        >
+          Profile
+        </button>
       </div>
       <div className="flex w-full gap-2 border-b px-2 py-1">
         <span>Theme</span>
         <DarkMode />
       </div>
-      <div className="flex py-1 px-2">
-        <button onClick={handleLogout}>Logout </button>
+      <div className="flex">
+        <button
+          className={`flex w-full cursor-pointer items-center border-none bg-transparent py-1 px-2 text-[var(--text-color)] hover:bg-[var(--box-shadow-light)]`}
+          onClick={handleLogout}
+        >
+          Logout{" "}
+        </button>
       </div>
-      <style jsx>{`
-        button {
-          background: transparent;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-          border: none;
-          color: var(--text-color);
-          font-weight: 500;
-        }
-        button:hover {
-          background: var(--box-shadow-light);
-        }
-      `}</style>
     </DropDown>
   );
 };

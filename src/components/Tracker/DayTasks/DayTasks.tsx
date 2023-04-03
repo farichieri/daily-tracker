@@ -110,7 +110,7 @@ const DayTasks = ({
   };
 
   return (
-    <section className="relative m-auto flex h-full w-full min-w-fit max-w-[var(--max-width-content)] flex-col gap-2 overflow-y-auto overflow-x-hidden">
+    <section className="relative m-auto flex h-full w-full min-w-fit max-w-[var(--max-width-content)] flex-col gap-2 overflow-y-auto overflow-x-hidden pb-4">
       <div className="flex">
         {index === 0 && (
           <button
