@@ -22,7 +22,7 @@ export default function DarkMode({}) {
   };
 
   useEffect(() => {
-    setTheme(localStorage.theme);
+    switchTheme();
   }, []);
 
   return (

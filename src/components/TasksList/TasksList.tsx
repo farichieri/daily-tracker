@@ -19,32 +19,11 @@ const TasksList = () => {
   }, [tasks, listID]);
 
   return (
-    <div className="list">
-      <div className="tasks-container">
+    <div className="flex h-full w-full flex-col justify-center gap-2">
+      <div className="mb-10 flex w-full flex-col items-center justify-center gap-2">
         <Tasks tasksState={tasksState} />
         <AddTask date={""} />
       </div>
-      <style jsx>{`
-        .list {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          height: 100%;
-        }
-        .tasks-container {
-          justify-content: space-between;
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          margin-bottom: 10rem;
-          width: 100%;
-        }
-        .header {
-          display: flex;
-          margin-left: auto;
-        }
-      `}</style>
     </div>
   );
 };

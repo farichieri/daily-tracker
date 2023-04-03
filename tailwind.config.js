@@ -32,6 +32,10 @@ module.exports = {
         "75vh": "75vh",
         full: "100vh",
       },
+      colors: {
+        "shadow-color": "var(--box-shadow)",
+        "shadow-color-l": "var(--box-shadow-light)",
+      },
     },
   },
   darkMode: "class",

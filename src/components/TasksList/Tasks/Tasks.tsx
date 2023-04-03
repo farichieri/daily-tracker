@@ -44,7 +44,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
   }, [tasksState]);
 
   return (
-    <div className="flex flex-col text-left">
+    <div className="flex w-full flex-col text-left">
       <div id="accordionExample5" className="flex flex-col">
         <div className="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
           <h2 className="mb-0 mt-0 " id="headingOne5">
@@ -82,7 +82,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
             data-te-collapse-show
             aria-labelledby="headingOne5"
           >
-            <div className="flex flex-col gap-2 py-2 px-2">
+            <div className="flex flex-col gap-0.5 overflow-auto py-2 px-2">
               {pendingTasks?.map((task, index) => (
                 <Link
                   href={`/app/lists/${listID}/task/${task.task_id}`}
@@ -136,7 +136,7 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
             data-te-collapse-item
             aria-labelledby="headingTwo5"
           >
-            <div className="flex flex-col gap-2 py-2 px-2">
+            <div className="flex flex-col gap-0.5 py-2 px-2">
               {showDoneTasks &&
                 doneTasks?.map((task, index) => (
                   <Link

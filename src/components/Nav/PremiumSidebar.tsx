@@ -44,7 +44,7 @@ const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
       {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
       <div
-        className={`duratin-300 fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] py-4 pl-3 pr-3 pt-[var(--premium-nav-height)] shadow-md shadow-gray-300/20 backdrop-blur-sm transition-all ease-linear ${
+        className={`duratin-300 fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] py-4 pl-3 pr-3 pt-[var(--premium-nav-height)] shadow-md shadow-gray-500/50 backdrop-blur-sm transition-all ease-linear dark:shadow-gray-300/20 ${
           !sidebarState && "left-[-200px]"
         }`}
       >

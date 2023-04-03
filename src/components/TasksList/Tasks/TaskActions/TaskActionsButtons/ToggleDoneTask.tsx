@@ -30,7 +30,7 @@ const ToggleDoneTask = ({ task }: { task: Task }) => {
   };
 
   return (
-    <div className="pointer-events-auto m-auto">
+    <div className="pointer-events-auto">
       <IconButton
         onClick={handleToggleDone}
         props={{ id: task.task_id }}

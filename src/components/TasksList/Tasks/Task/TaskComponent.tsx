@@ -63,14 +63,14 @@ const TaskComponent = ({
     >
       <Timeline index={index} lastIndex={lastIndex} task={task} />
       <div
-        className={`my-0.5 w-full rounded-md border border-[var(--box-shadow-light)] text-black shadow-sm transition-all duration-300 hover:opacity-100 hover:shadow-sm hover:shadow-zinc-800 dark:text-zinc-300 dark:hover:shadow-stone-400 ${
+        className={`my-0.5 w-full rounded-md border text-black shadow-sm transition-all duration-300 hover:opacity-100 hover:shadow-sm hover:shadow-zinc-800 dark:text-zinc-300 dark:hover:shadow-stone-400 ${
           task.done
-            ? "border-[#5bff6ea4] bg-[#22c93559] hover:shadow-sm dark:bg-[#5bff6e34]"
+            ? "border-[#5bff6eb7] bg-[#22c93559] hover:shadow-sm dark:bg-[#5bff6e34]"
             : task.working_on
-            ? "border-[#c1c13199] bg-[#bebe367b] dark:bg-[#77772152]"
+            ? "border-[#c1c131f1] bg-[#f1f12b85] dark:bg-[#77772157]"
             : failedTask
             ? "border-[#ed2929e0] bg-[#ed292960]"
-            : "bg-stone-200 dark:bg-neutral-800"
+            : "border-shadow-color-l bg-stone-200 dark:bg-neutral-800"
         } ${oldDay && "opacity-70"}`}
       >
         <div
@@ -158,7 +158,7 @@ const TaskComponent = ({
                   )
               )}
             </div>
-            <div className="pointer-events-auto w-full">
+            <div className="pointer-events-auto flex w-full flex-col gap-0.5">
               <Subtasks subtasks={subtasks} task={task} inTaskCompnent={true} />
             </div>
           </div>

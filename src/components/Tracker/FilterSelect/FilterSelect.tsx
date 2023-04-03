@@ -3,6 +3,7 @@ import { format, parseISO } from "date-fns";
 import {
   selectShowNoTimeTasks,
   selectTrackerSlice,
+  selectTrackerView,
   setShowNoTimeTasks,
   setTrackerView,
 } from "store/slices/trackerSlice";
@@ -19,6 +20,9 @@ const FilterSelect = () => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const dispatch = useDispatch();
   const showNoTimeTasks = useSelector(selectShowNoTimeTasks);
+  const viewSelected = useSelector(selectTrackerView);
+  const dayView = viewSelected === "day";
+  const weekView = viewSelected === "week";
 
   const setNewTrackerView = (option: string) => {
     dispatch(setTrackerView(option));
@@ -35,7 +39,10 @@ const FilterSelect = () => {
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (
-    <div className="z-20 m-auto flex h-[var(--premium-nav-height)] w-fit min-w-fit items-start ">
+    <div
+      className="z-20 m-auto flex h-[var(--premium-nav-height)] w-fit min-w-fit items-start 
+   "
+    >
       {/* <div className="min-w-fit">
         <DayPickerC
           setWantToAddDate={() => {}}
@@ -49,18 +56,33 @@ const FilterSelect = () => {
           addTask={false}
         />
       </div> */}
-      <div className="flex">
+      <div
+        className="flex overflow-auto rounded-b-3xl shadow-md shadow-gray-500/50 dark:shadow-gray-400/20
+"
+      >
+        <button
+          onClick={() => setNewTrackerView("day")}
+          className={`${
+            dayView ? "text-[var(--text-color)]" : "text-neutral-500"
+          } min-h-max ho5er:bg-[var(--bg-color-tertiary-light)] flex h-full min-h-full w-16 items-center justify-center border-b  border-transparent py-0.5 pl-4  pr-2 dark:bg-black `}
+        >
+          Day
+        </button>
         <Link href={`/app/tracker/${today}`} className="flex h-full">
           <button
             onClick={() => setNewTrackerView("day")}
-            className="min-h-max flex h-full min-h-full items-center justify-center rounded-bl-3xl bg-black py-0.5 pr-2 pl-4 shadow-md shadow-gray-300/20 hover:bg-[var(--bg-color-tertiary-light)] active:shadow-sm active:shadow-gray-500/25"
+            className={`${
+              date === today && dayView ? "text-red-500" : "text-neutral-500"
+            } min-h-max flex h-full min-h-full w-16 items-center justify-center border-b border-transparent py-0.5  px-2 hover:bg-[var(--bg-color-tertiary-light)] dark:bg-black `}
           >
             Today
           </button>
         </Link>
         <button
           onClick={() => setNewTrackerView("week")}
-          className="min-h-max flex h-full min-h-full items-center justify-center rounded-br-3xl bg-black py-0.5 pl-2 pr-4 shadow-md shadow-gray-300/20 hover:bg-[var(--bg-color-tertiary-light)] active:shadow-sm active:shadow-gray-500/25"
+          className={`${
+            weekView ? "text-[var(--text-color)]" : "text-neutral-500"
+          } min-h-max flex h-full min-h-full w-16 items-center justify-center rounded-br-3xl border border-transparent py-0.5  pl-2 pr-4 hover:bg-[var(--bg-color-tertiary-light)]  dark:bg-black `}
         >
           Week
         </button>

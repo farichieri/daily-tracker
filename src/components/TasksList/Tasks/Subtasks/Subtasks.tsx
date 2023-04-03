@@ -13,13 +13,12 @@ const Subtasks = ({
   return (
     <>
       {subtasks.map((subtask) => (
-        <div className="flex flex-col gap-0.5 py-0.5" key={subtask.task_id}>
-          <Subtask
-            parentTask={task}
-            subTask={subtask}
-            inTaskCompnent={inTaskCompnent}
-          />
-        </div>
+        <Subtask
+          key={subtask.task_id}
+          parentTask={task}
+          subTask={subtask}
+          inTaskCompnent={inTaskCompnent}
+        />
       ))}
     </>
   );

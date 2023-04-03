@@ -7,19 +7,19 @@ import {
   selectTrackerView,
   selectWeekSelected,
 } from "store/slices/trackerSlice";
+import { dbFormatDate } from "@/utils/formatDate";
+import { parseISO } from "date-fns";
 import { selectTasks } from "store/slices/tasksSlice";
 import { TasksArray, TaskGroup, TasksGroup } from "@/global/types";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import AddTask from "@/components/TasksList/Tasks/AddTask";
+import DaysSelector from "../DaysSelector";
+import Image from "next/image";
 import Link from "next/link";
 import Progressbar from "@/components/Layout/Progressbar/Progressbar";
 import TaskComponent from "@/components/TasksList/Tasks/Task/TaskComponent";
-import DaysSelector from "../DaysSelector";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import { dbFormatDate } from "@/utils/formatDate";
-import { parseISO } from "date-fns";
 
 const DayTasks = ({
   tasksFiltered,

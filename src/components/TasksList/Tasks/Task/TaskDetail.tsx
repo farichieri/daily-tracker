@@ -1,13 +1,9 @@
 import { db } from "@/utils/firebase.config";
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
-import { format, formatISO, parseISO } from "date-fns";
-import { selectUser } from "store/slices/authSlice";
-import {
-  selectTasks,
-  setDeleteTask,
-  setUpdateTask,
-} from "store/slices/tasksSlice";
+import { doc, setDoc } from "firebase/firestore";
 import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
+import { format, formatISO, parseISO } from "date-fns";
+import { selectTasks, setUpdateTask } from "store/slices/tasksSlice";
+import { selectUser } from "store/slices/authSlice";
 import { Task, TasksArray, TasksGroup } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -20,6 +16,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import SelectEmoji from "../TaskActions/TaskActionsModals/SelectEmoji";
 import Subtasks from "@/components/TasksList/Tasks/Subtasks/Subtasks";
 import TaskActions from "@/components/TasksList/Tasks/TaskActions/TaskActions";
+import TaskBehaviors from "../TaskActions/TaskBehaviors";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import TimeTrackingButton from "../TaskActions/TaskActionsButtons/TimeTrackingButton";
 
@@ -110,18 +107,9 @@ const TaskDetail = ({
         },
       };
       await setDoc(docRef, taskUpdated);
+      console.log({ taskUpdated });
       dispatch(setUpdateTask(taskUpdated));
     }
-  };
-
-  const handleDelete = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    router.push(redirectLink);
-    if (!user) return;
-    const task_id: string = (event.target as HTMLButtonElement).id;
-    const docRef = doc(db, "users", user.uid, "tasks", task_id);
-    dispatch(setDeleteTask(task_id));
-    await deleteDoc(docRef);
   };
 
   const closeModalOnClick = () => {
@@ -193,15 +181,22 @@ const TaskDetail = ({
 
   return (
     <Modal onCloseRedirect={redirectLink} closeModalOnClick={closeModalOnClick}>
-      <div className="task-container">
-        <button className="delete" onClick={handleDelete} id={String(taskID)}>
-          Delete task
-        </button>
+      <div
+        className={`flex h-[85vh] max-h-[90vh] w-[95vw] max-w-[var(--max-width-task)] flex-col gap-4 overflow-y-auto rounded-3xl border px-6 py-4 text-left ${
+          task.done
+            ? "pointer-events-none border-[var(--b-done)] opacity-40"
+            : task.working_on
+            ? "pointer-events-auto border-[var(--b-working-on)] opacity-100"
+            : "pointer-events-auto border-transparent opacity-100"
+        } `}
+      >
+        <TaskBehaviors redirectLink={redirectLink} task={task} />
         <TaskActions />
-        <div className="times">
+        <div className="flex  items-center gap-2">
           <div className="day-picker">
             {!wantToAddDate && !taskState.date_set.date_iso ? (
               <button
+                className="rounded-lg border border-[var(--box-shadow-light)] p-1"
                 onClick={() => {
                   setWantToAddDate(true);
                   handleDateSelected(dateSelected);
@@ -272,9 +267,9 @@ const TaskDetail = ({
             handleChange={addEmoji}
           />
         )}
-        <div className="task-content">
+        <div className="flex items-center gap-2">
           <button
-            className="flex w-min cursor-pointer"
+            className="flex cursor-pointer items-center justify-center rounded-md border border-shadow-color-l p-1"
             onClick={(event) => {
               event.preventDefault();
               setOpenEmojis(true);
@@ -282,15 +277,17 @@ const TaskDetail = ({
           >
             😃
           </button>
-          <input
-            type="text"
+          <ReactTextareaAutosize
+            minRows={1}
             name="content"
             value={taskState.content}
+            onFocus={() => setInputFocus("description")}
+            placeholder="Add a note"
             onChange={handleChange}
-            onFocus={() => setInputFocus("content")}
             spellCheck="false"
             autoComplete="off"
             onBlur={handleSave}
+            className="w-full resize-none overflow-hidden rounded-md border border-shadow-color-l bg-transparent p-1 text-2xl font-semibold"
           />
         </div>
         <div className="comments-container">
@@ -305,92 +302,25 @@ const TaskDetail = ({
             spellCheck="false"
             autoComplete="off"
             onBlur={handleSave}
-            className="textarea"
-            style={{
-              boxSizing: "border-box",
-              display: "flex",
-              background: "transparent",
-              color: "var(--text-color)",
-              width: "100%",
-              resize: "none",
-              userSelect: "all",
-              border: "1px solid gray",
-              borderRadius: "6px",
-              padding: ".25rem",
-            }}
+            className="text-md w-full resize-none overflow-hidden rounded-md border border-shadow-color-l bg-transparent p-1"
           />
         </div>
         <div className="subtasks">
           <span className="title">Subtasks</span>
-          <Subtasks
-            task={task}
-            inTaskCompnent={false}
-            subtasks={subtasksState}
-          />
+          <div className="flex w-full flex-col justify-between gap-1 py-2">
+            <Subtasks
+              task={task}
+              inTaskCompnent={false}
+              subtasks={subtasksState}
+            />
+          </div>
           <AddSubtask />
         </div>
-        <div className="attachments-container">
+        <div className="flex flex-col">
           <span className="title">Attachments</span>
-          <div className="attachments"></div>
+          <div className="flex h-14 w-full rounded-md border border-shadow-color-l"></div>
         </div>
       </div>
-      <style jsx>
-        {`
-          .task-container {
-            color: var(--text-secondary-color);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            height: 85vh;
-            max-height: 90vh;
-            max-width: var(--max-width-task);
-            overflow-y: auto;
-            padding: 2rem 1.5rem;
-            text-align: left;
-            width: 95vw;
-            pointer-events: ${task.done ? "none" : "initial"};
-            opacity: ${task.done ? "0.4" : "1"};
-          }
-          div {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-          }
-          input {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-size: 1.5rem;
-          }
-          .attachments {
-            width: 100%;
-            border: 1px solid var(--box-shadow-light);
-            padding: 0.25rem;
-            height: 3rem;
-            border-radius: 0.5rem;
-          }
-          .delete {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-          }
-          .times {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 100%;
-          }
-          button {
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--box-shadow);
-            color: var(--text-color);
-            border-radius: 6px;
-            padding: 0.25rem 0.5rem;
-          }
-        `}
-      </style>
     </Modal>
   );
 };

@@ -1,10 +1,14 @@
+import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
+import { selectUser } from "store/slices/authSlice";
+import {
+  selectLayoutState,
+  setIsSidebarOpen,
+  toggleIsCreatingProject,
+} from "store/slices/layoutSlice";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PremiumNav from "../Nav/PremiumNav";
 import PremiumSidebar from "../Nav/PremiumSidebar";
-import { toggleIsCreatingProject } from "store/slices/layoutSlice";
-import { selectUser } from "store/slices/authSlice";
-import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
 import {
   getProjects,
   getLists,
@@ -32,11 +36,24 @@ export default function PremiumLayout({
   const { isDataFetched } = useSelector(selectGlobalState);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
   const trackerView = useSelector(selectTrackerView);
-  const [sidebarState, setSidebarState] = useState(true);
+  const { isSidebarOpen } = useSelector(selectLayoutState);
 
   const handleToggleSidebar = () => {
-    setSidebarState(!sidebarState);
+    if (
+      localStorage.sidebarState === "true" ||
+      !("sidebarState" in localStorage)
+    ) {
+      localStorage.sidebarState = false;
+      dispatch(setIsSidebarOpen(false));
+    } else {
+      localStorage.sidebarState = true;
+      dispatch(setIsSidebarOpen(true));
+    }
   };
+
+  useEffect(() => {
+    handleToggleSidebar();
+  }, []);
 
   const fetchAllData = async () => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -94,11 +111,11 @@ export default function PremiumLayout({
         !isVerifyingUser && (
           <>
             <PremiumNav
-              sidebarState={sidebarState}
+              sidebarState={isSidebarOpen}
               handleToggleSidebar={handleToggleSidebar}
             />
-            <PremiumSidebar sidebarState={sidebarState} />
-            {sidebarState && (
+            <PremiumSidebar sidebarState={isSidebarOpen} />
+            {isSidebarOpen && (
               <span
                 className="fixed inset-0 z-10 bg-[var(--bg-modal)] sm:hidden"
                 onClick={handleToggleSidebar}
@@ -109,7 +126,7 @@ export default function PremiumLayout({
       )}
       <div
         className={`duratin-300 flex h-full w-full flex-col items-center px-2 transition-all ease-linear ${
-          sidebarState && "sm:pl-[10.5rem] "
+          isSidebarOpen && "sm:pl-[10.5rem] "
         } ${
           router.pathname.includes("tracker") && trackerView === "week"
             ? "3xl:pl-0"

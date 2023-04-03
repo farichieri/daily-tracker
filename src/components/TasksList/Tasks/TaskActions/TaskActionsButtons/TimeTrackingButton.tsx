@@ -37,7 +37,7 @@ const TimeTrackingButton = ({
     );
   } else {
     return (
-      <div className={`relative ${inTaskCompnent && "pointer-events-none"}`}>
+      <div className={`relative  ${inTaskCompnent && "pointer-events-none"}`}>
         {openSpent && (
           <TimeModal
             handleSeconds={handleSeconds}

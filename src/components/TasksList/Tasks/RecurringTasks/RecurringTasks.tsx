@@ -66,7 +66,7 @@ const RecurringTasks = () => {
   };
 
   return (
-    <div className="flex w-full max-w-[var(--max-width-content)] flex-col gap-4">
+    <div className="flex w-full max-w-[var(--max-width-content)] flex-col gap-2">
       <p>Recurring tasks</p>
       <div className="flex w-full flex-col gap-2">
         {recurringGroups &&

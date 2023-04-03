@@ -33,7 +33,11 @@ const AssignList = ({
   const handleToggleList = (event: React.MouseEvent) => {
     event.preventDefault();
     const id = (event.target as HTMLButtonElement).id;
-    setListSelected(id);
+    if (listSelected.includes(id)) {
+      setListSelected("");
+    } else {
+      setListSelected(id);
+    }
   };
 
   const handleSave = async () => {
@@ -53,14 +57,16 @@ const AssignList = ({
 
   return (
     <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
-      <div className="assign-labels-container">
-        <div className="title">Asign Label</div>
-        <div className="labels-container">
+      <div className="flex min-h-[150px] w-[280px] flex-col items-center justify-between gap-2 p-2">
+        <div className="w-full border-b text-center text-lg font-medium">
+          <span>Asign List</span>
+        </div>
+        <div className="flex w-full flex-col gap-2">
           {Object.keys(listsNotArchived).map((list: string) => (
             <span
               key={list}
               id={list}
-              className="label"
+              className="flex items-center justify-between "
               onClick={handleToggleList}
             >
               <span>{listsNotArchived[list].list_name}</span>
@@ -83,40 +89,21 @@ const AssignList = ({
             </span>
           ))}
         </div>
-        <div className="action-buttons">
-          <button onClick={() => closeModalOnClick()}>Cancel</button>
-          <button onClick={handleSave}>Accept</button>
+        <div className="flex w-full items-center justify-center gap-2 border-t pt-2">
+          <button
+            className="flex rounded-md border border-gray-500 p-1 active:shadow active:shadow-gray-500"
+            onClick={() => closeModalOnClick()}
+          >
+            Cancel
+          </button>
+          <button
+            className="flex rounded-md border border-gray-500 p-1 active:shadow active:shadow-gray-500"
+            onClick={handleSave}
+          >
+            Accept
+          </button>
         </div>
       </div>
-      <style jsx>{`
-        .assign-labels-container {
-          width: 300px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 1rem;
-          gap: 0.5rem;
-        }
-        .labels-container {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-        button {
-          cursor: pointer;
-        }
-        .label {
-          width: 100%;
-          padding: 0.5rem;
-          border-radius: 6px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          cursor: pointer;
-        }
-      `}</style>
     </Modal>
   );
 };

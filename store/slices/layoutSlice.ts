@@ -49,6 +49,9 @@ export const layoutSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setIsSidebarOpen: (state, action: PayloadAction<boolean>) => {
+      state.isSidebarOpen = action.payload;
+    },
   },
 });
 
@@ -59,9 +62,11 @@ export const {
   closeModal,
   setIsLoading,
   toggleIsEditingList,
+  setIsSidebarOpen,
 } = layoutSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
+export const selectLayoutState = (state: RootState) => state.layout;
 export const selectIsCreatingProject = (state: RootState) =>
   state.layout.isCreatingProject;
 export const selectIsEditingProject = (state: RootState) =>

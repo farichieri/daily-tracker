@@ -1,5 +1,5 @@
-import { GoalGroup, ListGroup, Task, TaskGroup } from "@/global/types";
 import { dbFormatDate } from "@/utils/formatDate";
+import { GoalGroup, ListGroup, Task, TaskGroup } from "@/global/types";
 import { parseISO } from "date-fns";
 
 export const filterObjectIncludes = (
@@ -112,6 +112,21 @@ export const filterTasksPerRecurringGroup = (
   Object.keys(obj).reduce(
     (acc, val) =>
       !(obj[val]["recurring"]["recurring_id"] === recurring_id)
+        ? acc
+        : {
+            ...acc,
+            [val]: obj[val],
+          },
+    {}
+  );
+
+export const filterUndefinedTasks = (obj: TaskGroup) =>
+  Object.keys(obj).reduce(
+    (acc, val) =>
+      obj[val]["date_set"]["date_iso"] !== "" ||
+      (obj[val]["date_set"]["date_iso"] === "" &&
+        obj[val]["project_id"] !== "tracker") ||
+      obj[val]["parent_id"] !== ""
         ? acc
         : {
             ...acc,

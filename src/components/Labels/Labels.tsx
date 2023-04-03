@@ -1,37 +1,37 @@
-import Link from 'next/link';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectLabels } from 'store/slices/labelsSlice';
-import CreateAndEditLabel from './CreateAndEditLabel';
+import { selectLabels } from "store/slices/labelsSlice";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import CreateAndEditLabel from "./CreateAndEditLabel";
+import Link from "next/link";
 
 const Labels = () => {
   const { labels } = useSelector(selectLabels);
   const [createLabel, setCreateLabel] = useState(false);
-  const [labelToEdit, setLabelToEdit] = useState('');
+  const [labelToEdit, setLabelToEdit] = useState("");
 
   const closeModalOnClick = () => {
     setCreateLabel(false);
-    setLabelToEdit('');
+    setLabelToEdit("");
   };
   return (
-    <div className='labels'>
+    <div className="labels">
       {createLabel && (
         <CreateAndEditLabel
-          labelToEdit={''}
-          action='create'
+          labelToEdit={""}
+          action="create"
           closeModalOnClick={closeModalOnClick}
         />
       )}
       {labelToEdit && (
         <CreateAndEditLabel
           labelToEdit={labelToEdit}
-          action='edit'
+          action="edit"
           closeModalOnClick={closeModalOnClick}
         />
       )}
-      <div className='title-container'>
-        <span className=''>Labels</span>
-        <button className='add-label' onClick={() => setCreateLabel(true)}>
+      <div className="title-container">
+        <span className="">Labels</span>
+        <button className="add-label" onClick={() => setCreateLabel(true)}>
           +
         </button>
       </div>
@@ -44,23 +44,23 @@ const Labels = () => {
         to see the time spent in that kind of tasks in the days you wanna see
         and with a graphic included.
       </span>
-      <div className='labels-container'>
+      <div className="labels-container">
         {labels &&
           Object.keys(labels).map((label) => (
-            <div className='label-container' key={label}>
+            <div className="label-container" key={label}>
               <span
-                className='label-name'
+                className="label-name"
                 style={{ background: `${labels[label].label_color}` }}
               >
                 {labels[label].label_name}
               </span>
-              <div className='buttons'>
+              <div className="buttons">
                 <Link href={`/app/labels/${label}`}>
                   <button>Tasks</button>
                 </Link>
                 <button
                   onClick={() => setLabelToEdit(label)}
-                  className='edit-label'
+                  className="edit-label"
                 >
                   Edit
                 </button>

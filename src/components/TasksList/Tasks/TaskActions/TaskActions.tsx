@@ -4,14 +4,12 @@ import { selectTasks } from "store/slices/tasksSlice";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import AssignLabel from "./TaskActionsModals/AssignLabel";
 import AssignList from "./TaskActionsModals/AssignList";
 import AssignReminder from "./TaskActionsModals/AssignReminder";
 import LabelsButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/LabelsButton";
 import ListButton from "./TaskActionsButtons/ListButton";
 import ReminderButton from "@/components/TasksList/Tasks/TaskActions/TaskActionsButtons/ReminderButton";
-import ToggleDoneTask from "./TaskActionsButtons/ToggleDoneTask";
-import WorkingOnButton from "./TaskActionsButtons/WorkingOnButton";
-import AssignLabel from "./TaskActionsModals/AssignLabel";
 
 const TaskActions = () => {
   const router = useRouter();
@@ -37,7 +35,7 @@ const TaskActions = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-fit flex-col gap-2">
       <div className="flex w-full min-w-full items-center justify-between gap-2">
         {openAssignLabel && (
           <AssignLabel
@@ -66,14 +64,6 @@ const TaskActions = () => {
         </div>
         <div className="lists">
           <ListButton onClick={() => setOpenAssignList(true)} task={task} />
-        </div>
-        {!task.done && (
-          <div className="working-on">
-            <WorkingOnButton task={task} />
-          </div>
-        )}
-        <div className="ml-auto">
-          <ToggleDoneTask task={task} />
         </div>
       </div>
       <div className="flex gap-2">

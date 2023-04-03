@@ -58,7 +58,6 @@ const Tracker = () => {
           div::-webkit-scrollbar {
             display: none;
           }
-
           div {
             -ms-overflow-style: none;
             scrollbar-width: none;

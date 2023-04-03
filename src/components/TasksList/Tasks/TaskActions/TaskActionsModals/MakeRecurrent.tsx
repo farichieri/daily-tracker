@@ -118,7 +118,7 @@ const MakeRecurrent = ({
 
   return (
     <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
-      <div className="flex h-[300px] w-[270px] flex-col  items-start justify-start gap-3 p-2">
+      <div className="gap- flex h-[300px] w-[270px]  flex-col items-start justify-start p-2">
         <span className="text-sm">Repeat mode</span>
         <div className="flex gap-2">
           <div className="">Every</div>

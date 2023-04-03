@@ -310,7 +310,7 @@ const AddTask = ({ date }: { date: string }) => {
           </div>
           <div className="content-container">
             <div className="flex w-full">
-              <div className="flex w-full flex-col">
+              <div className="flex w-full flex-col gap-1">
                 <div className="row">
                   <button
                     className="cursor-pointer"
@@ -342,7 +342,7 @@ const AddTask = ({ date }: { date: string }) => {
                   <input
                     type="text"
                     name="description"
-                    placeholder="Description"
+                    placeholder="Note"
                     onFocus={() => setInputFocus("description")}
                     value={input.description}
                     onChange={handleChange}

@@ -31,6 +31,14 @@
     --tooltip-text-color: gray;
     --tooltip-background-color: #00000080;
     --progress-done: #008c00;
+
+    /* Tasks */
+    --bg-done: #5bff6e34;
+    --b-done: #5bff6ec0;
+    --b-working-on: #c1c131f1;
+    --bg-working-on: #77772169;
+    --b-failed: #ed2929e0;
+    --bg-neutral: "neutral-800";
   }
   :root {
     --text-color: black;
@@ -66,5 +74,13 @@
     /* Tooltip */
     --tooltip-margin: 32px;
     --tooltip-arrow-size: 4px;
+
+    /* Tasks */
+    --b-done: #12f82dc0;
+    --bg-done: #22c93559;
+    --b-working-on: #c1c131f1;
+    --bg-working-on: #f1f12b85;
+    --b-failed: #ed2929e0;
+    --bg-neutral: "stone-200";
   }
 }

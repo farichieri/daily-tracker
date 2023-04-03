@@ -1,14 +1,14 @@
-import IconButton from '@/components/Layout/Icon/IconButton';
-import { NewTaskInitial } from '@/global/initialTypes';
-import { Task } from '@/global/types';
-import { db } from '@/utils/firebase.config';
-import { formatISO } from 'date-fns';
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
-import { setAddNewTask } from 'store/slices/tasksSlice';
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "@/utils/firebase.config";
+import { formatISO } from "date-fns";
+import { NewTaskInitial } from "@/global/initialTypes";
+import { selectUser } from "store/slices/authSlice";
+import { setAddNewTask } from "store/slices/tasksSlice";
+import { Task } from "@/global/types";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import IconButton from "@/components/Layout/Icon/IconButton";
 
 const AddSubtask = () => {
   const router = useRouter();
@@ -23,9 +23,9 @@ const AddSubtask = () => {
     if (newSubtaskState.content) {
       const project_id = newSubtaskState.project_id
         ? newSubtaskState.project_id
-        : 'tracker';
+        : "tracker";
 
-      const newDocRef = doc(collection(db, 'users', user.uid, 'tasks'));
+      const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
       const newSubtask: Task = {
         ...newSubtaskState,
         added_at: formatISO(new Date()),
@@ -53,50 +53,29 @@ const AddSubtask = () => {
   };
 
   return (
-    <form onSubmit={handleAddSubtask}>
+    <form
+      onSubmit={handleAddSubtask}
+      className="g-1 flex items-center rounded-md border border-[var(--box-shadow-light)] p-1 focus-within:border-[var(--text-color)]"
+    >
       <input
-        type='text'
-        placeholder='Add a subtask'
-        name='content'
+        type="text"
+        placeholder="Add a subtask"
+        name="content"
         value={newSubtaskState.content}
         onChange={handleChange}
         readOnly={newSubtaskState.done}
-        spellCheck='false'
-        autoComplete='off'
+        spellCheck="false"
+        autoComplete="off"
+        className="w-full border-transparent bg-transparent p-1 text-[var(--text-color)] outline-none  "
       />
       <IconButton
-        props={{ type: 'submit' }}
+        props={{ type: "submit" }}
         onClick={handleAddSubtask}
-        src={'/icons/add.png'}
-        alt='Add-Icon'
+        src={"/icons/add.png"}
+        alt="Add-Icon"
         width={24}
         height={24}
       />
-      <style jsx>{`
-        form {
-          display: flex;
-          align-items: center;
-          border: 1px solid var(--box-shadow-light);
-          border-radius: 0.5rem;
-          padding: 0.5rem;
-          gap: 0.5rem;
-        }
-        input {
-          width: 100%;
-          background: transparent;
-          border: transparent;
-          outline: none;
-          color: var(--text-color);
-        }
-        input:focus & form {
-          border: 1px solid var(--text-shadow);
-          background: red;
-        }
-        input.done {
-          text-decoration: line-through;
-          cursor: initial;
-        }
-      `}</style>
     </form>
   );
 };
