@@ -33,7 +33,13 @@ const DropDown = ({
       </div>
       {open && (
         <>
-          <div className="drop-menu" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="drop-menu"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          >
             <div className="menu">{children}</div>
           </div>
           <div
@@ -82,13 +88,14 @@ const DropDown = ({
         .menu {
           height: auto;
           width: 100%;
+          width: auto;
         }
         .drop-menu {
           position: absolute;
           background: var(--modal);
           box-shadow: 0 0 6px 1px var(--box-shadow-light);
           border-radius: 6px;
-          top: 2.65rem;
+          top: 2rem;
           right: 0.1rem;
           z-index: 12;
           font-size: 80%;

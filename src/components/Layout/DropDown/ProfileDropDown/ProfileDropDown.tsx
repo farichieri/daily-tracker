@@ -3,8 +3,8 @@ import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Avatar from "@/components/Avatar/Avatar";
-import DropDown from "../DropDown";
 import DarkMode from "@/components/DarkMode/DarkMode";
+import DropDown from "../DropDown";
 
 const ProfileDropDown = ({
   setIsSettingsOpen,

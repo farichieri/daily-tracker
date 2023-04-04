@@ -20,7 +20,7 @@ const Modal = ({
   return (
     <>
       {onCloseRedirect ? (
-        <div className="min-w-screen max-w-screen fixed inset-0 z-[80] m-0 flex min-h-screen items-center justify-center">
+        <div className="min-w-screen max-w-screen fixed inset-0 z-[100] m-0 flex min-h-screen items-center justify-center">
           <Link href={onCloseRedirect} style={{ cursor: "initial" }}>
             <div className="min-w-screen fixed inset-0 m-0 flex min-h-screen items-center justify-center bg-[var(--bg-modal)]"></div>
           </Link>
@@ -45,7 +45,7 @@ const Modal = ({
           </div>
         </div>
       ) : (
-        <div className="min-w-screen max-w-screen fixed inset-0 z-[80] m-0 flex min-h-screen items-center justify-center">
+        <div className="min-w-screen max-w-screen fixed inset-0 z-[100] m-0 flex min-h-screen items-center justify-center ">
           <div
             className="min-w-screen fixed inset-0 m-0 flex min-h-screen items-center justify-center bg-[var(--bg-modal)]"
             onClick={handleCloseModal}

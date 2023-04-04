@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import Link from "next/link";
+import Image from "next/image";
+import PlannerDropDown from "@/components/Layout/DropDown/PlannerDropDown/PlannerDropDown";
 
 const FilterSelect = () => {
   const router = useRouter();
@@ -19,7 +21,6 @@ const FilterSelect = () => {
   const { today } = useSelector(selectTrackerSlice);
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const dispatch = useDispatch();
-  const showNoTimeTasks = useSelector(selectShowNoTimeTasks);
   const viewSelected = useSelector(selectTrackerView);
   const dayView = viewSelected === "day";
   const weekView = viewSelected === "week";
@@ -39,32 +40,13 @@ const FilterSelect = () => {
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (
-    <div
-      className="z-20 m-auto flex h-[var(--premium-nav-height)] w-fit min-w-fit items-start 
-   "
-    >
-      {/* <div className="min-w-fit">
-        <DayPickerC
-          setWantToAddDate={() => {}}
-          removeDate={() => {}}
-          open={openDateSelector}
-          setOpen={setOpenDateSelector}
-          withModal={true}
-          dateSelected={dateSelected}
-          handleDateSelected={handleDateSelected}
-          dateToShow={dateToShow}
-          addTask={false}
-        />
-      </div> */}
-      <div
-        className="flex overflow-auto rounded-b-3xl shadow-md shadow-gray-500/50 dark:shadow-gray-400/20
-"
-      >
+    <div className="h-fit z-20 m-auto flex max-h-max w-fit min-w-fit flex-col items-center gap-2">
+      <div className="flex items-start overflow-auto rounded-b-3xl text-xs  shadow-md shadow-gray-500/50 dark:bg-[var(--cool)] dark:shadow-gray-400/20">
         <button
           onClick={() => setNewTrackerView("day")}
           className={`${
             dayView ? "text-[var(--text-color)]" : "text-neutral-500"
-          } min-h-max ho5er:bg-[var(--bg-color-tertiary-light)] flex h-full min-h-full w-16 items-center justify-center border-b  border-transparent py-0.5 pl-4  pr-2 dark:bg-black `}
+          } flex h-6 w-12 items-center justify-center border-b border-transparent pl-4 pr-2 duration-300 hover:bg-[var(--bg-color-tertiary-light)]   sm:w-16`}
         >
           Day
         </button>
@@ -73,7 +55,7 @@ const FilterSelect = () => {
             onClick={() => setNewTrackerView("day")}
             className={`${
               date === today && dayView ? "text-red-500" : "text-neutral-500"
-            } min-h-max flex h-full min-h-full w-16 items-center justify-center border-b border-transparent py-0.5  px-2 hover:bg-[var(--bg-color-tertiary-light)] dark:bg-black `}
+            } flex h-6 w-12 items-center justify-center border-b border-transparent px-2 duration-300 hover:bg-[var(--bg-color-tertiary-light)]  sm:w-16`}
           >
             Today
           </button>
@@ -82,14 +64,29 @@ const FilterSelect = () => {
           onClick={() => setNewTrackerView("week")}
           className={`${
             weekView ? "text-[var(--text-color)]" : "text-neutral-500"
-          } min-h-max flex h-full min-h-full w-16 items-center justify-center rounded-br-3xl border border-transparent py-0.5  pl-2 pr-4 hover:bg-[var(--bg-color-tertiary-light)]  dark:bg-black `}
+          } flex h-6 w-12 items-center justify-center border border-transparent pl-2 pr-4 duration-300 hover:bg-[var(--bg-color-tertiary-light)]  sm:w-16`}
         >
           Week
         </button>
       </div>
-      {/* <button onClick={() => dispatch(setShowNoTimeTasks(!showNoTimeTasks))}>
-        Toggle
-      </button> */}
+      <div className="flex w-full items-center justify-center gap-2">
+        <div className="ml-10">
+          <DayPickerC
+            setWantToAddDate={() => {}}
+            removeDate={() => {}}
+            open={openDateSelector}
+            setOpen={setOpenDateSelector}
+            withModal={true}
+            dateSelected={dateSelected}
+            handleDateSelected={handleDateSelected}
+            dateToShow={dateToShow}
+            addTask={false}
+          />
+        </div>
+        <div className="w-10">
+          <PlannerDropDown />
+        </div>
+      </div>
     </div>
   );
 };

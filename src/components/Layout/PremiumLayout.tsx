@@ -51,10 +51,6 @@ export default function PremiumLayout({
     }
   };
 
-  useEffect(() => {
-    handleToggleSidebar();
-  }, []);
-
   const fetchAllData = async () => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     if (
@@ -86,6 +82,7 @@ export default function PremiumLayout({
   useEffect(() => {
     if (!isDataFetched) {
       fetchAllData();
+      handleToggleSidebar();
     }
   }, [user]);
 

@@ -1,10 +1,10 @@
 import { add, format, formatISO, startOfDay } from "date-fns";
+import { NewTaskInitial } from "@/global/initialTypes";
 import { Recurring } from "@/global/types";
 import { useState } from "react";
 import { uuidv4 } from "@firebase/util";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import Modal from "@/components/Modal/Modal";
-import { NewTaskInitial } from "@/global/initialTypes";
 
 const MakeRecurrent = ({
   closeModalOnClick,
@@ -118,8 +118,10 @@ const MakeRecurrent = ({
 
   return (
     <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
-      <div className="gap- flex h-[300px] w-[270px]  flex-col items-start justify-start p-2">
-        <span className="text-sm">Repeat mode</span>
+      <div className="flex min-h-[150px] w-[280px] flex-col items-center justify-between gap-2 p-2">
+        <div className="w-full border-b text-center text-lg font-medium">
+          Repeat mode
+        </div>
         <div className="flex gap-2">
           <div className="">Every</div>
           <select
@@ -180,31 +182,35 @@ const MakeRecurrent = ({
         )}
         <div className="flex w-fit min-w-full items-center gap-1">
           <span className="flex w-full min-w-fit">Starting from</span>
-          <DayPickerC
-            addTask={false}
-            dateSelected={startDay}
-            dateToShow={dateStartDisplay}
-            handleDateSelected={handleSelectStart}
-            open={openStartPicker}
-            removeDate={removeDate}
-            setOpen={setOpenStartPicker}
-            setWantToAddDate={() => {}}
-            withModal={true}
-          />
+          <div className="w-full min-w-fit rounded-md border border-[var(--box-shadow)] p-1">
+            <DayPickerC
+              addTask={false}
+              dateSelected={startDay}
+              dateToShow={dateStartDisplay}
+              handleDateSelected={handleSelectStart}
+              open={openStartPicker}
+              removeDate={removeDate}
+              setOpen={setOpenStartPicker}
+              setWantToAddDate={() => {}}
+              withModal={true}
+            />
+          </div>
         </div>
         <div className="flex w-fit min-w-full items-center gap-1">
           <span className="flex w-full min-w-fit">Ends</span>
-          <DayPickerC
-            addTask={false}
-            dateSelected={endDay}
-            dateToShow={dateEndSDisplay}
-            handleDateSelected={handleSelectEnd}
-            open={openEndPicker}
-            removeDate={removeDate}
-            setOpen={setOpenEndPicker}
-            setWantToAddDate={() => {}}
-            withModal={true}
-          />
+          <div className="w-full min-w-fit rounded-md border border-[var(--box-shadow)] p-1">
+            <DayPickerC
+              addTask={false}
+              dateSelected={endDay}
+              dateToShow={dateEndSDisplay}
+              handleDateSelected={handleSelectEnd}
+              open={openEndPicker}
+              removeDate={removeDate}
+              setOpen={setOpenEndPicker}
+              setWantToAddDate={() => {}}
+              withModal={true}
+            />
+          </div>
         </div>
         <div className="mt-auto flex w-full items-center justify-center gap-2 border-t pt-2">
           <button

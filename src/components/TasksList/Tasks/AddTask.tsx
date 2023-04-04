@@ -33,18 +33,18 @@ import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingBut
 import { maxRecurringTasks } from "@/global/importantVars";
 
 const AddTask = ({ date }: { date: string }) => {
-  const router = useRouter();
   const dispatch = useDispatch();
-  const { user } = useSelector(selectUser);
-  const { listID } = router.query;
+  const router = useRouter();
   const { labels } = useSelector(selectLabels);
+  const { listID } = router.query;
+  const { user } = useSelector(selectUser);
   const [input, setInput] = useState<Task>(NewTaskInitial);
+  const [inputFocus, setInputFocus] = useState("content");
+  const [openAddTask, setOpenAddTask] = useState(false);
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignList, setOpenAssignList] = useState(false);
-  const [openAddTask, setOpenAddTask] = useState(false);
-  const [openRecurrent, setOpenRecurrent] = useState(false);
   const [openEmojis, setOpenEmojis] = useState(false);
-  const [inputFocus, setInputFocus] = useState("content");
+  const [openRecurrent, setOpenRecurrent] = useState(false);
 
   const addEmoji = (event: any) => {
     const value = input[inputFocus] + " " + event.native;
@@ -482,6 +482,9 @@ const AddTask = ({ date }: { date: string }) => {
                     </span>
                   </div>
                 )}
+              </div>
+              <div className="">
+                <button>Split in sessions</button>
               </div>
               <div className="w-full">
                 <button

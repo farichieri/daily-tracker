@@ -29,8 +29,15 @@ const DayPickerC = ({
   return (
     <div className="container">
       <div className="content" onClick={() => setOpen(!open)}>
+        <Image
+          src={"/icons/calendar.png"}
+          alt="collapse-icon"
+          width={12}
+          height={12}
+          style={{ pointerEvents: "none" }}
+        />
         <span>{dateToShow}</span>
-        <div className="icon-container">
+        {/* <div className="icon-container">
           {open ? (
             <Image
               src={"/icons/collapse.png"}
@@ -48,7 +55,7 @@ const DayPickerC = ({
               style={{ pointerEvents: "none" }}
             />
           )}
-        </div>
+        </div> */}
         {addTask && (
           <button
             className="close_time_to"
@@ -106,15 +113,11 @@ const DayPickerC = ({
       <style>{css}</style>
       <style jsx>{`
         .container {
-          border: 1px solid var(--box-shadow-light);
-          padding: 0.125rem 0.25rem;
           border-radius: 5px;
           position: relative;
           transition: 0.3s;
         }
-        .container:hover {
-          background: var(--bg-color-tertiary-light);
-        }
+
         .content {
           -moz-user-select: none;
           -ms-user-select: none;
@@ -155,6 +158,7 @@ const DayPickerC = ({
           top: 2.5rem;
           z-index: 998;
           font-size: 80%;
+          background: var(--cool);
         }
         .close_time_to {
           align-items: center;

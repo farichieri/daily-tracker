@@ -205,17 +205,19 @@ const TaskDetail = ({
                 Set Due Date
               </button>
             ) : (
-              <DayPickerC
-                open={openDateSelector}
-                setOpen={setOpenDateSelector}
-                withModal={false}
-                dateSelected={dateSelected}
-                handleDateSelected={handleDateSelected}
-                dateToShow={dateDisplayed}
-                removeDate={removeDate}
-                setWantToAddDate={setWantToAddDate}
-                addTask={true}
-              />
+              <div className="rounded-md border border-[var(--box-shadow)] p-1">
+                <DayPickerC
+                  open={openDateSelector}
+                  setOpen={setOpenDateSelector}
+                  withModal={false}
+                  dateSelected={dateSelected}
+                  handleDateSelected={handleDateSelected}
+                  dateToShow={dateDisplayed}
+                  removeDate={removeDate}
+                  setWantToAddDate={setWantToAddDate}
+                  addTask={true}
+                />
+              </div>
             )}
           </div>
 
@@ -251,16 +253,6 @@ const TaskDetail = ({
             />
           </div>
         </div>
-        {task.is_recurring && (
-          <div className="mr-1 border-r border-gray-800 pr-1">
-            <Image
-              src={"/icons/repeat.png"}
-              alt="Repeat icon"
-              width={14}
-              height={14}
-            />
-          </div>
-        )}
         {openEmojis && (
           <SelectEmoji
             closeModalOnClick={closeModalOnClick}
@@ -289,6 +281,16 @@ const TaskDetail = ({
             onBlur={handleSave}
             className="w-full resize-none overflow-hidden rounded-md border border-shadow-color-l bg-transparent p-1 text-2xl font-semibold"
           />
+          {task.is_recurring && (
+            <div className="border-gray-800">
+              <Image
+                src={"/icons/repeat.png"}
+                alt="Repeat icon"
+                width={14}
+                height={14}
+              />
+            </div>
+          )}
         </div>
         <div className="comments-container">
           <span className="title">Notes</span>
@@ -315,6 +317,9 @@ const TaskDetail = ({
             />
           </div>
           <AddSubtask />
+        </div>
+        <div className="sessions">
+          <span>Split in sessions</span>
         </div>
         <div className="flex flex-col">
           <span className="title">Attachments</span>

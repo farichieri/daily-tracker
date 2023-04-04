@@ -10,6 +10,7 @@ import ListCreate from "../ListCreate/ListCreate";
 import ListEdit from "../ListEdit/ListEdit";
 import ProjectCreate from "../ProjectCreate/ProjectCreate";
 import ProjectEdit from "../ProjectEdit/ProjectEdit";
+import { DayPicker } from "react-day-picker";
 
 const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
   const dispatch = useDispatch();
