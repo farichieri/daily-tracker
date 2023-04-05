@@ -11,7 +11,7 @@ import AddSubtask from "../Subtasks/AddSubtask";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import Image from "next/image";
 import Modal from "@/components/Modal/Modal";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import SelectEmoji from "../TaskActions/TaskActionsModals/SelectEmoji";
 import Subtasks from "@/components/TasksList/Tasks/Subtasks/Subtasks";
@@ -34,12 +34,18 @@ const TaskDetail = ({
   const [taskState, setTaskState] = useState<Task>(task);
   const [isSaveable, setIsSaveable] = useState(false);
   const { tasks } = useSelector(selectTasks);
-  const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
+  const subTasks: TasksGroup = useMemo(
+    () => filterSubtasks(tasks, task.task_id),
+    [tasks, task.task_id]
+  );
   const sortedArray = Object.values(subTasks).sort((a, b) =>
     a.date_set.time_from.localeCompare(b.date_set.time_from)
   );
   const [subtasksState, setSubtasksState] = useState<TasksArray>(sortedArray);
-  const secondsSpent = getParentTaskSeconds(subTasks, task);
+  const secondsSpent = useMemo(
+    () => getParentTaskSeconds(subTasks, task),
+    [subTasks, task]
+  );
   const [openEmojis, setOpenEmojis] = useState(false);
   const [inputFocus, setInputFocus] = useState("content");
 

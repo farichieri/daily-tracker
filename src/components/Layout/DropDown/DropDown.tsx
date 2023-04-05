@@ -33,6 +33,7 @@ const DropDown = ({
       </div>
       {open && (
         <>
+          <div className="absolute right-4 mt-7 h-2 w-2 rotate-45 bg-[var(--modal)] shadow-inner  shadow-[var(--box-shadow-light)]"></div>
           <div
             className="drop-menu"
             onClick={(e) => {
@@ -56,6 +57,8 @@ const DropDown = ({
           padding: 0.25rem 0.5rem;
           border-radius: 5px;
           position: relative;
+          display: flex;
+          justify-content: center;
         }
         .content {
           display: flex;
@@ -95,7 +98,8 @@ const DropDown = ({
           background: var(--modal);
           box-shadow: 0 0 6px 1px var(--box-shadow-light);
           border-radius: 6px;
-          top: 2rem;
+          top: auto;
+          margin-top: 2rem;
           right: 0.1rem;
           z-index: 12;
           font-size: 80%;

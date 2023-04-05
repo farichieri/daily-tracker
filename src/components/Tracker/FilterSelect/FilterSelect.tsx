@@ -70,7 +70,7 @@ const FilterSelect = () => {
         </button>
       </div>
       <div className="flex w-full items-center justify-center gap-2">
-        <div className="ml-10">
+        <div className="ml-12">
           <DayPickerC
             setWantToAddDate={() => {}}
             removeDate={() => {}}

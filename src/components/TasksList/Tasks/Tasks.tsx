@@ -5,6 +5,7 @@ import { TaskGroup, TasksArray } from "@/global/types";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import FilterTasks from "./FilterTasks/FilterTasks";
 import Link from "next/link";
 import TaskComponent from "./Task/TaskComponent";
 
@@ -21,13 +22,18 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
     return labelsFiltered;
   };
 
+  const SHOW_OPTIONS = {
+    ALL: "all",
+    PENDINGS: "pendings",
+    DONE: "done",
+  };
+
   const [pendingTasks, setPendingTasks] = useState<TasksArray>([]);
   const [doneTasks, setDoneTasks] = useState<TasksArray>([]);
-  const [showDoneTasks, setShowDoneTasks] = useState(true);
+  const [showOption, setShowOption] = useState(SHOW_OPTIONS.ALL);
 
   useEffect(() => {
     console.log("executing");
-
     const pendingTasks: TaskGroup = filterTasksPending(tasksState);
     const doneTasks: TaskGroup = filterTasksDone(tasksState);
     // Working_on on top
@@ -43,47 +49,13 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
     setDoneTasks(sortedDoneTasks);
   }, [tasksState]);
 
-  return (
-    <div className="flex w-full flex-col text-left">
-      <div id="accordionExample5" className="flex flex-col">
-        <div className="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
-          <h2 className="mb-0 mt-0 " id="headingOne5">
-            <button
-              className="group relative flex w-full items-center rounded-t-[15px] border-0 bg-white py-4 px-5 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
-              type="button"
-              data-te-collapse-init
-              data-te-target="#collapseOne5"
-              aria-expanded="true"
-              aria-controls="collapseOne5"
-            >
-              Pending tasks
-              <span className="ml-auto -mr-1 h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </span>
-            </button>
-          </h2>
-          <div
-            id="collapseOne5"
-            className="!visible"
-            data-te-collapse-item
-            data-te-collapse-show
-            aria-labelledby="headingOne5"
-          >
-            <div className="flex flex-col gap-0.5 overflow-auto py-2 px-2">
-              {pendingTasks?.map((task, index) => (
+  const TasksSelected = (tasks: TasksArray) => {
+    return (
+      <>
+        {tasks.length > 0 && (
+          <div className="overflow-hidden rounded-2xl">
+            <div className="flex h-full flex-col gap-0.5 overflow-auto rounded-2xl px-1 py-1">
+              {tasks?.map((task, index) => (
                 <Link
                   href={`/app/lists/${listID}/task/${task.task_id}`}
                   key={task.task_id}
@@ -93,76 +65,34 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
                     task={task}
                     getLabelsByTask={getLabelsByTask}
                     index={index}
-                    lastIndex={pendingTasks.length - 1}
+                    lastIndex={tasks.length - 1}
                   />
                 </Link>
               ))}
             </div>
           </div>
-        </div>
-        <div className="border border-t-0 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
-          <h2 className="mb-0 mt-0" id="headingTwo5">
-            <button
-              className="group relative flex w-full items-center rounded-none border-0 bg-white py-4 px-5 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
-              type="button"
-              data-te-collapse-init
-              data-te-collapse-collapsed
-              data-te-target="#collapseTwo5"
-              aria-expanded="false"
-              aria-controls="collapseTwo5"
-            >
-              Tasks Done
-              <span className="ml-auto -mr-1 h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
-              </span>
-            </button>
-          </h2>
-          <div
-            id="collapseTwo5"
-            className="!visible hidden"
-            data-te-collapse-item
-            aria-labelledby="headingTwo5"
-          >
-            <div className="flex flex-col gap-0.5 py-2 px-2">
-              {showDoneTasks &&
-                doneTasks?.map((task, index) => (
-                  <Link
-                    href={`/app/lists/${listID}/task/${task.task_id}`}
-                    key={task.task_id}
-                  >
-                    <TaskComponent
-                      taskID={task.task_id}
-                      task={task}
-                      getLabelsByTask={getLabelsByTask}
-                      index={index}
-                      lastIndex={doneTasks.length - 1}
-                    />
-                  </Link>
-                ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <style jsx>{`
-        .tasks-container {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-      `}</style>
+        )}
+      </>
+    );
+  };
+
+  return (
+    <div className="flex h-full w-full flex-col gap-2 overflow-auto py-2 text-left">
+      <FilterTasks
+        options={SHOW_OPTIONS}
+        setShowOption={setShowOption}
+        showOption={showOption}
+      />
+      {showOption === SHOW_OPTIONS.ALL ? (
+        <>
+          {TasksSelected(pendingTasks)}
+          {TasksSelected(doneTasks)}
+        </>
+      ) : showOption === SHOW_OPTIONS.PENDINGS ? (
+        TasksSelected(pendingTasks)
+      ) : (
+        TasksSelected(doneTasks)
+      )}
     </div>
   );
 };

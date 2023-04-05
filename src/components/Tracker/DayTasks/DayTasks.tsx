@@ -1,4 +1,4 @@
-import { filterSubtasks } from "@/hooks/helpers";
+import { filterSubtasks, filterTasksByDateSet } from "@/hooks/helpers";
 import { filterTasksDone } from "@/hooks/helpers";
 import { selectLabels } from "store/slices/labelsSlice";
 import {
@@ -9,9 +9,8 @@ import {
 } from "store/slices/trackerSlice";
 import { dbFormatDate } from "@/utils/formatDate";
 import { parseISO } from "date-fns";
-import { selectTasks } from "store/slices/tasksSlice";
 import { TasksArray, TaskGroup, TasksGroup } from "@/global/types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import AddTask from "@/components/TasksList/Tasks/AddTask";
@@ -22,18 +21,21 @@ import Progressbar from "@/components/Layout/Progressbar/Progressbar";
 import TaskComponent from "@/components/TasksList/Tasks/Task/TaskComponent";
 
 const DayTasks = ({
-  tasksFiltered,
   date,
   index,
   lastIndex,
+  tasks,
 }: {
-  tasksFiltered: TaskGroup;
   date: string;
   index: number;
   lastIndex: number;
+  tasks: TaskGroup;
 }) => {
   const router = useRouter();
-  const { tasks } = useSelector(selectTasks);
+  const tasksFiltered: TasksGroup = useMemo(
+    () => filterTasksByDateSet(tasks, date),
+    [tasks, date]
+  );
   const { labels } = useSelector(selectLabels);
   const showNoTimeTasks = useSelector(selectShowNoTimeTasks);
   const trackerView = useSelector(selectTrackerView);
@@ -55,7 +57,7 @@ const DayTasks = ({
     return percentageDone;
   };
 
-  const percentageDone = getPrecentage();
+  const percentageDone = useMemo(() => getPrecentage(), [tasksFiltered]);
 
   const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
     a.date_set.time_from?.localeCompare(b.date_set.time_from)
@@ -76,7 +78,7 @@ const DayTasks = ({
   useEffect(() => {
     setTasksArrTimeState(tasksWTime);
     setArrayOfTasksNoTime(sortedTasksNoTime);
-  }, [tasksFiltered]);
+  }, [date, tasks]);
 
   const getLabelsByTask = (taskID: string) => {
     const task = { ...tasks[String(taskID)] };
@@ -110,7 +112,7 @@ const DayTasks = ({
   };
 
   return (
-    <section className="relative m-auto flex h-full w-full min-w-fit max-w-[var(--max-width-content)] flex-col gap-2 overflow-y-auto overflow-x-hidden pb-4">
+    <section className="relative m-auto flex h-full w-full min-w-min max-w-[var(--max-width-content)] flex-col gap-2 overflow-y-auto overflow-x-hidden pb-4">
       <div className="flex">
         {index === 0 && (
           <button
@@ -151,7 +153,7 @@ const DayTasks = ({
           height={10}
         />
       </div>
-      <div className="flex h-full w-full gap-2 overflow-hidden rounded-[1rem] ">
+      <div className="flex h-full w-full gap-2 overflow-hidden rounded-2xl ">
         <div className="flex h-full w-full flex-col items-center gap-4 overflow-y-auto overflow-x-hidden px-1 ">
           <div className={`flex w-full min-w-full ${weekView && "max-w-min"}`}>
             <div className="flex h-full w-full flex-col ">
@@ -171,7 +173,7 @@ const DayTasks = ({
               ))}
             </div>
           </div>
-          {showNoTimeTasks && (
+          {showNoTimeTasks && arrayOfTasksNoTime.length > 0 && (
             <div
               className={`flex w-full min-w-full flex-col ${
                 weekView && "max-w-min"

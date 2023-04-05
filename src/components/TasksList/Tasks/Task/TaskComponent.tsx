@@ -4,7 +4,7 @@ import { Label, Task, TasksArray, TasksGroup } from "@/global/types";
 import { selectLists } from "store/slices/listsSlice";
 import { selectTasks } from "store/slices/tasksSlice";
 import { selectToday, selectTrackerView } from "store/slices/trackerSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Image from "next/image";
@@ -39,7 +39,10 @@ const TaskComponent = ({
   const trackerView = useSelector(selectTrackerView);
 
   const { tasks } = useSelector(selectTasks);
-  const subTasks: TasksGroup = filterSubtasks(tasks, task.task_id);
+  const subTasks: TasksGroup = useMemo(
+    () => filterSubtasks(tasks, task.task_id),
+    [tasks, task.task_id]
+  );
   const sortedArray = Object.values(subTasks).sort((a, b) =>
     a.date_set.time_from.localeCompare(b.date_set.time_from)
   );
@@ -49,7 +52,10 @@ const TaskComponent = ({
     dateFormatted < today && !task.done && task.date_set.date_iso;
   const oldDay = dateFormatted < today && task.date_set.date_iso;
 
-  const secondsSpent = getParentTaskSeconds(subTasks, task);
+  const secondsSpent = useMemo(
+    () => getParentTaskSeconds(subTasks, task),
+    [subTasks, task]
+  );
 
   useEffect(() => {
     setSubtasks(sortedArray);

@@ -19,8 +19,8 @@ const TasksList = () => {
   }, [tasks, listID]);
 
   return (
-    <div className="flex h-full w-full flex-col justify-start gap-2 overflow-auto py-4 ">
-      <div className="mb-10 flex w-full flex-col items-center justify-center gap-2 py-10 ">
+    <div className="flex h-full w-full flex-col justify-start">
+      <div className="flex h-full w-full flex-col items-center justify-center">
         <Tasks tasksState={tasksState} />
         <AddTask date={""} />
       </div>

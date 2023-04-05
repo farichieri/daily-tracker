@@ -31,7 +31,7 @@ export const filterObject = (obj: any, filter: string, filterValue: string) =>
   );
 
 export const filterTasksByDateSet = (obj: any, date: string) => {
-  console.log("opa");
+  console.log("filterTasksByDateSet");
   const formatISOtoDB = (d: string) => {
     return dbFormatDate(parseISO(d));
   };
@@ -51,8 +51,9 @@ export const filterTasksByDateSet = (obj: any, date: string) => {
   );
 };
 
-export const filterSubtasks = (obj: any, taskID: string) =>
-  Object.keys(obj).reduce(
+export const filterSubtasks = (obj: any, taskID: string) => {
+  console.log("filterSubtasks");
+  return Object.keys(obj).reduce(
     (acc, val) =>
       !(obj[val]["parent_id"] === taskID)
         ? acc
@@ -62,9 +63,11 @@ export const filterSubtasks = (obj: any, taskID: string) =>
           },
     {}
   );
+};
 
-export const filterTasksDone = (obj: TaskGroup | GoalGroup) =>
-  Object.keys(obj).reduce(
+export const filterTasksDone = (obj: TaskGroup | GoalGroup) => {
+  console.log("filterTasksDone");
+  return Object.keys(obj).reduce(
     (acc, val) =>
       !obj[val]["done"] === true
         ? acc
@@ -74,9 +77,11 @@ export const filterTasksDone = (obj: TaskGroup | GoalGroup) =>
           },
     {}
   );
+};
 
-export const filterTasksPending = (obj: TaskGroup | GoalGroup) =>
-  Object.keys(obj).reduce(
+export const filterTasksPending = (obj: TaskGroup | GoalGroup) => {
+  console.log("filterTasksPending");
+  return Object.keys(obj).reduce(
     (acc, val) =>
       !obj[val]["done"] === false
         ? acc
@@ -86,7 +91,7 @@ export const filterTasksPending = (obj: TaskGroup | GoalGroup) =>
           },
     {}
   );
-
+};
 export const filterListsNotArchived = (obj: ListGroup) =>
   Object.keys(obj).reduce(
     (acc, val) =>
@@ -150,6 +155,7 @@ export const filterUndefinedTasks = (obj: TaskGroup) =>
   );
 
 export const getParentTaskSeconds = (subTasks: TaskGroup, task: Task) => {
+  console.log("getParentTaskSeconds");
   const calculateTaskSeconds = (key: string) => {
     let seconds = 0;
     Object.values(subTasks).map((s) => {
