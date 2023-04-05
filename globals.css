@@ -9,6 +9,17 @@
     margin: 0;
   }
 
+  ol,
+  ul,
+  menu {
+    list-style: decimal;
+    padding: 1rem;
+  }
+
+  li {
+    margin: 1rem 0;
+  }
+
   :root.dark {
     --text-color: white;
     --text-secondary-color: #989898;

@@ -40,8 +40,8 @@ const FilterSelect = () => {
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   return (
-    <div className="h-fit z-20 m-auto flex max-h-max w-fit min-w-fit flex-col items-center gap-2">
-      <div className="flex items-start overflow-auto rounded-b-3xl text-xs  shadow-md shadow-gray-500/50 dark:bg-[var(--cool)] dark:shadow-gray-400/20">
+    <div className="h-fit z-20 m-auto flex max-h-max w-fit min-w-fit flex-col items-center gap-2 ">
+      <div className="flex select-none items-start overflow-auto rounded-b-3xl  text-xs shadow-md shadow-gray-500/50 dark:bg-[var(--cool)] dark:shadow-gray-400/20">
         <button
           onClick={() => setNewTrackerView("day")}
           className={`${

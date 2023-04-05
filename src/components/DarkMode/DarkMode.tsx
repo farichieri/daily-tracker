@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function DarkMode({}) {
   const [theme, setTheme] = useState("");
@@ -21,14 +21,13 @@ export default function DarkMode({}) {
     }
   };
 
-  useEffect(() => {
-    switchTheme();
-  }, []);
-
   return (
     <span
       className="flex cursor-pointer items-center justify-center"
-      onClick={switchTheme}
+      onClick={(event) => {
+        event.preventDefault();
+        switchTheme();
+      }}
     >
       {theme === "dark" ? (
         <Image alt="dark" src={"/images/dark.png"} width={20} height={20} />

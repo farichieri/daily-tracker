@@ -13,6 +13,7 @@ import {
   startOfWeek,
 } from "date-fns";
 import { Label, Recurring, Task } from "@/global/types";
+import { maxRecurringTasks } from "@/global/importantVars";
 import { NewTaskInitial } from "@/global/initialTypes";
 import { selectLabels } from "store/slices/labelsSlice";
 import { selectUser } from "store/slices/authSlice";
@@ -30,7 +31,6 @@ import MakeRecurrent from "./TaskActions/TaskActionsModals/MakeRecurrent";
 import SelectEmoji from "./TaskActions/TaskActionsModals/SelectEmoji";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
-import { maxRecurringTasks } from "@/global/importantVars";
 
 const AddTask = ({ date }: { date: string }) => {
   const dispatch = useDispatch();
@@ -483,9 +483,9 @@ const AddTask = ({ date }: { date: string }) => {
                   </div>
                 )}
               </div>
-              <div className="">
+              {/* <div className="">
                 <button>Split in sessions</button>
-              </div>
+              </div> */}
               <div className="w-full">
                 <button
                   className="ml-auto flex w-16 justify-center"

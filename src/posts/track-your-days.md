@@ -1,10 +1,10 @@
 ---
-title: 'The reason why you should track your days'
-date: '2022-02-24'
-author: 'fabricio-richieri'
-authorName: 'Fabricio Richieri'
-topic: 'productivity'
-premium: true
+title: "The reason why you should track your days"
+date: "2022-02-24"
+author: "fabricio-richieri"
+authorName: "Fabricio Richieri"
+topic: "productivity"
+premium: false
 ---
 
 Tracking your daily tasks can be a helpful way to improve productivity and achieve your goals. By keeping track of what you need to do each day, you can prioritize your tasks and ensure that you're focusing your time and energy on the most important things. Here are some reasons why tracking your daily tasks can be beneficial:

@@ -9,8 +9,14 @@ const UndefinedTasks = () => {
   console.log({ undefinedTasks });
 
   return (
-    <div className="overflow-auto">
-      {/* <Tasks tasksState={undefinedTasks} /> */}
+    <div className="w-full py-2">
+      <span>Undefined Tasks</span>
+      <div className="span">
+        These are the tasks that do not have a date or list assigned
+      </div>
+      <div className="overflow-auto">
+        <Tasks tasksState={undefinedTasks} />
+      </div>
     </div>
   );
 };

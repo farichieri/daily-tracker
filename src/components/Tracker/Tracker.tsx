@@ -5,7 +5,7 @@ import {
   selectWeekSelected,
 } from "store/slices/trackerSlice";
 import { TaskGroup } from "@/global/types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { useSelector } from "react-redux";
 import DayTasks from "./DayTasks/DayTasks";
@@ -28,12 +28,12 @@ const Tracker = () => {
 
   return (
     <section
-      className={`flex h-full w-full max-w-[var(--max-width-content)] flex-col gap-2 ${
-        trackerView === "day" && "max-w-[var(--max-width-content)]"
-      } ${trackerView === "week" && "m-x-auto min-w-full"}`}
+      className={`flex h-full w-full flex-col gap-2  ${
+        trackerView === "day" && ""
+      } ${trackerView === "week" && ""}`}
     >
       <FilterSelect />
-      <div className="mx-auto flex h-full w-full gap-1 overflow-x-auto overflow-y-auto">
+      <div className="mx-auto flex h-full w-full gap-1 overflow-x-auto overflow-y-auto ">
         {trackerView === "day" ? (
           <DayTasks
             tasksFiltered={tasksFiltered}

@@ -1,6 +1,6 @@
 import { dbFormatDate } from "@/utils/formatDate";
 import { GoalGroup, ListGroup, Task, TaskGroup } from "@/global/types";
-import { parseISO } from "date-fns";
+import { formatISO, parseISO } from "date-fns";
 
 export const filterObjectIncludes = (
   obj: any,
@@ -30,12 +30,17 @@ export const filterObject = (obj: any, filter: string, filterValue: string) =>
     {}
   );
 
-export const filterTasksByDateSet = (obj: any, date: string) =>
-  Object.keys(obj).reduce(
+export const filterTasksByDateSet = (obj: any, date: string) => {
+  console.log("opa");
+  const formatISOtoDB = (d: string) => {
+    return dbFormatDate(parseISO(d));
+  };
+
+  return Object.keys(obj).reduce(
     (acc, val) =>
       !(
         obj[val]["date_set"]["date_iso"] &&
-        dbFormatDate(parseISO(obj[val]["date_set"]["date_iso"])) === date
+        formatISOtoDB(obj[val]["date_set"]["date_iso"]) === date
       )
         ? acc
         : {
@@ -44,6 +49,7 @@ export const filterTasksByDateSet = (obj: any, date: string) =>
           },
     {}
   );
+};
 
 export const filterSubtasks = (obj: any, taskID: string) =>
   Object.keys(obj).reduce(
@@ -93,10 +99,16 @@ export const filterListsNotArchived = (obj: ListGroup) =>
     {}
   );
 
-export const filterRecurringTasks = (obj: TaskGroup) =>
-  Object.keys(obj).reduce(
+export const filterPendingRecurrings = (obj: TaskGroup, today: string) => {
+  const date = formatISO(parseISO(today));
+  return Object.keys(obj).reduce(
     (acc, val) =>
-      !(obj[val]["is_recurring"] && obj[val]["is_recurring"] === true)
+      !(
+        obj[val]["is_recurring"] &&
+        obj[val]["is_recurring"] === true &&
+        obj[val]["date_set"]["date_iso"] >= date &&
+        obj[val]["done"] !== true
+      )
         ? acc
         : {
             ...acc,
@@ -104,6 +116,7 @@ export const filterRecurringTasks = (obj: TaskGroup) =>
           },
     {}
   );
+};
 
 export const filterTasksPerRecurringGroup = (
   obj: TaskGroup,
@@ -123,10 +136,11 @@ export const filterTasksPerRecurringGroup = (
 export const filterUndefinedTasks = (obj: TaskGroup) =>
   Object.keys(obj).reduce(
     (acc, val) =>
-      obj[val]["date_set"]["date_iso"] !== "" ||
-      (obj[val]["date_set"]["date_iso"] === "" &&
-        obj[val]["project_id"] !== "tracker") ||
-      obj[val]["parent_id"] !== ""
+      !(
+        obj[val]["date_set"]["date_iso"] === "" &&
+        obj[val]["project_id"] === "tracker" &&
+        !obj[val]["parent_id"]
+      )
         ? acc
         : {
             ...acc,

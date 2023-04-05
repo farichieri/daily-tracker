@@ -1,7 +1,7 @@
 import { db } from "@/utils/firebase.config";
 import { deleteDoc, doc } from "firebase/firestore";
 import {
-  filterRecurringTasks,
+  filterPendingRecurrings,
   filterTasksPerRecurringGroup,
 } from "@/hooks/helpers";
 import { selectTasks, setDeleteTask } from "store/slices/tasksSlice";
@@ -9,19 +9,21 @@ import { selectUser } from "store/slices/authSlice";
 import { TaskGroup } from "@/global/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { selectToday } from "store/slices/trackerSlice";
 
 const RecurringTasks = () => {
   const dispatch = useDispatch();
   const { tasks } = useSelector(selectTasks);
   const { user } = useSelector(selectUser);
+  const today = useSelector(selectToday);
   const [recurringTasks, setRecurringTasks] = useState<TaskGroup>(
-    filterRecurringTasks(tasks)
+    filterPendingRecurrings(tasks, today)
   );
   const [recurringGroups, setRecurringGroups] = useState<TaskGroup>({});
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const recurrings = filterRecurringTasks(tasks);
+    const recurrings = filterPendingRecurrings(tasks, today);
     setRecurringTasks(recurrings);
   }, [tasks]);
 
@@ -66,9 +68,9 @@ const RecurringTasks = () => {
   };
 
   return (
-    <div className="flex w-full max-w-[var(--max-width-content)] flex-col gap-2">
-      <p>Recurring tasks</p>
-      <div className="flex w-full flex-col gap-2">
+    <div className="flex w-full max-w-[var(--max-width-content)] flex-col gap-2 overflow-auto">
+      <p>Pending recurring tasks</p>
+      <div className="flex w-full flex-col gap-2 overflow-auto">
         {recurringGroups &&
           Object.keys(recurringGroups).map((task) => (
             <div key={task} className="flex items-center rounded-md border p-2">

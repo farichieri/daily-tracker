@@ -97,9 +97,7 @@ export default function PremiumLayout({
       {isVerifyingUser ? (
         <Loader fullScreen={false} text={""} />
       ) : !user ? (
-        <div className="min-w-screen m-auto flex min-h-screen items-center justify-center">
-          <Login />
-        </div>
+        <></>
       ) : isDataFetched === false ? (
         <Loader text="" fullScreen={true} />
       ) : (
@@ -126,8 +124,8 @@ export default function PremiumLayout({
           isSidebarOpen && "sm:pl-[10.5rem] "
         } ${
           router.pathname.includes("tracker") && trackerView === "week"
-            ? "3xl:pl-0"
-            : "xl:pl-0"
+            ? "2xl:pl-0"
+            : "2xl:pl-0"
         }`}
       >
         {children}

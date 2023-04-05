@@ -318,9 +318,6 @@ const TaskDetail = ({
           </div>
           <AddSubtask />
         </div>
-        <div className="sessions">
-          <span>Split in sessions</span>
-        </div>
         <div className="flex flex-col">
           <span className="title">Attachments</span>
           <div className="flex h-14 w-full rounded-md border border-shadow-color-l"></div>

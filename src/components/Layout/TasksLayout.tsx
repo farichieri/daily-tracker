@@ -9,7 +9,7 @@ const TasksLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <PremiumLayout>
-      <div className="mt-4 flex w-full max-w-[var(--max-width-content)] flex-col pt-[var(--premium-nav-height)]">
+      <div className="flex h-screen max-h-screen w-full max-w-[var(--max-width-content)] flex-col items-start py-4">
         {user && <TasksList />}
       </div>
       {children}

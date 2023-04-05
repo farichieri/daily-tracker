@@ -1,17 +1,24 @@
-import { selectTrackerSlice } from 'store/slices/trackerSlice';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { selectTrackerSlice } from "store/slices/trackerSlice";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { selectUser } from "store/slices/authSlice";
+import PremiumLayout from "@/components/Layout/PremiumLayout";
 
 const TrackerPage = () => {
   const router = useRouter();
   const { today } = useSelector(selectTrackerSlice);
+  const { user } = useSelector(selectUser);
 
   useEffect(() => {
-    router.push(`/app/tracker/${today}`);
+    if (user) {
+      router.push(`/app/tracker/${today}`);
+    } else {
+      router.push(`/user`);
+    }
   }, []);
 
-  return <></>;
+  return <PremiumLayout>{}</PremiumLayout>;
 };
 
 export default TrackerPage;

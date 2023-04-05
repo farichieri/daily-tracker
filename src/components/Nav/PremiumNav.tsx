@@ -1,7 +1,7 @@
 import { selectList } from "store/slices/listsSlice";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import ProfileDropDown from "../Layout/DropDown/ProfileDropDown/ProfileDropDown";
 import Settings from "../Settings/Settings";

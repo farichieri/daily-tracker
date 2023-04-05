@@ -78,7 +78,6 @@ const Labels = () => {
           text-align: left;
           max-width: var(--max-width-content);
           gap: 1rem;
-          margin: 2rem;
         }
         .title-container {
           border-bottom: 1px solid var(--box-shadow-light);

@@ -71,12 +71,8 @@ const Nav = () => {
             ))}
         </div>
         <div className="login-dark">
-          <Link href={"/user"} onClick={handleMenu}>
-            <span
-              className={`user ${router.asPath === "/user" ? "selected" : ""}`}
-            >
-              {userName}
-            </span>
+          <Link href={"/user"} onClick={handleMenu} className="w-24">
+            <span className="w-full">{userName}</span>
           </Link>
           <DarkMode />
         </div>

@@ -9,12 +9,13 @@ import {
 } from "store/slices/authSlice";
 import effects from "@/styles/effects";
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import reset from "@/styles/reset";
 import typography, { fonts } from "@/styles/typography";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
+  const [theme, setTheme] = useState("");
 
   useEffect(() => {
     dispatch(verifyUser());
@@ -30,6 +31,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  useEffect(() => {
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+      localStorage.theme === "dark";
+      setTheme("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.theme === "light";
+      setTheme("light");
+    }
+  }, []);
+
   return (
     <>
       <Head>
@@ -39,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div
         className={`${fonts.raleWay.className} flex flex-col bg-white text-black dark:bg-[#091d23] dark:text-white`}
       >
-        <main className="">{children}</main>
+        {theme && <main>{children}</main>}
       </div>
       <style jsx global>
         {reset}
