@@ -17,15 +17,13 @@ const PlannerDropDown = () => {
       closeDrop={closeDrop}
       setCloseDrop={setCloseDrop}
       btnText={
-        <div className="">
-          <Image
-            src={"/icons/more.png"}
-            alt="More Icon"
-            width={12}
-            height={12}
-            style={{ pointerEvents: "none" }}
-          />
-        </div>
+        <Image
+          src={"/icons/more.png"}
+          alt="More Icon"
+          width={12}
+          height={12}
+          style={{ pointerEvents: "none" }}
+        />
       }
     >
       <div className="flex w-40 min-w-max gap-2 px-2 py-1">

@@ -54,7 +54,7 @@ const FilterSelect = () => {
           <button
             onClick={() => setNewTrackerView("day")}
             className={`${
-              date === today && dayView ? "text-red-500" : "text-neutral-500"
+              date === today && dayView ? "text-red-400" : "text-neutral-500"
             } flex h-6 w-12 items-center justify-center border-b border-transparent px-2 duration-300 hover:bg-[var(--bg-color-tertiary-light)]  sm:w-16`}
           >
             Today
@@ -83,7 +83,7 @@ const FilterSelect = () => {
             addTask={false}
           />
         </div>
-        <div className="w-10">
+        <div className="flex items-center justify-center">
           <PlannerDropDown />
         </div>
       </div>

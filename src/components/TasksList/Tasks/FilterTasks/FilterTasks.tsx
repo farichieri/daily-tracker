@@ -1,12 +1,15 @@
+import { useDispatch } from "react-redux";
+import { setTasksFilter } from "store/slices/listsSlice";
+
 const FilterTasks = ({
   options,
-  setShowOption,
   showOption,
 }: {
   options: any;
-  setShowOption: Function;
   showOption: string;
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="flex w-full items-center justify-center gap-4">
       {Object.keys(options).map((opt: string) => (
@@ -17,7 +20,7 @@ const FilterTasks = ({
               ? "bg-[var(--bg-color-tertiary-light)]"
               : "bg-transparent"
           }`}
-          onClick={() => setShowOption(options[opt])}
+          onClick={() => dispatch(setTasksFilter(options[opt]))}
         >
           {options[opt]}
         </button>

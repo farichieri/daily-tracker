@@ -54,7 +54,7 @@ const PremiumNav = ({
         )}
       </span>
       <span className="font-bold">{selected}</span>
-      <div className="fixed top-0 right-0 flex h-[var(--premium-nav-height)] items-center gap-2 px-1 sm:px-4">
+      <div className="fixed top-0 right-1 flex h-[var(--premium-nav-height)] items-center px-1 sm:px-4">
         <ProfileDropDown setIsSettingsOpen={setIsSettingsOpen} />
       </div>
     </nav>

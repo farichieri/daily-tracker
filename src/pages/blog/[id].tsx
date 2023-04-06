@@ -1,16 +1,16 @@
-import AD from '@/components/LandingPage/AD/AD';
-import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
-import AuthorName from '@/components/Layout/AuthorName/AuthorName';
-import NewsLetterInvitation from '@/components/LandingPage/NewsLetterInvitation/NewsLetterInvitation';
-import Posts from '@/components/Posts/Posts';
-import SubscribeInvitation from '@/components/LandingPage/SubscribeInvitation/SubscribeInvitation';
-import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
-import Date from '../../components/Layout/Date';
-import MainLayout from '../../components/Layout/MainLayout';
-import { getPostData, getSortedPostData } from '../../utils/posts';
+import AD from "@/components/LandingPage/AD/AD";
+import AuthorLogo from "@/components/Layout/AuthorLogo/AuthorLogo";
+import AuthorName from "@/components/Layout/AuthorName/AuthorName";
+import NewsLetterInvitation from "@/components/LandingPage/NewsLetterInvitation/NewsLetterInvitation";
+import Posts from "@/components/Posts/Posts";
+import SubscribeInvitation from "@/components/LandingPage/SubscribeInvitation/SubscribeInvitation";
+import Head from "next/head";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectUser } from "store/slices/authSlice";
+import Date from "../../components/Layout/Date";
+import MainLayout from "../../components/Layout/MainLayout";
+import { getPostData, getSortedPostData } from "../../utils/posts";
 
 const Post = ({
   postData,
@@ -38,7 +38,7 @@ const Post = ({
     if (showContent) {
       return content;
     } else {
-      return content.slice(0, 500).concat('<span>...</span>');
+      return content.slice(0, 500).concat("<span>...</span>");
     }
   };
 
@@ -57,12 +57,12 @@ const Post = ({
       <Head>
         <title>{postData.title}</title>
       </Head>
-      <div className='post-container'>
-        <div className='post-main'>
+      <div className="post-container">
+        <div className="post-main">
           <article>
-            <div className='post-header'>
-              <h1 className='title'>{postData.title}</h1>
-              <div className='author'>
+            <div className="post-header">
+              <h1 className="title">{postData.title}</h1>
+              <div className="author">
                 <AuthorLogo author={postData.author} width={30} height={30} />
                 <AuthorName author={postData.author} style={null} /> -
                 Published:
@@ -70,12 +70,12 @@ const Post = ({
               </div>
             </div>
             {!user && (
-              <div className='mobile_ad'>
+              <div className="mobile_ad">
                 <AD />
               </div>
             )}
             <div
-              className='post-content'
+              className="post-content"
               dangerouslySetInnerHTML={{
                 __html: getContent(postData.contentHtml),
               }}
@@ -87,7 +87,7 @@ const Post = ({
           {!user && postData.premium && <SubscribeInvitation />}
           {!user && !postData.premium && <NewsLetterInvitation />}
           {showRecommendedContent() && (
-            <div className='similar-content'>
+            <div className="similar-content">
               <h3>Related content</h3>
               <Posts posts={postsRecommended} />
             </div>
@@ -101,7 +101,7 @@ const Post = ({
           max-width: 1200px;
         }
          {
-          /* margin-right: ${!user && '300px'}; */
+          /* margin-right: ${!user && "300px"}; */
         }
         .post-main {
           display: flex;
@@ -154,6 +154,10 @@ const Post = ({
         }
         .mobile_ad {
           display: none;
+        }
+        li,
+        ul {
+          background: red;
         }
         .post-content {
           border-bottom: 1px solid var(--box-shadow-light);

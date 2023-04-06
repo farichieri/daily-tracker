@@ -5,7 +5,7 @@ import {
   setIsSidebarOpen,
   toggleIsCreatingProject,
 } from "store/slices/layoutSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PremiumNav from "../Nav/PremiumNav";
 import PremiumSidebar from "../Nav/PremiumSidebar";
@@ -16,14 +16,12 @@ import {
   getTasks,
   getGoals,
 } from "@/hooks/firebase";
-import { LabelGroup, TaskGroup, ListGroup, GoalGroup } from "@/global/types";
 import { selectGlobalState, setIsDataFetched } from "store/slices/globalSlice";
 import { setLabels } from "store/slices/labelsSlice";
 import { setLists } from "store/slices/listsSlice";
 import { setTasks } from "store/slices/tasksSlice";
 import { useRouter } from "next/router";
 import Loader from "./Loader/Loader";
-import Login from "../Auth/Login";
 import { setGoals } from "store/slices/goalsSlice";
 
 export default function PremiumLayout({
@@ -63,11 +61,14 @@ export default function PremiumLayout({
       document.documentElement.classList.remove("dark");
     }
     if (!user) return;
-    const labelsData: LabelGroup = await getLabels(user);
-    const listsData: ListGroup = await getLists(user);
-    const tasksData: TaskGroup = await getTasks(user);
-    const goalsData: GoalGroup = await getGoals(user);
-    const projects = await getProjects(user);
+    const [labelsData, listsData, tasksData, goalsData, projects] =
+      await Promise.all([
+        getLabels(user),
+        getLists(user),
+        getTasks(user),
+        getGoals(user),
+        getProjects(user),
+      ]);
     if (projects.length < 1) {
       dispatch(toggleIsCreatingProject());
     }

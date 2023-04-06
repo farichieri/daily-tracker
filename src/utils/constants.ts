@@ -15,3 +15,9 @@ export const TIMES_OPTIONS = [
   { seconds: 25200, display: "7 hour" },
   { seconds: 28800, display: "8 hour" },
 ];
+
+export const SHOW_OPTIONS = {
+  ALL: "all",
+  PENDINGS: "pendings",
+  DONE: "done",
+};

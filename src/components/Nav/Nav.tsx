@@ -82,7 +82,6 @@ const Nav = () => {
           align-items: center;
           display: flex;
           position: fixed;
-          height: var(--nav-height);
           justify-content: space-between;
           width: 100%;
           backdrop-filter: blur(12px);
@@ -106,6 +105,8 @@ const Nav = () => {
           max-width: var(--max-width);
           margin: auto;
           padding: 0 1rem;
+          height: var(--nav-height);
+          border-bottom: 1px solid var(--box-shadow-light);
         }
 
         .login-dark {

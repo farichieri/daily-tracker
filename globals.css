@@ -13,11 +13,6 @@
   ul,
   menu {
     list-style: decimal;
-    padding: 1rem;
-  }
-
-  li {
-    margin: 1rem 0;
   }
 
   :root.dark {
@@ -76,7 +71,7 @@
 
     /* sizes */
     --footer-height: 190px;
-    --nav-height: 70px;
+    --nav-height: 50px;
     --premium-nav-height: 40px;
     --max-width: 1200px;
     --max-width-content: 900px;

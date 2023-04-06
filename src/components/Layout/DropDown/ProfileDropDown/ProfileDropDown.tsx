@@ -34,7 +34,7 @@ const ProfileDropDown = ({
     <DropDown
       closeDrop={closeDrop}
       setCloseDrop={setCloseDrop}
-      btnText={<Avatar size={24} changeable={false} />}
+      btnText={<Avatar size={30} changeable={false} />}
     >
       <div className="flex border-b" onClick={handleOpenProfile}>
         <button

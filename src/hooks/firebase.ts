@@ -4,6 +4,7 @@ import {
   LabelGroup,
   TaskGroup,
   GoalGroup,
+  ProjectsGroup,
 } from "@/global/types";
 import { db } from "@/utils/firebase.config";
 import { User } from "firebase/auth";
@@ -20,7 +21,7 @@ import {
 export const getProjects = async (user: User) => {
   if (user) {
     console.log("Fetching Projects");
-    let data: Array<Project> = [];
+    let data: ProjectsGroup = [];
     const docRef = collection(db, "users", user.uid, "projects");
     const querySnapshot = await getDocs(docRef);
     querySnapshot.forEach((doc) => {

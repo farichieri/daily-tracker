@@ -21,7 +21,7 @@ const DropDown = ({
   }, [closeDrop, open]);
 
   return (
-    <div className="container">
+    <div className="relative flex w-6 items-center justify-center">
       <div
         className="content"
         onClick={(event) => {
@@ -32,8 +32,8 @@ const DropDown = ({
         {btnText}
       </div>
       {open && (
-        <>
-          <div className="absolute right-4 mt-7 h-2 w-2 rotate-45 bg-[var(--modal)] shadow-inner  shadow-[var(--box-shadow-light)]"></div>
+        <div className="absolute -bottom-2 right-0 gap-2 ">
+          <div className="absolute right-2 -mt-1 h-2 w-2 rotate-45 bg-[var(--modal)] shadow-inner shadow-[var(--box-shadow-light)]"></div>
           <div
             className="drop-menu"
             onClick={(e) => {
@@ -50,7 +50,7 @@ const DropDown = ({
               setOpen(!open);
             }}
           ></div>
-        </>
+        </div>
       )}
       <style jsx>{`
         .container {
@@ -95,12 +95,11 @@ const DropDown = ({
         }
         .drop-menu {
           position: absolute;
-          background: var(--modal);
+          background: var(--gray-color);
           box-shadow: 0 0 6px 1px var(--box-shadow-light);
           border-radius: 6px;
           top: auto;
-          margin-top: 2rem;
-          right: 0.1rem;
+          right: 0;
           z-index: 12;
           font-size: 80%;
           height: auto;

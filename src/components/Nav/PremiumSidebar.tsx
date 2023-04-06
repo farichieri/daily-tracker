@@ -147,7 +147,7 @@ const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
             </Link>
           </div>
         </div> */}
-        <Streak />
+        {/* <Streak /> */}
         <button className="mt-auto flex items-center gap-1 rounded-3xl border border-stone-500 bg-stone-900 py-1 px-2 text-sm text-white shadow shadow-stone-600 duration-300 hover:bg-stone-800 active:scale-105">
           <Image
             alt="edit-icon"

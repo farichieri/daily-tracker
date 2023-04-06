@@ -1,6 +1,6 @@
-import { Task, TaskGroup, List, ListGroup } from '@/global/types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
+import { Task, TaskGroup, List, ListGroup } from "@/global/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 
 // Define a type for the slice state
 interface tasksSlice {
@@ -11,7 +11,7 @@ interface tasksSlice {
 const initialState: TaskGroup = {};
 
 export const tasksSlice = createSlice({
-  name: 'tasks',
+  name: "tasks",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {

@@ -155,6 +155,7 @@ export interface GoalGroup {
 
 export interface TasksArray extends Array<Task> {}
 export interface GoalsArray extends Array<Goal> {}
+export interface ProjectsGroup extends Array<Project> {}
 
 export interface Day {
   date: string;

@@ -1,7 +1,7 @@
 import { filterObject } from "@/hooks/helpers";
 import { selectTasks } from "store/slices/tasksSlice";
 import { TaskGroup } from "@/global/types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import AddTask from "./Tasks/AddTask";
@@ -11,7 +11,10 @@ const TasksList = () => {
   const router = useRouter();
   const { listID } = router.query;
   const { tasks } = useSelector(selectTasks);
-  const tasksByListID = filterObject(tasks, "project_id", String(listID));
+  const tasksByListID = useMemo(
+    () => filterObject(tasks, "project_id", String(listID)),
+    [String(listID), tasks]
+  );
   const [tasksState, setTasksState] = useState<TaskGroup>(tasksByListID);
 
   useEffect(() => {

@@ -76,7 +76,7 @@ const TaskComponent = ({
             ? "border-[#c1c131f1] bg-[#f1f12b85] dark:bg-[#77772157]"
             : failedTask
             ? "border-[#ed2929e0] bg-[#ed292960]"
-            : "border-shadow-color-l bg-stone-200 dark:bg-neutral-800"
+            : "border-[#7f7f7fe0] bg-stone-200 dark:bg-[#7f7f7f3f]"
         } ${oldDay && "opacity-70"}`}
       >
         <div
