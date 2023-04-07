@@ -25,16 +25,18 @@ export default function Home({
 
   return (
     <MainLayout withPadding={false}>
-      <div className="home">
-        <div className="header">
-          <h1>
+      <div className="flex h-full w-full max-w-[var(--max-width)] flex-col gap-8 py-4">
+        <div className="flex w-full flex-col items-center justify-center gap-4 p-2 ">
+          <h1 className="text max-w-xl text-4xl font-bold">
             Increase your productivity with the best achievement tips in the
             world.
           </h1>
-          <p>Receive the best information to achieve your goals weekly</p>
+          <p className="">
+            Receive the best information to achieve your goals weekly
+          </p>
           <EmailInput textButton={"Join Free"} />
         </div>
-        <div className="content">
+        <div className="flex h-full min-h-full w-full flex-col justify-center gap-4 px-2 py-4">
           <Posts posts={currentPaginationData} />
           <Pagination
             currentPage={currentPage}
@@ -45,41 +47,6 @@ export default function Home({
           />
         </div>
       </div>
-      <style jsx>
-        {`
-          .home {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem 0;
-          }
-          .header {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
-            padding: 1rem 1rem 2rem 1rem;
-          }
-          .header h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            line-height: 1.2;
-            max-width: 600px;
-          }
-          .content {
-            padding: 2rem 1rem;
-            text-align: left;
-            max-width: var(--max-width);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-          }
-        `}
-      </style>
     </MainLayout>
   );
 }

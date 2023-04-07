@@ -6,6 +6,7 @@ import nodemailer from "nodemailer";
 const mailer = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { email } = JSON.parse(req.body);
+    console.log(email);
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -21,7 +22,7 @@ const mailer = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await transporter.sendMail({
       from: `${process.env.NEXT_PUBLIC_EMAIL_DEV}`,
-      to: email,
+      to: `${email}`,
       subject: `Welcome to Improve.me!`,
       html: `
       <div>
@@ -32,6 +33,7 @@ const mailer = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     return res.status(200).json({ error: "" });
   } catch (error) {
+    console.log({ error });
     error instanceof Error
       ? res.status(500).json({ error: error.message || error.toString() })
       : res.json({ msg: "unexpected error" });

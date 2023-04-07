@@ -1,5 +1,5 @@
 import { collection, doc, setDoc } from "firebase/firestore";
-import { db } from "@/utils/firebase.config";
+import { auth, db } from "@/utils/firebase.config";
 import {
   add,
   differenceInDays,

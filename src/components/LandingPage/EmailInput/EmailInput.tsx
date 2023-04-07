@@ -1,28 +1,30 @@
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
 
 const EmailInput = ({ textButton }: { textButton: string }) => {
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
   const [added, setAdded] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    setError(false);
+    setAdded(false);
     if (email) {
       setSending(true);
       fetch("/api/mailer", {
-        method: "post",
+        method: "POST",
         body: JSON.stringify({ email }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            setAdded(true);
-          }
-          setSending(false);
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
+      }).then((response) => {
+        console.log(response);
+        if (response.ok) {
+          setAdded(true);
+        } else {
+          setError(true);
+        }
+        setSending(false);
+      });
       setEmail("");
     }
   };
@@ -50,20 +52,16 @@ const EmailInput = ({ textButton }: { textButton: string }) => {
           {sending ? <span>{"Joining..."}</span> : <span>{textButton}</span>}
         </button>
       </form>
-      {added && <div className="added">Thank you for joining us!</div>}
-
-      <style jsx>{`
-        .added {
-          background: #3cda3c;
-          max-width: 600px;
-          margin: 0 1rem;
-          padding: 0.5rem;
-          border-radius: 5px;
-          border: 2px solid green;
-          font-weight: bold;
-          color: black;
-        }
-      `}</style>
+      {added && (
+        <div className="rounded-lg border-2 border-green-900 bg-green-500 p-2 font-bold text-black">
+          Thank you for joining us!
+        </div>
+      )}
+      {error && (
+        <div className="rounded-lg border-2 border-red-900 bg-red-500/50 p-2 font-bold text-black">
+          We could not add you to the newsletter, please try again later!
+        </div>
+      )}
     </div>
   );
 };
