@@ -1,17 +1,17 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import AuthorLogo from '../Layout/AuthorLogo/AuthorLogo';
+import Image from "next/image";
+import Link from "next/link";
+import AuthorLogo from "../Layout/AuthorLogo/AuthorLogo";
 
 const Post = ({ post }: { post: any }) => {
   return (
     <Link href={`/blog/${post.id}`}>
-      <div className='post'>
-        <div className='image'>
+      <div className="m-auto flex h-64 w-64 flex-col overflow-auto rounded-2xl text-[var(--text-color)] shadow-md shadow-[var(--box-shadow-light)] hover:shadow-lg hover:shadow-[var(--box-shadow-light)] hover:duration-300 sm:m-0 ">
+        <div className="image">
           <Image alt={post.title} src={`/posts/${post.id}.jpg`} fill />
         </div>
-        <div className='content'>
-          <h1 className='title'>{post.title}</h1>
-          <div className='author'>
+        <div className="content">
+          <h1 className="title">{post.title}</h1>
+          <div className="author">
             <AuthorLogo author={post.author} width={22} height={22} />
             <p>{post.authorName}</p>
           </div>
@@ -61,9 +61,6 @@ const Post = ({ post }: { post: any }) => {
           font-size: 14px;
           margin: 0;
         }
-        .post:hover {
-          transform: scale(1.01);
-        }
       `}</style>
     </Link>
   );
@@ -71,7 +68,7 @@ const Post = ({ post }: { post: any }) => {
 
 const Posts = ({ posts }: { posts: any[] }) => {
   return (
-    <div className='posts-container'>
+    <div className="posts-container">
       {posts.map((post) => (
         <Post post={post} key={post.id} />
       ))}
@@ -79,7 +76,6 @@ const Posts = ({ posts }: { posts: any[] }) => {
         .posts-container {
           display: grid;
           gap: 1.5rem;
-          justify-content: center;
           grid-template-columns: repeat(auto-fill, minmax(15rem, 15rem));
         }
         @media screen and (max-width: 540px) {

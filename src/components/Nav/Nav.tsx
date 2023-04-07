@@ -38,7 +38,7 @@ const Nav = () => {
 
   return (
     <nav>
-      <div className="nav-content">
+      <div className="m-auto flex w-full max-w-6xl items-center justify-between px-4">
         <div style={{ gap: ".5rem" }}>
           {showPages && (
             <div
@@ -96,17 +96,6 @@ const Nav = () => {
           align-items: center;
         }
         .pages {
-        }
-        .nav-content {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          max-width: var(--max-width);
-          margin: auto;
-          padding: 0 1rem;
-          height: var(--nav-height);
-          border-bottom: 1px solid var(--box-shadow-light);
         }
 
         .login-dark {

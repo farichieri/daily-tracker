@@ -1,9 +1,9 @@
-import Filter from '@/components/LandingPage/Filter/Filter';
-import MainLayout from '@/components/Layout/MainLayout';
-import Pagination from '@/components/LandingPage/Pagination/Pagination';
-import Posts from '@/components/Posts/Posts';
-import { getSortedPostData } from '@/utils/posts';
-import { useState } from 'react';
+import { getSortedPostData } from "@/utils/posts";
+import { useState } from "react";
+import Filter from "@/components/LandingPage/Filter/Filter";
+import MainLayout from "@/components/Layout/MainLayout";
+import Pagination from "@/components/LandingPage/Pagination/Pagination";
+import Posts from "@/components/Posts/Posts";
 
 const Blog = ({
   posts,
@@ -23,12 +23,12 @@ const Blog = ({
   const updatePage = (event: number) => {
     setCurrentPage(Number(event));
   };
-  const [optionSelected, setOptionSelected] = useState('All');
+  const [optionSelected, setOptionSelected] = useState("All");
   const handleFilter = (event: Event) => {
     event.preventDefault();
     const topic = (event.target as HTMLButtonElement).value;
     const filterPosts = (topic: string) => {
-      if (topic !== 'All') {
+      if (topic !== "All") {
         return posts.filter((post) => post.topic === topic);
       } else {
         return posts;
@@ -40,11 +40,11 @@ const Blog = ({
   };
   return (
     <MainLayout withPadding={false}>
-      <section>
-        <div className='header'>
+      <section className="flex h-full w-full max-w-6xl flex-col">
+        <div className="flex items-center justify-center text-4xl font-bold">
           <h1>All our content</h1>
         </div>
-        <div className='content'>
+        <div className="content">
           <Filter handleFilter={handleFilter} optionSelected={optionSelected} />
           <Posts posts={currentPaginationData} />
           <Pagination
@@ -58,12 +58,6 @@ const Blog = ({
       </section>
       <style jsx>
         {`
-          section {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            padding-bottom: 2rem;
-          }
           .header {
             height: 10rem;
             align-items: center;
@@ -78,9 +72,6 @@ const Blog = ({
             display: flex;
             flex-direction: column;
             gap: 1rem;
-          }
-          h1 {
-            font-size: 2rem;
           }
         `}
       </style>

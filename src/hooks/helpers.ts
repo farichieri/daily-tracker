@@ -31,7 +31,7 @@ export const filterObject = (obj: any, filter: string, filterValue: string) =>
   );
 
 export const filterTasksByDateSet = (obj: any, date: string) => {
-  console.log("filterTasksByDateSet");
+  // console.log("filterTasksByDateSet");
   const formatISOtoDB = (d: string) => {
     return dbFormatDate(parseISO(d));
   };
@@ -52,7 +52,7 @@ export const filterTasksByDateSet = (obj: any, date: string) => {
 };
 
 export const filterSubtasks = (obj: any, taskID: string) => {
-  console.log("filterSubtasks");
+  // console.log("filterSubtasks");
   return Object.keys(obj).reduce(
     (acc, val) =>
       !(obj[val]["parent_id"] === taskID)
@@ -66,7 +66,7 @@ export const filterSubtasks = (obj: any, taskID: string) => {
 };
 
 export const filterTasksDone = (obj: TaskGroup | GoalGroup) => {
-  console.log("filterTasksDone");
+  // console.log("filterTasksDone");
   return Object.keys(obj).reduce(
     (acc, val) =>
       !obj[val]["done"] === true
@@ -80,7 +80,7 @@ export const filterTasksDone = (obj: TaskGroup | GoalGroup) => {
 };
 
 export const filterTasksPending = (obj: TaskGroup | GoalGroup) => {
-  console.log("filterTasksPending");
+  // console.log("filterTasksPending");
   return Object.keys(obj).reduce(
     (acc, val) =>
       !obj[val]["done"] === false
@@ -155,7 +155,7 @@ export const filterUndefinedTasks = (obj: TaskGroup) =>
   );
 
 export const getParentTaskSeconds = (subTasks: TaskGroup, task: Task) => {
-  console.log("getParentTaskSeconds");
+  // console.log("getParentTaskSeconds");
   const calculateTaskSeconds = (key: string) => {
     let seconds = 0;
     Object.values(subTasks).map((s) => {

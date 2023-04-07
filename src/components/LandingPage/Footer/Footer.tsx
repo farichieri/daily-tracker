@@ -31,8 +31,8 @@ const Footer = () => {
 
   return (
     <footer className="mt-auto flex items-center justify-center">
-      <div className="flex w-full max-w-[var(--max-width)] flex-wrap items-center justify-around border-t border-[var(--box-shadow-light)] py-8">
-        <div className="flex flex-col gap-1">
+      <div className="flex w-full max-w-6xl flex-wrap items-center justify-around gap-4 border-t border-[var(--box-shadow-light)] p-8">
+        <div className="flex w-96 flex-col gap-1">
           <span className="semibold text-xl">
             <Link href="/">Improve.me</Link>
           </span>
@@ -44,7 +44,7 @@ const Footer = () => {
           )}
           <ul className="flex list-none gap-2">
             {pages.map((page) => (
-              <li key={page.name}>
+              <li className="m-0" key={page.name}>
                 {!page.external && (
                   <Link href={page.path} target={page.target} passHref>
                     <span
@@ -66,7 +66,7 @@ const Footer = () => {
               <ul className="flex list-none flex-col gap-1">
                 <p>Learn</p>
                 {learn_pages.map((page) => (
-                  <li key={page.name} className="text-xs">
+                  <li key={page.name} className="m-0 text-xs">
                     <Link href={page.path} target={page.target} passHref>
                       <span
                         className={`text-xs
@@ -85,7 +85,7 @@ const Footer = () => {
               <ul className="flex list-none flex-col gap-1">
                 <p>More</p>
                 {more_pages.map((page) => (
-                  <li key={page.name} className="text-xs">
+                  <li key={page.name} className="m-0 text-xs">
                     <Link href={page.path} target={page.target} passHref>
                       <span
                         className={`text-xs

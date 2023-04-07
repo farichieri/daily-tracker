@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Filter = ({
   handleFilter,
@@ -7,13 +7,13 @@ const Filter = ({
   handleFilter: any;
   optionSelected: string;
 }) => {
-  const OPTIONS = ['All', 'productivity'];
+  const OPTIONS = ["All", "productivity"];
   return (
     <div>
       {OPTIONS.map((opt) => (
         <button
           key={opt}
-          className={opt === optionSelected ? 'this-filter' : ''}
+          className={opt === optionSelected ? "this-filter" : ""}
           onClick={handleFilter}
           value={opt}
         >
@@ -30,10 +30,8 @@ const Filter = ({
           gap: 0.5rem;
           margin-top: 1rem;
           margin: 1rem auto;
-          border-top: 1px solid gray;
           border-bottom: 1px solid gray;
           padding: 0.5rem;
-          max-width: var(--max-width-content);
         }
         button {
           padding: 0.4rem 1rem;
@@ -43,8 +41,9 @@ const Filter = ({
           color: gray;
           transition: 0.3s;
           background: none;
-          border: none;
+          border: 1px solid transparent;
           margin: auto;
+          text-transform: capitalize;
         }
 
         button:hover {

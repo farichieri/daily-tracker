@@ -32,7 +32,7 @@ const PremiumNav = ({
   };
 
   return (
-    <nav className="absolute top-0 left-0 z-50 flex h-[var(--premium-nav-height)] select-none items-center gap-2 bg-none px-1 sm:px-4 ">
+    <nav className="absolute top-0 left-1 z-50 flex h-[var(--premium-nav-height)] select-none items-center gap-2 bg-none px-1 sm:px-4 ">
       {isSettingsOpen && <Settings closeModalOnClick={closeModalOnClick} />}
       <span className="cursor-pointer" onClick={handleToggleSidebar}>
         {sidebarState ? (
@@ -54,7 +54,7 @@ const PremiumNav = ({
         )}
       </span>
       <span className="font-bold">{selected}</span>
-      <div className="fixed top-0 right-1 flex h-[var(--premium-nav-height)] items-center px-1 sm:px-4">
+      <div className="fixed top-0 right-2 flex h-[var(--premium-nav-height)] items-center px-1 sm:px-4">
         <ProfileDropDown setIsSettingsOpen={setIsSettingsOpen} />
       </div>
     </nav>

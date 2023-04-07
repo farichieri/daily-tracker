@@ -25,8 +25,8 @@ export default function Home({
 
   return (
     <MainLayout withPadding={false}>
-      <div className="flex h-full w-full max-w-[var(--max-width)] flex-col gap-8 py-4">
-        <div className="flex w-full flex-col items-center justify-center gap-4 p-2 ">
+      <div className="flex h-full w-full max-w-6xl flex-col gap-8">
+        <div className="flex w-full flex-col items-center justify-center gap-4 ">
           <h1 className="text max-w-xl text-4xl font-bold">
             Increase your productivity with the best achievement tips in the
             world.

@@ -10,7 +10,11 @@ import { useSelector } from "react-redux";
 import { selectUser } from "store/slices/authSlice";
 import Date from "../../components/Layout/Date";
 import MainLayout from "../../components/Layout/MainLayout";
-import { getPostData, getSortedPostData } from "../../utils/posts";
+import {
+  getAllPostsIds,
+  getPostData,
+  getSortedPostData,
+} from "../../utils/posts";
 
 const Post = ({
   postData,
@@ -19,20 +23,20 @@ const Post = ({
   postData: any;
   postsRecommended: any;
 }) => {
-  const [showContent, setShowContent] = useState(false);
-  const { user } = useSelector(selectUser);
+  const [showContent, setShowContent] = useState(true);
+  // const { user } = useSelector(selectUser);
 
-  useEffect(() => {
-    if (postData.premium) {
-      if (user) {
-        setShowContent(true);
-      } else {
-        setShowContent(false);
-      }
-    } else {
-      setShowContent(true);
-    }
-  }, [postData, user]);
+  // useEffect(() => {
+  //   if (postData.premium) {
+  //     if (user) {
+  //       setShowContent(true);
+  //     } else {
+  //       setShowContent(false);
+  //     }
+  //   } else {
+  //     setShowContent(true);
+  //   }
+  // }, [postData, user]);
 
   const getContent = (content: any) => {
     if (showContent) {
@@ -42,40 +46,40 @@ const Post = ({
     }
   };
 
-  const showRecommendedContent = () => {
-    if (postsRecommended.length > 0 && !postData.premium) {
-      return true;
-    } else if (postsRecommended.length > 0 && user) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // const showRecommendedContent = () => {
+  //   if (postsRecommended.length > 0 && !postData.premium) {
+  //     return true;
+  //   } else if (postsRecommended.length > 0 && user) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   return (
     <MainLayout withPadding={true}>
       <Head>
         <title>{postData.title}</title>
       </Head>
-      <div className="post-container">
-        <div className="post-main">
-          <article>
+      <div className="relative flex max-w-4xl">
+        <div className="flex flex-col items-center">
+          <article className="relative">
             <div className="post-header">
-              <h1 className="title">{postData.title}</h1>
-              <div className="author">
+              <h1 className="text-5xl font-bold">{postData.title}</h1>
+              <div className="my-4 flex items-center gap-2">
                 <AuthorLogo author={postData.author} width={30} height={30} />
                 <AuthorName author={postData.author} style={null} /> -
                 Published:
                 <Date dateString={postData.date} />
               </div>
             </div>
-            {!user && (
-              <div className="mobile_ad">
-                <AD />
-              </div>
-            )}
+            {/* {!user && ( */}
+            <div className="mobile_ad">
+              <AD />
+            </div>
+            {/* )} */}
             <div
-              className="post-content"
+              className="flex flex-col gap-4 border-t border-[var(--box-shadow)] px-8 py-10"
               dangerouslySetInnerHTML={{
                 __html: getContent(postData.contentHtml),
               }}
@@ -84,30 +88,19 @@ const Post = ({
               <div className='fixed'>{!user && <AD />}</div>
             </div> */}
           </article>
-          {!user && postData.premium && <SubscribeInvitation />}
-          {!user && !postData.premium && <NewsLetterInvitation />}
-          {showRecommendedContent() && (
+          {/* {!user && postData.premium && <SubscribeInvitation />}
+          {!user && !postData.premium && <NewsLetterInvitation />} */}
+          {/* {showRecommendedContent() && ( */}
+          {postsRecommended.length > 0 && (
             <div className="similar-content">
               <h3>Related content</h3>
               <Posts posts={postsRecommended} />
             </div>
           )}
+          {/* )} */}
         </div>
       </div>
       <style jsx>{`
-        .post-container {
-          display: flex;
-          position: relative;
-          max-width: 1200px;
-        }
-         {
-          /* margin-right: ${!user && "300px"}; */
-        }
-        .post-main {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
         .sidebar {
           position: absolute;
           right: 0;
@@ -120,21 +113,9 @@ const Post = ({
           max-width: 300px;
           height: 100%;
         }
-        article {
-          text-align: left;
-          width: 100%;
-          padding: 1rem 0;
-          max-width: var(--max-width-content);
-          position: relative;
-        }
         .post-header {
           display: flex;
           flex-direction: column;
-        }
-        .title {
-          line-height: 1.2;
-          font-size: 3.5rem;
-          font-weight: 800;
         }
         .author {
           display: flex;
@@ -152,26 +133,12 @@ const Post = ({
           gap: 1rem;
           width: 100%;
         }
-        .mobile_ad {
-          display: none;
-        }
-        li,
-        ul {
-          background: red;
-        }
-        .post-content {
-          border-bottom: 1px solid var(--box-shadow-light);
-          border-top: 1px solid var(--box-shadow-light);
-        }
         @media screen and (max-width: 1000px) {
           .sidebar {
             display: none;
           }
           .post-container {
             margin-right: 0;
-          }
-          .mobile_ad {
-            display: flex;
           }
         }
       `}</style>
@@ -181,24 +148,15 @@ const Post = ({
 
 export default Post;
 
-// export const getStaticPaths = async () => {
-//   const paths = getAllPostsIds();
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
+export const getStaticPaths = async () => {
+  const paths = getAllPostsIds();
+  return {
+    paths,
+    fallback: false,
+  };
+};
 
-// export const getStaticProps = async ({ params }: { params: any }) => {
-//   const postData = await getPostData(params.id);
-//   return {
-//     props: {
-//       postData,
-//     },
-//   };
-// };
-
-export const getServerSideProps = async ({ params }: { params: any }) => {
+export const getStaticProps = async ({ params }: { params: any }) => {
   const postData = await getPostData(params.id);
   const allPostData = getSortedPostData();
   const sameTopicPosts = allPostData.filter(
@@ -214,3 +172,20 @@ export const getServerSideProps = async ({ params }: { params: any }) => {
     },
   };
 };
+
+// export const getServerSideProps = async ({ params }: { params: any }) => {
+//   const postData = await getPostData(params.id);
+//   const allPostData = getSortedPostData();
+//   const sameTopicPosts = allPostData.filter(
+//     (post: any) => post.topic === postData.topic && post.id !== postData.id
+//   );
+//   const postsRecommended = [...sameTopicPosts]
+//     .sort(() => 0.5 - Math.random())
+//     .slice(0, 3);
+//   return {
+//     props: {
+//       postData,
+//       postsRecommended,
+//     },
+//   };
+// };

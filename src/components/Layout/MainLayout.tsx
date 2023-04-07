@@ -14,7 +14,7 @@ export default function MainLayout({
   return (
     <section className="flex h-full min-h-screen flex-col pt-[var(--nav-height)] ">
       <Nav />
-      <div className="flex h-full w-full items-center justify-center py-2 px-4">
+      <div className="flex h-full w-full items-center justify-center px-5 py-10">
         {children}
       </div>
       <Footer />
