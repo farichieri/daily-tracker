@@ -30,79 +30,8 @@ const Footer = () => {
     router.route !== "/checkout" && router.route !== "/checkout/[plan]";
 
   return (
-    <footer className="mt-auto flex items-center justify-center">
-      <div className="flex w-full max-w-6xl flex-wrap items-center justify-around gap-4 border-t border-[var(--box-shadow-light)] p-8">
-        <div className="flex w-96 flex-col gap-1">
-          <span className="semibold text-xl">
-            <Link href="/">Improve.me</Link>
-          </span>
-          {showPages && (
-            <p className="text-xs">
-              Increase your productivity learning from the best and using proven
-              tools
-            </p>
-          )}
-          <ul className="flex list-none gap-2">
-            {pages.map((page) => (
-              <li className="m-0" key={page.name}>
-                {!page.external && (
-                  <Link href={page.path} target={page.target} passHref>
-                    <span
-                      className={`text-xs ${
-                        router.route === page.path
-                      } ? "selected" : ""`}
-                    >
-                      {page.name}
-                    </span>
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-        {showPages && (
-          <div className="flex w-96 justify-between">
-            <div className="flex flex-col">
-              <ul className="flex list-none flex-col gap-1">
-                <p>Learn</p>
-                {learn_pages.map((page) => (
-                  <li key={page.name} className="m-0 text-xs">
-                    <Link href={page.path} target={page.target} passHref>
-                      <span
-                        className={`text-xs
-                          ${router.route === page.path}
-                            ? "text-[var(--text-color)]"
-                            : ""`}
-                      >
-                        {page.name}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="flex flex-col ">
-              <ul className="flex list-none flex-col gap-1">
-                <p>More</p>
-                {more_pages.map((page) => (
-                  <li key={page.name} className="m-0 text-xs">
-                    <Link href={page.path} target={page.target} passHref>
-                      <span
-                        className={`text-xs
-                          ${router.route === page.path}
-                            ? "text-[var(--text-color)]"
-                            : ""`}
-                      >
-                        {page.name}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
+    <footer className="mx-auto mt-auto flex w-full max-w-5xl items-center justify-center border-t border-gray-500/20 py-8">
+      <span className="text-sm opacity-70">2023 © Improve.me</span>
     </footer>
   );
 };

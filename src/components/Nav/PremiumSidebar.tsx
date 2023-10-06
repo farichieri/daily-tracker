@@ -10,7 +10,6 @@ import ListCreate from "../ListCreate/ListCreate";
 import ListEdit from "../ListEdit/ListEdit";
 import ProjectCreate from "../ProjectCreate/ProjectCreate";
 import ProjectEdit from "../ProjectEdit/ProjectEdit";
-import Streak from "../Streak/Streak";
 
 const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
   const dispatch = useDispatch();
@@ -45,7 +44,7 @@ const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
       {editProject && <ProjectEdit closeModalOnClick={closeModalOnClick} />}
       {listCreate && <ListCreate closeModalOnClick={closeModalOnClick} />}
       <div
-        className={`duratin-300 fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-3xl bg-[var(--cool)] py-4 pl-3 pr-3 pt-[var(--premium-nav-height)] shadow-md shadow-gray-500/50 backdrop-blur-sm transition-all ease-linear dark:shadow-gray-300/20 ${
+        className={`fixed left-0 z-30 flex h-full w-[10rem] flex-col items-center gap-2 rounded-r-[40px] bg-black/95 py-4 pl-3 pr-3 pt-[var(--premium-nav-height)] shadow-md shadow-gray-500/50 backdrop-blur-sm transition-all duration-300 ease-linear dark:shadow-gray-300/20 ${
           !sidebarState && "left-[-200px]"
         }`}
       >
@@ -121,44 +120,7 @@ const PremiumSidebar = ({ sidebarState }: { sidebarState: boolean }) => {
               )
           )}
         </div>
-        <div className="w-full">
-          <div className="my-1 flex">
-            <Link href={"/app/goals"}>
-              <span
-                className={`goals ${
-                  pathname === "/app/goals" ? "selected" : ""
-                }`}
-              >
-                Goals
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* <div className="w-full">
-          <div className="my-1 flex">
-            <Link href={"/app/test"}>
-              <span
-                className={`goals ${
-                  pathname === "/app/goals" ? "selected" : ""
-                }`}
-              >
-                Test
-              </span>
-            </Link>
-          </div>
-        </div> */}
-        {/* <Streak /> */}
-        <button className="mt-auto flex items-center gap-1 rounded-3xl border border-stone-500 bg-stone-900 py-1 px-2 text-sm text-white shadow shadow-stone-600 duration-300 hover:bg-stone-800 active:scale-105">
-          <Image
-            alt="edit-icon"
-            src={"/icons/star.png"}
-            width={18}
-            height={18}
-            style={{ pointerEvents: "none" }}
-          />
-          <span>Get Premium</span>
-        </button>
-        <div>
+        <div className="mt-auto">
           <Avatar size={65} changeable={false} />
         </div>
       </div>

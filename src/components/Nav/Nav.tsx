@@ -3,7 +3,6 @@ import { selectUser } from "store/slices/authSlice";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import DarkMode from "../DarkMode/DarkMode";
 import Link from "next/link";
 import Logo from "../Logo/Logo";
 
@@ -11,9 +10,6 @@ const Nav = () => {
   const router = useRouter();
   const [hamburgerActive, setHamburgerActive] = useState(false);
   const { user } = useSelector(selectUser);
-  const [userName, setUserName] = useState(
-    user?.email?.slice(0, user.email.indexOf("@")) || "Sign in"
-  );
 
   const handleMenu = () => {
     setHamburgerActive(!hamburgerActive);
@@ -25,12 +21,10 @@ const Nav = () => {
     router.route !== "/checkout/[plan]";
 
   useEffect(() => {
-    if (user && user.email) {
-      setUserName(user.email.slice(0, user.email.indexOf("@")));
-    } else {
-      setUserName("Sign in");
+    if (user) {
+      router.push("/app");
     }
-  }, [user]);
+  }, [user, router]);
 
   const pages = user
     ? nav_pages.filter((page) => page.name !== "subscribe")
@@ -69,12 +63,6 @@ const Nav = () => {
                 </span>
               </Link>
             ))}
-        </div>
-        <div className="login-dark">
-          <Link href={"/user"} onClick={handleMenu} className="w-24">
-            <span className="w-full">{userName}</span>
-          </Link>
-          <DarkMode />
         </div>
       </div>
       <style jsx>{`

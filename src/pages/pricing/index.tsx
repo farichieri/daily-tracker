@@ -49,7 +49,7 @@ const Plans = () => {
 
 const index = () => {
   return (
-    <MainLayout withPadding={true}>
+    <MainLayout >
       <div className="flex h-[87vh] flex-col items-start justify-center gap-4">
         <h1 className="text-left text-2xl font-semibold">
           Find the right plan

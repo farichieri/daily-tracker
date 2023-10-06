@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import AuthorLogo from "../Layout/AuthorLogo/AuthorLogo";
+import Pagination from "../LandingPage/Pagination/Pagination";
+import { useState } from "react";
 
 const Post = ({ post }: { post: any }) => {
   return (
@@ -67,11 +69,36 @@ const Post = ({ post }: { post: any }) => {
 };
 
 const Posts = ({ posts }: { posts: any[] }) => {
+  const [postsState, setPostsState] = useState(posts);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalCount = postsState.length;
+  const blogsFrom = (currentPage - 1) * rowsPerPage;
+  const blogsTo = currentPage * rowsPerPage;
+
+  const currentPaginationData = postsState.slice(blogsFrom, blogsTo);
+
+  const totalPages = Math.ceil(totalCount / rowsPerPage);
+  const updatePage = (event: number) => {
+    setCurrentPage(Number(event));
+  };
+
   return (
-    <div className="posts-container">
-      {posts.map((post) => (
-        <Post post={post} key={post.id} />
-      ))}
+    <section className="flex flex-col justify-center">
+      <div className="posts-container">
+        {currentPaginationData.map((post) => (
+          <Post post={post} key={post.id} />
+        ))}
+      </div>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalCount={totalCount}
+          pageSize={rowsPerPage}
+          onPageChange={updatePage}
+          totalPages={totalPages}
+        />
+      )}
       <style jsx>{`
         .posts-container {
           display: grid;
@@ -84,7 +111,7 @@ const Posts = ({ posts }: { posts: any[] }) => {
           }
         }
       `}</style>
-    </div>
+    </section>
   );
 };
 

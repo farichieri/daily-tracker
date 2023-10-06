@@ -1,12 +1,12 @@
-import AuthorLogo from '@/components/Layout/AuthorLogo/AuthorLogo';
-import Pagination from '@/components/LandingPage/Pagination/Pagination';
-import PostsAuthor from '@/components/Posts/PostsAuthor';
-import { authors } from '@/utils/authors';
-import { getSortedPostData } from '@/utils/posts';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
-import MainLayout from '../../components/Layout/MainLayout';
+import AuthorLogo from "@/components/Layout/AuthorLogo/AuthorLogo";
+import Pagination from "@/components/LandingPage/Pagination/Pagination";
+import PostsAuthor from "@/components/Posts/PostsAuthor";
+import { authors } from "@/utils/authors";
+import { getSortedPostData } from "@/utils/posts";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import MainLayout from "../../components/Layout/MainLayout";
 
 const Author = ({
   author,
@@ -15,7 +15,7 @@ const Author = ({
   author: any;
   posts: { title: string; id: string; date: string; author: string }[];
 }) => {
-  const socialMedia = ['twitter', 'email', 'linkedin'];
+  const socialMedia = ["twitter", "email", "linkedin"];
   const [postsState, setPostsState] = useState(posts);
   const [rowsPerPage, setRowsPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,21 +29,21 @@ const Author = ({
   };
 
   return (
-    <MainLayout withPadding={true}>
-      <section className='author'>
-        <div className='header-container'>
+    <MainLayout>
+      <section className="author">
+        <div className="header-container">
           <AuthorLogo author={author.slug} width={125} height={125} />
-          <div className='header-container-text'>
+          <div className="header-container-text">
             <h1>{author.name}</h1>
             <p>{author.description}</p>
-            <div className='header-container-social'>
+            <div className="header-container-social">
               {socialMedia.map(
                 (s, index) =>
                   author[s] && (
-                    <Link href={author[s]} target='_blank' key={index}>
+                    <Link href={author[s]} target="_blank" key={index}>
                       <Image
                         src={`/icons/${s}.png`}
-                        alt=''
+                        alt=""
                         width={22}
                         height={22}
                       />
@@ -54,11 +54,11 @@ const Author = ({
           </div>
         </div>
         <div
-          className='content'
+          className="content"
           dangerouslySetInnerHTML={{ __html: author.about }}
         />
-        <div className='content-more'>
-          <h4>More from {author.name.slice(0, author.name.indexOf(' '))}</h4>
+        <div className="content-more">
+          <h4>More from {author.name.slice(0, author.name.indexOf(" "))}</h4>
           <PostsAuthor posts={currentPaginationData} author={author} />
           <Pagination
             currentPage={currentPage}

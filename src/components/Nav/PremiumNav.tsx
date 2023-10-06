@@ -1,10 +1,8 @@
 import { selectList } from "store/slices/listsSlice";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { useMemo, useState } from "react";
 import Image from "next/image";
 import ProfileDropDown from "../Layout/DropDown/ProfileDropDown/ProfileDropDown";
-import Settings from "../Settings/Settings";
 
 const PremiumNav = ({
   sidebarState,
@@ -25,15 +23,8 @@ const PremiumNav = ({
     ? "Goals"
     : "Planner";
 
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  const closeModalOnClick = () => {
-    setIsSettingsOpen(false);
-  };
-
   return (
     <nav className="absolute top-0 left-1 z-50 flex h-[var(--premium-nav-height)] select-none items-center gap-2 bg-none px-1 sm:px-4 ">
-      {isSettingsOpen && <Settings closeModalOnClick={closeModalOnClick} />}
       <span className="cursor-pointer" onClick={handleToggleSidebar}>
         {sidebarState ? (
           <Image
@@ -55,7 +46,7 @@ const PremiumNav = ({
       </span>
       <span className="font-bold">{selected}</span>
       <div className="fixed top-0 right-2 flex h-[var(--premium-nav-height)] items-center px-1 sm:px-4">
-        <ProfileDropDown setIsSettingsOpen={setIsSettingsOpen} />
+        <ProfileDropDown />
       </div>
     </nav>
   );

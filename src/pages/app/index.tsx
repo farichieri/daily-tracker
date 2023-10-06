@@ -14,9 +14,10 @@ const TrackerPage = () => {
     if (user) {
       router.push(`/app/tracker/${today}`);
     } else {
-      router.push(`/user`);
+      router.push(`/`);
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return <PremiumLayout>{}</PremiumLayout>;
 };

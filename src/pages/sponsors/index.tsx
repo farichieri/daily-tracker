@@ -1,6 +1,6 @@
-import MainLayout from '@/components/Layout/MainLayout';
+import MainLayout from "@/components/Layout/MainLayout";
 
 const index = () => {
-  return <MainLayout withPadding={true}>Sponsors</MainLayout>;
+  return <MainLayout>Sponsors</MainLayout>;
 };
 export default index;

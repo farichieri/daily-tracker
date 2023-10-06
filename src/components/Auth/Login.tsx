@@ -1,35 +1,26 @@
-import React, { useState } from "react";
-import { auth, provider } from "@/utils/firebase.config";
 import {
   getAdditionalUserInfo,
   GoogleAuthProvider,
-  signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
+import { auth, provider } from "@/utils/firebase.config";
+import { selectTrackerSlice } from "store/slices/trackerSlice";
 import { setIsLoading } from "store/slices/layoutSlice";
 import { setNewUserData } from "./newUserData";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import Button from "../Layout/Button/Button";
 import GoogleLoginButton from "../Layout/GoogleLoginButton/GoogleLoginButton";
+import React from "react";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [input, setInput] = useState({
-    email: "",
-    password: "",
-  });
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoadingForm, setIsLoadingForm] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
   const router = useRouter();
+  const { today } = useSelector(selectTrackerSlice);
 
   const handleLogInWithGoogle = async () => {
     dispatch(setIsLoading(true));
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        provider.addScope("https://www.googleapis.com/auth/calendar");
-        provider.addScope("https://www.googleapis.com/auth/calendar.events");
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
@@ -37,88 +28,24 @@ const Login = () => {
         // The signed-in user info.
         const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
-        const additinalInfo = getAdditionalUserInfo(result);
-        if (additinalInfo?.isNewUser) {
+        const additionalInfo = getAdditionalUserInfo(result);
+        if (additionalInfo?.isNewUser) {
           await setNewUserData(user);
-          router.push("/app");
+          router.push(`/app/tracker/${today}`);
         } else {
-          router.push("/app");
+          router.push(`/app/tracker/${today}`);
         }
       })
       .catch((error) => {
-        console.log({ error });
         dispatch(setIsLoading(false));
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
       });
-  };
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setIsLoadingForm(true);
-    setIsDisabled(true);
-    await signInWithEmailAndPassword(auth, input.email, input.password)
-      .then((result) => {
-        const user = result.user;
-        user && router.push("/app");
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-      });
-    setIsLoadingForm(false);
-    setIsDisabled(false);
-  };
-
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    event.preventDefault();
-    setInput({
-      ...input,
-      [event.target.name]: event.target.value,
-    });
-    setErrorMessage("");
   };
 
   return (
     <div className="login">
       <GoogleLoginButton onClick={handleLogInWithGoogle}>
-        Sign in with Google
+        Login for free
       </GoogleLoginButton>
-      <form onSubmit={handleSubmit}>
-        <div className="inputs-container">
-          <input
-            onChange={handleChange}
-            name="email"
-            value={input.email}
-            placeholder="Email"
-            type="text"
-          />
-          <input
-            onChange={handleChange}
-            name="password"
-            value={input.password}
-            placeholder="Password"
-            type="password"
-          />
-        </div>
-        <Button
-          style={null}
-          onClick={handleSubmit}
-          loadMessage={"Ingresando..."}
-          content="Sign in"
-          isLoading={isLoadingForm}
-          isDisabled={isDisabled}
-        />
-        {errorMessage && <span>Email o contraseña inválidos</span>}
-      </form>
-
       <style jsx>{`
         form {
           display: flex;

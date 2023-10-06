@@ -40,7 +40,7 @@ const AddTask = ({ date }: { date: string }) => {
   const { user } = useSelector(selectUser);
   const [input, setInput] = useState<Task>(NewTaskInitial);
   const [inputFocus, setInputFocus] = useState("content");
-  const [openAddTask, setOpenAddTask] = useState(false);
+  const [openAddTask, setOpenAddTask] = useState(true);
   const [openAssignLabel, setOpenAssignLabel] = useState(false);
   const [openAssignList, setOpenAssignList] = useState(false);
   const [openEmojis, setOpenEmojis] = useState(false);

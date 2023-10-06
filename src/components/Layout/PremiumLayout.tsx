@@ -1,14 +1,3 @@
-import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
-import { selectUser } from "store/slices/authSlice";
-import {
-  selectLayoutState,
-  setIsSidebarOpen,
-  toggleIsCreatingProject,
-} from "store/slices/layoutSlice";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import PremiumNav from "../Nav/PremiumNav";
-import PremiumSidebar from "../Nav/PremiumSidebar";
 import {
   getProjects,
   getLists,
@@ -16,13 +5,24 @@ import {
   getTasks,
   getGoals,
 } from "@/hooks/firebase";
+import {
+  selectLayoutState,
+  setIsSidebarOpen,
+  toggleIsCreatingProject,
+} from "store/slices/layoutSlice";
 import { selectGlobalState, setIsDataFetched } from "store/slices/globalSlice";
+import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
+import { selectUser } from "store/slices/authSlice";
+import { setGoals } from "store/slices/goalsSlice";
 import { setLabels } from "store/slices/labelsSlice";
 import { setLists } from "store/slices/listsSlice";
 import { setTasks } from "store/slices/tasksSlice";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import Loader from "./Loader/Loader";
-import { setGoals } from "store/slices/goalsSlice";
+import PremiumNav from "../Nav/PremiumNav";
+import PremiumSidebar from "../Nav/PremiumSidebar";
 
 export default function PremiumLayout({
   children,
@@ -32,9 +32,9 @@ export default function PremiumLayout({
   const dispatch = useDispatch();
   const router = useRouter();
   const { isDataFetched } = useSelector(selectGlobalState);
+  const { isSidebarOpen } = useSelector(selectLayoutState);
   const { user, userSettings, isVerifyingUser } = useSelector(selectUser);
   const trackerView = useSelector(selectTrackerView);
-  const { isSidebarOpen } = useSelector(selectLayoutState);
 
   const handleToggleSidebar = () => {
     if (
@@ -50,16 +50,6 @@ export default function PremiumLayout({
   };
 
   const fetchAllData = async () => {
-    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
     if (!user) return;
     const [labelsData, listsData, tasksData, goalsData, projects] =
       await Promise.all([
@@ -85,16 +75,17 @@ export default function PremiumLayout({
       fetchAllData();
       handleToggleSidebar();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
     if (!user && !isVerifyingUser) {
-      router.push("/user");
+      router.push("/");
     }
-  }, [user, isVerifyingUser]);
+  }, [user, isVerifyingUser, router]);
 
   return (
-    <section className="flex h-screen max-h-screen min-h-screen items-start justify-center overflow-hidden">
+    <section className="flex h-screen min-h-screen items-start justify-center overflow-hidden">
       {isVerifyingUser ? (
         <Loader fullScreen={false} text={""} />
       ) : !user ? (
@@ -121,7 +112,7 @@ export default function PremiumLayout({
         )
       )}
       <div
-        className={`duratin-300 flex h-full w-full flex-col items-center px-2 transition-all ease-linear ${
+        className={`mx-auto flex h-full w-full max-w-[1500px] flex-col items-center px-2 transition-all duration-300 ease-linear ${
           isSidebarOpen && "sm:pl-[10.5rem] "
         } ${
           router.pathname.includes("tracker") && trackerView === "week"

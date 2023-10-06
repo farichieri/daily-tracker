@@ -39,14 +39,17 @@ const FilterSelect = () => {
   const dateToShow = date ? format(parseISO(String(date)), "LLLL u") : today; // April 2023
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
+  const buttonClass =
+    "flex h-6 sm:h-8 sm:text-lg sm:w-20 w-12 items-center justify-center border-b border-transparent pl-4 pr-2 duration-300 hover:bg-[var(--bg-color-tertiary-light)] sm:w-16";
+
   return (
     <div className="h-fit z-20 m-auto flex max-h-max w-fit min-w-fit flex-col items-center gap-2 ">
-      <div className="flex select-none items-start overflow-auto rounded-b-3xl  text-xs shadow-md shadow-gray-500/50 dark:bg-[var(--cool)] dark:shadow-gray-400/20">
+      <div className="flex select-none items-start overflow-auto rounded-b-xl text-xs shadow-md shadow-gray-500/50 dark:bg-[var(--cool)] dark:shadow-gray-400/20">
         <button
           onClick={() => setNewTrackerView("day")}
           className={`${
             dayView ? "text-[var(--text-color)]" : "text-neutral-500"
-          } flex h-6 w-12 items-center justify-center border-b border-transparent pl-4 pr-2 duration-300 hover:bg-[var(--bg-color-tertiary-light)]   sm:w-16`}
+          } ${buttonClass}`}
         >
           Day
         </button>
@@ -55,7 +58,7 @@ const FilterSelect = () => {
             onClick={() => setNewTrackerView("day")}
             className={`${
               date === today && dayView ? "text-red-400" : "text-neutral-500"
-            } flex h-6 w-12 items-center justify-center border-b border-transparent px-2 duration-300 hover:bg-[var(--bg-color-tertiary-light)]  sm:w-16`}
+            } ${buttonClass}`}
           >
             Today
           </button>
@@ -64,7 +67,7 @@ const FilterSelect = () => {
           onClick={() => setNewTrackerView("week")}
           className={`${
             weekView ? "text-[var(--text-color)]" : "text-neutral-500"
-          } flex h-6 w-12 items-center justify-center border border-transparent pl-2 pr-4 duration-300 hover:bg-[var(--bg-color-tertiary-light)]  sm:w-16`}
+          } ${buttonClass}`}
         >
           Week
         </button>

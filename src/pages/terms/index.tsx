@@ -1,10 +1,10 @@
-import MainLayout from '@/components/Layout/MainLayout';
+import MainLayout from "@/components/Layout/MainLayout";
 
 const index = () => {
   return (
-    <MainLayout withPadding={true}>
-      <div className='terms'>
-        <h1 className='title'>Terms & Conditions</h1>
+    <MainLayout>
+      <div className="terms">
+        <h1 className="title">Terms & Conditions</h1>
         <p>
           These terms apply to This Website and any other of his Website&apos;s
           sites, apps, communities on any platform, any of its meetups and/or

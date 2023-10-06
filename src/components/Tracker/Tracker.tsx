@@ -1,8 +1,8 @@
-import { selectTasks } from "store/slices/tasksSlice";
 import {
   selectTrackerView,
   selectWeekSelected,
 } from "store/slices/trackerSlice";
+import { selectTasks } from "store/slices/tasksSlice";
 import { useRouter } from "next/dist/client/router";
 import { useSelector } from "react-redux";
 import DayTasks from "./DayTasks/DayTasks";
@@ -24,7 +24,14 @@ const Tracker = () => {
       <FilterSelect />
       <div className="mx-auto flex h-full w-full gap-1 overflow-x-auto overflow-y-auto ">
         {trackerView === "day" ? (
-          <DayTasks tasks={tasks} date={String(date)} index={0} lastIndex={0} />
+          <div className="mx-auto w-full max-w-5xl">
+            <DayTasks
+              tasks={tasks}
+              date={String(date)}
+              index={0}
+              lastIndex={0}
+            />
+          </div>
         ) : (
           weekSelected.map((day, index) => (
             <DayTasks

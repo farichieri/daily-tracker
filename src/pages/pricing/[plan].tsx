@@ -1,29 +1,29 @@
-import MainLayout from '@/components/Layout/MainLayout';
-import { plans } from '@/utils/plans';
-import Link from 'next/link';
-import { useState } from 'react';
+import MainLayout from "@/components/Layout/MainLayout";
+import { plans } from "@/utils/plans";
+import Link from "next/link";
+import { useState } from "react";
 
 const Plan = ({ plan }: { plan: any }) => {
-  const [promo, setPromo] = useState('');
+  const [promo, setPromo] = useState("");
 
   return (
-    <MainLayout withPadding={true}>
-      <div className='payment-container'>
+    <MainLayout>
+      <div className="payment-container">
         <h2>Subscribe today</h2>
-        <div className='payment'>
+        <div className="payment">
           <form>
-            <input placeholder='Your name' type={'text'} />
-            <input placeholder='Your email' type={'email'} />
-            <input placeholder='Card number' type={'text'} />
+            <input placeholder="Your name" type={"text"} />
+            <input placeholder="Your email" type={"email"} />
+            <input placeholder="Card number" type={"text"} />
             <button>Join today</button>
             <p>
-              By signing up you agreed to our{' '}
-              <Link href={'/terms'} target='_blank'>
+              By signing up you agreed to our{" "}
+              <Link href={"/terms"} target="_blank">
                 terms.
               </Link>
             </p>
           </form>
-          <div className='detail'>
+          <div className="detail">
             <h3>Plan detail {plan.plan}</h3>
             <p>{plan.description}</p>
             <p>{plan.checkoutDescription}</p>
@@ -32,7 +32,7 @@ const Plan = ({ plan }: { plan: any }) => {
               anytime.
             </p>
             {promo && <p>Your {promo} promo code has been applied</p>}
-            <div className='detail-charge'>
+            <div className="detail-charge">
               <p>Total charge</p>
               <p>{plan.yearPrice}</p>
             </div>

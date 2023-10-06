@@ -1,10 +1,10 @@
-import { NewTaskInitial } from "@/global/initialTypes";
-import { Label, List, Project, Task, UserDoc } from "@/global/types";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "@/utils/firebase.config";
 import { dbFormatDate } from "@/utils/formatDate";
 import { formatISO } from "date-fns";
+import { Label, List, Project, Task, UserDoc } from "@/global/types";
+import { NewTaskInitial } from "@/global/initialTypes";
 import { User } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
 
 export const setNewUserData = async (user: User) => {
   try {

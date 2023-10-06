@@ -39,7 +39,7 @@ const Blog = ({
     setCurrentPage(1);
   };
   return (
-    <MainLayout withPadding={false}>
+    <MainLayout>
       <section className="flex h-full w-full max-w-6xl flex-col">
         <div className="flex items-center justify-center text-4xl font-bold">
           <h1>All our content</h1>
@@ -47,13 +47,15 @@ const Blog = ({
         <div className="content">
           <Filter handleFilter={handleFilter} optionSelected={optionSelected} />
           <Posts posts={currentPaginationData} />
-          <Pagination
-            currentPage={currentPage}
-            totalCount={totalCount}
-            pageSize={rowsPerPage}
-            onPageChange={updatePage}
-            totalPages={totalPages}
-          />
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={rowsPerPage}
+              onPageChange={updatePage}
+              totalPages={totalPages}
+            />
+          )}
         </div>
       </section>
       <style jsx>

@@ -1,18 +1,18 @@
-import MainLayout from '@/components/Layout/MainLayout';
-import Link from 'next/link';
+import MainLayout from "@/components/Layout/MainLayout";
+import Link from "next/link";
 
 const index = () => {
   return (
-    <MainLayout withPadding={true}>
-      <div className='privacy'>
-        <h1 className='title'>Privacy Policy</h1>
+    <MainLayout>
+      <div className="privacy">
+        <h1 className="title">Privacy Policy</h1>
         <p>
           By using or accessing the Services in any manner, you acknowledge that
           you accept the practices and policies outlined in this Privacy Policy,
           and you hereby consent that we will collect, use, and share your
           information in the following ways. Remember that your use of This
-          Website&apos;s Services is at all times subject to the{' '}
-          <Link href={'/terms'}>Terms of Use</Link>
+          Website&apos;s Services is at all times subject to the{" "}
+          <Link href={"/terms"}>Terms of Use</Link>
         </p>
         <h2>What does this Privacy Policy cover?</h2>
         <p>
@@ -38,8 +38,8 @@ const index = () => {
           collected personal information from a child under age 13, we will
           delete that information as quickly as possible. If you believe that a
           child under 13 may have provided us personal information, please
-          contact us at{' '}
-          <Link href={'mailto:frichieri.dev@gmail.com'}>
+          contact us at{" "}
+          <Link href={"mailto:frichieri.dev@gmail.com"}>
             frichieri.dev@gmail.com
           </Link>
           .
@@ -84,8 +84,8 @@ const index = () => {
           confirmation when you open an email from us. This confirmation helps
           us make our communications with you more interesting and improve our
           services. If you do not want to receive communications from us, please
-          email us at{' '}
-          <Link href={'mailto:frichieri.dev@gmail.com'}>
+          email us at{" "}
+          <Link href={"mailto:frichieri.dev@gmail.com"}>
             frichieri.dev@gmail.com
           </Link>
           .
@@ -254,8 +254,8 @@ const index = () => {
         <p>
           The information you can view, update, and delete may change as the
           Services change. If you have any questions about viewing or updating
-          information we have on file about you, please contact us at{' '}
-          <Link href={'mailto:frichieri.dev@gmail.com'}>
+          information we have on file about you, please contact us at{" "}
+          <Link href={"mailto:frichieri.dev@gmail.com"}>
             frichieri.dev@gmail.com
           </Link>
           .
@@ -270,10 +270,10 @@ const index = () => {
           You may be able to add, update, or delete information as explained
           above. When you update information, however, we may maintain a copy of
           the unrevised information in our records. You may request deletion of
-          your account by contacting us at{' '}
-          <Link href={'mailto:frichieri.dev@gmail.com'}>
+          your account by contacting us at{" "}
+          <Link href={"mailto:frichieri.dev@gmail.com"}>
             frichieri.dev@gmail.com
-          </Link>{' '}
+          </Link>{" "}
           and we will disassociate our email address and Twitter account from
           any content or other information provided to us. Some information may
           remain in our records after your deletion of such information from
@@ -284,8 +284,8 @@ const index = () => {
         <h2>What if I have questions about this policy?</h2>
         <p>
           If you have any questions or concerns regarding our privacy policies,
-          please send us a detailed message to{' '}
-          <Link href={'mailto:frichieri.dev@gmail.com'}>
+          please send us a detailed message to{" "}
+          <Link href={"mailto:frichieri.dev@gmail.com"}>
             frichieri.dev@gmail.com
           </Link>
           .

@@ -41,7 +41,7 @@ const DropDown = ({
               e.preventDefault();
             }}
           >
-            <div className="menu">{children}</div>
+            <div className="w-full">{children}</div>
           </div>
           <div
             className="modal"
@@ -54,7 +54,6 @@ const DropDown = ({
       )}
       <style jsx>{`
         .container {
-          padding: 0.25rem 0.5rem;
           border-radius: 5px;
           position: relative;
           display: flex;
@@ -88,11 +87,7 @@ const DropDown = ({
           z-index: 10;
           display: block;
         }
-        .menu {
-          height: auto;
-          width: 100%;
-          width: auto;
-        }
+
         .drop-menu {
           position: absolute;
           background: var(--gray-color);
@@ -105,7 +100,6 @@ const DropDown = ({
           height: auto;
           min-width: fit-content;
           width: 6rem;
-          padding: 0.5rem 0rem;
           display: flex;
           align-items: center;
           justify-content: center;

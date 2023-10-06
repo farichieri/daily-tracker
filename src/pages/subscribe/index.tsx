@@ -1,11 +1,11 @@
-import MainLayout from '@/components/Layout/MainLayout';
-import SubscribeInvitation from '@/components/LandingPage/SubscribeInvitation/SubscribeInvitation';
-import Link from 'next/link';
+import MainLayout from "@/components/Layout/MainLayout";
+import SubscribeInvitation from "@/components/LandingPage/SubscribeInvitation/SubscribeInvitation";
+import Link from "next/link";
 
 const index = () => {
   return (
-    <MainLayout withPadding={true}>
-      <div className='subscribe'>
+    <MainLayout>
+      <div className="subscribe">
         <h2>Why us?</h2>
         <p>
           Our goal is to help you maximize your productivity, develop the habits
@@ -22,8 +22,8 @@ const index = () => {
           more.
         </p>
         <p>Get Started</p>
-        <Link href={'/pricing'}>
-          <button className='become'>Become a member now</button>
+        <Link href={"/pricing"}>
+          <button className="become">Become a member now</button>
         </Link>
       </div>
       <style jsx>{`

@@ -57,7 +57,7 @@ const Post = ({
   // };
 
   return (
-    <MainLayout withPadding={true}>
+    <MainLayout>
       <Head>
         <title>{postData.title}</title>
       </Head>

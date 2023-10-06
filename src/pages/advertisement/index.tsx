@@ -1,11 +1,11 @@
-import Form from '@/components/LandingPage/Form/Form';
-import MainLayout from '@/components/Layout/MainLayout';
+import Form from "@/components/LandingPage/Form/Form";
+import MainLayout from "@/components/Layout/MainLayout";
 
 const index = () => {
   return (
-    <MainLayout withPadding={true}>
-      <div className='advertisement'>
-        <h1 className='title'>Advertisement</h1>
+    <MainLayout>
+      <div className="advertisement">
+        <h1 className="title">Advertisement</h1>
         <h2>
           If you&apos;d like to give us feedback, advertise with us or become an
           author on our blog, please fill out the form:

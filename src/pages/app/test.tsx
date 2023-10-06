@@ -57,7 +57,7 @@ const TestPaget = () => {
   };
 
   return (
-    <PremiumLayout withPadding={false}>
+    <PremiumLayout>
       <div className="my-32 text-red-500">
         <p>from</p>
         <DatePicker
