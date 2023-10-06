@@ -188,7 +188,7 @@ const TaskDetail = ({
   return (
     <Modal onCloseRedirect={redirectLink} closeModalOnClick={closeModalOnClick}>
       <div
-        className={`flex h-[85vh] max-h-[90vh] w-[95vw] max-w-[var(--max-width-task)] flex-col gap-4 overflow-y-auto rounded-3xl border px-6 py-4 text-left ${
+        className={`flex h-[85vh] max-h-[90vh] w-[95vw] max-w-2xl flex-col gap-4 overflow-y-auto rounded-3xl border px-6 py-4 text-left ${
           task.done
             ? "pointer-events-none border-[var(--b-done)] opacity-40"
             : task.working_on

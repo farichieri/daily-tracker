@@ -20,6 +20,7 @@
   }
 }
 :root {
+  --max-width-content: 900px;
   --premium-nav-height: 3rem;
   --nav-height: 3rem;
   --text-color: white;

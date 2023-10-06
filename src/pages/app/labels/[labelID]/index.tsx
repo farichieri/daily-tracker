@@ -91,7 +91,7 @@ const LabelID = () => {
           padding: 2.5rem 0.5rem 0 0.5rem;
           width: 95vw;
           height: 90vh;
-          max-width: var(--max-width-task);
+          max-width: 672px;
           text-align: left;
           display: flex;
           flex-direction: column;
