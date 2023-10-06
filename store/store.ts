@@ -1,19 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
-import authSlice from './slices/authSlice';
-import globalSlice from './slices/globalSlice';
-import goalsSlice from './slices/goalsSlice';
-import labelsSlice from './slices/labelsSlice';
-import layoutSlice from './slices/layoutSlice';
-import listsSlice from './slices/listsSlice';
-import tasksSlice from './slices/tasksSlice';
-import themeSlice from './slices/themeSlice';
-import trackerSlice from './slices/trackerSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import authSlice from "./slices/authSlice";
+import globalSlice from "./slices/globalSlice";
+import labelsSlice from "./slices/labelsSlice";
+import layoutSlice from "./slices/layoutSlice";
+import listsSlice from "./slices/listsSlice";
+import tasksSlice from "./slices/tasksSlice";
+import themeSlice from "./slices/themeSlice";
+import trackerSlice from "./slices/trackerSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     global: globalSlice,
-    goals: goalsSlice,
     labels: labelsSlice,
     layout: layoutSlice,
     list: listsSlice,
@@ -25,7 +23,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

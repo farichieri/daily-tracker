@@ -13,7 +13,6 @@ import {
 import { selectGlobalState, setIsDataFetched } from "store/slices/globalSlice";
 import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
 import { selectUser } from "store/slices/authSlice";
-import { setGoals } from "store/slices/goalsSlice";
 import { setLabels } from "store/slices/labelsSlice";
 import { setLists } from "store/slices/listsSlice";
 import { setTasks } from "store/slices/tasksSlice";
@@ -65,7 +64,6 @@ export default function PremiumLayout({
     dispatch(setLabels(labelsData));
     dispatch(setLists(listsData));
     dispatch(setTasks(tasksData));
-    dispatch(setGoals(goalsData));
     dispatch(setProjects(projects));
     dispatch(setIsDataFetched(true));
   };
