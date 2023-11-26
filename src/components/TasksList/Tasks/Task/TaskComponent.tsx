@@ -1,5 +1,5 @@
 import { filterSubtasks, getParentTaskSeconds } from "@/hooks/helpers";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { Label, Task, TasksArray, TasksGroup } from "@/global/types";
 import { selectLists } from "store/slices/listsSlice";
 import { selectTasks } from "store/slices/tasksSlice";
@@ -32,8 +32,8 @@ const TaskComponent = ({
   const { listID } = router.query;
   const today = useSelector(selectToday);
 
-  const iso = task.date_set.date_iso;
-  const isoDisplay = iso && format(parseISO(iso), "MM-dd-yyyy");
+  const { date_only } = task.date_set;
+  const isoDisplay = date_only;
   const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
   const dateDisplayed = isoDisplay === todayDisplay ? "Today" : isoDisplay;
   const trackerView = useSelector(selectTrackerView);
@@ -47,10 +47,10 @@ const TaskComponent = ({
     a.date_set.time_from.localeCompare(b.date_set.time_from)
   );
   const [subtasks, setSubtasks] = useState<TasksArray>(sortedArray);
-  const dateFormatted = task.date_set.date_iso.slice(0, 10);
+  const dateFormatted = task.date_set.date_only.slice(0, 10);
   const failedTask =
-    dateFormatted < today && !task.done && task.date_set.date_iso;
-  const oldDay = dateFormatted < today && task.date_set.date_iso;
+    dateFormatted < today && !task.done && task.date_set.date_only;
+  const oldDay = dateFormatted < today && task.date_set.date_only;
 
   const secondsSpent = useMemo(
     () => getParentTaskSeconds(subTasks, task),
@@ -84,21 +84,22 @@ const TaskComponent = ({
           id={taskID}
         >
           <div className="flex h-full min-w-fit flex-col items-start gap-2">
-            {!router.pathname.includes("tracker") && task.date_set.date_iso && (
-              <div className="pointer-events-auto min-w-fit rounded-sm border-[var(--box-shadow)] text-xs ">
-                <Link href={`/app/tracker/${dateFormatted}`}>
-                  <span
-                    className={`rounded-md border border-[var(--box-shadow)] py-0.5 px-1 opacity-70 transition-all duration-300 hover:opacity-100 ${
-                      dateDisplayed === "Today" ? "text-red-500" : ""
-                    }`}
-                  >
-                    {dateDisplayed}
-                  </span>
-                </Link>
-              </div>
-            )}
+            {!router.pathname.includes("tracker") &&
+              task.date_set.date_only && (
+                <div className="pointer-events-auto min-w-fit rounded-sm border-[var(--box-shadow)] text-sm ">
+                  <Link href={`/app/tracker/${dateFormatted}`}>
+                    <span
+                      className={`rounded-md border border-[var(--box-shadow)] py-0.5 px-1 opacity-70 transition-all duration-300 hover:opacity-100 ${
+                        dateDisplayed === "Today" ? "text-red-500" : ""
+                      }`}
+                    >
+                      {dateDisplayed}
+                    </span>
+                  </Link>
+                </div>
+              )}
           </div>
-          <div className="leading-2 flex w-full flex-col items-start justify-center overflow-hidden text-xs">
+          <div className="leading-2 flex w-full flex-col items-start justify-center overflow-hidden text-sm">
             <div className="font pointer-events-auto m-0 flex items-center p-0">
               {projects[task.project_id]?.list_name && !listID && (
                 <Link href={`/app/lists/${task.project_id}`}>

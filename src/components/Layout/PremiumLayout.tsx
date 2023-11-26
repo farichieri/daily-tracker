@@ -4,7 +4,7 @@ import {
   getLabels,
   getTasks,
   getGoals,
-} from "@/hooks/firebase";
+} from "@/services";
 import {
   selectLayoutState,
   setIsSidebarOpen,
@@ -15,7 +15,6 @@ import { selectTrackerView, setProjects } from "store/slices/trackerSlice";
 import { selectUser } from "store/slices/authSlice";
 import { setLabels } from "store/slices/labelsSlice";
 import { setLists } from "store/slices/listsSlice";
-import { setTasks } from "store/slices/tasksSlice";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -50,20 +49,16 @@ export default function PremiumLayout({
 
   const fetchAllData = async () => {
     if (!user) return;
-    const [labelsData, listsData, tasksData, goalsData, projects] =
-      await Promise.all([
-        getLabels(user),
-        getLists(user),
-        getTasks(user),
-        getGoals(user),
-        getProjects(user),
-      ]);
+    const [labelsData, listsData, projects] = await Promise.all([
+      getLabels(user),
+      getLists(user),
+      getProjects(user),
+    ]);
     if (projects.length < 1) {
       dispatch(toggleIsCreatingProject());
     }
     dispatch(setLabels(labelsData));
     dispatch(setLists(listsData));
-    dispatch(setTasks(tasksData));
     dispatch(setProjects(projects));
     dispatch(setIsDataFetched(true));
   };

@@ -32,14 +32,16 @@ const Tasks = ({ tasksState }: { tasksState: TaskGroup }) => {
       .sort(
         (a, b) => Number(b.working_on || false) - Number(a.working_on || false)
       )
-      .sort((a, b) => b.date_set.date_iso?.localeCompare(a.date_set.date_iso));
+      .sort((a, b) =>
+        b.date_set.date_only?.localeCompare(a.date_set.date_only)
+      );
     return sortedPendingTasks;
   }, [tasksState]);
 
   const doneTasks: TasksArray = useMemo(() => {
     const filtered: TaskGroup = filterTasksDone(tasksState);
     const sortedDoneTasks: TasksArray = Object.values(filtered).sort((a, b) =>
-      b.date_set.date_iso?.localeCompare(a.date_set.date_iso)
+      b.date_set.date_only?.localeCompare(a.date_set.date_only)
     );
     return sortedDoneTasks;
   }, [tasksState]);

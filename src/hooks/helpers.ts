@@ -1,4 +1,3 @@
-import { dbFormatDate } from "@/utils/formatDate";
 import { GoalGroup, ListGroup, Task, TaskGroup } from "@/global/types";
 import { formatISO, parseISO } from "date-fns";
 
@@ -31,16 +30,12 @@ export const filterObject = (obj: any, filter: string, filterValue: string) =>
   );
 
 export const filterTasksByDateSet = (obj: any, date: string) => {
-  // console.log("filterTasksByDateSet");
-  const formatISOtoDB = (d: string) => {
-    return dbFormatDate(parseISO(d));
-  };
-
   return Object.keys(obj).reduce(
     (acc, val) =>
       !(
-        obj[val]["date_set"]["date_iso"] &&
-        formatISOtoDB(obj[val]["date_set"]["date_iso"]) === date
+        obj[val]["date_set"]["date_only"] &&
+        obj[val]["date_set"]["date_only"] === date &&
+        !obj[val]["parent_id"]
       )
         ? acc
         : {
@@ -52,7 +47,6 @@ export const filterTasksByDateSet = (obj: any, date: string) => {
 };
 
 export const filterSubtasks = (obj: any, taskID: string) => {
-  // console.log("filterSubtasks");
   return Object.keys(obj).reduce(
     (acc, val) =>
       !(obj[val]["parent_id"] === taskID)
@@ -105,13 +99,13 @@ export const filterListsNotArchived = (obj: ListGroup) =>
   );
 
 export const filterPendingRecurrings = (obj: TaskGroup, today: string) => {
-  const date = formatISO(parseISO(today));
+  const date = today;
   return Object.keys(obj).reduce(
     (acc, val) =>
       !(
         obj[val]["is_recurring"] &&
         obj[val]["is_recurring"] === true &&
-        obj[val]["date_set"]["date_iso"] >= date &&
+        obj[val]["date_set"]["date_only"] >= date &&
         obj[val]["done"] !== true
       )
         ? acc
@@ -142,7 +136,7 @@ export const filterUndefinedTasks = (obj: TaskGroup) =>
   Object.keys(obj).reduce(
     (acc, val) =>
       !(
-        obj[val]["date_set"]["date_iso"] === "" &&
+        obj[val]["date_set"]["date_only"] === "" &&
         obj[val]["project_id"] === "tracker" &&
         !obj[val]["parent_id"]
       )

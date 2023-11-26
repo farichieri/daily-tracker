@@ -74,7 +74,7 @@ export const trackerSlice = createSlice({
     },
     setDaySelected: (state, action: PayloadAction<string>) => {
       state.daySelected = action.payload;
-      state.weekSelected = getDaysInAWeek(parseISO(action.payload));
+      state.weekSelected = getDaysInAWeek(new Date(action.payload));
     },
     setWeekSelected: (state, action: PayloadAction<any[]>) => {
       state.weekSelected = action.payload;

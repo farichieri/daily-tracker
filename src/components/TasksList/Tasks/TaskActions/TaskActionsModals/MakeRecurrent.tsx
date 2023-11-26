@@ -53,7 +53,6 @@ const MakeRecurrent = ({
   };
   const handleSelectEnd = (day: Date | undefined) => {
     if (day) {
-      console.log({ day });
       setEndDay(day);
     }
   };

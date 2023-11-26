@@ -10,7 +10,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import IconButton from "@/components/Layout/Icon/IconButton";
 
-const AddSubtask = () => {
+interface Props {
+  parentTask: Task;
+}
+const AddSubtask: React.FC<Props> = ({ parentTask }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { taskID } = router.query;
@@ -34,8 +37,11 @@ const AddSubtask = () => {
         content: newSubtaskState.content,
         project_id: project_id,
         parent_id: String(taskID),
+        date_set: {
+          ...newSubtaskState.date_set,
+          date_only: parentTask.date_set.date_only,
+        },
       };
-      console.log({ newSubtask });
       setNewSbutaskState(NewTaskInitial);
       dispatch(setAddNewTask(newSubtask));
       // Verify if there is an error with firebase.

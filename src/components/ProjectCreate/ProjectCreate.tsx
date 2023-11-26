@@ -1,13 +1,13 @@
-import { Project } from '@/global/types';
-import { getProjects } from '@/hooks/firebase';
-import { db } from '@/utils/firebase.config';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
-import { setProjects, setProjectSelected } from 'store/slices/trackerSlice';
-import Button from '../Layout/Button/Button';
-import Modal from '../Modal/Modal';
+import { Project } from "@/global/types";
+import { getProjects } from "@/services";
+import { db } from "@/utils/firebase.config";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "store/slices/authSlice";
+import { setProjects, setProjectSelected } from "store/slices/trackerSlice";
+import Button from "../Layout/Button/Button";
+import Modal from "../Modal/Modal";
 
 const ProjectCreate = ({
   closeModalOnClick,
@@ -21,8 +21,8 @@ const ProjectCreate = ({
     is_favorite: false,
     is_private: false,
     labels: [],
-    project_id: '',
-    project_name: '',
+    project_id: "",
+    project_name: "",
     members: [],
   });
   const { user } = useSelector(selectUser);
@@ -36,7 +36,7 @@ const ProjectCreate = ({
 
   const handleAddProject = async () => {
     if (user) {
-      const docRef = doc(collection(db, 'users', user.uid, 'projects'));
+      const docRef = doc(collection(db, "users", user.uid, "projects"));
       projectInput.project_id = docRef.id;
       await setDoc(docRef, projectInput);
       // Fix to Redux.
@@ -47,32 +47,32 @@ const ProjectCreate = ({
   };
 
   return (
-    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
-      <div className='container'>
-        <div className='title'>New Tracker</div>
-        <div className='form'>
+    <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
+      <div className="container">
+        <div className="title">New Tracker</div>
+        <div className="form">
           <input
-            type='text'
-            placeholder=''
-            name='project_name'
+            type="text"
+            placeholder=""
+            name="project_name"
             value={projectInput.project_name}
             onChange={handleChange}
           />
-          <div className='buttons'>
+          <div className="buttons">
             <Button
               onClick={() => closeModalOnClick()}
-              content='Cancel'
+              content="Cancel"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
             <Button
               onClick={handleAddProject}
-              content='Acept'
+              content="Acept"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
           </div>

@@ -1,7 +1,8 @@
-import { formatISO, intervalToDuration } from "date-fns";
+import { format, intervalToDuration } from "date-fns";
 
-export const dbFormatDate = (date: string | Date) => {
-  return formatISO(new Date(date), { representation: "date" });
+export const dbFormatDate = (date: Date) => {
+  const dateToFormat = date || new Date();
+  return format(dateToFormat, "MM-dd-yyyy");
 };
 
 export const formatTime = (seconds: number) => {

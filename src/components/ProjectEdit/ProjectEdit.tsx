@@ -1,14 +1,14 @@
-import { Project } from '@/global/types';
-import { getProjects } from '@/hooks/firebase';
-import { db } from '@/utils/firebase.config';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
-import { setProjects, selectProjectEdit } from 'store/slices/trackerSlice';
-import Button from '../Layout/Button/Button';
-import IconButton from '../Layout/Icon/IconButton';
-import Modal from '../Modal/Modal';
+import { Project } from "@/global/types";
+import { getProjects } from "@/services";
+import { db } from "@/utils/firebase.config";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "store/slices/authSlice";
+import { setProjects, selectProjectEdit } from "store/slices/trackerSlice";
+import Button from "../Layout/Button/Button";
+import IconButton from "../Layout/Icon/IconButton";
+import Modal from "../Modal/Modal";
 
 const ProjectEdit = ({
   closeModalOnClick,
@@ -54,12 +54,12 @@ const ProjectEdit = ({
           projectEdit.is_default === false &&
           projectInput.is_default === true
         ) {
-          const docRef = collection(db, 'users', user.uid, 'projects');
+          const docRef = collection(db, "users", user.uid, "projects");
           const querySnapshot = await getDocs(docRef);
           const removeDefaults = async () => {
             querySnapshot.forEach((docToUpdate) => {
               updateDoc(
-                doc(db, 'users', user.uid, 'projects', docToUpdate.id),
+                doc(db, "users", user.uid, "projects", docToUpdate.id),
                 {
                   is_default: false,
                 }
@@ -70,9 +70,9 @@ const ProjectEdit = ({
         }
         const docRef = doc(
           db,
-          'users',
+          "users",
           user.uid,
-          'projects',
+          "projects",
           projectInput.project_id
         );
         await updateDoc(docRef, {
@@ -95,93 +95,93 @@ const ProjectEdit = ({
   };
 
   return (
-    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
-      <div className='container'>
-        <div className='title'>Edit Project</div>
-        <div className='form'>
-          <div className='content'>
-            <div className='name'>
+    <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
+      <div className="container">
+        <div className="title">Edit Project</div>
+        <div className="form">
+          <div className="content">
+            <div className="name">
               <span>Name:</span>
               <input
-                type='text'
-                name='project_name'
+                type="text"
+                name="project_name"
                 value={projectInput.project_name}
                 onChange={handleChange}
               />
             </div>
-            <div className='option'>
+            <div className="option">
               <span>
-                {projectInput.is_default ? 'Default' : 'Make Default'}
+                {projectInput.is_default ? "Default" : "Make Default"}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'is_default' }}
+                  props={{ name: "is_default" }}
                   src={
                     projectInput.is_default
-                      ? '/icons/toggle-on.png'
-                      : '/icons/toggle-off.png'
+                      ? "/icons/toggle-on.png"
+                      : "/icons/toggle-off.png"
                   }
-                  alt={projectInput.is_default ? 'On-Icon' : 'Off-Icon'}
+                  alt={projectInput.is_default ? "On-Icon" : "Off-Icon"}
                   width={24}
                   height={24}
                 />
               </span>
             </div>
-            <div className='option'>
+            <div className="option">
               <span>
-                {projectInput.is_favorite ? 'Favorite' : 'Make Favorite'}
+                {projectInput.is_favorite ? "Favorite" : "Make Favorite"}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'is_favorite' }}
+                  props={{ name: "is_favorite" }}
                   src={
                     projectInput.is_favorite
-                      ? '/icons/toggle-on.png'
-                      : '/icons/toggle-off.png'
+                      ? "/icons/toggle-on.png"
+                      : "/icons/toggle-off.png"
                   }
-                  alt={projectInput.is_favorite ? 'On-Icon' : 'Off-Icon'}
+                  alt={projectInput.is_favorite ? "On-Icon" : "Off-Icon"}
                   width={24}
                   height={24}
                 />
               </span>
             </div>
-            <div className='option'>
+            <div className="option">
               <span>
-                {projectInput.is_archived ? 'Desarchivate' : 'Archivate'}
+                {projectInput.is_archived ? "Desarchivate" : "Archivate"}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'is_archived' }}
+                  props={{ name: "is_archived" }}
                   src={
                     projectInput.is_archived
-                      ? '/icons/toggle-on.png'
-                      : '/icons/toggle-off.png'
+                      ? "/icons/toggle-on.png"
+                      : "/icons/toggle-off.png"
                   }
-                  alt={projectInput.is_archived ? 'On-Icon' : 'Off-Icon'}
+                  alt={projectInput.is_archived ? "On-Icon" : "Off-Icon"}
                   width={24}
                   height={24}
                 />
               </span>
             </div>
           </div>
-          <div className='buttons'>
+          <div className="buttons">
             <Button
               onClick={() => closeModalOnClick()}
-              content='Cancel'
+              content="Cancel"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
             <Button
               onClick={handleEditProject}
-              content='Acept'
+              content="Acept"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
           </div>

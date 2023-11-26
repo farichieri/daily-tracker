@@ -37,29 +37,10 @@ const DayPickerC = ({
           style={{ pointerEvents: "none" }}
         />
         <span>{dateToShow}</span>
-        {/* <div className="icon-container">
-          {open ? (
-            <Image
-              src={"/icons/collapse.png"}
-              alt="collapse-icon"
-              width={12}
-              height={12}
-              style={{ pointerEvents: "none" }}
-            />
-          ) : (
-            <Image
-              src={"/icons/expand.png"}
-              alt="expand-icon"
-              width={12}
-              height={12}
-              style={{ pointerEvents: "none" }}
-            />
-          )}
-        </div> */}
         {addTask && (
           <button
             className="close_time_to"
-            name="date_iso"
+            name="date_only"
             onClick={(e) => {
               e.stopPropagation();
               removeDate(e);

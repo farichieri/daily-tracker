@@ -1,9 +1,6 @@
-import { collection, doc, setDoc } from "firebase/firestore";
-import { auth, db } from "@/utils/firebase.config";
 import {
   add,
   differenceInDays,
-  differenceInMonths,
   differenceInWeeks,
   endOfWeek,
   format,
@@ -12,6 +9,8 @@ import {
   parseISO,
   startOfWeek,
 } from "date-fns";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "@/utils/firebase.config";
 import { Label, Recurring, Task } from "@/global/types";
 import { maxRecurringTasks } from "@/global/importantVars";
 import { NewTaskInitial } from "@/global/initialTypes";
@@ -31,6 +30,8 @@ import MakeRecurrent from "./TaskActions/TaskActionsModals/MakeRecurrent";
 import SelectEmoji from "./TaskActions/TaskActionsModals/SelectEmoji";
 import TimeInput from "@/components/Layout/Input/TimeInput";
 import TimeTrackingButton from "./TaskActions/TaskActionsButtons/TimeTrackingButton";
+import { dbFormatDate } from "@/utils/formatDate";
+import { postTask } from "@/services";
 
 const AddTask = ({ date }: { date: string }) => {
   const dispatch = useDispatch();
@@ -119,8 +120,8 @@ const AddTask = ({ date }: { date: string }) => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [openDateSelector, setOpenDateSelector] = useState(false);
   const [wantToAddDate, setWantToAddDate] = useState(false);
-  const dateToShow = dateSelected && format(dateSelected, "MM-dd-yyyy"); // April 2023
-  const todayDisplay = format(new Date(), "MM-dd-yyyy"); // US Format
+  const dateToShow = dateSelected && dbFormatDate(dateSelected); // April 2023
+  const todayDisplay = dbFormatDate(new Date()); // US Format
   const dateDisplayed = dateToShow === todayDisplay ? "Today" : dateToShow;
   const isoToDisplay = (isoDate: string) => {
     return format(parseISO(isoDate), "MM-dd-yyyy");
@@ -131,7 +132,7 @@ const AddTask = ({ date }: { date: string }) => {
       setDateSelected(day);
       const newDateSet = {
         ...input.date_set,
-        date_iso: formatISO(day),
+        date_only: formatISO(day),
       };
       setInput({
         ...input,
@@ -168,30 +169,27 @@ const AddTask = ({ date }: { date: string }) => {
     e.preventDefault();
     if (!user) return;
     if (input.content) {
-      const createDocAndSave = async (date_iso: string) => {
+      const createDocAndSave = async (date_only: string) => {
         const project_id = input.project_id ? input.project_id : "tracker";
         const time_from = input.date_set.time_from;
         const time_to = input.date_set.time_to;
 
-        const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
-        const newTaskDoc: Task = {
+        const task: Task = {
           ...input,
           added_at: formatISO(new Date()),
           added_by_uid: user.uid,
-          task_id: newDocRef.id,
           content: input.content,
           project_id: project_id,
           date_set: {
-            date_iso: date_iso,
+            date_only: date_only,
             time_from: time_from || "",
             time_to: (time_from && time_to) || "",
             with_time: false,
           },
         };
-        console.log({ newTaskDoc });
+        const newTask = await postTask({ user, task });
         setInput(NewTaskInitial);
-        dispatch(setAddNewTask(newTaskDoc));
-        await setDoc(newDocRef, newTaskDoc);
+        dispatch(setAddNewTask(newTask));
       };
 
       if (input.is_recurring) {
@@ -213,13 +211,11 @@ const AddTask = ({ date }: { date: string }) => {
         };
 
         let current = start;
-        console.log({ dif });
         for (
           let i = 0;
           i <= dif && i <= maxRecurringTasks;
           i += recurring_number
         ) {
-          console.log({ i });
           if (recurring_option === "days") {
             if (verifyStartEnd(start, end, current)) {
               await createDocAndSave(formatISO(current));
@@ -243,10 +239,8 @@ const AddTask = ({ date }: { date: string }) => {
           }
         }
       } else {
-        const date_iso = listID
-          ? input.date_set.date_iso
-          : formatISO(parseISO(String(date)));
-        await createDocAndSave(date_iso);
+        const date_only = listID ? input.date_set.date_only : date;
+        await createDocAndSave(date_only);
       }
     }
   };
@@ -408,7 +402,7 @@ const AddTask = ({ date }: { date: string }) => {
                   )}
                 </div>
               )}
-              {(input.date_set.date_iso || !listID) && (
+              {(input.date_set.date_only || !listID) && (
                 <>
                   <div className="time_from">
                     <TimeInput

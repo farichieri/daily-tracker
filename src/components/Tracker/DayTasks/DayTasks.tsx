@@ -8,7 +8,6 @@ import {
   selectWeekSelected,
 } from "store/slices/trackerSlice";
 import { dbFormatDate } from "@/utils/formatDate";
-import { parseISO } from "date-fns";
 import { TasksArray, TaskGroup, TasksGroup } from "@/global/types";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
@@ -106,13 +105,13 @@ const DayTasks = ({
       return date;
     };
     const newSelectedDay = dbFormatDate(
-      modifyDateDays(parseISO(daySelected), action)
+      modifyDateDays(new Date(daySelected), action)
     );
     router.push(newSelectedDay);
   };
 
   return (
-    <section className="relative m-auto flex h-full w-full min-w-min max-w-[var(--max-width-content)] flex-col gap-2 overflow-y-auto overflow-x-hidden pb-4">
+    <section className="relative mx-auto flex h-full w-full min-w-min max-w-[var(--max-width-content)] flex-col gap-2 overflow-y-auto overflow-x-hidden pb-4">
       <div className="flex">
         {index === 0 && (
           <button

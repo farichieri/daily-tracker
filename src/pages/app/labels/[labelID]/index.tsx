@@ -29,11 +29,13 @@ const LabelID = () => {
 
   useEffect(() => {
     const sortedArray = Object.values(tasksFiltered).sort((a, b) =>
-      a.date_set.date_iso?.localeCompare(b.date_set.date_iso)
+      a.date_set.date_only?.localeCompare(b.date_set.date_only)
     );
     const arrayWithTime = sortedArray
       .filter((task) => task.date_set.time_from)
-      .sort((a, b) => a.date_set.date_iso?.localeCompare(b.date_set.date_iso));
+      .sort((a, b) =>
+        a.date_set.date_only?.localeCompare(b.date_set.date_only)
+      );
     const arrayNoTime = sortedArray.filter((task) => !task.date_set.time_from);
     setArrayOfTasksWithTime(arrayWithTime);
     setArrayOfTasksNoTime(arrayNoTime);

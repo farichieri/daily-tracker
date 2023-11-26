@@ -22,7 +22,7 @@ const Tracker = () => {
       } ${trackerView === "week" && ""}`}
     >
       <FilterSelect />
-      <div className="mx-auto flex h-full w-full gap-1 overflow-x-auto overflow-y-auto ">
+      <div className="flex-start mx-auto flex h-full w-full justify-start  gap-1 overflow-x-auto overflow-y-auto ">
         {trackerView === "day" ? (
           <div className="mx-auto w-full max-w-5xl">
             <DayTasks

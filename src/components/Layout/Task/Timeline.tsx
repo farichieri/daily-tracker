@@ -17,7 +17,7 @@ const Timeline = ({
   const time_to = task.date_set.time_to;
   const completed = "bg-black";
   const incompleted = "bg-stone-300";
-  const date = task.date_set.date_iso.slice(0, 10);
+  const date = task.date_set.date_only.slice(0, 10);
   const today = useSelector(selectToday);
   const [time, setTime] = useState(new Date());
   const trackerView = useSelector(selectTrackerView);
@@ -105,7 +105,7 @@ const Timeline = ({
             <div className={`flex h-full w-0.5 ${getColor("top")}`}></div>
             <div
               className={`flex ${
-                weekView ? "h-3 min-h-3 w-3" : " h-3.5 min-h-3.5 w-3.5"
+                weekView ? "min-h-3 h-3 w-3" : " min-h-3.5 h-3.5 w-3.5"
               } flex-col rounded-full bg-transparent`}
             >
               {getCircle()}

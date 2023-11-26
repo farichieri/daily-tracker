@@ -1,14 +1,14 @@
-import { List, ListGroup } from '@/global/types';
-import { getLists } from '@/hooks/firebase';
-import { db } from '@/utils/firebase.config';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
-import { selectListEdit, setLists } from 'store/slices/listsSlice';
-import Button from '../Layout/Button/Button';
-import IconButton from '../Layout/Icon/IconButton';
-import Modal from '../Modal/Modal';
+import { List, ListGroup } from "@/global/types";
+import { getLists } from "@/services";
+import { db } from "@/utils/firebase.config";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "store/slices/authSlice";
+import { selectListEdit, setLists } from "store/slices/listsSlice";
+import Button from "../Layout/Button/Button";
+import IconButton from "../Layout/Icon/IconButton";
+import Modal from "../Modal/Modal";
 
 const ListEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
@@ -46,18 +46,18 @@ const ListEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const handleEditList = async () => {
     if (user) {
       if (listEdit.is_default === false && listInput.is_default === true) {
-        const docRef = collection(db, 'users', user.uid, 'lists');
+        const docRef = collection(db, "users", user.uid, "lists");
         const querySnapshot = await getDocs(docRef);
         const removeDefaults = async () => {
           querySnapshot.forEach((docToUpdate) => {
-            updateDoc(doc(db, 'users', user.uid, 'lists', docToUpdate.id), {
+            updateDoc(doc(db, "users", user.uid, "lists", docToUpdate.id), {
               is_default: false,
             });
           });
         };
         await removeDefaults();
       }
-      const docRef = doc(db, 'users', user.uid, 'lists', listEdit.list_id);
+      const docRef = doc(db, "users", user.uid, "lists", listEdit.list_id);
       await updateDoc(docRef, {
         is_archived: listInput.is_archived,
         is_default: listInput.is_default,
@@ -75,91 +75,91 @@ const ListEdit = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   };
 
   return (
-    <Modal closeModalOnClick={closeModalOnClick} onCloseRedirect=''>
-      <div className='container'>
-        <div className='title'>Edit List</div>
-        <div className='form'>
-          <div className='content'>
-            <div className='name'>
+    <Modal closeModalOnClick={closeModalOnClick} onCloseRedirect="">
+      <div className="container">
+        <div className="title">Edit List</div>
+        <div className="form">
+          <div className="content">
+            <div className="name">
               <span>Name:</span>
               <input
-                type='text'
-                name='list_name'
+                type="text"
+                name="list_name"
                 value={listInput.list_name}
                 onChange={handleChange}
               />
             </div>
-            <div className='option'>
-              <span>{listInput.is_default ? 'Default' : 'Make Default'}</span>
+            <div className="option">
+              <span>{listInput.is_default ? "Default" : "Make Default"}</span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'is_default' }}
+                  props={{ name: "is_default" }}
                   src={
                     listInput.is_default
-                      ? '/icons/toggle-on.png'
-                      : '/icons/toggle-off.png'
+                      ? "/icons/toggle-on.png"
+                      : "/icons/toggle-off.png"
                   }
-                  alt={listInput.is_default ? 'On-Icon' : 'Off-Icon'}
+                  alt={listInput.is_default ? "On-Icon" : "Off-Icon"}
                   width={24}
                   height={24}
                 />
               </span>
             </div>
-            <div className='option'>
+            <div className="option">
               <span>
-                {listInput.is_favorite ? 'Favorite' : 'Make Favorite'}
+                {listInput.is_favorite ? "Favorite" : "Make Favorite"}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'is_favorite' }}
+                  props={{ name: "is_favorite" }}
                   src={
                     listInput.is_favorite
-                      ? '/icons/toggle-on.png'
-                      : '/icons/toggle-off.png'
+                      ? "/icons/toggle-on.png"
+                      : "/icons/toggle-off.png"
                   }
-                  alt={listInput.is_favorite ? 'On-Icon' : 'Off-Icon'}
+                  alt={listInput.is_favorite ? "On-Icon" : "Off-Icon"}
                   width={24}
                   height={24}
                 />
               </span>
             </div>
-            <div className='option'>
+            <div className="option">
               <span>
-                {listInput.is_archived ? 'Desarchivate' : 'Archivate'}
+                {listInput.is_archived ? "Desarchivate" : "Archivate"}
               </span>
               <span>
                 <IconButton
                   onClick={handleClick}
-                  props={{ name: 'is_archived' }}
+                  props={{ name: "is_archived" }}
                   src={
                     listInput.is_archived
-                      ? '/icons/toggle-on.png'
-                      : '/icons/toggle-off.png'
+                      ? "/icons/toggle-on.png"
+                      : "/icons/toggle-off.png"
                   }
-                  alt={listInput.is_archived ? 'On-Icon' : 'Off-Icon'}
+                  alt={listInput.is_archived ? "On-Icon" : "Off-Icon"}
                   width={24}
                   height={24}
                 />
               </span>
             </div>
           </div>
-          <div className='buttons'>
+          <div className="buttons">
             <Button
               onClick={() => closeModalOnClick()}
-              content='Cancel'
+              content="Cancel"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
             <Button
               onClick={handleEditList}
-              content='Acept'
+              content="Acept"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
           </div>

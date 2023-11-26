@@ -1,10 +1,8 @@
 import { dbFormatDate } from "@/utils/formatDate";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import {
-  selectShowNoTimeTasks,
   selectTrackerSlice,
   selectTrackerView,
-  setShowNoTimeTasks,
   setTrackerView,
 } from "store/slices/trackerSlice";
 import { useRouter } from "next/dist/client/router";
@@ -12,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import DayPickerC from "@/components/DayPickerC/DayPickerC";
 import Link from "next/link";
-import Image from "next/image";
 import PlannerDropDown from "@/components/Layout/DropDown/PlannerDropDown/PlannerDropDown";
 
 const FilterSelect = () => {
@@ -36,7 +33,7 @@ const FilterSelect = () => {
     }
   };
 
-  const dateToShow = date ? format(parseISO(String(date)), "LLLL u") : today; // April 2023
+  const dateToShow = date ? format(new Date(String(date)), "LLLL u") : today; // April 2023
   const [openDateSelector, setOpenDateSelector] = useState(false);
 
   const buttonClass =

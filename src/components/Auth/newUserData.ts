@@ -40,7 +40,7 @@ export const setNewUserData = async (user: User) => {
       added_at: formatISO(new Date()),
       added_by_uid: user.uid,
       date_set: {
-        date_iso: formatISO(new Date()),
+        date_only: formatISO(new Date()),
         time_from: "",
         time_to: "",
         with_time: false,

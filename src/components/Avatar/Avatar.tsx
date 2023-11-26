@@ -1,4 +1,4 @@
-import { getUserSettings } from "@/hooks/firebase";
+import { getUserSettings } from "@/services";
 import { db, storage } from "@/utils/firebase.config";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";

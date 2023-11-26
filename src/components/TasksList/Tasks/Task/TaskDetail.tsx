@@ -106,7 +106,7 @@ const TaskDetail = ({
       const taskUpdated = {
         ...taskState,
         date_set: {
-          date_iso: taskState.date_set.date_iso,
+          date_only: taskState.date_set.date_only,
           time_from: time_from || "",
           time_to: (time_from && time_to) || "",
           with_time: false,
@@ -150,24 +150,23 @@ const TaskDetail = ({
   };
 
   // Date
-  const dateParsed = taskState.date_set.date_iso
-    ? parseISO(taskState.date_set.date_iso)
+  const dateParsed = taskState.date_set.date_only
+    ? parseISO(taskState.date_set.date_only)
     : new Date();
   const [dateSelected, setDateSelected] = useState<Date>(dateParsed);
   const [openDateSelector, setOpenDateSelector] = useState(false);
   const [wantToAddDate, setWantToAddDate] = useState(false);
 
-  const iso = task.date_set.date_iso;
-  const isoDisplay = iso && format(parseISO(iso), "MM-dd-yyyy");
+  const { date_only } = task.date_set;
   const dateDisplayed =
-    isoDisplay === format(new Date(), "MM-dd-yyyy") ? "Today" : isoDisplay;
+    date_only === format(new Date(), "MM-dd-yyyy") ? "Today" : date_only;
 
   const handleDateSelected = (day: Date) => {
-    if (day) {
+    if (day instanceof Date) {
       setDateSelected(day);
       const newDateSet = {
         ...taskState.date_set,
-        date_iso: formatISO(day),
+        date_only: format(day, "MM-dd-yyyy"),
       };
       setTaskState({
         ...taskState,
@@ -200,7 +199,7 @@ const TaskDetail = ({
         <TaskActions />
         <div className="flex  items-center gap-2">
           <div className="day-picker">
-            {!wantToAddDate && !taskState.date_set.date_iso ? (
+            {!wantToAddDate && !taskState.date_set.date_only ? (
               <button
                 className="rounded-lg border border-[var(--box-shadow-light)] p-1"
                 onClick={() => {
@@ -227,7 +226,7 @@ const TaskDetail = ({
             )}
           </div>
 
-          {(taskState.date_set.date_iso || !listID) && (
+          {(taskState.date_set.date_only || !listID) && (
             <>
               <div className="time_from">
                 <TimeInput
@@ -322,7 +321,7 @@ const TaskDetail = ({
               subtasks={subtasksState}
             />
           </div>
-          <AddSubtask />
+          <AddSubtask parentTask={task} />
         </div>
         <div className="flex flex-col">
           <span className="title">Attachments</span>

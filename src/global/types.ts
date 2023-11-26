@@ -59,7 +59,7 @@ export interface Recurring {
 }
 
 interface DateSet {
-  date_iso: string;
+  date_only: string;
   time_from: string;
   time_to: string;
   with_time: boolean;

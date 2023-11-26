@@ -1,13 +1,13 @@
-import { List, ListGroup } from '@/global/types';
-import { getLists } from '@/hooks/firebase';
-import { db } from '@/utils/firebase.config';
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from 'store/slices/authSlice';
-import { setLists } from 'store/slices/listsSlice';
-import Button from '../Layout/Button/Button';
-import Modal from '../Modal/Modal';
+import { List, ListGroup } from "@/global/types";
+import { getLists } from "@/services";
+import { db } from "@/utils/firebase.config";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "store/slices/authSlice";
+import { setLists } from "store/slices/listsSlice";
+import Button from "../Layout/Button/Button";
+import Modal from "../Modal/Modal";
 
 const ListCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   const dispatch = useDispatch();
@@ -17,8 +17,8 @@ const ListCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
     is_favorite: false,
     is_private: false,
     labels: [],
-    list_id: '',
-    list_name: '',
+    list_id: "",
+    list_name: "",
     members: [],
   });
   const { user } = useSelector(selectUser);
@@ -32,7 +32,7 @@ const ListCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
 
   const handleAddList = async () => {
     if (user) {
-      const newDocRef = doc(collection(db, 'users', user.uid, 'lists'));
+      const newDocRef = doc(collection(db, "users", user.uid, "lists"));
       listInput.list_id = newDocRef.id;
       listInput.list_name = listInput.list_name;
       await setDoc(newDocRef, listInput);
@@ -43,32 +43,32 @@ const ListCreate = ({ closeModalOnClick }: { closeModalOnClick: Function }) => {
   };
 
   return (
-    <Modal onCloseRedirect='' closeModalOnClick={closeModalOnClick}>
-      <div className='container'>
-        <div className='title'>New Tasks List</div>
-        <div className='form'>
+    <Modal onCloseRedirect="" closeModalOnClick={closeModalOnClick}>
+      <div className="container">
+        <div className="title">New Tasks List</div>
+        <div className="form">
           <input
-            type='text'
-            placeholder=''
-            name='list_name'
+            type="text"
+            placeholder=""
+            name="list_name"
             value={listInput.list_name}
             onChange={handleChange}
           />
-          <div className='buttons'>
+          <div className="buttons">
             <Button
               onClick={() => closeModalOnClick()}
-              content='Cancel'
+              content="Cancel"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
             <Button
               onClick={handleAddList}
-              content='Acept'
+              content="Acept"
               isLoading={false}
               isDisabled={false}
-              loadMessage={''}
+              loadMessage={""}
               style={null}
             />
           </div>

@@ -4,7 +4,7 @@ import {
   setUserSettings,
 } from "store/slices/authSlice";
 import { auth } from "@/utils/firebase.config";
-import { getUserSettings } from "@/hooks/firebase";
+import { getUserSettings } from "@/services";
 import { Inter } from "next/font/google";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";

@@ -10,7 +10,7 @@ export const NewTaskInitial: Task = {
   completed_at: "",
   content: "",
   date_set: {
-    date_iso: "",
+    date_only: "",
     time_from: "",
     time_to: "",
     with_time: false,
@@ -51,7 +51,7 @@ export const NewGoalInitial: Goal = {
   completed_at: "",
   content: "",
   date_set: {
-    date_iso: "",
+    date_only: "",
     time_from: "",
     time_to: "",
     with_time: false,

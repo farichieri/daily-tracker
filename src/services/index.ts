@@ -5,17 +5,21 @@ import {
   TaskGroup,
   GoalGroup,
   ProjectsGroup,
+  Task,
 } from "@/global/types";
 import { db } from "@/utils/firebase.config";
+import { formatISO } from "date-fns";
 import { User } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   orderBy,
   query,
   setDoc,
+  where,
 } from "firebase/firestore";
 
 export const getProjects = async (user: User) => {
@@ -80,12 +84,12 @@ export const getLabels = async (user: User) => {
   return data;
 };
 
-export const getTasks = async (user: User) => {
+export const getTasks = async (user: User, date: string) => {
   console.log("Fetching Tasks");
   let data: TaskGroup = {};
   const tasksDocRef = query(
     collection(db, "users", user.uid, "tasks"),
-    orderBy("added_at", "asc")
+    where("date_set.date_only", "==", date)
   );
   const querySnapshot = await getDocs(tasksDocRef);
   querySnapshot.forEach((task: any) => {
@@ -143,4 +147,32 @@ export const getDayData = async (user: User, date: string) => {
       day_tasks: {},
     };
   }
+};
+
+export const postTask = async ({
+  user,
+  task,
+}: {
+  user: User;
+  task: Task;
+}): Promise<Task> => {
+  const newDocRef = doc(collection(db, "users", user.uid, "tasks"));
+  const newTask = {
+    ...task,
+    task_id: newDocRef.id,
+    added_at: formatISO(new Date()),
+  };
+  await setDoc(newDocRef, newTask);
+  return newTask;
+};
+
+export const deleteTask = async ({
+  task_id,
+  user,
+}: {
+  task_id: string;
+  user: User;
+}) => {
+  const docRef = doc(db, "users", user.uid, "tasks", task_id);
+  await deleteDoc(docRef);
 };
